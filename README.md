@@ -1,0 +1,2 @@
+# TextShine
+Text conversion utility
