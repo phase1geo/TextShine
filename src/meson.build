@@ -1,4 +1,5 @@
 sources += files(
+    'functions/CaseCamel.vala',
     'functions/CaseLower.vala',
     'functions/CaseSentence.vala',
     'functions/CaseTitle.vala',

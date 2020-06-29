@@ -84,6 +84,7 @@ public class TextFunctions {
   private Expander create_case( Editor editor ) {
     Box box;
     var exp = create_category( "case", _( "Change Case" ), out box );
+    add_function( box, editor, new CaseCamel() );
     add_function( box, editor, new CaseLower() );
     add_function( box, editor, new CaseSentence() );
     add_function( box, editor, new CaseTitle() );
