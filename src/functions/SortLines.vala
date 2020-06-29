@@ -30,7 +30,7 @@ public class SortLines : TextFunction {
   public override string transform_text( string original ) {
     var array = new Array<string>();
     foreach( string str in original.split( "\n" ) ) {
-      array.append( str );
+      array.append_val( str );
     }
     array.sort( strcmp );
     return( string.joinv( "\n", array.data ) );
