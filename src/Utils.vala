@@ -80,6 +80,11 @@ public class Utils {
     return( Granite.markup_accel_tooltip( accels, tooltip ) );
   }
 
+  /* Returns a string that will be drawn as a title when markup is applied */
+  public static string make_title( string str ) {
+    return( "<b>" + str + "</b>" );
+  }
+
   /* Searches for the beginning or ending word */
   public static int find_word( string str, int cursor, bool wordstart ) {
     try {

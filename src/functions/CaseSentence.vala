@@ -19,17 +19,28 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-using Gtk;
+public class CaseSentence : TextFunction {
 
-public class RegExpr : TextFunction {
+  Regex _re;
 
   /* Constructor */
-  public RegExpr() {
-    base( "regexpr", _( "Regular Expression" ), "replace" );
+  public CaseSentence() {
+    base( "case-sentence", _( "Sentence Case" ), "case" );
+    try {
+      _re = new Regex( "(^\\s*|[.!?]\\s+)([a-z])" );
+    } catch( RegexError e ) {}
   }
 
+  /* Perform the transformation */
   public override string transform_text( string original ) {
-    return( original );
+    MatchInfo matches;
+    int       start, end;
+    var       orig = original.ascii_down();
+    while( _re.match( orig, 0, out matches ) ) {
+      matches.fetch_pos( 2, out start, out end );
+      orig = orig.splice( start, end, orig.slice( start, end ).ascii_up() );
+    }
+    return( orig );
   }
 
 }

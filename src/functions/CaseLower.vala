@@ -19,17 +19,16 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-using Gtk;
-
-public class RegExpr : TextFunction {
+public class CaseLower : TextFunction {
 
   /* Constructor */
-  public RegExpr() {
-    base( "regexpr", _( "Regular Expression" ), "replace" );
+  public CaseLower() {
+    base( "case-lower", _( "Lower Case" ), "case" );
   }
 
+  /* Perform the transformation */
   public override string transform_text( string original ) {
-    return( original );
+    return( original.ascii_down() );
   }
 
 }

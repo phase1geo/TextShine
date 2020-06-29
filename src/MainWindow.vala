@@ -26,14 +26,15 @@ public class MainWindow : ApplicationWindow {
   private const string DESKTOP_SCHEMA = "io.elementary.desktop";
   private const string DARK_KEY       = "prefer-dark";
 
-  private HeaderBar  _header;
-  private Editor     _editor;
-  private Button     _paste_btn;
-  private Button     _copy_btn;
-  private Button     _undo_btn;
-  private Button     _redo_btn;
-  private MenuButton _prop_btn;
-  private FontButton _font;
+  private HeaderBar     _header;
+  private Editor        _editor;
+  private Button        _paste_btn;
+  private Button        _copy_btn;
+  private Button        _undo_btn;
+  private Button        _redo_btn;
+  private MenuButton    _prop_btn;
+  private FontButton    _font;
+  private TextFunctions _functions;
 
   /* Constructor */
   public MainWindow() {
@@ -201,7 +202,7 @@ public class MainWindow : ApplicationWindow {
   /* Called when the properties button is clicked.  Sets the state of the popover contents. */
   private void properties_clicked() {
 
-    /* TBD */
+    /* TBD - State properties item states here */
 
   }
 
@@ -209,6 +210,8 @@ public class MainWindow : ApplicationWindow {
   private Box create_sidebar() {
 
     var box = new Box( Orientation.VERTICAL, 0 );
+
+    _functions = new TextFunctions( _editor, box );
 
     return( box );
 

@@ -31,5 +31,15 @@
       <summary>Default font size</summary>
       <description>Default font size to use for the editor.</description>
     </key>
+    <key name="category-case-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the case category</summary>
+      <description>Determines the expanded state of the case category.</description>
+    </key>
+    <key name="category-search-replace-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the search/replace category</summary>
+      <description>Determines the expanded state of the search/replace category.</description>
+    </key>
   </schema>
 </schemalist>

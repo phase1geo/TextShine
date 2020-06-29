@@ -59,6 +59,7 @@ dependencies = [
     dependency('gee-0.8'),
     dependency('granite'),
     dependency('gtk+-3.0'),
+    dependency('libxml-2.0'),
     dependency('gtksourceview-3.0'),
     math_dep
 ]

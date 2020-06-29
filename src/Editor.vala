@@ -27,6 +27,8 @@ public class Editor : SourceView {
   /* Constructor */
   public Editor( MainWindow win ) {
 
+    wrap_mode = WrapMode.WORD;
+
     /* Set a CSS style class so that we can adjust the font */
     get_style_context().add_class( "editor" );
 
@@ -44,7 +46,6 @@ public class Editor : SourceView {
 
     try {
       var css_data = ".editor { font: " + size.to_string() + "px \"" + name + "\"; }";
-      stdout.printf( "css_data: %s\n", css_data );
       provider.load_from_data( css_data );
     } catch( GLib.Error e ) {
       stdout.printf( "Unable to change font: %s\n", e.message );
@@ -56,6 +57,31 @@ public class Editor : SourceView {
       STYLE_PROVIDER_PRIORITY_APPLICATION
     );
 
+  }
+
+  /* Returns the current range of text that will be transformed */
+  public void get_range( out TextIter start, out TextIter end ) {
+    if( !buffer.get_selection_bounds( out start, out end ) ) {
+      buffer.get_start_iter( out start );
+      buffer.get_end_iter( out end );
+    }
+  }
+
+  /* Returns the current range of text that will be transformed */
+  public string get_current_text() {
+    TextIter start, end;
+    get_range( out start, out end );
+    return( buffer.get_text( start, end, false ) );
+  }
+
+  /* Replaces the given range with the specified text */
+  public void replace_text( string text ) {
+    TextIter start, end;
+    get_range( out start, out end );
+    if( start.compare( end ) != 0 ) {
+      buffer.delete( ref start, ref end );
+      buffer.insert( ref start, text, text.length );
+    }
   }
 
 }
