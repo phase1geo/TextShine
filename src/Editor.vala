@@ -20,12 +20,42 @@
 */
 
 using Gtk;
+using Gdk;
 
 public class Editor : SourceView {
-  
+
   /* Constructor */
   public Editor( MainWindow win ) {
-    
+
+    /* Set a CSS style class so that we can adjust the font */
+    get_style_context().add_class( "editor" );
+
+    /* Set the default font */
+    var font_name = TextShine.settings.get_string( "default-font-family" );
+    var font_size = TextShine.settings.get_int( "default-font-size" );
+    change_name_font( font_name, font_size );
+
   }
-  
+
+  /* Updates the font theme */
+  public void change_name_font( string name, int size ) {
+
+    var provider = new CssProvider();
+
+    try {
+      var css_data = ".editor { font: " + size.to_string() + "px \"" + name + "\"; }";
+      stdout.printf( "css_data: %s\n", css_data );
+      provider.load_from_data( css_data );
+    } catch( GLib.Error e ) {
+      stdout.printf( "Unable to change font: %s\n", e.message );
+    }
+
+    /* Set the CSS */
+    get_style_context().add_provider(
+      provider,
+      STYLE_PROVIDER_PRIORITY_APPLICATION
+    );
+
+  }
+
 }

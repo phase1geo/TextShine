@@ -3,5 +3,6 @@ sources += files(
 
     'Application.vala',
     'Editor.vala',
-    'MainWindow.vala'
+    'MainWindow.vala',
+    'Utils.vala'
 )
