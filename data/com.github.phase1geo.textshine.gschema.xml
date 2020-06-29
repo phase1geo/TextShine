@@ -41,5 +41,10 @@
       <summary>Determines the expanded state of the search/replace category</summary>
       <description>Determines the expanded state of the search/replace category.</description>
     </key>
+    <key name="category-sort-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the sort category</summary>
+      <description>Determines the expanded state of the sort category.</description>
+    </key>
   </schema>
 </schemalist>

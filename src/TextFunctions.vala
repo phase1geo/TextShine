@@ -38,6 +38,7 @@ public class TextFunctions {
 
     /* Add widgets to box */
     cbox.pack_start( create_case( editor ),           false, false, 5 );
+    cbox.pack_start( create_sort( editor ),           false, false, 5 );
     cbox.pack_start( create_search_replace( editor ), false, false, 5 );
 
     box.pack_start( sw, true, true, 10 );
@@ -89,6 +90,15 @@ public class TextFunctions {
     add_function( box, editor, new CaseSentence() );
     add_function( box, editor, new CaseTitle() );
     add_function( box, editor, new CaseUpper() );
+    return( exp );
+  }
+
+  /* Adds the sorting functions */
+  private Expander create_sort( Editor editor ) {
+    Box box;
+    var exp = create_category( "sort", _( "Sort" ), out box );
+    add_function( box, editor, new SortLines() );
+    add_function( box, editor, new SortReverse() );
     return( exp );
   }
 

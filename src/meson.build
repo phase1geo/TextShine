@@ -5,6 +5,8 @@ sources += files(
     'functions/CaseTitle.vala',
     'functions/CaseUpper.vala',
     'functions/RegExpr.vala',
+    'functions/SortLines.vala',
+    'functions/SortReverse.vala',
 
     'Application.vala',
     'Editor.vala',

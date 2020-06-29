@@ -19,29 +19,21 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class CaseCamel : TextFunction {
-
-  Regex _re;
+public class SortLines : TextFunction {
 
   /* Constructor */
-  public CaseCamel() {
-    base( "case-camel", _( "Camel Case" ), "case" );
-    try {
-      _re = new Regex( "[a-zA-Z]( )([a-z])" );
-    } catch( RegexError e ) {}
+  public SortLines() {
+    base( "sort-lines", _( "Sort Lines" ), "sort" );
   }
 
   /* Perform the transformation */
   public override string transform_text( string original ) {
-    MatchInfo matches;
-    var       orig = original.ascii_down();
-    while( _re.match( orig, 0, out matches ) ) {
-      int start1, end1, start2, end2;
-      matches.fetch_pos( 1, out start1, out end1 );
-      matches.fetch_pos( 2, out start2, out end2 );
-      orig = orig.splice( start2, end2, orig.slice( start2, end2 ).ascii_up() ).splice( start1, end1 );
+    var array = new Array<string>();
+    foreach( string str in original.split( "\n" ) ) {
+      array.append( str );
     }
-    return( orig );
+    array.sort( strcmp );
+    return( string.joinv( "\n", array.data ) );
   }
 
 }
