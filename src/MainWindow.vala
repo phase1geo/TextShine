@@ -22,6 +22,8 @@
 using Gtk;
 
 public class MainWindow : ApplicationWindow {
+
+  Editor _editor;
   
   /* Constructor */
   public MainWindow() {

@@ -23,24 +23,19 @@ using Gtk;
 using Gdk;
 using GLib;
 
-public class Minder : Granite.Application {
+public class TextShine : Granite.Application {
 
-  private static bool          show_version = false;
-  private static string?       open_file    = null;
-  private static bool          new_file     = false;
-  private static bool          testing      = false;
-  private        bool          loaded       = false;
-  private        MainWindow    appwin;
+  private static bool       show_version = false;
+  private        MainWindow appwin;
 
   public  static GLib.Settings settings;
-  public  static string        version = "1.9.0";
+  public  static string        version = "1.0.0";
 
-  public Minder () {
+  public TextShine () {
 
-    Object( application_id: "com.github.phase1geo.minder", flags: ApplicationFlags.HANDLES_OPEN );
+    Object( application_id: "com.github.phase1geo.textshine", flags: ApplicationFlags.FLAGS_NONE );
 
     startup.connect( start_application );
-    open.connect( open_files );
 
   }
 
@@ -48,17 +43,14 @@ public class Minder : Granite.Application {
   private void start_application() {
 
     /* Initialize the settings */
-    settings = new GLib.Settings( "com.github.phase1geo.minder" );
+    settings = new GLib.Settings( "com.github.phase1geo.textshine" );
 
     /* Add the application-specific icons */
     weak IconTheme default_theme = IconTheme.get_default();
-    default_theme.add_resource_path( "/com/github/phase1geo/minder" );
+    default_theme.add_resource_path( "/com/github/phase1geo/textshine" );
 
     /* Create the main window */
-    appwin = new MainWindow( this, settings );
-
-    /* Load the tab data */
-    loaded = appwin.load_tab_state();
+    appwin = new MainWindow();
 
     /* Handle any changes to the position of the window */
     appwin.configure_event.connect(() => {
@@ -75,25 +67,9 @@ public class Minder : Granite.Application {
 
   }
 
-  /* Called whenever files need to be opened */
-  private void open_files( File[] files, string hint ) {
-    hold();
-    foreach( File open_file in files ) {
-      var file = open_file.get_path();
-      if( !appwin.open_file( file ) ) {
-        stdout.printf( "ERROR:  Unable to open file '%s'\n", file );
-      }
-    }
-    Gtk.main();
-    release();
-  }
-
   /* Called if we have no files to open */
   protected override void activate() {
     hold();
-    if( new_file || !loaded ) {
-      appwin.do_new_file();
-    }
     Gtk.main();
     release();
   }
@@ -102,12 +78,11 @@ public class Minder : Granite.Application {
   private void parse_arguments( ref unowned string[] args ) {
 
     var context = new OptionContext( "- TextShine Options" );
-    var options = new OptionEntry[3];
+    var options = new OptionEntry[2];
 
     /* Create the command-line options */
     options[0] = {"version", 0, 0, OptionArg.NONE, ref show_version, "Display version number", null};
-    options[1] = {"run-tests", 0, 0, OptionArg.NONE, ref testing, "Run testing", null};
-    options[2] = {null};
+    options[1] = {null};
 
     /* Parse the arguments */
     try {
@@ -126,32 +101,15 @@ public class Minder : Granite.Application {
       Process.exit( 0 );
     }
 
-    /* If we see files on the command-line */
-    if( args.length >= 2 ) {
-      open_file = args[1];
-    }
-
   }
 
   /* Main routine which gets everything started */
   public static int main( string[] args ) {
 
-    var app = new Minder();
+    var app = new TextShine();
     app.parse_arguments( ref args );
 
-    if( testing ) {
-      Gtk.init( ref args );
-      var testing = new App.Tests.Testing( args );
-      Idle.add(() => {
-        testing.run();
-        Gtk.main_quit();
-        return( false );
-      });
-      Gtk.main();
-      return( 0 );
-    } else {
-      return( app.run( args ) );
-    }
+    return( app.run( args ) );
 
   }
 

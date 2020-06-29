@@ -1,5 +1,5 @@
 project('com.github.phase1geo.textshine', ['vala', 'c'],
-    version : '1.9.0',
+    version : '1.0.0',
     license: 'GPL-3.0'
 )
 
@@ -13,7 +13,7 @@ gnome = import('gnome')
 i18n = import('i18n')
 
 gresource = gnome.compile_resources(
-    'minder-resources', 'data/' + meson.project_name() + '.gresource.xml',
+    'textshine-resources', 'data/' + meson.project_name() + '.gresource.xml',
     source_dir: 'data',
 )
 
