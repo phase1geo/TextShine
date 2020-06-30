@@ -28,12 +28,16 @@ public class SortLines : TextFunction {
 
   /* Perform the transformation */
   public override string transform_text( string original ) {
-    var array = new Array<string>();
+    var list  = new SList<string>();
+    var lines = "";
     foreach( string str in original.split( "\n" ) ) {
-      array.append( str );
+      list.append( str );
     }
-    array.sort( strcmp );
-    return( string.joinv( "\n", array.data ) );
+    list.sort( strcmp );
+    list.foreach( (item) => {
+      lines += item + "\n";
+    });
+    return( lines.chomp() );
   }
 
 }
