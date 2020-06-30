@@ -19,16 +19,40 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class CaseLower : TextFunction {
+public class TextChange {
+
+  private TextFunction _function;
+
+  public string label {
+    get {
+      return( _function.label );
+    }
+  }
 
   /* Constructor */
-  public CaseLower() {
-    base( "case-lower", _( "Lower Case" ) );
+  public TextChange( TextFunction function ) {
+    _function = function;
   }
 
-  /* Perform the transformation */
-  public override string transform_text( string original ) {
-    return( original.ascii_down() );
+  /* Called to save this text function */
+  public Xml.Node* save() {
+    Xml.Node* n = new Xml.Node( null, "function" );
+    n->set_prop( "name",      _function.name );
+    n->set_prop( "direction", _function.direction.to_string() );
+    save_contents( n );
+    return( n );
   }
+
+  /* Loads the contents of this Xml node */
+  public void load( Xml.Node* n ) {
+    load_contents( n );
+  }
+
+  /* Loads the contents of this node */
+  protected virtual void save_contents( Xml.Node* n ) {}
+
+  /* Saves the contents of this node */
+  protected virtual void load_contents( Xml.Node* n ) {}
 
 }
+

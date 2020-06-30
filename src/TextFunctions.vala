@@ -20,13 +20,22 @@
 */
 
 using Gtk;
+using Gee;
 
 public class TextFunctions {
+
+  private Array<TextFunction> _functions;
+  private Array<TextChange>   _undo;
+  private Array<TextChange>   _redo;
 
   /* Constructor */
   public TextFunctions( Editor editor, Box box ) {
 
-    box.set_size_request( 200, 600 );
+    _functions = new Array<TextFunction>();
+    _undo      = new Array<TextChange>();
+    _redo      = new Array<TextChange>();
+
+    box.set_size_request( 250, 600 );
 
     /* Create scrolled box */
     var cbox = new Box( Orientation.VERTICAL, 0 );
@@ -38,6 +47,7 @@ public class TextFunctions {
 
     /* Add widgets to box */
     cbox.pack_start( create_case( editor ),           false, false, 5 );
+    cbox.pack_start( create_replace( editor ),        false, false, 5 );
     cbox.pack_start( create_sort( editor ),           false, false, 5 );
     cbox.pack_start( create_search_replace( editor ), false, false, 5 );
 
@@ -70,14 +80,81 @@ public class TextFunctions {
   /* Adds a function button to the given category item box */
   private void add_function( Box box, Editor editor, TextFunction function ) {
 
-    var button = new Button.with_label( function.label );
+    _functions.append_val( function );
+
+    var button = new Button.with_label( function.label0 );
     button.xalign = (float)0;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
       function.launch( editor );
+      _undo.append_val( function.get_change() );
     });
 
     box.pack_start( button, false, false, 0 );
+
+  }
+
+  /* Adds sort function */
+  private void add_sort_function( Box box, Editor editor, TextFunction function ) {
+
+    _functions.append_val( function );
+
+    var fbox   = new Box( Orientation.HORIZONTAL, 0 );
+    var button = new Button.with_label( function.label0 );
+    button.xalign = (float)0;
+    button.set_relief( ReliefStyle.NONE );
+    button.clicked.connect(() => {
+      function.launch( editor );
+      _undo.append_val( function.get_change() );
+    });
+    var direction = new Button.from_icon_name( "object-flip-vertical-symbolic", IconSize.SMALL_TOOLBAR );
+    direction.set_tooltip_text( _( "Switch Direction" ) );
+    direction.clicked.connect(() => {
+      if( function.direction == FunctionDirection.TOP_DOWN ) {
+        function.direction = FunctionDirection.BOTTOM_UP;
+        button.label       = function.label1;
+      } else {
+        function.direction = FunctionDirection.TOP_DOWN;
+        button.label       = function.label0;
+      }
+    });
+
+    fbox.pack_start( button,    false, false, 0 );
+    fbox.pack_end(   direction, false, false, 0 );
+
+    box.pack_start( fbox, false, false, 0 );
+
+  }
+
+  /* Adds a transformation button to the bar */
+  private void add_transform_function( Box box, Editor editor, TextFunction function ) {
+
+    _functions.append_val( function );
+
+    var fbox   = new Box( Orientation.HORIZONTAL, 0 );
+    var button = new Button.with_label( function.label0 );
+    button.xalign = (float)0;
+    button.set_relief( ReliefStyle.NONE );
+    button.clicked.connect(() => {
+      function.launch( editor );
+      _undo.append_val( function.get_change() );
+    });
+    var change = new Button.from_icon_name( "object-flip-horizontal-symbolic", IconSize.SMALL_TOOLBAR );
+    change.set_tooltip_text( _( "Switch Order" ) );
+    change.clicked.connect(() => {
+      if( function.direction == FunctionDirection.LEFT_TO_RIGHT ) {
+        button.label       = function.label1;
+        function.direction = FunctionDirection.RIGHT_TO_LEFT;
+      } else {
+        button.label       = function.label0;
+        function.direction = FunctionDirection.LEFT_TO_RIGHT;
+      }
+    });
+
+    fbox.pack_start( button, false, false, 0 );
+    fbox.pack_end(   change, false, false, 0 );
+
+    box.pack_start( fbox, false, false, 0 );
 
   }
 
@@ -93,12 +170,21 @@ public class TextFunctions {
     return( exp );
   }
 
+  private Expander create_replace( Editor editor ) {
+    Box box;
+    var exp = create_category( "replace", _( "Replace" ), out box );
+    add_transform_function( box, editor, new ReplaceTabsSpaces() );
+    add_transform_function( box, editor, new ReplaceTabsSpaces4() );
+    add_transform_function( box, editor, new ReplacePeriodsEllipsis() );
+    return( exp );
+  }
+
   /* Adds the sorting functions */
   private Expander create_sort( Editor editor ) {
     Box box;
     var exp = create_category( "sort", _( "Sort" ), out box );
-    add_function( box, editor, new SortLines() );
-    add_function( box, editor, new SortReverse() );
+    add_sort_function( box, editor, new SortLines() );
+    add_function( box, editor, new SortReverseChars() );
     return( exp );
   }
 
@@ -108,6 +194,34 @@ public class TextFunctions {
     var exp = create_category( "search-replace", _( "Search and Replace" ), out box );
     add_function( box, editor, new RegExpr() );
     return( exp );
+  }
+
+  /* Returns true if we can be undone */
+  public bool undoable() {
+    return( _undo.length > 0 );
+  }
+
+  /* Returns true if we can be redone */
+  public bool redoable() {
+    return( _redo.length > 0 );
+  }
+
+  /* Undoes the last change */
+  public void undo() {
+    if( undoable() ) {
+      var change = _undo.index( _undo.length - 1 );
+      _undo.remove_index( _undo.length - 1 );
+      _redo.append_val( change );
+    }
+  }
+
+  /* Redoes the last undone change */
+  public void redo() {
+    if( redoable() ) {
+      var change = _redo.index( _undo.length - 1 );
+      _redo.remove_index( _redo.length - 1 );
+      _undo.append_val( change );
+    }
   }
 
 }

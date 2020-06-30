@@ -21,36 +21,69 @@
 
 using Gtk;
 
-public class TextFunction {
+public enum FunctionDirection {
+  NONE = 0,       // Not applicable
+  TOP_DOWN,       // Sorts top-down
+  BOTTOM_UP,      // Sorts button-up
+  LEFT_TO_RIGHT,  // Converts left side to the right side
+  RIGHT_TO_LEFT;  // Converts right side to the left side
 
-  private string _name;
-  private string _label;
-  private string _category;
-
-  public string label {
-    get {
-      return( _label );
+  public string to_string() {
+    switch( this ) {
+      case NONE          :  return( "none" );
+      case TOP_DOWN      :  return( "top-down" );
+      case BOTTOM_UP     :  return( "bottom-up" );
+      case LEFT_TO_RIGHT :  return( "left-to-right" );
+      case RIGHT_TO_LEFT :  return( "right-to-left" );
+      default            :  assert_not_reached();
     }
   }
 
+  public static FunctionDirection parse( string val ) {
+    switch( val ) {
+      case "none"          :  return( NONE );
+      case "top-down"      :  return( TOP_DOWN );
+      case "bottom-up"     :  return( BOTTOM_UP );
+      case "left-to-right" :  return( LEFT_TO_RIGHT );
+      case "right-to-left" :  return( RIGHT_TO_LEFT );
+      default              :  assert_not_reached();
+    }
+  }
+}
+
+public class TextFunction {
+
+  private string _name;
+  private string _label0;
+  private string _label1;
+
+  public string label {
+    get {
+      switch( direction ) {
+        case FunctionDirection.BOTTOM_UP     :
+        case FunctionDirection.RIGHT_TO_LEFT :  return( _label1 );
+        default                          :  return( _label0 );
+      }
+    }
+  }
+  public string label0 {
+    get {
+      return( _label0 );
+    }
+  }
+  public string label1 {
+    get {
+      return( _label1 );
+    }
+  }
+  public FunctionDirection direction { get; set; default = FunctionDirection.NONE; }
+
   /* Constructor */
-  public TextFunction( string name, string label, string category ) {
+  public TextFunction( string name, string label0, string label1 = "", FunctionDirection dir = FunctionDirection.NONE ) {
     _name     = name;
-    _label    = label;
-    _category = category;
-  }
-
-  /* Called to save this text function */
-  public Xml.Node* save() {
-    Xml.Node* n = new Xml.Node( null, "function" );
-    n->set_prop( "name", _name );
-    save_contents( n );
-    return( n );
-  }
-
-  /* Loads the contents of this Xml node */
-  public void load( Xml.Node* n ) {
-    load_contents( n );
+    _label0   = label0;
+    _label1   = label1;
+    direction = dir;
   }
 
   /* Executes this text function using the editor */
@@ -73,18 +106,16 @@ public class TextFunction {
     return( original );
   }
 
-  /* Loads the contents of this node */
-  protected virtual void save_contents( Xml.Node* n ) {}
-
-  /* Saves the contents of this node */
-  protected virtual void load_contents( Xml.Node* n ) {}
+  /* Returns the text change from this function */
+  public virtual TextChange get_change() {
+    return( new TextChange( this ) );
+  }
 
   /*
    Helper function which returns the new string that replaces the given range
    from the original text with the new replacement text.
   */
   protected string replace_text( string original, int start_pos, int end_pos, string replacement ) {
-    stdout.printf( "first (%s), second (%s), third (%s)\n", original.splice( 0, start_pos ), replacement, original.splice( end_pos, original.length ) );
     return( original.splice( 0, start_pos ) + replacement + original.splice( end_pos, original.length ) );
   }
 

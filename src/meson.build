@@ -5,12 +5,16 @@ sources += files(
     'functions/CaseTitle.vala',
     'functions/CaseUpper.vala',
     'functions/RegExpr.vala',
+    'functions/ReplacePeriodsEllipsis.vala',
+    'functions/ReplaceTabsSpaces.vala',
+    'functions/ReplaceTabsSpaces4.vala',
     'functions/SortLines.vala',
-    'functions/SortReverse.vala',
+    'functions/SortReverseChars.vala',
 
     'Application.vala',
     'Editor.vala',
     'MainWindow.vala',
+    'TextChange.vala',
     'TextFunction.vala',
     'TextFunctions.vala',
     'Utils.vala'

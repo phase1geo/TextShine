@@ -23,17 +23,20 @@ public class SortLines : TextFunction {
 
   /* Constructor */
   public SortLines() {
-    base( "sort-lines", _( "Sort Lines" ), "sort" );
+    base( "sort-lines", _( "Sort Lines" ), _( "Sort Lines Reversed" ), TextDirection.TOP_DOWN );
   }
 
   /* Perform the transformation */
   public override string transform_text( string original ) {
-    var list  = new SList<string>();
+    var list  = new List<string>();
     var lines = "";
     foreach( string str in original.split( "\n" ) ) {
       list.append( str );
     }
     list.sort( strcmp );
+    if( direction == TextDirection.BOTTOM_UP ) {
+      list.reverse();
+    }
     list.foreach( (item) => {
       lines += item + "\n";
     });

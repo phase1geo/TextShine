@@ -19,11 +19,11 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class SortReverse : TextFunction {
+public class SortReverseChars : TextFunction {
 
   /* Constructor */
-  public SortReverse() {
-    base( "sort-reverse", _( "Reverse" ), "sort" );
+  public SortReverseChars() {
+    base( "sort-reverse", _( "Reverse Characters" ) );
   }
 
   /* Perform the transformation */

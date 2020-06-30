@@ -23,7 +23,7 @@ public class CaseUpper : TextFunction {
 
   /* Constructor */
   public CaseUpper() {
-    base( "case-upper", _( "Upper Case" ), "case" );
+    base( "case-upper", _( "Upper Case" ) );
   }
 
   /* Perform the transformation */

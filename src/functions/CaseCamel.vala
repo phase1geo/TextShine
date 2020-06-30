@@ -25,7 +25,7 @@ public class CaseCamel : TextFunction {
 
   /* Constructor */
   public CaseCamel() {
-    base( "case-camel", _( "Camel Case" ), "case" );
+    base( "case-camel", _( "Camel Case" ) );
     try {
       _re = new Regex( "[a-zA-Z]( )([a-z])" );
     } catch( RegexError e ) {}

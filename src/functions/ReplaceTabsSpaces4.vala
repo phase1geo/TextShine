@@ -19,16 +19,20 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class CaseLower : TextFunction {
+public class ReplaceTabsSpaces4 : TextFunction {
 
   /* Constructor */
-  public CaseLower() {
-    base( "case-lower", _( "Lower Case" ) );
+  public ReplaceTabsSpaces4() {
+    base( "replace-tabs-spaces4", _( "Tabs With Four Spaces" ), _( "Four Spaces With Tabs" ), TextDirection.LEFT_TO_RIGHT );
   }
 
   /* Perform the transformation */
   public override string transform_text( string original ) {
-    return( original.ascii_down() );
+    if( direction == TextDirection.LEFT_TO_RIGHT ) {
+      return( original.replace( "\t", "    " ) );
+    } else {
+      return( original.replace( "    ", "\t" ) );
+    }
   }
 
 }

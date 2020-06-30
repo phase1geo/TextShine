@@ -19,16 +19,20 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class CaseLower : TextFunction {
+public class ReplacePeriodsEllipsis : TextFunction {
 
   /* Constructor */
-  public CaseLower() {
-    base( "case-lower", _( "Lower Case" ) );
+  public ReplacePeriodsEllipsis() {
+    base( "replace-periods-ellipsis", _( "Three Periods With Ellipsis" ), _( "Ellipsis With Three Periods" ), TextDirection.LEFT_TO_RIGHT );
   }
 
   /* Perform the transformation */
   public override string transform_text( string original ) {
-    return( original.ascii_down() );
+    if( direction == TextDirection.LEFT_TO_RIGHT ) {
+      return( original.replace( "...", "\u2026" ) );
+    } else {
+      return( original.replace( "\u2026", "..." ) );
+    }
   }
 
 }

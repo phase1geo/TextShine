@@ -25,7 +25,7 @@ public class RegExpr : TextFunction {
 
   /* Constructor */
   public RegExpr() {
-    base( "regexpr", _( "Regular Expression" ), "replace" );
+    base( "regexpr", _( "Regular Expression" ) );
   }
 
   public override string transform_text( string original ) {

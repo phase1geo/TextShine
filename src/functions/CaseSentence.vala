@@ -25,7 +25,7 @@ public class CaseSentence : TextFunction {
 
   /* Constructor */
   public CaseSentence() {
-    base( "case-sentence", _( "Sentence Case" ), "case" );
+    base( "case-sentence", _( "Sentence Case" ) );
     try {
       _re = new Regex( "(^\\s*|[.!?]\\s+)([a-z])" );
     } catch( RegexError e ) {}

@@ -25,7 +25,7 @@ public class CaseTitle : TextFunction {
 
   /* Constructor */
   public CaseTitle() {
-    base( "case-title", _( "Title Case" ), "case" );
+    base( "case-title", _( "Title Case" ) );
     try {
       _re = new Regex( "(^|\\W)([a-z])" );
     } catch( RegexError e ) {}
