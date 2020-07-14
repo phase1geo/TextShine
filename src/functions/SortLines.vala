@@ -23,7 +23,7 @@ public class SortLines : TextFunction {
 
   /* Constructor */
   public SortLines() {
-    base( "sort-lines", _( "Sort Lines" ), _( "Sort Lines Reversed" ), TextDirection.TOP_DOWN );
+    base( "sort-lines", _( "Sort Lines" ), _( "Sort Lines Reversed" ), FunctionDirection.TOP_DOWN );
   }
 
   /* Perform the transformation */
@@ -34,7 +34,7 @@ public class SortLines : TextFunction {
       list.append( str );
     }
     list.sort( strcmp );
-    if( direction == TextDirection.BOTTOM_UP ) {
+    if( direction == FunctionDirection.BOTTOM_UP ) {
       list.reverse();
     }
     list.foreach( (item) => {

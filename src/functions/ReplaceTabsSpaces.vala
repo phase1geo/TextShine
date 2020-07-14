@@ -23,12 +23,12 @@ public class ReplaceTabsSpaces : TextFunction {
 
   /* Constructor */
   public ReplaceTabsSpaces() {
-    base( "replace-tabs-spaces", _( "Tabs With Spaces" ), _( "Spaces With Tabs" ), TextDirection.LEFT_TO_RIGHT );
+    base( "replace-tabs-spaces", _( "Tabs With Spaces" ), _( "Spaces With Tabs" ), FunctionDirection.LEFT_TO_RIGHT );
   }
 
   /* Perform the transformation */
   public override string transform_text( string original ) {
-    if( direction == TextDirection.LEFT_TO_RIGHT ) {
+    if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
       return( original.replace( "\t", " " ) );
     } else {
       return( original.replace( " ", "\t" ) );

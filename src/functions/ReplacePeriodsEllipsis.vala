@@ -23,12 +23,12 @@ public class ReplacePeriodsEllipsis : TextFunction {
 
   /* Constructor */
   public ReplacePeriodsEllipsis() {
-    base( "replace-periods-ellipsis", _( "Three Periods With Ellipsis" ), _( "Ellipsis With Three Periods" ), TextDirection.LEFT_TO_RIGHT );
+    base( "replace-periods-ellipsis", _( "Three Periods With Ellipsis" ), _( "Ellipsis With Three Periods" ), FunctionDirection.LEFT_TO_RIGHT );
   }
 
   /* Perform the transformation */
   public override string transform_text( string original ) {
-    if( direction == TextDirection.LEFT_TO_RIGHT ) {
+    if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
       return( original.replace( "...", "\u2026" ) );
     } else {
       return( original.replace( "\u2026", "..." ) );

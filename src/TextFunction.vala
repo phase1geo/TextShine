@@ -57,12 +57,17 @@ public class TextFunction {
   private string _label0;
   private string _label1;
 
+  public string name {
+    get {
+      return( _name );
+    }
+  }
   public string label {
     get {
       switch( direction ) {
         case FunctionDirection.BOTTOM_UP     :
         case FunctionDirection.RIGHT_TO_LEFT :  return( _label1 );
-        default                          :  return( _label0 );
+        default                              :  return( _label0 );
       }
     }
   }
