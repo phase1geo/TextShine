@@ -4,6 +4,7 @@ sources += files(
     'functions/CaseSentence.vala',
     'functions/CaseTitle.vala',
     'functions/CaseUpper.vala',
+    'functions/IndentXML.vala',
     'functions/RegExpr.vala',
     'functions/ReplacePeriodsEllipsis.vala',
     'functions/ReplaceTabsSpaces.vala',

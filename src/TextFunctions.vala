@@ -49,6 +49,7 @@ public class TextFunctions {
     cbox.pack_start( create_case( editor ),           false, false, 5 );
     cbox.pack_start( create_replace( editor ),        false, false, 5 );
     cbox.pack_start( create_sort( editor ),           false, false, 5 );
+    cbox.pack_start( create_indent( editor ),         false, false, 5 );
     cbox.pack_start( create_search_replace( editor ), false, false, 5 );
 
     box.pack_start( sw, true, true, 10 );
@@ -185,6 +186,14 @@ public class TextFunctions {
     var exp = create_category( "sort", _( "Sort" ), out box );
     add_sort_function( box, editor, new SortLines() );
     add_function( box, editor, new SortReverseChars() );
+    return( exp );
+  }
+
+  /* Adds the indentation functions */
+  private Expander create_indent( Editor editor ) {
+    Box box;
+    var exp = create_category( "indent", _( "Indentation" ), out box );
+    add_function( box, editor, new IndentXML() );
     return( exp );
   }
 
