@@ -53,10 +53,15 @@ public class MainWindow : ApplicationWindow {
     /* Create editor */
     _editor = new Editor( this );
 
+    var sw = new ScrolledWindow( null, null );
+    sw.min_content_width  = 600;
+    sw.min_content_height = 400;
+    sw.add( _editor );
+
     /* Create sidebar */
     var sidebar = create_sidebar();
 
-    box.pack_start( _editor, true,  true,  5 );
+    box.pack_start( sw,      true,  true,  5 );
     box.pack_start( sidebar, false, false, 5 );
 
     add( box );
