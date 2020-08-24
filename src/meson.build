@@ -20,3 +20,5 @@ sources += files(
     'TextFunctions.vala',
     'Utils.vala'
 )
+
+# subdir('emmet')

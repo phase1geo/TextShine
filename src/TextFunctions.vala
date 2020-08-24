@@ -20,6 +20,7 @@
 */
 
 using Gtk;
+using Gdk;
 using Gee;
 
 public class TextFunctions {
@@ -100,7 +101,20 @@ public class TextFunctions {
 
     _functions.append_val( function );
 
+    var reveal = new Revealer();
+    var ebox   = new EventBox();
+    ebox.enter_notify_event.connect((e) => {
+      reveal.reveal_child = true;
+      return( false );
+    });
+    ebox.leave_notify_event.connect((e) => {
+      if( e.detail != NotifyType.INFERIOR ) {
+        reveal.reveal_child = false;
+      }
+      return( false );
+    });
     var fbox   = new Box( Orientation.HORIZONTAL, 0 );
+    ebox.add( fbox );
     var button = new Button.with_label( function.label0 );
     button.xalign = (float)0;
     button.set_relief( ReliefStyle.NONE );
@@ -119,11 +133,12 @@ public class TextFunctions {
         button.label       = function.label0;
       }
     });
+    reveal.add( direction );
 
-    fbox.pack_start( button,    false, false, 0 );
-    fbox.pack_end(   direction, false, false, 0 );
+    fbox.pack_start( button, false, false, 0 );
+    fbox.pack_end(   reveal, false, false, 0 );
 
-    box.pack_start( fbox, false, false, 0 );
+    box.pack_start( ebox, false, false, 0 );
 
   }
 
@@ -132,7 +147,20 @@ public class TextFunctions {
 
     _functions.append_val( function );
 
+    var reveal = new Revealer();
+    var ebox   = new EventBox();
+    ebox.enter_notify_event.connect((e) => {
+      reveal.reveal_child = true;
+      return( false );
+    });
+    ebox.leave_notify_event.connect((e) => {
+      if( e.detail != NotifyType.INFERIOR ) {
+        reveal.reveal_child = false;
+      }
+      return( false );
+    });
     var fbox   = new Box( Orientation.HORIZONTAL, 0 );
+    ebox.add( fbox );
     var button = new Button.with_label( function.label0 );
     button.xalign = (float)0;
     button.set_relief( ReliefStyle.NONE );
@@ -151,11 +179,12 @@ public class TextFunctions {
         function.direction = FunctionDirection.LEFT_TO_RIGHT;
       }
     });
+    reveal.add( change );
 
     fbox.pack_start( button, false, false, 0 );
-    fbox.pack_end(   change, false, false, 0 );
+    fbox.pack_end(   reveal, false, false, 0 );
 
-    box.pack_start( fbox, false, false, 0 );
+    box.pack_start( ebox, false, false, 0 );
 
   }
 
