@@ -27,8 +27,15 @@ public class CaseUpper : TextFunction {
   }
 
   /* Perform the transformation */
-  public override string transform_text( string original ) {
-    return( original.ascii_up() );
+  public override string transform_text( string original, int cursor_pos ) {
+    string[] parts;
+    string   orig = original.ascii_down();
+    if( CaseCamel.is_camel_case( original, out parts ) ) {
+      orig = string.joinv( " ", parts );
+    } else if( CaseSnake.is_snake_case( original, out parts ) ) {
+      orig = string.joinv( " ", parts );
+    }
+    return( orig.ascii_up() );
   }
 
 }

@@ -29,7 +29,7 @@ public class IndentXML : TextFunction {
   }
 
   /* Perform the transformation */
-  public override string transform_text( string original ) {
+  public override string transform_text( string original, int cursor_pos ) {
     var doc = Xml.Parser.read_memory( original, original.length );
     var len = 0;
     var str = "";

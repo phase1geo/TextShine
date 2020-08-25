@@ -74,6 +74,20 @@ public class Editor : SourceView {
     return( buffer.get_text( start, end, false ) );
   }
 
+  /*
+   Returns the cursor position relative to the selected text.  If the cursor
+   position is outside of the selected text range, return -1.
+  */
+  public int get_cursor_pos() {
+    TextIter start, end;
+    get_range( out start, out end );
+    if( (buffer.cursor_position < start.get_offset()) ||
+        (buffer.cursor_position >= end.get_offset()) ) {
+      return( -1 );
+    }
+    return( buffer.cursor_position - start.get_offset() );
+  }
+
   /* Replaces the given range with the specified text */
   public void replace_text( string text ) {
     TextIter start, end;

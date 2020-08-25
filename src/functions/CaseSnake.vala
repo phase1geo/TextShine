@@ -19,28 +19,40 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class SortLines : TextFunction {
+public class CaseSnake : TextFunction {
+
+  private static Regex _is;
 
   /* Constructor */
-  public SortLines() {
-    base( "sort-lines", _( "Sort Lines" ), _( "Sort Lines Reversed" ), FunctionDirection.TOP_DOWN );
+  public CaseSnake() {
+    base( "case-snake", _( "Snake Case" ) );
+    try {
+      _is = new Regex( "^[a-z_]+$" );
+    } catch( RegexError e ) {}
   }
 
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
-    var list  = new List<string>();
-    var lines = "";
-    foreach( string str in original.split( "\n" ) ) {
-      list.append( str );
+    string[] parts;
+    string   orig = original.ascii_down();
+    if( CaseCamel.is_camel_case( original, out parts ) ) {
+      orig = string.joinv( " ", parts );
     }
-    list.sort( strcmp );
-    if( direction == FunctionDirection.BOTTOM_UP ) {
-      list.reverse();
+    return( orig.replace( " ", "_" ) );
+  }
+
+  /*
+   Returns true if the given string is in camel case; otherwise, returns false.
+   If true is returned, the camel case string is broken into its parts and returned
+   for further processing.
+  */
+  public static bool is_snake_case( string text, out string[] parts ) {
+    parts = {};
+    if( _is.match( text ) ) {
+      parts = text.ascii_down().split( "_" );
+      return( true );
     }
-    list.foreach( (item) => {
-      lines += item + "\n";
-    });
-    return( lines.chomp() );
+    return( false );
   }
 
 }

@@ -2,6 +2,7 @@ sources += files(
     'functions/CaseCamel.vala',
     'functions/CaseLower.vala',
     'functions/CaseSentence.vala',
+    'functions/CaseSnake.vala',
     'functions/CaseTitle.vala',
     'functions/CaseUpper.vala',
     'functions/IndentXML.vala',

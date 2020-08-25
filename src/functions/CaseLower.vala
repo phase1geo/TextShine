@@ -27,8 +27,19 @@ public class CaseLower : TextFunction {
   }
 
   /* Perform the transformation */
-  public override string transform_text( string original ) {
-    return( original.ascii_down() );
+  public override string transform_text( string original, int cursor_pos ) {
+    string[] parts;
+    string   orig;
+    if( CaseCamel.is_camel_case( original, out parts ) ) {
+      stdout.printf( "Found camel case, parts[0]: %s\n", parts[0] );
+      orig = string.joinv( " ", parts );
+      stdout.printf( "  orig: %s\n", orig );
+    } else if( CaseSnake.is_snake_case( original, out parts ) ) {
+      orig = string.joinv( " ", parts );
+    } else {
+      orig = original;
+    }
+    return( orig.ascii_down() );
   }
 
 }

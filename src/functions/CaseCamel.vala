@@ -21,20 +21,26 @@
 
 public class CaseCamel : TextFunction {
 
-  Regex _re;
+  private Regex        _re;
+  private static Regex _is;
 
   /* Constructor */
   public CaseCamel() {
     base( "case-camel", _( "Camel Case" ) );
     try {
       _re = new Regex( "[a-zA-Z]( )([a-z])" );
+      _is = new Regex( "(^|[A-Z])[a-z]*" );
     } catch( RegexError e ) {}
   }
 
   /* Perform the transformation */
-  public override string transform_text( string original ) {
+  public override string transform_text( string original, int cursor_pos ) {
+    string[] parts;
+    string   orig = original.ascii_down();
+    if( CaseSnake.is_snake_case( original, out parts ) ) {
+      orig = string.joinv( " ", parts );
+    }
     MatchInfo matches;
-    var       orig = original.ascii_down();
     while( _re.match( orig, 0, out matches ) ) {
       int start1, end1, start2, end2;
       matches.fetch_pos( 1, out start1, out end1 );
@@ -42,6 +48,33 @@ public class CaseCamel : TextFunction {
       orig = orig.splice( start2, end2, orig.slice( start2, end2 ).ascii_up() ).splice( start1, end1 );
     }
     return( orig );
+  }
+
+  /*
+   Returns true if the given string is in camel case; otherwise, returns false.
+   If true is returned, the camel case string is broken into its parts and returned
+   for further processing.
+  */
+  public static bool is_camel_case( string text, out string[] parts ) {
+    MatchInfo matches;
+    parts = {};
+    try {
+      if( _is.match( text, 0, out matches ) ) {
+        var arr = new Array<string>();
+        int start, end = 0;
+        while( matches.matches() ) {
+          var str = matches.fetch( 0 ).ascii_down();
+          matches.fetch_pos( 0, out start, out end );
+          arr.append_val( str );
+          matches.next();
+        }
+        if( end == text.length ) {
+          parts = arr.data;
+          return( true );
+        }
+      }
+    } catch( RegexError e ) {}
+    return( false );
   }
 
 }

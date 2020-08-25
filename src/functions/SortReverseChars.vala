@@ -27,7 +27,7 @@ public class SortReverseChars : TextFunction {
   }
 
   /* Perform the transformation */
-  public override string transform_text( string original ) {
+  public override string transform_text( string original, int cursor_pos ) {
     return( original.reverse() );
   }
 

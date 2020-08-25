@@ -195,6 +195,7 @@ public class TextFunctions {
     add_function( box, editor, new CaseCamel() );
     add_function( box, editor, new CaseLower() );
     add_function( box, editor, new CaseSentence() );
+    add_function( box, editor, new CaseSnake() );
     add_function( box, editor, new CaseTitle() );
     add_function( box, editor, new CaseUpper() );
     return( exp );

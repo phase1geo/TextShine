@@ -27,7 +27,7 @@ public class ReplacePeriodsEllipsis : TextFunction {
   }
 
   /* Perform the transformation */
-  public override string transform_text( string original ) {
+  public override string transform_text( string original, int cursor_pos ) {
     if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
       return( original.replace( "...", "\u2026" ) );
     } else {

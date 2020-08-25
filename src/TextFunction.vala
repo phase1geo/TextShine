@@ -93,7 +93,7 @@ public class TextFunction {
 
   /* Executes this text function using the editor */
   protected void run( Editor editor ) {
-    editor.replace_text( transform_text( editor.get_current_text() ) );
+    editor.replace_text( transform_text( editor.get_current_text(), editor.get_cursor_pos() ) );
   }
 
   /*
@@ -107,7 +107,7 @@ public class TextFunction {
   }
 
   /* Transforms the given text */
-  protected virtual string transform_text( string original ) {
+  protected virtual string transform_text( string original, int cursor_pos ) {
     return( original );
   }
 
