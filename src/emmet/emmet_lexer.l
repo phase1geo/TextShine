@@ -130,152 +130,152 @@ char* emmet_get_matching( char* str, char start_char, char end_char ) {
 %%
 
 [ \n\t\b\f]+ {
-  emmet_begpos  = emmet_endpos;
-  emmet_endpos += strlen( emmet_text );
+  yylloc.first_column  = yylloc.last_column;
+  yylloc.last_column += strlen( yytext );
 }
 
 [a-zA-Z$!][a-zA-Z0-9:!@$-]*\+? {
-  if {[info exists ::emmet_block_aliases($emmet_text)]} {
-    unput( emmet_block_aliases($emmet_text) );
-  } else if( strncmp( emmet_text, "lorem", 5 ) == 0 ) {
-    unput( emmet_text + 5 );
-    emmet_begpos = emmet_endpos;
-    emmet_endpos += 5;
+  if {[info exists ::emmet_block_aliases($yytext)]} {
+    unput( emmet_block_aliases($yytext) );
+  } else if( strncmp( yytext, "lorem", 5 ) == 0 ) {
+    unput( yytext + 5 );
+    yylloc.first_column = yylloc.last_column;
+    yylloc.last_column += 5;
     return LOREM;
-  } else if( strncmp( emmet_text, "lipsum", 6 ) == 0 ) {
-    unput( emmet_text + 6 );
-    emmet_begpos = emmet_endpos;
-    emmet_endpos += 6;
+  } else if( strncmp( yytext, "lipsum", 6 ) == 0 ) {
+    unput( yytext + 6 );
+    yylloc.first_column = yylloc.last_column;
+    yylloc.last_column += 6;
     return LOREM;
   } else {
-    if( emmet_text[strlen(emmet_text) - 1] == '+' ) {
+    if( yytext[strlen(yytext) - 1] == '+' ) {
       unput( "+" );
-      emmet_text = strndup( emmet_text, (strlen( emmet_text ) - 1) );
+      yytext = strndup( yytext, (strlen( yytext ) - 1) );
     }
-    emmet_lval    = strdup( emmet_get_item_name( emmet_text ) );
-    emmet_begpos  = emmet_endpos;
-    emmet_endpos += strlen( emmet_text );
+    yylval.text          = strdup( emmet_get_item_name( yytext ) );
+    yylloc.first_column  = yylloc.last_column;
+    yylloc.last_column  += strlen( yytext );
     return IDENTIFIER;
   }
 }
 
 [1-9][0-9]*(\.[0-9]+)? {
-  emmet_lval    = strdup( emmet_text );
-  emmet_begpos  = emmet_endpos;
-  emmet_endpos += strlen( emmet_text );
+  yylval.text    = strdup( yytext );
+  yylloc.first_column  = yylloc.last_column;
+  yylloc.last_column += strlen( yytext );
   return NUMBER;
 }
 
 \> {
-  emmet_lval   = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos = emmet_endpos + 1;
+  yylval.text   = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column = yylloc.last_column + 1;
   return CHILD;
 }
 
 \+ {
-  emmet_lval   = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos++;
+  yylval.text   = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column++;
   return SIBLING;
 }
 
 \^+ {
-  emmet_lval    = strdup( emmet_text );
-  emmet_begpos  = emmet_endpos;
-  emmet_endpos += strlen( emmet_text );
+  yylval.text          = strdup( yytext );
+  yylloc.first_column  = yylloc.last_column;
+  yylloc.last_column  += strlen( yytext );
   return CLIMB;
 }
 
 \( {
-  emmet_lval   = [llength [$::emmet_dom children root]]
-  emmet_begpos = emmet_endpos;
-  emmet_endpos++;
+  yylval.text   = [llength [$::emmet_dom children root]]
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column++;
   return OPEN_GROUP;
 }
 
 \) {
-  emmet_lval   = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos++;
+  yylval.text   = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column++;
   return CLOSE_GROUP;
 }
 
 \* {
-  emmet_lval   = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos++;
+  yylval.text   = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column++;
   return MULTIPLY;
 }
 
 \[ {
-  emmet_lval = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos++;
+  yylval.text = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column++;
   return OPEN_ATTR;
 }
 
 \] {
-  emmet_lval   = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos++;
+  yylval.text   = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column++;
   return CLOSE_ATTR;
 }
 
 \{.+\} {
-  emmet_lval  = strdup( emmet_get_item_name( emmet_get_matching( emmet_text, '{', '}' ) ) );
-  set ::emmet_begpos $::emmet_endpos
-  incr ::emmet_endpos [string length $emmet_text]
+  yylval.text  = strdup( emmet_get_item_name( emmet_get_matching( yytext, '{', '}' ) ) );
+  yylloc.first_column $::yylloc.last_column
+  yylloc.last_column += strlen( yylval.text ) length $yytext]
   return TEXT;
 }
 
 '.*' {
-  emmet_lval    = strdup( emmet_get_item_name( emmet_get_matching( emmet_text, '\'', '\'' ) ) );
-  emmet_begpos  = emmet_endpos;
-  emmet_endpos += strlen( emmet_text );
+  yylval.text    = strdup( emmet_get_item_name( emmet_get_matching( yytext, '\'', '\'' ) ) );
+  yylloc.first_column  = yylloc.last_column;
+  yylloc.last_column += strlen( yytext );
   return VALUE;
 }
 
 \".*\" {
-  emmet_lval    = strdup( emmet_get_item_name( emmet_get_matching( emmet_text, '"', '"' ) ) );
-  emmet_begpos  = emmet_endpos;
-  emmet_endpos += strlen( emmet_text );
+  yylval.text    = strdup( emmet_get_item_name( emmet_get_matching( yytext, '"', '"' ) ) );
+  yylloc.first_column  = yylloc.last_column;
+  yylloc.last_column += strlen( yytext );
   return VALUE;
 }
 
 \$# {
-  emmet_lval    = strpcy( emmet_get_item_name( emmet_text ) );
-  emmet_begpos  = emmet_endpos;
-  emmet_endpos += strlen( emmet_text );
+  yylval.text    = strpcy( emmet_get_item_name( yytext ) );
+  yylloc.first_column  = yylloc.last_column;
+  yylloc.last_column += strlen( yytext );
   return VALUE;
 }
 
 = {
-  emmet_lval   = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos = emmet_endpos + 1;
+  yylval.text   = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column = yylloc.last_column + 1;
   return ASSIGN;
 }
 
 # {
-  emmet_lval   = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos = emmet_endpos + 1;
+  yylval.text   = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column = yylloc.last_column + 1;
   return ID;
 }
 
 \. {
-  emmet_lval   = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emmet_endpos = emmet_endpos + 1;
+  yylval.text   = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column = yylloc.last_column + 1;
   return CLASS;
 }
 
 . {
-  emmet_lval = strdup( emmet_text );
-  emmet_begpos = emmet_endpos;
-  emment_endpos += strlen( emmet_text );
-  return $emmet_text;
+  yylval.text = strdup( yytext );
+  yylloc.first_column = yylloc.last_column;
+  yylloc.last_column += strlen( yytext );
+  return yytext;
 }
 
 %%

@@ -1,46 +1,163 @@
 %{
-# TKE - Advanced Programmer's Editor
-# Copyright (C) 2014-2019  Trevor Williams (phase1geo@gmail.com)
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-######################################################################
-# Name:    snip_parser.tac
-# Author:  Trevor Williams  (phase1geo@gmail.com)
-# Date:    8/10/2015
-# Brief:   Parser for snippet syntax.
-######################################################################
+  /*
+   Name:    snip_parser.tac
+   Author:  Trevor Williams  (phase1geo@gmail.com)
+   Date:    8/10/2015
+   Brief:   Parser for snippet syntax.
+  */
 
-source [file join $::tke_dir lib emmet_lexer.tcl]
+  #include "emmet_lexer.h"
 
-package require struct
+  char*  emmet_value;
+  char*  emmet_errmsg;
+  char*  emmet_errstr;
+  int    emmet_shift_width = 2;
+  int    emmet_item_id     = 0;
+  int    emmet_max         = 1;
+  int    emmet_multi       = 0;
+  int    emmet_curr        = 0;
+  int    emmet_start       = 1;
+  char*  emmet_prespace;
+  char*  emmet_wrap_str;
+  char** emmet_wrap_strs;
+  char** emmet_filters;
 
-set emmet_value       ""
-set emmet_errmsg      ""
-set emmet_errstr      ""
-set emmet_shift_width 2
-set emmet_item_id     0
-set emmet_max         1
-set emmet_multi       0
-set emmet_curr        0
-set emmet_start       1
-set emmet_prespace    ""
-set emmet_wrap_str    ""
-set emmet_wrap_strs   [list]
-set emmet_filters     [list]   ;# TBD - We need to add Emmet filter support
+  struct tree_attr {
+    char* key;
+    char* value;
+  };
 
+  struct tree_attrs {
+    tree_attr** attrs;
+    int         size;
+    int         num;
+  };
+
+  /* Creates a new tree attribute list and returns it to the calling function */
+  tree_attrs* tree_attrs_create() {
+    tree_attrs* attrs = malloc( sizeof( tree_attrs ) );
+    attrs->attrs[i]
+    return( attrs );
+  }
+
+  /* Destroys the given tree attribute list */
+  void tree_attrs_destroy( tree_attrs* attrs ) {
+    for( int i=0; i<attrs->num; i++ ) {
+      free( attrs->attrs[i]->key );
+      free( attrs->attrs[i]->value );
+      free( attrs->attrs[i] );
+    }
+    free( attrs );
+  }
+
+  /* Sets the given attribute */
+  void tree_attrs_set( tree_attrs* attrs, char* key, char* value ) {
+    for( int i=0; i<attrs->num; i++ ) {
+      if( strcmp( attrs->attrs[i]->key, key ) == 0 ) {
+        free( attrs->attrs[i]->value );
+        attrs->attrs[i]->value = strdup( value );
+        return;
+      }
+    }
+    if( (attrs->num + 1) > attrs->size ) {
+      tree_attr** tmp = malloc( sizeof( tree_attr* ) * (attrs->size * 2) );
+      for( int i=0; i<attrs->num; i++ ) {
+        tmp[i] = attrs->attrs[i];
+      }
+      free( attrs->attrs );
+      attrs->attrs  = tmp;
+      attrs->size  *= 2;
+      attrs->attrs[attrs->num] = malloc( sizeof( tree_attr ) );
+      attrs->attrs[attrs->num]->key   = strdup( key );
+      attrs->attrs[attrs->num]->value = strdup( value );
+      attrs->num++;
+    }
+  }
+
+  /*
+   Returns the stored attribute value for the given key.  If the key could not
+   be found, returns 0.
+  */
+  char* tree_attrs_get( tree_attrs* attrs, char* key ) {
+    for( int i=0; i<attrs->num; i++ ) {
+      if( strcmp( attrs->attrs[i]->key, key ) == 0 ) {
+        return( attrs->attrs[i]->value );
+      }
+    }
+    return( 0 );
+  }
+
+  struct tree_node {
+    tree_node*  parent;
+    tree_attrs* attrs;
+    int         size;
+    int         num_children;
+    tree_node** children;
+  };
+
+  tree_node* emmet_dom  = 0;
+  tree_node* emmet_elab = 0;
+
+  /* Creates a new node */
+  tree_node* tree_node_create() {
+    tree_node* node = malloc( sizeof( tree_node ) );
+    node->parent       = 0;
+    node->attrs        = tree_attrs_create();
+    node->size         = 1;
+    node->num_children = 0;
+    node->children     = malloc( sizeof( tree_node* ) );
+    return( node );
+  }
+
+  /* Deallocates the given tree node */
+  void tree_node_destroy( tree_node* node ) {
+    if( node->num_children > 0 ) {
+      for( int i=0; i<node->num_children; i++ ) {
+        tree_node_destroy( node->children[i] );
+      }
+      free( node->children );
+    }
+    tree_attrs_destroy( node->attrs );
+    free( node );
+  }
+
+  /* Inserts the given node into the parent at the given index */
+  void tree_node_insert( tree_node* parent, int index, tree_node* node ) {
+    tree_node** children = parent->children;
+    if( (parent->num_children + 1) > parent->size ) {
+      children = malloc( sizeof( tree_node* ) * (parent->size * 2) );
+      parent->size *= 2;
+    }
+    if( index == -1 ) {
+      children[parent->num_children++] = node;
+    } else {
+      for( int i=(parent->num_children - 1), j=parent->num_children; i>=0; i-- ) {
+        children[j--] = (i == index) ? node : parent->children[i];
+      }
+    }
+    parent->children = children;
+    parent->num_children++;
+  }
+
+  /* Removes the given node from the parent */
+  void tree_node_remove( tree_node* parent, tree_node* node ) {
+    int num_children = parent->num_children;
+    for( int i=0, j=0; i<num_children; i++ ) {
+      if( node != parent->children[i] ) {
+        parent->children[j++] = parent->children[i];
+        parent->num_children--;
+      }
+    }
+  }
+
+  /* Moves a node */
+  void tree_node_move( tree_node* parent, int index, tree_node* node ) {
+    tree_node_remove( node->parent, node );
+    tree_node_insert( parent, index, node );
+  }
+
+  /*
 array set emmet_ml_lookup {
 
   # HTML
@@ -243,13 +360,9 @@ array set emmet_inlined {
   u       1
   var     1
 }
+  */
 
-proc emmet_is_curr {tree node} {
-
-  return [$tree keyexists $node curr]
-
-}
-
+  /* TBD
 proc emmet_gen_str {format_str values} {
 
   set vals [list]
@@ -450,7 +563,7 @@ proc emmet_generate {tree node action} {
 
 }
 
-proc emmet_generate_html {} {
+char* emmet_generate_html() {
 
   # Perform the elaboration
   $::emmet_dom walkproc root -order pre -type dfs emmet_elaborate
@@ -477,24 +590,37 @@ proc emmet_generate_html {} {
   return $str
 
 }
+  */
 
 %}
 
-%token IDENTIFIER NUMBER CHILD SIBLING CLIMB OPEN_GROUP CLOSE_GROUP MULTIPLY
+%union {
+  int        integer;
+  char*      text;
+  tree_node* node;
+};
+
+%token <text>    IDENTIFIER NUMBER CHILD SIBLING CLIMB OPEN_GROUP CLOSE_GROUP MULTIPLY
+%token <node>    expression
+%token <node>    item
+%token <integer> multiply_opt number_opt
+%token <attr>    attr_item attr_items
+%token <attr>    attrs attr attrs_opt
 %token OPEN_ATTR CLOSE_ATTR ASSIGN ID CLASS VALUE TEXT LOREM
+%token SIBLING
 
 %%
 
 main: expression {
-        set ::emmet_value [emmet_generate_html]
+        emmet_value = emmet_generate_html();
       }
     ;
 
 expression: item {
-              set _ $1
+              $$ = $1;
             }
           | expression CHILD item {
-              $::emmet_dom move $1 end $3
+              tree_node_move( $1, -1, $3 );
               if {[$::emmet_dom keyexists $3 name] && ([$::emmet_dom get $3 name] eq "")} {
                 switch [lindex [$::emmet_dom get $1 name] 0] {
                   em       { $::emmet_dom set $3 name [list "span" {}] }
@@ -510,154 +636,163 @@ expression: item {
                   default  { $::emmet_dom set $3 name [list "div" {}] }
                 }
               }
-              set _ $3
+              $$ = $3;
             }
           | expression SIBLING item {
-              $::emmet_dom move [$::emmet_dom parent $1] end $3
-              set _ $3
+              node_tree_move( $1->parent, -1, $3 );
+              $$ = $3;
             }
           | expression CLIMB item {
-              set ancestors [$::emmet_dom ancestors $1]
-              set parent    [lindex $ancestors [string length $2]]
-              $::emmet_dom move $parent end $3
-              set _ $3
+              tree_node* parent = $1->parent;
+              for( int i=1; i<strlen( $2 ); i++ ) {
+                parent = parent->parent;
+              }
+              node_tree_move( parent, -1, $3 );
+              $$ = $3;
             }
           ;
 
 item: IDENTIFIER attrs_opt multiply_opt {
-        set node [$::emmet_dom insert root end]
-        $::emmet_dom set $node type "ident"
-        $::emmet_dom set $node name $1
+        tree_node* node = tree_node_create();
+        tree_node_insert( emmet_dom, -1, node );
+        tree_attrs_set( node->attrs, "type", "ident" );
+        tree_attrs_set( node->attrs, "name", $1 );
         foreach {attr_name attr_val} $2 {
           $::emmet_dom lappend $node attr,$attr_name $attr_val
         }
-        $::emmet_dom set $node multiplier $3
-        set _ $node
+        tree_attrs_set( node->attrs, "multiplier", $3 );
+        $$ = node;
       }
     | IDENTIFIER attrs_opt TEXT multiply_opt {
-        set node [$::emmet_dom insert root end]
-        $::emmet_dom set $node type  "ident"
-        $::emmet_dom set $node name  $1
-        $::emmet_dom set $node value $3
+        tree_node* node = tree_node_create();
+        tree_node_insert( emmet_dom, -1, node );
+        tree_attrs_set( node->attrs, "type", "ident" );
+        tree_attrs_set( node->attrs, "name", $1 );
+        tree_attrs_set( node->attrs, "value", $3 );
         foreach {attr_name attr_val} $2 {
           $::emmet_dom lappend $node attr,$attr_name $attr_val
         }
-        $::emmet_dom set $node multiplier $4
-        set _ $node
+        tree_attrs_set( node->attrs, "multiplier", $4 );
+        $$ = node;
       }
     | attrs multiply_opt {
-        set node [$::emmet_dom insert root end]
-        $::emmet_dom set $node type "ident"
-        $::emmet_dom set $node name ""
+        tree_node* node = tree_node_create();
+        tree_node_insert( emmet_dom, -1, node );
+        tree_attrs_set( node->attrs, "type", "ident" );
+        tree_attrs_set( node->attrs, "name", "" );
         foreach {attr_name attr_val} $1 {
           $::emmet_dom lappend $node "attr,$attr_name" $attr_val
         }
-        $::emmet_dom set $node multiplier $2
-        set _ $node
+        tree_attrs_set( node->attrs, "multiplier", $2 );
+        $$ = node;
       }
     | TEXT multiply_opt {
-        set node [$::emmet_dom insert root end]
-        $::emmet_dom set $node type       "text"
-        $::emmet_dom set $node value      $1
-        $::emmet_dom set $node multiplier $2
-        set _ $node
+        tree_node* node = tree_node_create();
+        tree_node_insert( emmet_dom, -1, node );
+        tree_attrs_set( node->attrs, "type", "text" );
+        tree_attrs_set( node->attrs, "value", $1 );
+        tree_attrs_set( node->attrs, "multiplier", $2 );
+        $$ = node;
       }
     | LOREM number_opt attrs_opt multiply_opt {
-        set node [$::emmet_dom insert root end]
-        $::emmet_dom set $node type       "ident"
-        $::emmet_dom set $node name       ""
-        $::emmet_dom set $node lorem      $2
+        tree_node* node = tree_node_create();
+        tree_node_insert( emmet_dom, -1, node );
+        tree_attrs_set( node, "type", "ident" );
+        tree_attrs_set( node, "name", "" );
+        tree_attrs_set( node, "lorem", $2 );
         foreach {attr_name attr_val} $3 {
           $::emmet_dom lappend $node "attr,$attr_name" $attr_val
         }
-        $::emmet_dom set $node multiplier $4
-        set _ $node
+        tree_attrs_set( node->attrs, "multiplier", $4 );
+        $$ = node;
       }
     | OPEN_GROUP expression CLOSE_GROUP multiply_opt {
-        set node [$::emmet_dom insert root end]
-        $::emmet_dom set $node type       "group"
-        $::emmet_dom set $node multiplier $4
-        $::emmet_dom move $node end {*}[lrange [$::emmet_dom children root] $1 end-1]
-        set _ $node
+        tree_node* node = tree_node_create();
+        tree_node_insert( emmet_dom, -1, node );
+        tree_attrs_set( node, "type", "group" );
+        tree_attrs_set( node->attrs, "multiplier", $4 );
+        for( int i=$1; i<(emmet_dom->num_children - 1); i++ ) {
+          tree_node_move( node, -1, emmet_dom->children[i] );
+        }
+        $$ = node;
       }
     ;
 
 multiply_opt: MULTIPLY NUMBER {
-                set _ $2
+                $$ = $2;
               }
             | MULTIPLY {
-                set _ 0
+                $$ = 0;
               }
             | {
-                set _ 1
+                $$ = 1;
               }
             ;
 
 attr_item: IDENTIFIER ASSIGN VALUE {
-             set _ [list $1 $3]
+             $$ = [list $1 $3];
            }
          | IDENTIFIER ASSIGN NUMBER {
-             set _ [list $1 [list $3 {}]]
+             $$ = [list $1 [list $3 {}]];
            }
          | IDENTIFIER ASSIGN IDENTIFIER {
-             set _ [list $1 $3]
+             $$ = [list $1 $3];
            }
          | IDENTIFIER {
-             set _ [list $1 [list {} {}]]
+             $$ = [list $1 [list {} {}]];
            }
          ;
 
 attr_items: attr_item {
-              set _ $1
+              $$ = $1;
             }
           | attr_items attr_item {
-              set _ [concat $1 $2]
+              $$ = [concat $1 $2];
             }
           ;
 
 attr: OPEN_ATTR attr_items CLOSE_ATTR {
-        set _ $2
+        $$ = $2;
       }
     | ID IDENTIFIER {
-        set _ [list [list id {}] $2]
+        $$ = [list [list id {}] $2];
       }
     | CLASS IDENTIFIER {
-        set _ [list [list class {}] $2]
+        $$ = [list [list class {}] $2];
       }
     ;
 
 attrs: attr {
-         set _ $1
+         $$ = $1;
        }
      | attrs attr {
-         set _ [concat $2 $1]
+         $$ = [concat $2 $1];
        }
      ;
 
 attrs_opt: attrs {
-             set _ $1
+             $$ = $1;
            }
          | {
-             set _ [list]
+             $$ = [list];
            }
          ;
 
 number_opt: NUMBER {
-              set _ $1
+              $$ = atoi( $1 );
             }
           | {
-              set _ 30
+              $$ = 30;
             }
           ;
 
 %%
 
-rename emmet_error emmet_error_orig
+  /*
+void emmet_error( char* s ) {
 
-proc emmet_error {s} {
-
-  set ::emmet_errstr "[string repeat { } $::emmet_begpos]^"
-  set ::emmet_errmsg $s
+  emmet_errstr = "[string repeat { } $::emmet_begpos]^"
+  emmet_errmsg = strdup( s );
 
 }
 
@@ -684,7 +819,7 @@ proc emmet_condition_abbr {str wrap_str} {
 
 }
 
-proc parse_emmet {str {prespace ""} {wrap_str ""}} {
+char* parse_emmet( char* str, char* prespace, char* wrap_str ) {
 
   # Check to see if the trim filter was specified
   set str [emmet_condition_abbr $str $wrap_str]
@@ -696,9 +831,9 @@ proc parse_emmet {str {prespace ""} {wrap_str ""}} {
   emmet__scan_string $str
 
   # Initialize some values
-  set ::emmet_begpos    0
-  set ::emmet_endpos    0
-  set ::emmet_prespace  $prespace
+  yylloc.first_column = 0;
+  yylloc.last_column  = 0;
+  emmet_prespace      = strdup( prespace );
 
   # Condition the wrap strings
   set ::emmet_wrap_str  [string trim $wrap_str]
@@ -708,24 +843,25 @@ proc parse_emmet {str {prespace ""} {wrap_str ""}} {
   }
 
   # Create the trees
-  set ::emmet_dom  [::struct::tree]
-  set ::emmet_elab [::struct::tree]
+  emmet_dom  = tree_node_create();
+  emmet_elab = tree_node_create();
 
   # Parse the string
   if {[catch { emmet_parse } rc] || ($rc != 0)} {
 
     # Destroy the trees
-    $::emmet_dom  destroy
-    $::emmet_elab destroy
+    tree_node_destroy( emmet_dom );
+    tree_node_destroy( emmet_elab );
 
     return -code error $rc
 
   }
 
   # Destroy the trees
-  $::emmet_dom  destroy
-  $::emmet_elab destroy
+  tree_node_destroy( emmet_dom );
+  tree_node_destroy( emmet_elab );
 
-  return $::emmet_value
+  return( emmet_value );
 
 }
+  */
