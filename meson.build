@@ -32,6 +32,9 @@ subdir('data')
 subdir('po')
 subdir('src')
 
+sources += lfiles
+sources += pfiles
+
 # If the GTK version is higher than 3.22, add a define to indicate that
 gtk_dep = dependency('gtk+-3.0')
 if gtk_dep.version().version_compare('>=3.22.0')

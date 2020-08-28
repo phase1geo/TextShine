@@ -22,4 +22,4 @@ sources += files(
     'Utils.vala'
 )
 
-# subdir('emmet')
+subdir('emmet')

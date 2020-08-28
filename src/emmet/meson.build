@@ -13,17 +13,19 @@ if not bison.found()
   error('MESON_SKIP_TEST bison not found.')
 endif
 
-lgen = generator(flex,
-output : '@PLAINNAME@.yy.c',
-arguments : ['-o', '@OUTPUT@', '@INPUT@'])
+lgen = generator(
+    flex,
+    output : '@PLAINNAME@.yy.c',
+    arguments : ['-o', '@OUTPUT@', '@INPUT@']
+    )
 
 lfiles = lgen.process('emmet_lexer.l')
 
-pgen = generator(bison,
-output : ['@BASENAME@.tab.c', '@BASENAME@.tab.h'],
-arguments : ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@'])
+pgen = generator(
+    bison,
+    output : ['@BASENAME@.tab.c', '@BASENAME@.tab.h'],
+    arguments : ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@']
+    )
 
 pfiles = pgen.process('emmet_parser.y')
 
-e = executable('pgen', 'prog.c',
-lfiles, pfiles)
