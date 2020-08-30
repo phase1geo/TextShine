@@ -24,7 +24,7 @@ function initialize {
 }
 
 function test {
-    initialize
+    initialize 0
 
     export DISPLAY=:0
     ./com.github.phase1geo.textshine --run-tests
@@ -46,14 +46,14 @@ case $1 in
     sudo rm -rf ./build
     ;;
 "generate-i18n")
-    initialize
+    initialize 0
     ninja com.github.phase1geo.textshine-pot
     ninja com.github.phase1geo.textshine-update-po
     ninja extra-pot
     ninja extra-update-po
     ;;
 "install")
-    initialize
+    initialize 0
     sudo ninja install
     ;;
 "install-deps")
@@ -72,12 +72,29 @@ case $1 in
     
     $command
     ;;
+"emmet-true")
+    cd build
+    meson configure -Demmet=true
+    ;;
+"emmet-false")
+    cd build
+    meson configure -Demmet=false
+    ;;
 "run")
-    initialize
+    initialize 0
+    ./com.github.phase1geo.textshine "${@:2}"
+    ;;
+"run-emmet")
+    initialize 1
     ./com.github.phase1geo.textshine "${@:2}"
     ;;
 "debug")
-    initialize
+    initialize 0
+    # G_DEBUG=fatal-criticals gdb --args ./com.github.phase1geo.textshine "${@:2}"
+    gdb --args ./com.github.phase1geo.textshine "${@:2}"
+    ;;
+"debug-emmet")
+    initialize 1
     # G_DEBUG=fatal-criticals gdb --args ./com.github.phase1geo.textshine "${@:2}"
     gdb --args ./com.github.phase1geo.textshine "${@:2}"
     ;;
@@ -89,7 +106,7 @@ case $1 in
     ./com.github.phase1geo.textshine "${@:2}"
     ;;
 "uninstall")
-    initialize
+    initialize 0
     sudo ninja uninstall
     ;;
 *)
@@ -99,6 +116,7 @@ case $1 in
     echo "Options:"
     echo "  clean             Removes build directories (can require sudo)"
     echo "  generate-i18n     Generates .pot and .po files for i18n (multi-language support)"
+    echo "  emmet-<bool>      Sets the Emmet build mode to true or false"
     echo "  install           Builds and installs application to the system (requires sudo)"
     echo "  install-deps      Installs missing build dependencies"
     echo "  run               Builds and runs the application"
