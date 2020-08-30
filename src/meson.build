@@ -1,4 +1,5 @@
 sources += files(
+
     'functions/CaseCamel.vala',
     'functions/CaseLower.vala',
     'functions/CaseSentence.vala',
@@ -22,4 +23,9 @@ sources += files(
     'Utils.vala'
 )
 
-subdir('emmet')
+if get_option('emmet')
+  sources += files(
+    'emmet/emmet_helper.vala',
+  )
+  subdir('emmet')
+endif

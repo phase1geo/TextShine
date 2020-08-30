@@ -32,8 +32,10 @@ subdir('data')
 subdir('po')
 subdir('src')
 
-sources += lfiles
-sources += pfiles
+if get_option('emmet')
+  sources += lfiles
+  sources += pfiles
+endif
 
 # If the GTK version is higher than 3.22, add a define to indicate that
 gtk_dep = dependency('gtk+-3.0')

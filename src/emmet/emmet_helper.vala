@@ -1,5 +1,7 @@
 using Gee;
 
+delegate int ItemValueExpr( int i );
+
 public class EmmetMLLookupValue {
   public string                 ename  { private set; get; }
   public int                    tagnum { private set; get; }
@@ -19,11 +21,54 @@ public class EmmetMLLookupValue {
   }
 }
 
+public class EmmetItemValue {
+  protected string str;
+  public EmmetItemValue( string s ) {
+    str = s;
+  }
+  public virtual string evaluate() {
+    return( str );
+  }
+}
+
+public class EmmetItemValueExpr : EmmetItemValue {
+  delegate int IntValue( int num );
+  private IntValue expr;
+  private int      parm;
+  public EmmetItemValueExpr( string s, IntValue iv, int p ) {
+    str  = s;
+    expr = iv;
+    parm = p;
+  }
+  public override string evaluate() {
+    return( str.printf( expr( parm ) ) );
+  }
+}
+
+public class EmmetItemName {
+  public Array<EmmetItemValue> values;
+  public EmmetItemName() {
+    values = new Array<EmmetItemName>();
+  }
+  public void append( EmmetItemValue val ) {
+    values.append_val( val );
+  }
+  public string evaluate() {
+    var value = "";
+    for( int i=0; i<values.length; i++ ) {
+      value += values.index( i ).evaluate();
+    }
+    return( value );
+  }
+}
+
 public class EmmetTreeNode {
+  public EmmetItemName        name     { private set; get; }
   public EmmetTreeNode?       parent   { private set; get; }
   public Array<EmmetTreeAttr> attrs    { private set; get; }
   public Array<EmmetTreeNode> children { private set; get; }
   public EmmetTreeNode() {
+    name     = new EmmetItemName();
     parent   = null;
     attrs    = new Array<EmmetTreeAttr>();
     children = new Array<EmmetTreeNode>();
@@ -74,8 +119,7 @@ public class EmmetHelper {
   private Regex                              name1_re;
   private Regex                              name2_re;
   private Regex                              lipsum_re;
-  private Regex                              html_re;
-
+  private Regex                              abbr_re;
 
   public EmmetHelper() {
 
@@ -89,8 +133,17 @@ public class EmmetHelper {
       name1_re  = new Regex( "^$#" );
       name2_re  = new Regex( "^($+)(@(-)?(\\d*))?" );
       lipsum_re = new Regex( "<lipsum>(.*)</lipsum>" );
+      abbr_re   = new Regex( "^(.*)\\|(haml|html|e|c|xsl|s|t)$" );
     } catch( Regex.Error e ) {}
 
+  }
+
+  int item_value1( int num ) {
+    return( (emmet_max - emmet_curr) + num );
+  }
+
+  int item_value2( int num ) {
+    return( emmet_curr + num );
   }
 
   /* Initializes the block aliases array */
@@ -352,68 +405,59 @@ public class EmmetHelper {
   }
 
   /* Returns the item name for the given string and values array */
-  public void emmet_get_item_name( string str, out string formatted_str, out Array<string> values ) {
+  public void emmet_get_item_name( string str, out EmmetItemName item_name ) {
 
-    int index = str.index_of( "$" );
+    var index = str.index_of( "$" );
+    var s     = str;
 
-    formatted_str = ""
-    values        = new Array<string>();
+    item_name = new EmmetItemName();
 
     while( index != -1 ) {
 
       MatchInfo match;
 
-      formatted_str += str.slice( 0, (index - 1) );
+      item_name.append( new EmmetItemValue( s.slice( 0, (index - 1 ) ) ) );
 
-      if( name1_re.match( str.substring( index ), 0, out match ) ) {
-        formatted_str += "%s";
-        values.append_val( emmet_get_item_value() );
+      if( name1_re.match( s.substring( index ), 0, out match ) ) {
+        item_name.append( new EmmetItemValue( emmet_get_item_value() ) );
 
-      } else if( name2_re.match( str.substring( index ), 0, out match ) ) {
+      } else if( name2_re.match( s.substring( index ), 0, out match ) ) {
         if( match.fetch( 2 ) != "" ) {
-          formatted_str += "%%0%dd".printf( match.fetch( 1 ).char_count() );
+          string format = "%%0%dd".printf( match.fetch( 1 ).char_count() );
           if( match.fetch( 3 ) != "" ) {
             if( match.fetch( 4 ) != "" ) {
-              values.append_val( [list expr (\$::emmet_max - \$::emmet_curr) + ($start - 1)] );
+              item_name.append( new EmmetItemValueExpr( format, item_value1, (start - 1) ) );
             } else {
-              values.append_val( [list expr \$::emmet_max - \$::emmet_curr] );
+              item_name.append( new EmmetItemValueExpr( format, item_value1, 0 ) );
             }
           } else {
             if( match.fetch( 4 ) != "" ) {
-              values.append_val( [list expr \$::emmet_curr + $start] );
+              item_name.append( new EmmetItemValueExpr( format, item_value2, start ) );
             } else {
-              values.append_val( [list expr \$::emmet_curr + 1] );
+              item_name.append( new EmmetItemValueExpr( format, item_value2, 1 ) );
             }
           }
         } else {
-          formatted_str += "%%0%dd".printf( numbering.length );
-          values.append_val( [list expr \$::emmet_curr + 1] );
+          string format = "%%0%dd".printf( numbering.length );
+          item_name.append( new EmmetItemValueExpr( format, item_value2, 1 ) );
         }
 
       } else {
-        return -code error "Unknown item name format (%s)".printf( str.substring( index ) );
+        throw( "Unknown item name format (%s)".printf( s.substring( index ) ) );
       }
 
-      str   = str.substring( str.index_of_nth_char( index + match.length ) );
-      index = str.index_of( str );
+      s     = s.substring( s.index_of_nth_char( index + match.length ) );
+      index = s.index_of( "$" );
     }
 
-    formatted_str += str;
-
-    return [list $formatted_str $values]
+    item_name.append( new EmmetItemValue( s ) );
 
   }
 
   /* Generates the string equivalen of the values array */
-  public string emmet_gen_str( TreeNodeName name ) { // string format_str, Array<string> values ) {
+  public string emmet_gen_str( EmmetItemName name ) {
 
-    var vals = new Array<string>();
-
-    for( int i=0; i<values.length; i++ ) {
-      vals.append_val( ?exec? name.values.index( i ) );
-    }
-
-    return [format $format_str {*}$vals]
+    return( name.evaluate() );
 
   }
 
@@ -486,9 +530,9 @@ public class EmmetHelper {
         if( type == "ident" ) {
 
           // If we have an implictly specified type that hasn't been handled yet, it will be a div
-          var name = node.get_attr_name( "name" );
+          var name = node.name;
           if( name == null ) {
-            name = new TreeNodeName( "div" );
+            name = new EmmetItemName( "div" );
           }
 
           // Calculate the node name
@@ -510,7 +554,7 @@ public class EmmetHelper {
           }
 
           // Set the node name and tag number
-          enode.set_attr_string( "name", ename );
+          enode.name = ename;  // set_attr_string( "name", ename );
           enode.set_attr_int( "tagnum", tagnum );
 
           // Generate the attributes
@@ -578,7 +622,7 @@ public class EmmetHelper {
     // Otherwise, insert our information along with the children in the proper order
     switch( node.get_attr_string( "type" ) ) {
       case "indent" :
-        var name     = node.get_attr_name( "name" );
+        var name     = node.name;
         var tagnum   = node.get_attr_int( "tagnum" );
         var attr_str = "";
         var value    = node.get_attr_string( "value" );
@@ -648,6 +692,40 @@ public class EmmetHelper {
     }
 
     return( str );
+
+  }
+
+  /* Handles abbreviation filtering */
+  public string emmet_condition_abbr( string str, string? wrap_str ) {
+
+    MatchInfo match;
+    var       s = str;
+
+    emmet_filters = new Array<string>();
+    while( abbr_re.match( s, 0, out match ) ) {
+      s      = match.fetch( 1 );
+      emmet_filters.prepend_val( match.fetch( 2 ) );
+    }
+
+    // If we have a wrap string and the abbreviation lacks the $# indicator, add it
+    if( wrap_str != null ) {
+      if( str.index_of( "$#" ) == -1 ) {
+        str += ">{$#}";
+      }
+    }
+
+    return( str );
+
+  }
+
+  /* Conditions the wrap string and stores it locally */
+  public void emmet_condition_wrap_strs( string wrap_str ) {
+
+    emmet_wrap_str = wrap_str.trim();
+
+    foreach( string line in emmet_wrap_str.trim().split( "\n" ) ) {
+      emmet_wrap_strs.append_val( line.trim() );
+    }
 
   }
 
