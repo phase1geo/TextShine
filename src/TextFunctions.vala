@@ -47,6 +47,7 @@ public class TextFunctions {
     sw.add( vp );
 
     /* Add widgets to box */
+    cbox.pack_start( create_custom( editor ),         false, false, 5 );
     cbox.pack_start( create_case( editor ),           false, false, 5 );
     cbox.pack_start( create_remove( editor ),         false, false, 5 );
     cbox.pack_start( create_replace( editor ),        false, false, 5 );
@@ -187,6 +188,12 @@ public class TextFunctions {
 
     box.pack_start( ebox, false, false, 0 );
 
+  }
+
+  private Expander create_custom( Editor editor ) {
+    Box box;
+    var exp = create_category( "custom", _( "Custom" ), out box );
+    return( exp );
   }
 
   /* Adds the case changing functions */
