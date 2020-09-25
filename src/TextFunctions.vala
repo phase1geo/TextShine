@@ -48,6 +48,7 @@ public class TextFunctions {
 
     /* Add widgets to box */
     cbox.pack_start( create_case( editor ),           false, false, 5 );
+    cbox.pack_start( create_remove( editor ),         false, false, 5 );
     cbox.pack_start( create_replace( editor ),        false, false, 5 );
     cbox.pack_start( create_sort( editor ),           false, false, 5 );
     cbox.pack_start( create_indent( editor ),         false, false, 5 );
@@ -201,6 +202,16 @@ public class TextFunctions {
     return( exp );
   }
 
+  /* Adds string removal functions */
+  private Expander create_remove( Editor editor ) {
+    Box box;
+    var exp = create_category( "remove", _( "Remove" ), out box );
+    add_function( box, editor, new RemoveBlankLines() );
+    add_function( box, editor, new RemoveLineNumbers() );
+    return( exp );
+  }
+
+  /* Add replacement functions */
   private Expander create_replace( Editor editor ) {
     Box box;
     var exp = create_category( "replace", _( "Replace" ), out box );
