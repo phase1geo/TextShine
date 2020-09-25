@@ -21,11 +21,5 @@ sources += files(
     'TextFunction.vala',
     'TextFunctions.vala',
     'Utils.vala'
-)
 
-if get_option('emmet')
-  sources += files(
-    'emmet/emmet_helper.vala',
-  )
-  subdir('emmet')
-endif
+)
