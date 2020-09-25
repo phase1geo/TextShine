@@ -207,6 +207,9 @@ public class TextFunctions {
     Box box;
     var exp = create_category( "remove", _( "Remove" ), out box );
     add_function( box, editor, new RemoveBlankLines() );
+    add_function( box, editor, new RemoveDuplicateLines() );
+    add_function( box, editor, new RemoveLeadingWhitespace() );
+    add_function( box, editor, new RemoveTrailingWhitespace() );
     add_function( box, editor, new RemoveLineNumbers() );
     return( exp );
   }

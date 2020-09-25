@@ -27,13 +27,13 @@ public class RemoveBlankLines : TextFunction {
 
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
-    var str = "";
+    string[] lines = {};
     foreach( string line in original.split( "\n" ) ) {
       if( line.strip() != "" ) {
-        str += line + "\n";
+        lines += line;
       }
     }
-    return( str );
+    return( string.joinv( "\n", lines ) );
   }
 
 }

@@ -6,13 +6,21 @@ sources += files(
     'functions/case/CaseSnake.vala',
     'functions/case/CaseTitle.vala',
     'functions/case/CaseUpper.vala',
+
     'functions/indent/IndentXML.vala',
+
     'functions/match/RegExpr.vala',
+
     'functions/remove/RemoveBlankLines.vala',
+    'functions/remove/RemoveDuplicateLines.vala',
+    'functions/remove/RemoveLeadingWhitespace.vala',
     'functions/remove/RemoveLineNumbers.vala',
+    'functions/remove/RemoveTrailingWhitespace.vala',
+
     'functions/replace/ReplacePeriodsEllipsis.vala',
     'functions/replace/ReplaceTabsSpaces.vala',
     'functions/replace/ReplaceTabsSpaces4.vala',
+
     'functions/sort/SortLines.vala',
     'functions/sort/SortReverseChars.vala',
 

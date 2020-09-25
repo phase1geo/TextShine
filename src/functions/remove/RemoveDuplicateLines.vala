@@ -19,25 +19,21 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class RemoveLineNumbers : TextFunction {
+using Gee;
 
-  private Regex _re;
+public class RemoveDuplicateLines : TextFunction {
 
-  public RemoveLineNumbers() {
-    base( "remove-line-numbers", _( "Remove Line Numbers" ) );
-    try {
-      _re = new Regex( """^\s*\d+[^a-zA-Z_\s]?(.*)$""" );
-    } catch( RegexError e ) {}
+  public RemoveDuplicateLines() {
+    base( "remove-duplicate-lines", _( "Remove Duplicate Lines" ) );
   }
 
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
     string[] lines = {};
+    var unique_lines = new HashMap<string,bool>();
     foreach( string line in original.split( "\n" ) ) {
-      MatchInfo match;
-      if( _re.match( line, 0, out match ) ) {
-        lines += match.fetch( 1 );
-      } else {
+      if( (line.strip() == "") || !unique_lines.has_key( line ) ) {
+        unique_lines.set( line, true );
         lines += line;
       }
     }
