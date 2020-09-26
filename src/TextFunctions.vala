@@ -69,7 +69,7 @@ public class TextFunctions {
   private Box               _box;
 
   /* Constructor */
-  public TextFunctions( Editor editor, Box box ) {
+  public TextFunctions( MainWindow win, Editor editor, Box box ) {
 
     _functions  = new Array<Functions>();
     _categories = new Array<Category>();
@@ -92,13 +92,13 @@ public class TextFunctions {
     sw.add( vp );
 
     /* Add widgets to box */
-    cbox.pack_start( create_custom( editor ),         false, false, 5 );
-    cbox.pack_start( create_case( editor ),           false, false, 5 );
-    cbox.pack_start( create_remove( editor ),         false, false, 5 );
-    cbox.pack_start( create_replace( editor ),        false, false, 5 );
-    cbox.pack_start( create_sort( editor ),           false, false, 5 );
-    cbox.pack_start( create_indent( editor ),         false, false, 5 );
-    cbox.pack_start( create_search_replace( editor ), false, false, 5 );
+    cbox.pack_start( create_custom( editor ),              false, false, 5 );
+    cbox.pack_start( create_case( editor ),                false, false, 5 );
+    cbox.pack_start( create_remove( editor ),              false, false, 5 );
+    cbox.pack_start( create_replace( editor ),             false, false, 5 );
+    cbox.pack_start( create_sort( editor ),                false, false, 5 );
+    cbox.pack_start( create_indent( editor ),              false, false, 5 );
+    cbox.pack_start( create_search_replace( editor, win ), false, false, 5 );
 
     box.pack_start( _search, false, false, 10 );
     box.pack_start( sw,      true,  true,  10 );
@@ -357,10 +357,10 @@ public class TextFunctions {
   }
 
   /* Adds the search and replace functions */
-  private Expander create_search_replace( Editor editor ) {
+  private Expander create_search_replace( Editor editor, MainWindow win ) {
     Box box;
     var exp = create_category( "search-replace", _( "Search and Replace" ), out box );
-    add_function( box, exp, editor, new RegExpr() );
+    add_function( box, exp, editor, new RegExpr( win ) );
     return( exp );
   }
 

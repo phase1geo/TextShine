@@ -20,6 +20,7 @@
 */
 
 using Gtk;
+using Gee;
 
 public class MainWindow : ApplicationWindow {
 
@@ -35,11 +36,16 @@ public class MainWindow : ApplicationWindow {
   private MenuButton    _prop_btn;
   private FontButton    _font;
   private TextFunctions _functions;
+  private Box           _widget_box;
+  private InfoBar       _info;
+  private HashMap<string,Revealer> _widgets;
 
   /* Constructor */
   public MainWindow() {
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
+
+    _widgets = new HashMap<string,Revealer>();
 
     /* Handle any changes to the dark mode preference setting */
     handle_prefer_dark_changes();
@@ -58,10 +64,23 @@ public class MainWindow : ApplicationWindow {
     sw.min_content_height = 400;
     sw.add( _editor );
 
+    var ebox = new Box( Orientation.VERTICAL, 0 );
+
+    /* Create widget bar */
+    _widget_box = new Box( Orientation.VERTICAL, 0 );
+
+    _info = new InfoBar();
+    _info.revealed = false;
+    _info.get_content_area().add( new Label( "" ) );
+
+    ebox.pack_start( _widget_box, false, true, 0 );
+    ebox.pack_start( _info,       false, true, 0 );
+    ebox.pack_start( sw,          true,  true, 0 );
+
     /* Create sidebar */
     var sidebar = create_sidebar();
 
-    box.pack_start( sw,      true,  true,  5 );
+    box.pack_start( ebox,    true,  true,  5 );
     box.pack_start( sidebar, false, false, 5 );
 
     add( box );
@@ -216,7 +235,7 @@ public class MainWindow : ApplicationWindow {
 
     var box = new Box( Orientation.VERTICAL, 0 );
 
-    _functions = new TextFunctions( _editor, box );
+    _functions = new TextFunctions( this, _editor, box );
 
     return( box );
 
@@ -242,6 +261,40 @@ public class MainWindow : ApplicationWindow {
   /* Performs a redo operation */
   private void do_redo() {
     // TODO
+  }
+
+  /* Adds the given widget to the widgets box */
+  public void add_widget( string name, Widget w ) {
+
+    var revealer = new Revealer();
+    revealer.add( w );
+    revealer.reveal_child = false;
+    revealer.border_width = 5;
+
+    _widget_box.pack_start( revealer, false, true, 0 );
+
+    _widgets.@set( name, revealer );
+
+  }
+
+  /* Displays the specified widget */
+  public void show_widget( string name ) {
+    _widgets.values.@foreach((w) => {
+      w.reveal_child = false;
+      return( true );
+    });
+    if( _widgets.has_key( name ) ) {
+      _widgets.@get( name ).reveal_child = true;
+    }
+  }
+
+  /* Displays the given error message */
+  public void show_error( string msg ) {
+    var lbl = (Label)_info.get_content_area().get_children().nth_data( 0 );
+    lbl.label = msg;
+    _info.message_type      = MessageType.ERROR;
+    _info.show_close_button = true;
+    _info.revealed          = true;
   }
 
 }
