@@ -75,7 +75,7 @@ public class Editor : SourceView {
   }
 
   /*
-   Returns the cursor position relative to the selected text.  If the cursor
+   Returns the cursor position relative to the selected text.  If the cursorcr
    position is outside of the selected text range, return -1.
   */
   public int get_cursor_pos() {
@@ -96,6 +96,22 @@ public class Editor : SourceView {
       buffer.delete( ref start, ref end );
       buffer.insert( ref start, text, text.length );
     }
+  }
+
+  /* Adds a new tag by the given name */
+  public void add_tag( string name, TextIter start, TextIter end ) {
+    if( buffer.tag_table.lookup( name ) == null ) {
+      buffer.create_tag( name, "background", "Yellow", null );
+    }
+    buffer.apply_tag_by_name( name, start, end );
+  }
+
+  /* Removes the tag specified by the given name */
+  public void remove_tag( string name ) {
+    TextIter start, end;
+    buffer.get_start_iter( out start );
+    buffer.get_end_iter( out end );
+    buffer.remove_tag_by_name( name, start, end );
   }
 
 }

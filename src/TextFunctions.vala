@@ -156,9 +156,9 @@ public class TextFunctions {
     button.xalign = (float)0;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
+      editor.grab_focus();
       function.launch( editor );
       _undo.append_val( function.get_change() );
-      editor.grab_focus();
     });
 
     var revealer = new Revealer();
@@ -193,9 +193,9 @@ public class TextFunctions {
     button.xalign = (float)0;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
+      editor.grab_focus();
       function.launch( editor );
       _undo.append_val( function.get_change() );
-      editor.grab_focus();
     });
     var direction = new Button.from_icon_name( "object-flip-vertical-symbolic", IconSize.SMALL_TOOLBAR );
     direction.set_tooltip_text( _( "Switch Direction" ) );
@@ -247,9 +247,9 @@ public class TextFunctions {
     button.xalign = (float)0;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
+      editor.grab_focus();
       function.launch( editor );
       _undo.append_val( function.get_change() );
-      editor.grab_focus();
     });
     var change = new Button.from_icon_name( "object-flip-horizontal-symbolic", IconSize.SMALL_TOOLBAR );
     change.set_tooltip_text( _( "Switch Order" ) );
