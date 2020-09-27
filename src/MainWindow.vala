@@ -271,7 +271,7 @@ public class MainWindow : ApplicationWindow {
     revealer.reveal_child = false;
     revealer.border_width = 5;
 
-    _widget_box.pack_start( revealer, false, true, 0 );
+    _widget_box.pack_start( revealer, true, true, 0 );
 
     _widgets.@set( name, revealer );
 
