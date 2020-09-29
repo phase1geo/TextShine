@@ -60,6 +60,7 @@ public class Category {
 
 public class TextFunctions {
 
+  private MainWindow        _win;
   private Array<Functions>  _functions;
   private Array<Category>   _categories;
   private Array<TextChange> _undo;
@@ -70,6 +71,8 @@ public class TextFunctions {
 
   /* Constructor */
   public TextFunctions( MainWindow win, Editor editor, Box box ) {
+
+    _win        = win;
 
     _functions  = new Array<Functions>();
     _categories = new Array<Category>();
@@ -92,13 +95,13 @@ public class TextFunctions {
     sw.add( vp );
 
     /* Add widgets to box */
-    cbox.pack_start( create_custom( editor ),              false, false, 5 );
-    cbox.pack_start( create_case( editor ),                false, false, 5 );
-    cbox.pack_start( create_remove( editor ),              false, false, 5 );
-    cbox.pack_start( create_replace( editor ),             false, false, 5 );
-    cbox.pack_start( create_sort( editor ),                false, false, 5 );
-    cbox.pack_start( create_indent( editor ),              false, false, 5 );
-    cbox.pack_start( create_search_replace( editor, win ), false, false, 5 );
+    cbox.pack_start( create_custom( editor ),         false, false, 5 );
+    cbox.pack_start( create_case( editor ),           false, false, 5 );
+    cbox.pack_start( create_remove( editor ),         false, false, 5 );
+    cbox.pack_start( create_replace( editor ),        false, false, 5 );
+    cbox.pack_start( create_sort( editor ),           false, false, 5 );
+    cbox.pack_start( create_indent( editor ),         false, false, 5 );
+    cbox.pack_start( create_search_replace( editor ), false, false, 5 );
 
     box.pack_start( _search, false, false, 10 );
     box.pack_start( sw,      true,  true,  10 );
@@ -153,9 +156,10 @@ public class TextFunctions {
   private void add_function( Box box, Expander exp, Editor editor, TextFunction function ) {
 
     var button = new Button.with_label( function.label0 );
-    button.xalign = (float)0;
+    button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
+      _win.show_widget( "" );
       editor.grab_focus();
       function.launch( editor );
       _undo.append_val( function.get_change() );
@@ -190,9 +194,10 @@ public class TextFunctions {
     var fbox   = new Box( Orientation.HORIZONTAL, 0 );
     ebox.add( fbox );
     var button = new Button.with_label( function.label0 );
-    button.xalign = (float)0;
+    // button.xalign = (float)0;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
+      _win.show_widget( "" );
       editor.grab_focus();
       function.launch( editor );
       _undo.append_val( function.get_change() );
@@ -247,6 +252,7 @@ public class TextFunctions {
     button.xalign = (float)0;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
+      _win.show_widget( "" );
       editor.grab_focus();
       function.launch( editor );
       _undo.append_val( function.get_change() );
@@ -357,10 +363,10 @@ public class TextFunctions {
   }
 
   /* Adds the search and replace functions */
-  private Expander create_search_replace( Editor editor, MainWindow win ) {
+  private Expander create_search_replace( Editor editor ) {
     Box box;
     var exp = create_category( "search-replace", _( "Search and Replace" ), out box );
-    add_function( box, exp, editor, new RegExpr( win ) );
+    add_function( box, exp, editor, new RegExpr( _win ) );
     return( exp );
   }
 

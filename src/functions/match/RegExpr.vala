@@ -82,15 +82,16 @@ public class RegExpr : TextFunction {
     _replace_btn.set_sensitive( false );
     _replace_btn.clicked.connect( do_replace );
 
-    grid.column_spacing = 5;
-    grid.row_spacing    = 5;
-    grid.attach( _pattern,     0, 0, 6 );
-    grid.attach( _replace,     7, 0, 3 );
+    grid.column_spacing     = 5;
+    grid.column_homogeneous = true;
+    grid.row_spacing        = 5;
+    grid.attach( _pattern,     0, 0, 5 );
+    grid.attach( _replace,     6, 0, 2 );
     grid.attach( cmb,          0, 1 );
     grid.attach( imb,          1, 1 );
     grid.attach( lmb,          2, 1 );
     grid.attach( amb,          3, 1 );
-    grid.attach( _replace_btn, 9, 1 );
+    grid.attach( _replace_btn, 7, 1 );
 
     box.pack_start( grid, true, true, 0 );
 
@@ -198,7 +199,7 @@ public class RegExpr : TextFunction {
 
     _editor.buffer.get_start_iter( out iter );
 
-    while( iter.forward_to_tag_toggle( tag ) ) {
+    while( iter.starts_tag( tag ) || iter.forward_to_tag_toggle( tag ) ) {
       if( iter.starts_tag( tag ) ) {
         var end = iter.copy();
         end.forward_to_tag_toggle( tag );
@@ -206,6 +207,8 @@ public class RegExpr : TextFunction {
         _editor.buffer.insert( ref iter, text, text.length );
       }
     }
+
+    _win.show_widget( "" );
 
   }
 

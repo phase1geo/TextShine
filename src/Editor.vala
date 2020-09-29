@@ -108,6 +108,7 @@ public class Editor : SourceView {
 
   /* Removes the tag specified by the given name */
   public void remove_tag( string name ) {
+    if( buffer.tag_table.lookup( name ) == null ) return;
     TextIter start, end;
     buffer.get_start_iter( out start );
     buffer.get_end_iter( out end );
