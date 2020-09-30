@@ -194,7 +194,7 @@ public class TextFunctions {
     var fbox   = new Box( Orientation.HORIZONTAL, 0 );
     ebox.add( fbox );
     var button = new Button.with_label( function.label0 );
-    // button.xalign = (float)0;
+    button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
       _win.show_widget( "" );
@@ -249,7 +249,7 @@ public class TextFunctions {
     var fbox   = new Box( Orientation.HORIZONTAL, 0 );
     ebox.add( fbox );
     var button = new Button.with_label( function.label0 );
-    button.xalign = (float)0;
+    button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
       _win.show_widget( "" );
@@ -293,7 +293,7 @@ public class TextFunctions {
 
     /* Add button customization option */
     var custom = new Button.with_label( _( "Create custom action" ) );
-    custom.xalign = (float)0;
+    custom.halign = Align.START;
     custom.set_relief( ReliefStyle.NONE );
     custom.clicked.connect(() => {
       // TBD - Show customization UI

@@ -151,8 +151,14 @@ public class RegExpr : TextFunction {
   /* Perform search and replacement */
   private void do_search() {
 
+    /* Get the selected ranges and clear them */
+    var ranges = new Array<Editor.Position>();
+    _editor.get_ranges( ranges );
+    _editor.remove_selected();
+
+    stdout.printf( "In do_search, ranges: %u\n", ranges.length );
+
     /* Clear the tags */
-    _editor.remove_tag( "regex" );
     _tags_exist = false;
 
     /* If the pattern text is empty, just return now */
@@ -162,12 +168,7 @@ public class RegExpr : TextFunction {
     }
 
     Regex     re;
-    TextIter  start_iter, end_iter;
     MatchInfo match;
-    var       text = _editor.get_current_text();
-
-    _editor.get_range( out start_iter, out end_iter );
-    var start_index = start_iter.get_offset();
 
     try {
       re = new Regex( _pattern.text );
@@ -175,15 +176,23 @@ public class RegExpr : TextFunction {
       return;
     }
 
-    while( re.match( text, 0, out match ) ) {
-      int start, end;
-      match.fetch_pos( 0, out start, out end );
-      _editor.buffer.get_iter_at_offset( out start_iter, start_index + start );
-      _editor.buffer.get_iter_at_offset( out end_iter,   start_index + end );
-      _editor.add_tag( "regex", start_iter, end_iter );
-      _tags_exist = true;
-      text = text.splice( 0, end );
-      start_index += end;
+    for( int i=0; i<ranges.length; i++ ) {
+
+      var text        = _editor.get_text( ranges.index( i ).start, ranges.index( i ).end );
+      var start_index = ranges.index( i ).start.get_offset();
+
+      while( re.match( text, 0, out match ) ) {
+        TextIter start_iter, end_iter;
+        int start, end;
+        match.fetch_pos( 0, out start, out end );
+        _editor.buffer.get_iter_at_offset( out start_iter, start_index + start );
+        _editor.buffer.get_iter_at_offset( out end_iter,   start_index + end );
+        _editor.add_selected( start_iter, end_iter );
+        _tags_exist = true;
+        text = text.splice( 0, end );
+        start_index += end;
+      }
+
     }
 
     update_replace_btn_state();
@@ -193,21 +202,17 @@ public class RegExpr : TextFunction {
   /* Replace all matches with the replacement text */
   private void do_replace() {
 
-    TextIter iter;
-    var tag  = _editor.buffer.tag_table.lookup( "regex" );
-    var text = _replace.text;
+    var ranges = new Array<Editor.Position>();
+    var text   = _replace.text;
 
-    _editor.buffer.get_start_iter( out iter );
+    _editor.get_ranges( ranges );
+    _editor.remove_selected();
 
-    while( iter.starts_tag( tag ) || iter.forward_to_tag_toggle( tag ) ) {
-      if( iter.starts_tag( tag ) ) {
-        var end = iter.copy();
-        end.forward_to_tag_toggle( tag );
-        _editor.buffer.delete( ref iter, ref end );
-        _editor.buffer.insert( ref iter, text, text.length );
-      }
+    for( int i=((int)ranges.length - 1); i>=0; i-- ) {
+      _editor.replace_text( ranges.index( i ).start, ranges.index( i ).end, text );
     }
 
+    /* Hide the widget */
     _win.show_widget( "" );
 
   }

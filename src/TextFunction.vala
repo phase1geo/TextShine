@@ -93,7 +93,13 @@ public class TextFunction {
 
   /* Executes this text function using the editor */
   protected void run( Editor editor ) {
-    editor.replace_text( transform_text( editor.get_current_text(), editor.get_cursor_pos() ) );
+    var ranges = new Array<Editor.Position>();
+    editor.get_ranges( ranges );
+    for( int i=((int)ranges.length - 1); i>=0; i-- ) {
+      var start = ranges.index( i ).start;
+      var end   = ranges.index( i ).end;
+      editor.replace_text( start, end, transform_text( editor.get_text( start, end ), editor.get_cursor_pos( start, end ) ) );
+    }
   }
 
   /*

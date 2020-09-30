@@ -24,6 +24,16 @@ using Gdk;
 
 public class Editor : SourceView {
 
+  /* Structure to hold absolute position */
+  public class Position {
+    public TextIter start;
+    public TextIter end;
+    public Position( TextIter s, TextIter e ) {
+      start = s.copy();
+      end   = e.copy();
+    }
+  }
+
   /* Constructor */
   public Editor( MainWindow win ) {
 
@@ -60,17 +70,32 @@ public class Editor : SourceView {
   }
 
   /* Returns the current range of text that will be transformed */
-  public void get_range( out TextIter start, out TextIter end ) {
-    if( !buffer.get_selection_bounds( out start, out end ) ) {
+  public void get_ranges( Array<Position> ranges ) {
+    TextIter start, end;
+    if( buffer.get_selection_bounds( out start, out end ) ) {
+      ranges.append_val( new Position( start, end ) );
+    } else {
+      var tag  = buffer.tag_table.lookup( "selected" );
       buffer.get_start_iter( out start );
-      buffer.get_end_iter( out end );
+      while( start.starts_tag( tag ) || start.forward_to_tag_toggle( tag ) ) {
+        if( start.starts_tag( tag ) ) {
+          end = start.copy();
+          end.forward_to_tag_toggle( tag );
+          ranges.append_val( new Position( start, end ) );
+          start = end.copy();
+        }
+      }
+      if( ranges.length == 0 ) {
+        buffer.get_start_iter( out start );
+        buffer.get_end_iter( out end );
+        ranges.append_val( new Position( start, end ) );
+        stdout.printf( "B start: %d, end: %d\n", start.get_offset(), end.get_offset() );
+      }
     }
   }
 
   /* Returns the current range of text that will be transformed */
-  public string get_current_text() {
-    TextIter start, end;
-    get_range( out start, out end );
+  public string get_text( TextIter start, TextIter end ) {
     return( buffer.get_text( start, end, false ) );
   }
 
@@ -78,9 +103,7 @@ public class Editor : SourceView {
    Returns the cursor position relative to the selected text.  If the cursorcr
    position is outside of the selected text range, return -1.
   */
-  public int get_cursor_pos() {
-    TextIter start, end;
-    get_range( out start, out end );
+  public int get_cursor_pos( TextIter start, TextIter end ) {
     if( (buffer.cursor_position < start.get_offset()) ||
         (buffer.cursor_position >= end.get_offset()) ) {
       return( -1 );
@@ -88,10 +111,8 @@ public class Editor : SourceView {
     return( buffer.cursor_position - start.get_offset() );
   }
 
-  /* Replaces the given range with the specified text */
-  public void replace_text( string text ) {
-    TextIter start, end;
-    get_range( out start, out end );
+  /* Replaces all ranges with the specified text */
+  public void replace_text( TextIter start, TextIter end, string text ) {
     if( start.compare( end ) != 0 ) {
       buffer.delete( ref start, ref end );
       buffer.insert( ref start, text, text.length );
@@ -99,20 +120,20 @@ public class Editor : SourceView {
   }
 
   /* Adds a new tag by the given name */
-  public void add_tag( string name, TextIter start, TextIter end ) {
-    if( buffer.tag_table.lookup( name ) == null ) {
-      buffer.create_tag( name, "background", "Yellow", null );
+  public void add_selected( TextIter start, TextIter end ) {
+    if( buffer.tag_table.lookup( "selected" ) == null ) {
+      buffer.create_tag( "selected", "background", "Yellow", null );
     }
-    buffer.apply_tag_by_name( name, start, end );
+    buffer.apply_tag_by_name( "selected", start, end );
   }
 
   /* Removes the tag specified by the given name */
-  public void remove_tag( string name ) {
-    if( buffer.tag_table.lookup( name ) == null ) return;
+  public void remove_selected() {
+    if( buffer.tag_table.lookup( "selected" ) == null ) return;
     TextIter start, end;
     buffer.get_start_iter( out start );
     buffer.get_end_iter( out end );
-    buffer.remove_tag_by_name( name, start, end );
+    buffer.remove_tag_by_name( "selected", start, end );
   }
 
 }
