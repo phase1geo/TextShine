@@ -43,33 +43,13 @@ public class RegExpr : TextFunction {
   /* Creates the search UI */
   private Box create_widget() {
 
-    var box = new Box( Orientation.HORIZONTAL, 0 );
+    var box = new Box( Orientation.HORIZONTAL, 5 );
 
-    var grid = new Grid();
+    var ebox = new Box( Orientation.VERTICAL, 0 );
 
     _pattern = new SearchEntry();
     _pattern.placeholder_text = _( "Regular Expression" );
     _pattern.search_changed.connect( do_search );
-
-    var cmb = new MenuButton();
-    cmb.label = _( "Character Patterns" );
-    cmb.popup = new Gtk.Menu();
-    add_character_patterns( cmb );
-
-    var imb = new MenuButton();
-    imb.label = _( "Repeat Patterns" );
-    imb.popup = new Gtk.Menu();
-    add_iteration_patterns( imb );
-
-    var lmb = new MenuButton();
-    lmb.label = _( "Location Patterns" );
-    lmb.popup = new Gtk.Menu();
-    add_location_patterns( lmb );
-
-    var amb = new MenuButton();
-    amb.label = _( "Advanced Patterns" );
-    amb.popup = new Gtk.Menu();
-    add_advanced_patterns( amb );
 
     _replace = new Entry();
     _replace.placeholder_text = _( "Replace With" );
@@ -78,74 +58,95 @@ public class RegExpr : TextFunction {
       _replace_btn.clicked();
     });
 
+    ebox.pack_start( _pattern, false, true, 5 );
+    ebox.pack_start( _replace, false, true, 5 );
+
+    var bbox = new Box( Orientation.VERTICAL, 0 );
+
+    var mb = new MenuButton();
+    mb.label = _( "Insert Patterns" );
+    mb.popup = new Gtk.Menu();
+    add_character_patterns( mb );
+    add_iteration_patterns( mb );
+    add_location_patterns( mb );
+    add_advanced_patterns( mb );
+    mb.popup.show_all();
+
     _replace_btn = new Button.with_label( _( "Replace" ) );
     _replace_btn.set_sensitive( false );
     _replace_btn.clicked.connect( do_replace );
 
-    grid.column_spacing     = 5;
-    grid.column_homogeneous = true;
-    grid.row_spacing        = 5;
-    grid.attach( _pattern,     0, 0, 5 );
-    grid.attach( _replace,     6, 0, 2 );
-    grid.attach( cmb,          0, 1 );
-    grid.attach( imb,          1, 1 );
-    grid.attach( lmb,          2, 1 );
-    grid.attach( amb,          3, 1 );
-    grid.attach( _replace_btn, 7, 1 );
+    bbox.pack_start( mb, false, true, 5 );
+    bbox.pack_start( _replace_btn, false, true, 5 );
 
-    box.pack_start( grid, true, true, 0 );
+    box.pack_start( ebox, true,  true,  0 );
+    box.pack_start( bbox, false, false, 0 );
 
     return( box );
 
   }
 
-  private void add_pattern( MenuButton mb, string lbl, string pattern ) {
-    var item = new Gtk.MenuItem.with_label( lbl );
+  private void add_pattern_submenu( MenuButton mb, string name, out Gtk.Menu mnu ) {
+    mnu = new Gtk.Menu();
+    var item = new Gtk.MenuItem.with_label( name );
+    item.submenu = mnu;
+    mb.popup.add( item );
+  }
+
+  private void add_pattern( Gtk.Menu mnu, string lbl, string pattern ) {
+    var label = (pattern.length < 5) ? (lbl + " - <b>" + pattern + "</b>") : lbl;
+    var item = new Gtk.MenuItem.with_label( label );
+    (item.get_child() as Label).use_markup = true;
     item.activate.connect(() => {
       _pattern.insert_at_cursor( pattern );
       _pattern.grab_focus();
     });
-    mb.popup.add( item );
+    mnu.add( item );
   }
 
   private void add_character_patterns( MenuButton mb ) {
-    add_pattern( mb, _( "Digit" ),          "\\d" );
-    add_pattern( mb, _( "Non-Digit" ),      "\\D" );
-    add_pattern( mb, _( "New-line" ),       "\\n" );
-    add_pattern( mb, _( "Non-New-line" ),   "\\N" );
-    add_pattern( mb, _( "Tab" ),            "\\t" );
-    add_pattern( mb, _( "Page Break" ),     "\\f" );
-    add_pattern( mb, _( "Whitespace" ),     "\\s" );
-    add_pattern( mb, _( "Non-Whitespace" ), "\\S" );
-    add_pattern( mb, _( "Word" ),           "\\w" );
-    add_pattern( mb, _( "Non-Word" ),       "\\W" );
-    add_pattern( mb, _( "Any character" ),  "." );
-    mb.popup.show_all();
+    Gtk.Menu mnu;
+    add_pattern_submenu( mb, _( "Character Patterns" ), out mnu );
+    add_pattern( mnu, _( "Digit" ),          "\\d" );
+    add_pattern( mnu, _( "Non-Digit" ),      "\\D" );
+    add_pattern( mnu, _( "New-line" ),       "\\n" );
+    add_pattern( mnu, _( "Non-New-line" ),   "\\N" );
+    add_pattern( mnu, _( "Tab" ),            "\\t" );
+    add_pattern( mnu, _( "Page Break" ),     "\\f" );
+    add_pattern( mnu, _( "Whitespace" ),     "\\s" );
+    add_pattern( mnu, _( "Non-Whitespace" ), "\\S" );
+    add_pattern( mnu, _( "Word" ),           "\\w" );
+    add_pattern( mnu, _( "Non-Word" ),       "\\W" );
+    add_pattern( mnu, _( "Any character" ),  "." );
   }
 
   private void add_location_patterns( MenuButton mb ) {
-    add_pattern( mb, _( "Word Boundary" ),     "\\b" );
-    add_pattern( mb, _( "Non-Word Boundary" ), "\\B" );
-    add_pattern( mb, _( "Start Of Line" ),     "^" );
-    add_pattern( mb, _( "End Of Line" ),       "$" );
-    mb.popup.show_all();
+    Gtk.Menu mnu;
+    add_pattern_submenu( mb, _( "Location Patterns" ), out mnu );
+    add_pattern( mnu, _( "Word Boundary" ),     "\\b" );
+    add_pattern( mnu, _( "Non-Word Boundary" ), "\\B" );
+    add_pattern( mnu, _( "Start Of Line" ),     "^" );
+    add_pattern( mnu, _( "End Of Line" ),       "$" );
   }
 
   private void add_iteration_patterns( MenuButton mb ) {
-    add_pattern( mb, _( "0 or 1 Times" ),    "?" );
-    add_pattern( mb, _( "0 or More Times" ), "*" );
-    add_pattern( mb, _( "1 or More Times" ), "+" );
-    mb.popup.show_all();
+    Gtk.Menu mnu;
+    add_pattern_submenu( mb, _( "Iteration Patterns" ), out mnu );
+    add_pattern( mnu, _( "0 or 1 Times" ),    "?" );
+    add_pattern( mnu, _( "0 or More Times" ), "*" );
+    add_pattern( mnu, _( "1 or More Times" ), "+" );
   }
 
   private void add_advanced_patterns( MenuButton mb ) {
-    add_pattern( mb, _( "Word" ),     "\\w+" );
-    add_pattern( mb, _( "Number" ),   "\\d+" );
-    add_pattern( mb, _( "URL" ),      """(https?://(?:www\.|(?!www))[^\s\.]+\.\S{2,}|www\.\S+\.\S{2,})""" );
-    add_pattern( mb, _( "E-mail" ),   """([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})""" );
-    add_pattern( mb, _( "Date" ),     """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
-    add_pattern( mb, _( "HTML Tag" ), """<("[^"]*"|'[^']*'|[^'">])*>""" );
-    mb.popup.show_all();
+    Gtk.Menu mnu;
+    add_pattern_submenu( mb, _( "Advanced Patterns" ), out mnu );
+    add_pattern( mnu, _( "Word" ),         "\\w+" );
+    add_pattern( mnu, _( "Number" ),       "\\d+" );
+    add_pattern( mnu, _( "URL" ),          """(https?://(?:www\.|(?!www))[^\s\.]+\.\S{2,}|www\.\S+\.\S{2,})""" );
+    add_pattern( mnu, _( "E-mail" ),       """([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})""" );
+    add_pattern( mnu, _( "Date" ),         """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
+    add_pattern( mnu, _( "Phone Number" ), """\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}""" );
+    add_pattern( mnu, _( "HTML Tag" ),     """<("[^"]*"|'[^']*'|[^'">])*>""" );
   }
 
   /* Perform search and replacement */
