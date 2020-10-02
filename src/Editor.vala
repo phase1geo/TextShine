@@ -55,14 +55,8 @@ public class Editor : SourceView {
 
   }
 
-  private SourceBuffer _sbuffer;
-
   /* Constructor */
   public Editor( MainWindow win ) {
-
-    _sbuffer = new SourceBuffer( new TextTagTable() );
-
-    base.with_buffer( _sbuffer );
 
     wrap_mode = WrapMode.WORD;
 
@@ -169,10 +163,9 @@ public class Editor : SourceView {
   public void add_selected( TextIter start, TextIter end ) {
     clear_selection();
     if( buffer.tag_table.lookup( "selected" ) == null ) {
-      buffer.create_tag( "selected", "background", "Yellow", null );
+      buffer.create_tag( "selected", "background", "Yellow", "foreground", "Black", null );
     }
     buffer.apply_tag_by_name( "selected", start, end );
-    _sbuffer.highlight_matching_brackets = false;
   }
 
   /* Removes the tag specified by the given name */
@@ -181,7 +174,6 @@ public class Editor : SourceView {
     TextIter start, end;
     buffer.get_bounds( out start, out end );
     buffer.remove_tag_by_name( "selected", start, end );
-    _sbuffer.highlight_matching_brackets = true;
   }
 
 }

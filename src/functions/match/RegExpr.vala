@@ -46,6 +46,7 @@ public class RegExpr : TextFunction {
     _pattern = new SearchEntry();
     _pattern.placeholder_text = _( "Regular Expression" );
     _pattern.search_changed.connect( do_search );
+    _pattern.activate.connect( do_search );
 
     _replace = new Entry();
     _replace.placeholder_text = _( "Replace With" );
@@ -198,15 +199,30 @@ public class RegExpr : TextFunction {
   /* Replace all matches with the replacement text */
   private void do_replace() {
 
-    var ranges = new Array<Editor.Position>();
-    var text   = _replace.text;
+    var ranges       = new Array<Editor.Position>();
+    var replace_text = _replace.text;
 
     _editor.get_ranges( ranges );
-    _editor.remove_selected();
+    // _editor.remove_selected();
 
-    for( int i=((int)ranges.length - 1); i>=0; i-- ) {
-      _editor.replace_text( ranges.index( i ).start, ranges.index( i ).end, text );
+    try {
+
+      var re = new Regex( _pattern.text );
+
+      for( int i=0; i<ranges.length; i++ ) {
+        var range    = ranges.index( i );
+        var text     = _editor.get_text( range.start, range.end );
+        var new_text = re.replace( text, text.length, 0, replace_text );
+        _editor.replace_text( range.start, range.end, new_text );
+      }
+
+    } catch( RegexError e ) {
+      _win.show_error( e.message );
+      return;
     }
+
+    /* Hide the error message */
+    _win.close_error();
 
     /* Hide the widget */
     _win.show_widget( "" );

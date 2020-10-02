@@ -72,6 +72,7 @@ public class MainWindow : ApplicationWindow {
     _info = new InfoBar();
     _info.revealed = false;
     _info.get_content_area().add( new Label( "" ) );
+    _info.close.connect( close_error );
 
     ebox.pack_start( _widget_box, false, true, 0 );
     ebox.pack_start( _info,       false, true, 0 );
@@ -242,8 +243,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Pastes the contents of the clipboard to the editor */
-  private void do_paste() {
-    var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
+  private void do_paste() { var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
     _editor.buffer.paste_clipboard( clipboard, null, true );
   }
 
@@ -295,6 +295,11 @@ public class MainWindow : ApplicationWindow {
     _info.message_type      = MessageType.ERROR;
     _info.show_close_button = true;
     _info.revealed          = true;
+  }
+
+  /* Closes the error information bar */
+  public void close_error() {
+    _info.revealed = false;
   }
 
 }
