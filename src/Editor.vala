@@ -26,16 +26,43 @@ public class Editor : SourceView {
 
   /* Structure to hold absolute position */
   public class Position {
-    public TextIter start;
-    public TextIter end;
-    public Position( TextIter s, TextIter e ) {
-      start = s.copy();
-      end   = e.copy();
+
+    private TextBuffer _buf;
+    private int        _start;
+    private int        _end;
+
+    public TextIter start {
+      get {
+        TextIter iter;
+        _buf.get_iter_at_offset( out iter, _start );
+        return( iter );
+      }
     }
+    public TextIter end {
+      get {
+        TextIter iter;
+        _buf.get_iter_at_offset( out iter, _end );
+        return( iter );
+      }
+    }
+
+    /* Constructor */
+    public Position( TextIter s, TextIter e ) {
+      _buf   = s.get_buffer();
+      _start = s.get_offset();
+      _end   = e.get_offset();
+    }
+
   }
+
+  private SourceBuffer _sbuffer;
 
   /* Constructor */
   public Editor( MainWindow win ) {
+
+    _sbuffer = new SourceBuffer( new TextTagTable() );
+
+    base.with_buffer( _sbuffer );
 
     wrap_mode = WrapMode.WORD;
 
@@ -70,12 +97,12 @@ public class Editor : SourceView {
   }
 
   /* Returns the current range of text that will be transformed */
-  public void get_ranges( Array<Position> ranges ) {
+  public void get_ranges( Array<Position> ranges, bool include_selected = true ) {
+
     TextIter start, end;
-    if( buffer.get_selection_bounds( out start, out end ) ) {
-      ranges.append_val( new Position( start, end ) );
-    } else {
-      var tag  = buffer.tag_table.lookup( "selected" );
+    var tag  = buffer.tag_table.lookup( "selected" );
+
+    if( (tag != null) && include_selected ) {
       buffer.get_start_iter( out start );
       while( start.starts_tag( tag ) || start.forward_to_tag_toggle( tag ) ) {
         if( start.starts_tag( tag ) ) {
@@ -85,13 +112,17 @@ public class Editor : SourceView {
           start = end.copy();
         }
       }
-      if( ranges.length == 0 ) {
-        buffer.get_start_iter( out start );
-        buffer.get_end_iter( out end );
+    }
+
+    if( ranges.length == 0 ) {
+      if( buffer.get_selection_bounds( out start, out end ) ) {
         ranges.append_val( new Position( start, end ) );
-        stdout.printf( "B start: %d, end: %d\n", start.get_offset(), end.get_offset() );
+      } else {
+        buffer.get_bounds( out start, out end );
+        ranges.append_val( new Position( start, end ) );
       }
     }
+
   }
 
   /* Returns the current range of text that will be transformed */
@@ -119,21 +150,38 @@ public class Editor : SourceView {
     }
   }
 
+  /* Clears the selection */
+  public void clear_selection() {
+    TextIter ins;
+    buffer.get_iter_at_mark( out ins, buffer.get_insert() );
+    buffer.select_range( ins, ins );
+  }
+
+  /* Returns true if any text is selected */
+  public bool is_selected() {
+    TextIter iter;
+    buffer.get_start_iter( out iter );
+    var tag = buffer.tag_table.lookup( "selected" );
+    return( (tag != null) && iter.forward_to_tag_toggle( tag ) );
+  }
+
   /* Adds a new tag by the given name */
   public void add_selected( TextIter start, TextIter end ) {
+    clear_selection();
     if( buffer.tag_table.lookup( "selected" ) == null ) {
       buffer.create_tag( "selected", "background", "Yellow", null );
     }
     buffer.apply_tag_by_name( "selected", start, end );
+    _sbuffer.highlight_matching_brackets = false;
   }
 
   /* Removes the tag specified by the given name */
   public void remove_selected() {
     if( buffer.tag_table.lookup( "selected" ) == null ) return;
     TextIter start, end;
-    buffer.get_start_iter( out start );
-    buffer.get_end_iter( out end );
+    buffer.get_bounds( out start, out end );
     buffer.remove_tag_by_name( "selected", start, end );
+    _sbuffer.highlight_matching_brackets = true;
   }
 
 }

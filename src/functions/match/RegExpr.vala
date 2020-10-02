@@ -43,10 +43,6 @@ public class RegExpr : TextFunction {
   /* Creates the search UI */
   private Box create_widget() {
 
-    var box = new Box( Orientation.HORIZONTAL, 5 );
-
-    var ebox = new Box( Orientation.VERTICAL, 0 );
-
     _pattern = new SearchEntry();
     _pattern.placeholder_text = _( "Regular Expression" );
     _pattern.search_changed.connect( do_search );
@@ -58,10 +54,9 @@ public class RegExpr : TextFunction {
       _replace_btn.clicked();
     });
 
+    var ebox = new Box( Orientation.VERTICAL, 0 );
     ebox.pack_start( _pattern, false, true, 5 );
     ebox.pack_start( _replace, false, true, 5 );
-
-    var bbox = new Box( Orientation.VERTICAL, 0 );
 
     var mb = new MenuButton();
     mb.label = _( "Insert Patterns" );
@@ -76,9 +71,11 @@ public class RegExpr : TextFunction {
     _replace_btn.set_sensitive( false );
     _replace_btn.clicked.connect( do_replace );
 
-    bbox.pack_start( mb, false, true, 5 );
+    var bbox = new Box( Orientation.VERTICAL, 0 );
+    bbox.pack_start( mb,           false, true, 5 );
     bbox.pack_start( _replace_btn, false, true, 5 );
 
+    var box = new Box( Orientation.HORIZONTAL, 5 );
     box.pack_start( ebox, true,  true,  0 );
     box.pack_start( bbox, false, false, 0 );
 
@@ -154,10 +151,8 @@ public class RegExpr : TextFunction {
 
     /* Get the selected ranges and clear them */
     var ranges = new Array<Editor.Position>();
-    _editor.get_ranges( ranges );
+    _editor.get_ranges( ranges, false );
     _editor.remove_selected();
-
-    stdout.printf( "In do_search, ranges: %u\n", ranges.length );
 
     /* Clear the tags */
     _tags_exist = false;
