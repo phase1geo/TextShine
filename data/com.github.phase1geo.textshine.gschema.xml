@@ -36,6 +36,11 @@
       <summary>Determines the expanded state of the custom category</summary>
       <description>Determines the expanded state of the custom category.</description>
     </key>
+    <key name="category-favorites-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the favorites category</summary>
+      <description>Determines the expanded state of the favorites category.</description>
+    </key>
     <key name="category-case-expanded" type="b">
       <default>true</default>
       <summary>Determines the expanded state of the case category</summary>

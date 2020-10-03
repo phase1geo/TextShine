@@ -60,26 +60,31 @@ public class Category {
 
 public class TextFunctions {
 
-  private MainWindow        _win;
-  private Array<Functions>  _functions;
-  private Array<Category>   _categories;
-  private Array<TextChange> _undo;
-  private Array<TextChange> _redo;
-  private SearchEntry       _search;
-  private Revealer          _custom;
-  private Box               _box;
+  private MainWindow          _win;
+  private Editor              _editor;
+  private Array<Functions>    _functions;
+  private Array<TextFunction> _favorites;
+  private Array<Category>     _categories;
+  private Array<TextChange>   _undo;
+  private Array<TextChange>   _redo;
+  private SearchEntry         _search;
+  private Revealer            _custom;
+  private Box                 _box;
+  private Box                 _favorite_box;
 
   /* Constructor */
   public TextFunctions( MainWindow win, Editor editor, Box box ) {
 
     _win        = win;
+    _editor     = editor;
 
     _functions  = new Array<Functions>();
+    _favorites  = new Array<TextFunction>();
     _categories = new Array<Category>();
     _undo       = new Array<TextChange>();
     _redo       = new Array<TextChange>();
 
-    box.set_size_request( 250, 600 );
+    box.set_size_request( 300, 600 );
 
     /* Create search box */
     _search = new SearchEntry();
@@ -90,23 +95,27 @@ public class TextFunctions {
     var cbox = new Box( Orientation.VERTICAL, 0 );
     var sw   = new ScrolledWindow( null, null );
     var vp   = new Viewport( null, null );
-    vp.set_size_request( 200, 600 );
+    vp.set_size_request( 300, 600 );
     vp.add( cbox );
     sw.add( vp );
 
     /* Add widgets to box */
-    cbox.pack_start( create_custom( editor ),         false, false, 5 );
-    cbox.pack_start( create_case( editor ),           false, false, 5 );
-    cbox.pack_start( create_remove( editor ),         false, false, 5 );
-    cbox.pack_start( create_replace( editor ),        false, false, 5 );
-    cbox.pack_start( create_sort( editor ),           false, false, 5 );
-    cbox.pack_start( create_indent( editor ),         false, false, 5 );
-    cbox.pack_start( create_search_replace( editor ), false, false, 5 );
+    cbox.pack_start( create_favorites(),      false, false, 5 );
+    cbox.pack_start( create_case(),           false, false, 5 );
+    cbox.pack_start( create_remove(),         false, false, 5 );
+    cbox.pack_start( create_replace(),        false, false, 5 );
+    cbox.pack_start( create_sort(),           false, false, 5 );
+    cbox.pack_start( create_indent(),         false, false, 5 );
+    cbox.pack_start( create_search_replace(), false, false, 5 );
+    cbox.pack_start( create_custom(),         false, false, 5 );
 
     box.pack_start( _search, false, false, 10 );
     box.pack_start( sw,      true,  true,  10 );
 
     _box = cbox;
+
+    /* Load the favorites information */
+    load_favorites();
 
   }
 
@@ -153,140 +162,233 @@ public class TextFunctions {
   }
 
   /* Adds a function button to the given category item box */
-  private void add_function( Box box, Expander exp, Editor editor, TextFunction function ) {
+  private void add_function( Box box, Expander? exp, TextFunction function ) {
+
+    var fbox = new Box( Orientation.HORIZONTAL, 5 );
 
     var button = new Button.with_label( function.label0 );
     button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
       _win.show_widget( "" );
-      editor.grab_focus();
-      function.launch( editor );
+      _editor.grab_focus();
+      function.launch( _editor );
       _undo.append_val( function.get_change() );
     });
 
+    fbox.pack_start( button, false, false, 0 );
+
+    add_favorite_button(  fbox, function );
+    add_direction_button( fbox, button, function );
+
     var revealer = new Revealer();
-    revealer.add( button );
+    revealer.add( fbox );
     revealer.border_width = 5;
     revealer.reveal_child = true;
 
     box.pack_start( revealer, false, false, 0 );
 
-    _functions.append_val( new Functions( function, revealer, exp ) );
+    if( exp != null ) {
+      _functions.append_val( new Functions( function, revealer, exp ) );
+    }
 
   }
 
-  /* Adds sort function */
-  private void add_sort_function( Box box, Expander exp, Editor editor, TextFunction function ) {
+  /* Creates the direction button (if necessary) and adds it to the given box */
+  private void add_direction_button( Box box, Button btn, TextFunction function ) {
 
-    var reveal = new Revealer();
-    var ebox   = new EventBox();
-    ebox.enter_notify_event.connect((e) => {
-      reveal.reveal_child = true;
-      return( false );
-    });
-    ebox.leave_notify_event.connect((e) => {
-      if( e.detail != NotifyType.INFERIOR ) {
-        reveal.reveal_child = false;
-      }
-      return( false );
-    });
-    var fbox   = new Box( Orientation.HORIZONTAL, 0 );
-    ebox.add( fbox );
-    var button = new Button.with_label( function.label0 );
-    button.halign = Align.START;
-    button.set_relief( ReliefStyle.NONE );
-    button.clicked.connect(() => {
-      _win.show_widget( "" );
-      editor.grab_focus();
-      function.launch( editor );
-      _undo.append_val( function.get_change() );
-    });
-    var direction = new Button.from_icon_name( "object-flip-vertical-symbolic", IconSize.SMALL_TOOLBAR );
-    direction.set_tooltip_text( _( "Switch Direction" ) );
+    if( function.direction == FunctionDirection.NONE ) return;
+
+    var icon_name = function.direction.is_vertical() ? "object-flip-vertical-symbolic" : "object-flip-horizontal-symbolic";
+    var tooltip   = function.direction.is_vertical() ? _( "Switch Direction" ) : _( "Swap Order" );
+
+    var direction = new Button.from_icon_name( icon_name, IconSize.SMALL_TOOLBAR );
+    direction.halign = Align.START;
+    direction.relief = ReliefStyle.NONE;
+    direction.set_tooltip_text( tooltip );
     direction.clicked.connect(() => {
-      if( function.direction == FunctionDirection.TOP_DOWN ) {
-        function.direction = FunctionDirection.BOTTOM_UP;
-        button.label       = function.label1;
-      } else {
-        function.direction = FunctionDirection.TOP_DOWN;
-        button.label       = function.label0;
+      switch( function.direction ) {
+        case FunctionDirection.TOP_DOWN :
+          function.direction = FunctionDirection.BOTTOM_UP;
+          btn.label          = function.label1;
+          break;
+        case FunctionDirection.BOTTOM_UP :
+          function.direction = FunctionDirection.TOP_DOWN;
+          btn.label          = function.label0;
+          break;
+        case FunctionDirection.LEFT_TO_RIGHT :
+          function.direction = FunctionDirection.RIGHT_TO_LEFT;
+          btn.label          = function.label1;
+          break;
+        case FunctionDirection.RIGHT_TO_LEFT :
+          function.direction = FunctionDirection.LEFT_TO_RIGHT;
+          btn.label          = function.label0;
+          break;
       }
     });
 
-    reveal.transition_type = RevealerTransitionType.NONE;
-    reveal.add( direction );
-
-    fbox.pack_start( button, false, false, 0 );
-    fbox.pack_end(   reveal, false, false, 0 );
-
-    var revealer = new Revealer();
-    revealer.add( ebox );
-    revealer.border_width = 5;
-    revealer.reveal_child = true;
-
-    box.pack_start( revealer, false, false, 0 );
-
-    _functions.append_val( new Functions( function, revealer, exp ) );
+    box.pack_end( direction, false, false, 0 );
 
   }
 
-  /* Adds a transformation button to the bar */
-  private void add_transform_function( Box box, Expander exp, Editor editor, TextFunction function ) {
+  private void add_favorite_button( Box box, TextFunction function ) {
 
-    var reveal = new Revealer();
-    var ebox   = new EventBox();
-    ebox.enter_notify_event.connect((e) => {
-      reveal.reveal_child = true;
-      return( false );
-    });
-    ebox.leave_notify_event.connect((e) => {
-      if( e.detail != NotifyType.INFERIOR ) {
-        reveal.reveal_child = false;
-      }
-      return( false );
-    });
-    var fbox   = new Box( Orientation.HORIZONTAL, 0 );
-    ebox.add( fbox );
-    var button = new Button.with_label( function.label0 );
-    button.halign = Align.START;
-    button.set_relief( ReliefStyle.NONE );
-    button.clicked.connect(() => {
-      _win.show_widget( "" );
-      editor.grab_focus();
-      function.launch( editor );
-      _undo.append_val( function.get_change() );
-    });
-    var change = new Button.from_icon_name( "object-flip-horizontal-symbolic", IconSize.SMALL_TOOLBAR );
-    change.set_tooltip_text( _( "Switch Order" ) );
-    change.clicked.connect(() => {
-      if( function.direction == FunctionDirection.LEFT_TO_RIGHT ) {
-        button.label       = function.label1;
-        function.direction = FunctionDirection.RIGHT_TO_LEFT;
-      } else {
-        button.label       = function.label0;
-        function.direction = FunctionDirection.LEFT_TO_RIGHT;
-      }
+    var favorited = is_favorite( function );
+    var icon_name = favorited ? "starred-symbolic" : "non-starred-symbolic";
+    var tooltip   = favorited ? _( "Unfavorite" )  : _( "Favorite" );
+
+    var favorite = new Button.from_icon_name( icon_name, IconSize.SMALL_TOOLBAR );
+    favorite.relief = ReliefStyle.NONE;
+    favorite.set_tooltip_text( tooltip );
+    favorite.clicked.connect(() => {
+      toggle_favorite( favorite, function );
     });
 
-    reveal.transition_type = RevealerTransitionType.NONE;
-    reveal.add( change );
-
-    fbox.pack_start( button, false, false, 0 );
-    fbox.pack_end(   reveal, false, false, 0 );
-
-    var revealer = new Revealer();
-    revealer.add( ebox );
-    revealer.border_width = 5;
-    revealer.reveal_child = true;
-
-    box.pack_start( revealer, false, false, 0 );
-
-    _functions.append_val( new Functions( function, revealer, exp ) );
+    box.pack_end( favorite, false, false, 0 );
 
   }
 
-  private Expander create_custom( Editor editor ) {
+  /*
+   Index of favorite in the list.  If the function is not favorited, a value
+   of -1 is returned.
+  */
+  private int favorite_index( TextFunction function ) {
+    for( int i=0; i<_favorites.length; i++ ) {
+      if( _favorites.index( i ) == function ) {
+        return( i );
+      }
+    }
+    return( -1 );
+  }
+
+  /* Returns favorited status */
+  private bool is_favorite( TextFunction function ) {
+    return( favorite_index( function ) != -1 );
+  }
+
+  /* Toggles the favorite status */
+  private void toggle_favorite( Button button, TextFunction function ) {
+
+    if( is_favorite( function ) ) {
+      unfavorite_function( function );
+      button.image = new Image.from_icon_name( "non-starred-symbolic", IconSize.SMALL_TOOLBAR );
+      button.set_tooltip_text( _( "Favorite" ) );
+    } else {
+      favorite_function( function );
+      button.image = new Image.from_icon_name( "starred-symbolic", IconSize.SMALL_TOOLBAR );
+      button.set_tooltip_text( _( "Unfavorite" ) );
+    }
+
+  }
+
+  /* Add the given function to the favorite list */
+  private void favorite_function( TextFunction function ) {
+
+    _favorites.append_val( function );
+
+    add_function( _favorite_box, null, function );
+
+    _favorite_box.show_all();
+
+    /* Save the favorites changes */
+    save_favorites();
+
+  }
+
+  /* Removes the given function from the favorite list */
+  private void unfavorite_function( TextFunction function ) {
+
+    var index  = favorite_index( function );
+    var reveal = (Revealer)_favorite_box.get_children().nth_data( index );
+
+    _favorites.remove_index( index );
+
+    /* Wait until idle to remove the widget so that we avoid an error */
+    Idle.add(() => {
+      _favorite_box.remove( reveal );
+      return( Source.REMOVE );
+    });
+
+    /* Save the favorites changes */
+    save_favorites();
+
+  }
+
+  /* Adds the favorites functions */
+  private Expander create_favorites() {
+
+    var exp = create_category( "favorites", _( "Favorites" ), out _favorite_box );
+
+    for( int i=0; i<_favorites.length; i++ ) {
+      add_function( _favorite_box, null, _favorites.index( i ) );
+    }
+
+    return( exp );
+
+  }
+
+  /* Adds the case changing functions */
+  private Expander create_case() {
+    Box box;
+    var exp = create_category( "case", _( "Change Case" ), out box );
+    add_function( box, exp, new CaseCamel() );
+    add_function( box, exp, new CaseLower() );
+    add_function( box, exp, new CaseSentence() );
+    add_function( box, exp, new CaseSnake() );
+    add_function( box, exp, new CaseTitle() );
+    add_function( box, exp, new CaseUpper() );
+    return( exp );
+  }
+
+  /* Adds string removal functions */
+  private Expander create_remove() {
+    Box box;
+    var exp = create_category( "remove", _( "Remove" ), out box );
+    add_function( box, exp, new RemoveBlankLines() );
+    add_function( box, exp, new RemoveDuplicateLines() );
+    add_function( box, exp, new RemoveLeadingWhitespace() );
+    add_function( box, exp, new RemoveTrailingWhitespace() );
+    add_function( box, exp, new RemoveLineNumbers() );
+    return( exp );
+  }
+
+  /* Add replacement functions */
+  private Expander create_replace() {
+    Box box;
+    var exp = create_category( "replace", _( "Replace" ), out box );
+    add_function( box, exp, new ReplaceTabsSpaces() );
+    add_function( box, exp, new ReplaceTabsSpaces4() );
+    add_function( box, exp, new ReplacePeriodsEllipsis() );
+    return( exp );
+  }
+
+  /* Adds the sorting functions */
+  private Expander create_sort() {
+    Box box;
+    var exp = create_category( "sort", _( "Sort" ), out box );
+    add_function( box, exp, new SortLines() );
+    add_function( box, exp, new SortReverseChars() );
+    return( exp );
+  }
+
+  /* Adds the indentation functions */
+  private Expander create_indent() {
+    Box box;
+    var exp = create_category( "indent", _( "Indentation" ), out box );
+    add_function( box, exp, new IndentXML() );
+    return( exp );
+  }
+
+  /* Adds the search and replace functions */
+  private Expander create_search_replace() {
+    Box box;
+    var exp = create_category( "search-replace", _( "Search and Replace" ), out box );
+    add_function( box, exp, new RegExpr( _win ) );
+    return( exp );
+  }
+
+  /* Adds the custom functions */
+  private Expander create_custom() {
 
     Box box;
     var exp = create_category( "custom", _( "Custom" ), out box );
@@ -308,66 +410,6 @@ public class TextFunctions {
 
     return( exp );
 
-  }
-
-  /* Adds the case changing functions */
-  private Expander create_case( Editor editor ) {
-    Box box;
-    var exp = create_category( "case", _( "Change Case" ), out box );
-    add_function( box, exp, editor, new CaseCamel() );
-    add_function( box, exp, editor, new CaseLower() );
-    add_function( box, exp, editor, new CaseSentence() );
-    add_function( box, exp, editor, new CaseSnake() );
-    add_function( box, exp, editor, new CaseTitle() );
-    add_function( box, exp, editor, new CaseUpper() );
-    return( exp );
-  }
-
-  /* Adds string removal functions */
-  private Expander create_remove( Editor editor ) {
-    Box box;
-    var exp = create_category( "remove", _( "Remove" ), out box );
-    add_function( box, exp, editor, new RemoveBlankLines() );
-    add_function( box, exp, editor, new RemoveDuplicateLines() );
-    add_function( box, exp, editor, new RemoveLeadingWhitespace() );
-    add_function( box, exp, editor, new RemoveTrailingWhitespace() );
-    add_function( box, exp, editor, new RemoveLineNumbers() );
-    return( exp );
-  }
-
-  /* Add replacement functions */
-  private Expander create_replace( Editor editor ) {
-    Box box;
-    var exp = create_category( "replace", _( "Replace" ), out box );
-    add_transform_function( box, exp, editor, new ReplaceTabsSpaces() );
-    add_transform_function( box, exp, editor, new ReplaceTabsSpaces4() );
-    add_transform_function( box, exp, editor, new ReplacePeriodsEllipsis() );
-    return( exp );
-  }
-
-  /* Adds the sorting functions */
-  private Expander create_sort( Editor editor ) {
-    Box box;
-    var exp = create_category( "sort", _( "Sort" ), out box );
-    add_sort_function( box, exp, editor, new SortLines() );
-    add_function( box, exp, editor, new SortReverseChars() );
-    return( exp );
-  }
-
-  /* Adds the indentation functions */
-  private Expander create_indent( Editor editor ) {
-    Box box;
-    var exp = create_category( "indent", _( "Indentation" ), out box );
-    add_function( box, exp, editor, new IndentXML() );
-    return( exp );
-  }
-
-  /* Adds the search and replace functions */
-  private Expander create_search_replace( Editor editor ) {
-    Box box;
-    var exp = create_category( "search-replace", _( "Search and Replace" ), out box );
-    add_function( box, exp, editor, new RegExpr( _win ) );
-    return( exp );
   }
 
   /* Returns true if we can be undone */
@@ -396,6 +438,56 @@ public class TextFunctions {
       _redo.remove_index( _redo.length - 1 );
       _undo.append_val( change );
     }
+  }
+
+  /* Returns the name of the favorites filename */
+  private string get_favorites_file() {
+    return( GLib.Path.build_filename( TextShine.get_home_dir(), "favorites.xml" ) );
+  }
+
+  /* Save the favorites to the XML file */
+  private void save_favorites() {
+
+    Xml.Doc*  doc  = new Xml.Doc( "1.0" );
+    Xml.Node* root = new Xml.Node( null, "favorites" );
+    root->set_prop( "version", TextShine.version );
+
+    for( int i=0; i<_favorites.length; i++ ) {
+      Xml.Node* node     = new Xml.Node( null, "function" );
+      var       function = _favorites.index( i );
+      node->set_prop( "type", function.name );
+      root->add_child( node );
+    }
+
+    doc->set_root_element( root );
+    doc->save_format_file( get_favorites_file(), 1 );
+
+    delete doc;
+
+  }
+
+  /* Load the favorites to the XML file */
+  private void load_favorites() {
+
+    Xml.Doc* doc = Xml.Parser.read_file( get_favorites_file(), null, Xml.ParserOption.HUGE );
+    if( doc == null ) {
+      return;
+    }
+
+    for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
+      if( (it->type == Xml.Node.ELEMENT_NODE) && (it->name == "function") ) {
+        var type = it->get_prop( "type" );
+        for( int i=0; i<_functions.length; i++ ) {
+          if( _functions.index( i ).func.name == type ) {
+            favorite_function( _functions.index( i ).func );
+            break;
+          }
+        }
+      }
+    }
+
+    delete doc;
+
   }
 
 }

@@ -49,6 +49,14 @@ public enum FunctionDirection {
       default              :  assert_not_reached();
     }
   }
+
+  public bool is_vertical() {
+    return( (this == TOP_DOWN) || (this == BOTTOM_UP) );
+  }
+
+  public bool is_horizontal() {
+    return( (this == LEFT_TO_RIGHT) || (this == RIGHT_TO_LEFT) );
+  }
 }
 
 public class TextFunction {
