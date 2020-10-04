@@ -25,7 +25,15 @@ public class IndentXML : TextFunction {
 
   /* Constructor */
   public IndentXML() {
-    base( "indent-xml", _( "Indent XML" ) );
+    base( "indent-xml" );
+  }
+
+  protected override string get_label0() {
+    return( _( "Indent XML" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new IndentXML() );
   }
 
   /* Perform the transformation */

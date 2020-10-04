@@ -25,10 +25,18 @@ public class CaseSentence : TextFunction {
 
   /* Constructor */
   public CaseSentence() {
-    base( "case-sentence", _( "Sentence Case" ) );
+    base( "case-sentence" );
     try {
       _re = new Regex( "(^\\s*|[.!?]\\s+)([a-z])" );
     } catch( RegexError e ) {}
+  }
+
+  protected override string get_label0() {
+    return( _( "Sentence Case" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new CaseSentence() );
   }
 
   /* Perform the transformation */

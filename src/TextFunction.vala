@@ -62,8 +62,6 @@ public enum FunctionDirection {
 public class TextFunction {
 
   private string _name;
-  private string _label0;
-  private string _label1;
 
   public string name {
     get {
@@ -71,32 +69,38 @@ public class TextFunction {
     }
   }
   public string label {
-    get {
+    owned get {
       switch( direction ) {
         case FunctionDirection.BOTTOM_UP     :
-        case FunctionDirection.RIGHT_TO_LEFT :  return( _label1 );
-        default                              :  return( _label0 );
+        case FunctionDirection.RIGHT_TO_LEFT :  return( get_label1() );
+        default                              :  return( get_label0() );
       }
-    }
-  }
-  public string label0 {
-    get {
-      return( _label0 );
-    }
-  }
-  public string label1 {
-    get {
-      return( _label1 );
     }
   }
   public FunctionDirection direction { get; set; default = FunctionDirection.NONE; }
 
+  public signal void update_button_label();
+
   /* Constructor */
-  public TextFunction( string name, string label0, string label1 = "", FunctionDirection dir = FunctionDirection.NONE ) {
+  public TextFunction( string name, FunctionDirection dir = FunctionDirection.NONE ) {
     _name     = name;
-    _label0   = label0;
-    _label1   = label1;
     direction = dir;
+  }
+
+  protected virtual string get_label0() {
+    assert( false );
+    return( "" );
+  }
+
+  protected virtual string get_label1() {
+    assert( false );
+    return( "" );
+  }
+
+  /* Creates a copy of this function */
+  public virtual TextFunction copy() {
+    assert( false );
+    return( new TextFunction( _name, direction ) );
   }
 
   /* Executes this text function using the editor */
@@ -136,6 +140,27 @@ public class TextFunction {
   */
   protected string replace_text( string original, int start_pos, int end_pos, string replacement ) {
     return( original.splice( 0, start_pos ) + replacement + original.splice( end_pos, original.length ) );
+  }
+
+  /* Returns true if settings are available */
+  public virtual bool settings_available() {
+    return( false );
+  }
+
+  /* Populates the given popover with the text function settings widgets */
+  public virtual void add_settings( Box box, int padding ) {
+    // By default, we will do nothing
+  }
+
+  /* Called to save this text function in XML format */
+  public virtual Xml.Node* save() {
+    Xml.Node* node = new Xml.Node( null, "function" );
+    node->set_prop( "name", _name );
+    return( node );
+  }
+
+  /* Loads the contents of this text function */
+  public virtual void load( Xml.Node* node ) {
   }
 
 }

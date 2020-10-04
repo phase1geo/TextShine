@@ -24,7 +24,15 @@ using Gee;
 public class RemoveDuplicateLines : TextFunction {
 
   public RemoveDuplicateLines() {
-    base( "remove-duplicate-lines", _( "Remove Duplicate Lines" ) );
+    base( "remove-duplicate-lines" );
+  }
+
+  protected override string get_label0() {
+    return( _( "Remove Duplicate Lines" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new RemoveDuplicateLines() );
   }
 
   /* Perform the transformation */

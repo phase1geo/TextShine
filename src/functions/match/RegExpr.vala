@@ -33,11 +33,19 @@ public class RegExpr : TextFunction {
   /* Constructor */
   public RegExpr( MainWindow win ) {
 
-    base( "regexpr", _( "Regular Expression" ) );
+    base( "regexpr" );
 
     _win = win;
     _win.add_widget( "reg-expr", create_widget() );
 
+  }
+
+  protected override string get_label0() {
+    return( _( "Regulard Expression" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new RegExpr( _win ) );
   }
 
   /* Creates the search UI */

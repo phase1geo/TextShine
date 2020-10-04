@@ -23,7 +23,15 @@ public class CaseLower : TextFunction {
 
   /* Constructor */
   public CaseLower() {
-    base( "case-lower", _( "Lower Case" ) );
+    base( "case-lower" );
+  }
+
+  protected override string get_label0() {
+    return( _( "Lower Case" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new CaseLower() );
   }
 
   /* Perform the transformation */
@@ -31,9 +39,7 @@ public class CaseLower : TextFunction {
     string[] parts;
     string   orig;
     if( CaseCamel.is_camel_case( original, out parts ) ) {
-      stdout.printf( "Found camel case, parts[0]: %s\n", parts[0] );
       orig = string.joinv( " ", parts );
-      stdout.printf( "  orig: %s\n", orig );
     } else if( CaseSnake.is_snake_case( original, out parts ) ) {
       orig = string.joinv( " ", parts );
     } else {

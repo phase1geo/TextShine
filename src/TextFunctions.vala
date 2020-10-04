@@ -38,7 +38,7 @@ public class Functions {
     _exp      = exp;
   }
   public void reveal( string value ) {
-    var contains = _func.label0.down().contains( value );
+    var contains = _func.label.down().contains( value );
     _revealer.reveal_child = contains;
     if( contains ) {
       _exp.expanded = true;
@@ -166,7 +166,7 @@ public class TextFunctions {
 
     var fbox = new Box( Orientation.HORIZONTAL, 5 );
 
-    var button = new Button.with_label( function.label0 );
+    var button = new Button.with_label( function.label );
     button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
@@ -176,10 +176,13 @@ public class TextFunctions {
       _undo.append_val( function.get_change() );
     });
 
-    fbox.pack_start( button, false, false, 0 );
+    var grid = new Grid();
+    add_settings_button(  grid, function );
+    add_favorite_button(  grid, function );
+    add_direction_button( grid, button, function );
 
-    add_favorite_button(  fbox, function );
-    add_direction_button( fbox, button, function );
+    fbox.pack_start( button, false, true,  0 );
+    fbox.pack_end(   grid,   false, false, 0 );
 
     var revealer = new Revealer();
     revealer.add( fbox );
@@ -190,16 +193,19 @@ public class TextFunctions {
 
     if( exp != null ) {
       _functions.append_val( new Functions( function, revealer, exp ) );
+      function.update_button_label.connect(() => {
+        button.label = function.label;
+      });
     }
 
   }
 
   /* Creates the direction button (if necessary) and adds it to the given box */
-  private void add_direction_button( Box box, Button btn, TextFunction function ) {
+  private void add_direction_button( Grid grid, Button btn, TextFunction function ) {
 
     if( function.direction == FunctionDirection.NONE ) return;
 
-    var icon_name = function.direction.is_vertical() ? "object-flip-vertical-symbolic" : "object-flip-horizontal-symbolic";
+    var icon_name = function.direction.is_vertical() ? "object-flip-vertical-symbolic" : "media-playlist-repeat-symbolic";
     var tooltip   = function.direction.is_vertical() ? _( "Switch Direction" ) : _( "Swap Order" );
 
     var direction = new Button.from_icon_name( icon_name, IconSize.SMALL_TOOLBAR );
@@ -210,28 +216,25 @@ public class TextFunctions {
       switch( function.direction ) {
         case FunctionDirection.TOP_DOWN :
           function.direction = FunctionDirection.BOTTOM_UP;
-          btn.label          = function.label1;
           break;
         case FunctionDirection.BOTTOM_UP :
           function.direction = FunctionDirection.TOP_DOWN;
-          btn.label          = function.label0;
           break;
         case FunctionDirection.LEFT_TO_RIGHT :
           function.direction = FunctionDirection.RIGHT_TO_LEFT;
-          btn.label          = function.label1;
           break;
         case FunctionDirection.RIGHT_TO_LEFT :
           function.direction = FunctionDirection.LEFT_TO_RIGHT;
-          btn.label          = function.label0;
           break;
       }
+      btn.label = function.label;
     });
 
-    box.pack_end( direction, false, false, 0 );
+    grid.attach( direction, 0, 0 );
 
   }
 
-  private void add_favorite_button( Box box, TextFunction function ) {
+  private void add_favorite_button( Grid grid, TextFunction function ) {
 
     var favorited = is_favorite( function );
     var icon_name = favorited ? "starred-symbolic" : "non-starred-symbolic";
@@ -244,7 +247,28 @@ public class TextFunctions {
       toggle_favorite( favorite, function );
     });
 
-    box.pack_end( favorite, false, false, 0 );
+    grid.attach( favorite, 1, 0 );
+
+  }
+
+  private void add_settings_button( Grid grid, TextFunction function ) {
+
+    if( !function.settings_available() ) return;
+
+    var settings = new MenuButton();
+    settings.image  = new Image.from_icon_name( "view-more-symbolic", IconSize.SMALL_TOOLBAR );
+    settings.relief = ReliefStyle.NONE;
+    settings.popover   = new Popover( null );
+    settings.set_tooltip_text( _( "Settings" ) );
+
+    var box = new Box( Orientation.VERTICAL, 0 );
+
+    function.add_settings( box, 5 );
+
+    settings.popover.add( box );
+    box.show_all();
+
+    grid.attach( settings, 2, 0 );
 
   }
 
@@ -274,7 +298,7 @@ public class TextFunctions {
       button.image = new Image.from_icon_name( "non-starred-symbolic", IconSize.SMALL_TOOLBAR );
       button.set_tooltip_text( _( "Favorite" ) );
     } else {
-      favorite_function( function );
+      favorite_function( function.copy() );
       button.image = new Image.from_icon_name( "starred-symbolic", IconSize.SMALL_TOOLBAR );
       button.set_tooltip_text( _( "Unfavorite" ) );
     }
@@ -320,7 +344,7 @@ public class TextFunctions {
     var exp = create_category( "favorites", _( "Favorites" ), out _favorite_box );
 
     for( int i=0; i<_favorites.length; i++ ) {
-      add_function( _favorite_box, null, _favorites.index( i ) );
+      add_function( _favorite_box, null, _favorites.index( i ).copy() );
     }
 
     return( exp );
@@ -357,7 +381,6 @@ public class TextFunctions {
     Box box;
     var exp = create_category( "replace", _( "Replace" ), out box );
     add_function( box, exp, new ReplaceTabsSpaces() );
-    add_function( box, exp, new ReplaceTabsSpaces4() );
     add_function( box, exp, new ReplacePeriodsEllipsis() );
     return( exp );
   }
@@ -453,10 +476,7 @@ public class TextFunctions {
     root->set_prop( "version", TextShine.version );
 
     for( int i=0; i<_favorites.length; i++ ) {
-      Xml.Node* node     = new Xml.Node( null, "function" );
-      var       function = _favorites.index( i );
-      node->set_prop( "type", function.name );
-      root->add_child( node );
+      root->add_child( _favorites.index( i ).save() );
     }
 
     doc->set_root_element( root );
@@ -476,10 +496,11 @@ public class TextFunctions {
 
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
       if( (it->type == Xml.Node.ELEMENT_NODE) && (it->name == "function") ) {
-        var type = it->get_prop( "type" );
+        var name = it->get_prop( "name" );
         for( int i=0; i<_functions.length; i++ ) {
-          if( _functions.index( i ).func.name == type ) {
-            favorite_function( _functions.index( i ).func );
+          if( _functions.index( i ).func.name == name ) {
+            var fn = _functions.index( i ).func.copy();
+            fn.load( it );
             break;
           }
         }

@@ -26,11 +26,19 @@ public class CaseCamel : TextFunction {
 
   /* Constructor */
   public CaseCamel() {
-    base( "case-camel", _( "Camel Case" ) );
+    base( "case-camel" );
     try {
       _re = new Regex( "[a-zA-Z]( )([a-z])" );
       _is = new Regex( "(^|[A-Z])[a-z]*" );
     } catch( RegexError e ) {}
+  }
+
+  protected override string get_label0() {
+    return( _( "Camel Case" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new CaseCamel() );
   }
 
   /* Perform the transformation */

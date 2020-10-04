@@ -22,7 +22,15 @@
 public class RemoveBlankLines : TextFunction {
 
   public RemoveBlankLines() {
-    base( "remove-blank-lines", _( "Remove Blank Lines" ) );
+    base( "remove-blank-lines" );
+  }
+
+  protected override string get_label0() {
+    return( _( "Remove Blank Lines" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new RemoveBlankLines() );
   }
 
   /* Perform the transformation */

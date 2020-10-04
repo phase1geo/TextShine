@@ -24,7 +24,15 @@ using Gee;
 public class RemoveLeadingWhitespace : TextFunction {
 
   public RemoveLeadingWhitespace() {
-    base( "remove-leading-whitespace", _( "Remove Leading Whitespace" ) );
+    base( "remove-leading-whitespace" );
+  }
+
+  protected override string get_label0() {
+    return( _( "Remove Leading Whitespace" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new RemoveLeadingWhitespace() );
   }
 
   /* Perform the transformation */

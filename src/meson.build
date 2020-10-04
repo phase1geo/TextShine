@@ -19,7 +19,6 @@ sources += files(
 
     'functions/replace/ReplacePeriodsEllipsis.vala',
     'functions/replace/ReplaceTabsSpaces.vala',
-    'functions/replace/ReplaceTabsSpaces4.vala',
 
     'functions/sort/SortLines.vala',
     'functions/sort/SortReverseChars.vala',

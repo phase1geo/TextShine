@@ -24,7 +24,7 @@ public class TextChange {
   private TextFunction _function;
 
   public string label {
-    get {
+    owned get {
       return( _function.label );
     }
   }

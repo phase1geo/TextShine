@@ -23,7 +23,19 @@ public class ReplacePeriodsEllipsis : TextFunction {
 
   /* Constructor */
   public ReplacePeriodsEllipsis() {
-    base( "replace-periods-ellipsis", _( "Three Periods With Ellipsis" ), _( "Ellipsis With Three Periods" ), FunctionDirection.LEFT_TO_RIGHT );
+    base( "replace-periods-ellipsis", FunctionDirection.LEFT_TO_RIGHT );
+  }
+
+  protected override string get_label0() {
+    return( _( "Three Periods With Ellipsis" ) );
+  }
+
+  protected override string get_label1() {
+    return( _( "Ellipsis With Three Periods" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new ReplacePeriodsEllipsis() );
   }
 
   /* Perform the transformation */

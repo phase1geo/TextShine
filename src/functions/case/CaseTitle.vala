@@ -25,10 +25,18 @@ public class CaseTitle : TextFunction {
 
   /* Constructor */
   public CaseTitle() {
-    base( "case-title", _( "Title Case" ) );
+    base( "case-title" );
     try {
       _re = new Regex( "(^|\\W)([a-z])" );
     } catch( RegexError e ) {}
+  }
+
+  protected override string get_label0() {
+    return( _( "Title Case" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new CaseTitle() );
   }
 
   /* Perform the transformation */

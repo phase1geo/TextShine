@@ -23,7 +23,19 @@ public class SortLines : TextFunction {
 
   /* Constructor */
   public SortLines() {
-    base( "sort-lines", _( "Sort Lines" ), _( "Sort Lines Reversed" ), FunctionDirection.TOP_DOWN );
+    base( "sort-lines", FunctionDirection.TOP_DOWN );
+  }
+
+  protected override string get_label0() {
+    return( _( "Sort Lines" ) );
+  }
+
+  protected override string get_label1() {
+    return( _( "Sort Lines Reversed" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new SortLines() );
   }
 
   /* Perform the transformation */

@@ -23,7 +23,15 @@ public class CaseUpper : TextFunction {
 
   /* Constructor */
   public CaseUpper() {
-    base( "case-upper", _( "Upper Case" ) );
+    base( "case-upper" );
+  }
+
+  protected override string get_label0() {
+    return( _( "Upper Case" ) );
+  }
+
+  public override TextFunction copy() {
+    return( new CaseUpper() );
   }
 
   /* Perform the transformation */
