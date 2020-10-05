@@ -33,6 +33,7 @@ public class MainWindow : ApplicationWindow {
   private Button                   _copy_btn;
   private Button                   _undo_btn;
   private Button                   _redo_btn;
+  private Button                   _record_btn;
   private MenuButton               _prop_btn;
   private FontButton               _font;
   private Sidebar                  _sidebar;
@@ -40,6 +41,7 @@ public class MainWindow : ApplicationWindow {
   private InfoBar                  _info;
   private HashMap<string,Revealer> _widgets;
   private TextFunctions            _functions;
+  private bool                     _recording;
 
   public TextFunctions functions {
     get {
@@ -49,6 +51,8 @@ public class MainWindow : ApplicationWindow {
 
   /* Constructor */
   public MainWindow() {
+
+    _recording = false;
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
 
@@ -170,6 +174,11 @@ public class MainWindow : ApplicationWindow {
 
     _header.pack_end( add_properties_button() );
 
+    _record_btn = new Button.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
+    _record_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Record Custom Action" ), "<Control>r" ) );
+    _record_btn.clicked.connect( toggle_record );
+    _header.pack_end( _record_btn );
+
     set_titlebar( _header );
 
   }
@@ -270,6 +279,16 @@ public class MainWindow : ApplicationWindow {
   /* Performs a redo operation */
   private void do_redo() {
     // TODO
+  }
+
+  private void toggle_record() {
+    if( _recording ) {
+      _record_btn.image = new Image.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
+      _recording        = false;
+    } else {
+      _record_btn.image = new Image.from_icon_name( "media-playback-stop", IconSize.LARGE_TOOLBAR );
+      _recording        = true;
+    }
   }
 
   /* Adds the given widget to the widgets box */

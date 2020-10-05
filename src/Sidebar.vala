@@ -71,6 +71,7 @@ public class Sidebar {
   private Box                 _box;
   private Box                 _favorite_box;
   private Box                 _custom_box;
+  private bool                _edit_custom;
 
   /* Constructor */
   public Sidebar( MainWindow win, Editor editor, Box box ) {
@@ -111,7 +112,7 @@ public class Sidebar {
     box.pack_start( _search, false, false, 10 );
     box.pack_start( sw,      true,  true,  10 );
 
-    _box = cbox;
+    _box = box;
 
   }
 
@@ -160,8 +161,13 @@ public class Sidebar {
     _categories.append_val( new Category( setting, exp ) );
 
     switch( name ) {
-      case "favorites" :  _favorite_box = item_box;  break;
-      case "custom"    :  _custom_box   = item_box;  break;
+      case "favorites" :
+        _favorite_box = item_box;
+        break;
+      case "custom" :
+        _custom_box = item_box;
+        add_create_custom( item_box, exp );
+        break;
     }
 
     return( exp );
@@ -185,9 +191,16 @@ public class Sidebar {
 
     var grid = new Grid();
     add_favorite_button(  grid, function );
-    if( category != "favorites" ) {
-      add_direction_button( grid, button, function );
-      add_settings_button(  grid, function );
+
+    switch( category ) {
+      case "favorites" :  break;
+      case "custom"    :
+        add_edit_button( grid, function );
+        break;
+      default          :
+        add_direction_button( grid, button, function );
+        add_settings_button(  grid, function );
+        break;
     }
 
     fbox.pack_start( button, false, true,  0 );
@@ -206,6 +219,28 @@ public class Sidebar {
         button.label = function.label;
       });
     }
+
+  }
+
+  private void add_create_custom( Box box, Expander? exp ) {
+
+    var fbox = new Box( Orientation.HORIZONTAL, 5 );
+
+    var button = new Button.with_label( "Create Custom Action" );
+    button.halign = Align.START;
+    button.set_relief( ReliefStyle.NONE );
+    button.clicked.connect(() => {
+      edit_custom( null );
+    });
+
+    fbox.pack_start( button, false, true, 0 );
+
+    var revealer = new Revealer();
+    revealer.add( fbox );
+    revealer.border_width = 5;
+    revealer.reveal_child = true;
+
+    box.pack_start( revealer, false, false, 0 );
 
   }
 
@@ -239,7 +274,7 @@ public class Sidebar {
       btn.label = function.label;
     });
 
-    grid.attach( direction, 0, 0 );
+    grid.attach( direction, 1, 0 );
 
   }
 
@@ -266,7 +301,7 @@ public class Sidebar {
       toggle_favorite( favorite, function );
     });
 
-    grid.attach( favorite, 1, 0 );
+    grid.attach( favorite, 2, 0 );
 
   }
 
@@ -288,10 +323,12 @@ public class Sidebar {
   /* Add the given function to the favorite list */
   private void favorite_function( TextFunction function ) {
 
-    /* Mark the function as a favorite */
-    _win.functions.favorite_function( function );
+    var fn = function.copy();
 
-    add_function( "favorites", _favorite_box, null, function );
+    /* Mark the function as a favorite */
+    _win.functions.favorite_function( fn );
+
+    add_function( "favorites", _favorite_box, null, fn );
     _favorite_box.show_all();
 
   }
@@ -317,7 +354,7 @@ public class Sidebar {
     if( !function.settings_available() ) return;
 
     var settings = new MenuButton();
-    settings.image  = new Image.from_icon_name( "view-more-symbolic", IconSize.SMALL_TOOLBAR );
+    settings.image  = new Image.from_icon_name( "open-menu-symbolic", IconSize.SMALL_TOOLBAR );
     settings.relief = ReliefStyle.NONE;
     settings.popover   = new Popover( null );
     settings.set_tooltip_text( _( "Settings" ) );
@@ -329,7 +366,89 @@ public class Sidebar {
     settings.popover.add( box );
     box.show_all();
 
-    grid.attach( settings, 2, 0 );
+    grid.attach( settings, 0, 0 );
+
+  }
+
+  /* Adds the edit button to the custom function */
+  private void add_edit_button( Grid grid, TextFunction function ) {
+
+    var edit = new Button.from_icon_name( "edit-symbolic", IconSize.SMALL_TOOLBAR );
+    edit.relief = ReliefStyle.NONE;
+    edit.set_tooltip_text( _( "Edit Action" ) );
+    edit.clicked.connect(() => {
+      edit_custom( (CustomFunction)function );
+    });
+
+    grid.attach( edit, 0, 0 );
+
+  }
+
+  /* Creates the custom action edit interface, populates it and displays it */
+  private void edit_custom( CustomFunction? function ) {
+
+    var popover = new Popover( _box );
+    var box     = new Box( Orientation.VERTICAL, 5 );
+
+    var lbox = new Box( Orientation.HORIZONTAL, 5 );
+    var llbl = new Label( _( "Name:" ) );
+    var le   = new Entry();
+
+    lbox.pack_start( llbl, false, false, 0 );
+    lbox.pack_start( le,   false, true,  0 );
+
+    /* Create scrolled box */
+    var abox = new Box( Orientation.VERTICAL, 0 );
+    var asw  = new ScrolledWindow( null, null );
+    var avp  = new Viewport( null, null );
+    avp.set_size_request( 300, 600 );
+    avp.add( abox );
+    asw.add( avp );
+
+    var bbox = new Box( Orientation.HORIZONTAL, 5 );
+    var bdel = new Button.with_label( _( "Delete" ) );
+    bdel.clicked.connect(() => {
+      _win.functions.remove_function( function );
+      popover.popdown();
+      _edit_custom = false;
+    });
+    var bcan = new Button.with_label( _( "Cancel" ) );
+    bcan.clicked.connect(() => {
+      popover.popdown();
+      _edit_custom = false;
+    });
+    var bsav = new Button.with_label( _( "Save" ) );
+    bsav.clicked.connect(() => {
+      _win.functions.save_custom();
+      popover.popdown();
+      _edit_custom = false;
+    });
+
+    if( function != null ) {
+      bbox.pack_start( bdel, false, false, 0 );
+    }
+    bbox.pack_end(   bsav, false, false, 0 );
+    bbox.pack_end(   bcan, false, false, 0 );
+
+    box.pack_start( lbox, false, true, 0 );
+    box.pack_start( asw,  true,  true, 0 );
+    box.pack_start( bbox, false, true, 0 );
+
+    /* Populate the UI */
+    if( function != null ) {
+      le.text = function.label;
+      for( int i=0; i<function.functions.length; i++ ) {
+        add_function( "", abox, null, function.functions.index( i ) );
+      }
+    } else {
+      // TBD
+    }
+
+    popover.add( box );
+    popover.modal = false;
+    popover.show_all();
+
+    _edit_custom = true;
 
   }
 

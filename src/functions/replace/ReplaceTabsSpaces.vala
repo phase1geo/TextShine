@@ -49,7 +49,8 @@ public class ReplaceTabsSpaces : TextFunction {
 
   public override TextFunction copy() {
     var fn = new ReplaceTabsSpaces();
-    fn._spaces = _spaces;
+    fn.direction = direction;
+    fn._spaces   = _spaces;
     return( fn );
   }
 

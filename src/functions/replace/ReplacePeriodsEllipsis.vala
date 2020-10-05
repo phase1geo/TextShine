@@ -35,7 +35,9 @@ public class ReplacePeriodsEllipsis : TextFunction {
   }
 
   public override TextFunction copy() {
-    return( new ReplacePeriodsEllipsis() );
+    var fn = new ReplacePeriodsEllipsis();
+    fn.direction = direction;
+    return( fn );
   }
 
   /* Perform the transformation */

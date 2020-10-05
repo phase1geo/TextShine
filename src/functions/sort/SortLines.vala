@@ -35,7 +35,9 @@ public class SortLines : TextFunction {
   }
 
   public override TextFunction copy() {
-    return( new SortLines() );
+    var fn = new SortLines();
+    fn.direction = direction;
+    return( fn );
   }
 
   /* Perform the transformation */

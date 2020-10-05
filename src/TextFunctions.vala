@@ -187,8 +187,6 @@ public class TextFunctions {
   /* Save the favorites to the XML file */
   private void save_favorites() {
 
-    stdout.printf( "In save_favorites\n" );
-
     var functions = get_category_functions( "favorites" );
 
     Xml.Doc*  doc  = new Xml.Doc( "1.0" );
@@ -233,7 +231,7 @@ public class TextFunctions {
   }
 
   /* Saves the custom functions to their own file */
-  private void save_custom() {
+  public void save_custom() {
 
     var functions = get_category_functions( "custom" );
 
