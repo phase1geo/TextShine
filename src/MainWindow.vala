@@ -27,25 +27,30 @@ public class MainWindow : ApplicationWindow {
   private const string DESKTOP_SCHEMA = "io.elementary.desktop";
   private const string DARK_KEY       = "prefer-dark";
 
-  private HeaderBar     _header;
-  private Editor        _editor;
-  private Button        _paste_btn;
-  private Button        _copy_btn;
-  private Button        _undo_btn;
-  private Button        _redo_btn;
-  private MenuButton    _prop_btn;
-  private FontButton    _font;
-  private TextFunctions _functions;
-  private Box           _widget_box;
-  private InfoBar       _info;
+  private HeaderBar                _header;
+  private Editor                   _editor;
+  private Button                   _paste_btn;
+  private Button                   _copy_btn;
+  private Button                   _undo_btn;
+  private Button                   _redo_btn;
+  private MenuButton               _prop_btn;
+  private FontButton               _font;
+  private Sidebar                  _sidebar;
+  private Box                      _widget_box;
+  private InfoBar                  _info;
   private HashMap<string,Revealer> _widgets;
+  private TextFunctions            _functions;
+
+  public TextFunctions functions {
+    get {
+      return( _functions );
+    }
+  }
 
   /* Constructor */
   public MainWindow() {
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
-
-    _widgets = new HashMap<string,Revealer>();
 
     /* Handle any changes to the dark mode preference setting */
     handle_prefer_dark_changes();
@@ -77,6 +82,10 @@ public class MainWindow : ApplicationWindow {
     ebox.pack_start( _widget_box, false, true, 0 );
     ebox.pack_start( _info,       false, true, 0 );
     ebox.pack_start( sw,          true,  true, 0 );
+
+    /* Create the widgets and functions after we have added some of the UI elements */
+    _widgets   = new HashMap<string,Revealer>();
+    _functions = new TextFunctions( this );
 
     /* Create sidebar */
     var sidebar = create_sidebar();
@@ -236,7 +245,7 @@ public class MainWindow : ApplicationWindow {
 
     var box = new Box( Orientation.VERTICAL, 0 );
 
-    _functions = new TextFunctions( this, _editor, box );
+    _sidebar = new Sidebar( this, _editor, box );
 
     return( box );
 

@@ -160,7 +160,7 @@ public class TextFunction {
   }
 
   /* Loads the contents of this text function */
-  public virtual void load( Xml.Node* node ) {
+  public virtual void load( Xml.Node* node, TextFunctions functions ) {
   }
 
 }

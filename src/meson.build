@@ -24,8 +24,10 @@ sources += files(
     'functions/sort/SortReverseChars.vala',
 
     'Application.vala',
+    'CustomFunction.vala',
     'Editor.vala',
     'MainWindow.vala',
+    'Sidebar.vala',
     'TextChange.vala',
     'TextFunction.vala',
     'TextFunctions.vala',

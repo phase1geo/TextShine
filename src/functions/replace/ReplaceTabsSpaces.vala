@@ -95,7 +95,7 @@ public class ReplaceTabsSpaces : TextFunction {
     return( node );
   }
 
-  public override void load( Xml.Node* node ) {
+  public override void load( Xml.Node* node, TextFunctions functions ) {
     var s = node->get_prop( "spaces" );
     if( s != null ) {
       _spaces = int.parse( s );
