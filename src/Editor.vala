@@ -144,6 +144,26 @@ public class Editor : SourceView {
     }
   }
 
+  /* Copies the selected text (if selected) or the entire buffer contents */
+  public void copy_to_clipboard( Clipboard clipboard ) {
+    TextIter start, end;
+    if( buffer.get_selection_bounds( out start, out end ) ) {
+      buffer.copy_clipboard( clipboard );
+    } else {
+      clipboard.clear();
+      clipboard.set_text( buffer.text, buffer.text.length );
+    }
+  }
+
+  /* Clears the text in the buffer */
+  public void clear() {
+    TextIter start, end;
+    buffer.get_bounds( out start, out end );
+    if( start.compare( end ) != 0 ) {
+      buffer.delete_range( start, end );
+    }
+  }
+
   /* Clears the selection */
   public void clear_selection() {
     TextIter ins;

@@ -50,7 +50,7 @@ public class TextShine : Granite.Application {
     default_theme.add_resource_path( "/com/github/phase1geo/textshine" );
 
     /* Create the main window */
-    appwin = new MainWindow();
+    appwin = new MainWindow( this );
 
     /* Handle any changes to the position of the window */
     appwin.configure_event.connect(() => {

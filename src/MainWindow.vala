@@ -29,6 +29,9 @@ public class MainWindow : ApplicationWindow {
 
   private HeaderBar                _header;
   private Editor                   _editor;
+  private Button                   _clear_btn;
+  private Button                   _open_btn;
+  private Button                   _save_btn;
   private Button                   _paste_btn;
   private Button                   _copy_btn;
   private Button                   _undo_btn;
@@ -43,6 +46,18 @@ public class MainWindow : ApplicationWindow {
   private TextFunctions            _functions;
   private CustomFunction           _custom;
   private bool                     _recording;
+  private string?                  _current_file = null;
+
+  private const GLib.ActionEntry[] action_entries = {
+    { "action_clear", do_clear },
+    { "action_open",  do_open },
+    { "action_save",  do_save },
+    { "action_quit",  do_quit },
+    { "action_paste", do_paste },
+    { "action_copy",  do_copy },
+    { "action_undo",  do_undo },
+    { "action_redo",  do_redo }
+  };
 
   public TextFunctions functions {
     get {
@@ -51,7 +66,9 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Constructor */
-  public MainWindow() {
+  public MainWindow( Gtk.Application app ) {
+
+    Object( application: app );
 
     _recording = false;
     _custom    = new CustomFunction( "custom-1", "Custom #1" );
@@ -102,9 +119,29 @@ public class MainWindow : ApplicationWindow {
     add( box );
     show_all();
 
+    /* Set the stage for menu actions */
+    var actions = new SimpleActionGroup ();
+    actions.add_action_entries( action_entries, this );
+    insert_action_group( "win", actions );
+
+    /* Add keyboard shortcuts */
+    add_keyboard_shortcuts( app );
+
     /* Handle the application closing */
     destroy.connect( Gtk.main_quit );
 
+  }
+
+  /* Adds keyboard shortcuts for the menu actions */
+  private void add_keyboard_shortcuts( Gtk.Application app ) {
+    app.set_accels_for_action( "win.action_clear",         { "<Control>BackSpace" } );
+    app.set_accels_for_action( "win.action_open",          { "<Control>o" } );
+    app.set_accels_for_action( "win.action_save",          { "<Control>s" } );
+    app.set_accels_for_action( "win.action_quit",          { "<Control>q" } );
+    app.set_accels_for_action( "win.action_paste",         { "<Control>v" } );
+    app.set_accels_for_action( "win.action_copy",          { "<Control>c" } );
+    app.set_accels_for_action( "win.action_undo",          { "<Control>z" } );
+    app.set_accels_for_action( "win.action_redo",          { "<Control><Shift>z" } );
   }
 
   private void action_applied( TextFunction function ) {
@@ -157,6 +194,21 @@ public class MainWindow : ApplicationWindow {
 
     _header = new HeaderBar();
     _header.set_show_close_button( true );
+
+    _clear_btn = new Button.from_icon_name( "edit-clear", IconSize.LARGE_TOOLBAR );
+    _clear_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Clear Text" ), "<Control>BackSpace" ) );
+    _clear_btn.clicked.connect( do_clear );
+    _header.pack_start( _clear_btn );
+
+    _open_btn = new Button.from_icon_name( "document-open", IconSize.LARGE_TOOLBAR );
+    _open_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Open File" ), "<Control>o" ) );
+    _open_btn.clicked.connect( do_open );
+    _header.pack_start( _open_btn );
+
+    _save_btn = new Button.from_icon_name( "document-save", IconSize.LARGE_TOOLBAR );
+    _save_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Save File" ), "<Control>s" ) );
+    _save_btn.clicked.connect( do_save );
+    _header.pack_start( _save_btn );
 
     _paste_btn = new Button.from_icon_name( "edit-paste", IconSize.LARGE_TOOLBAR );
     _paste_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Paste Text" ), "<Control>v" ) );
@@ -269,25 +321,70 @@ public class MainWindow : ApplicationWindow {
 
   }
 
+  /* Clears the buffer for reuse */
+  private void do_clear() {
+    _current_file = null;
+    _editor.clear();
+    _custom.clear();
+    _editor.grab_focus();
+  }
+
+  private void do_open() {
+    // TBD
+    _editor.grab_focus();
+  }
+
+  private void do_save() {
+
+    if( _current_file == null ) {
+      var dialog = new FileChooserNative( _( "Save File" ), this, FileChooserAction.SAVE, _( "Save" ), _( "Cancel" ) );
+      if( dialog.run() != ResponseType.ACCEPT ) return;
+      _current_file = dialog.get_filename();
+    }
+
+    var file = File.new_for_path( _current_file );
+
+    try {
+      var os = file.replace( null, false, FileCreateFlags.NONE );
+      os.write( _editor.buffer.text.data );
+      os.close();
+    } catch( Error e ) {
+      show_error( e.message );
+    }
+
+    _editor.grab_focus();
+
+  }
+
+  /* Quits the application */
+  private void do_quit() {
+    destroy();
+  }
+
   /* Pastes the contents of the clipboard to the editor */
-  private void do_paste() { var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
+  private void do_paste() {
+    var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
     _editor.buffer.paste_clipboard( clipboard, null, true );
+    _editor.grab_focus();
   }
 
   /* Copies the contents of editor to the clipboard */
   private void do_copy() {
     var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
-    _editor.buffer.copy_clipboard( clipboard );
+    _editor.copy_to_clipboard( clipboard );
+    _editor.grab_focus();
   }
 
   /* Performs an undo operation */
   private void do_undo() {
     // TODO
+    _editor.grab_focus();
   }
 
   /* Performs a redo operation */
   private void do_redo() {
     // TODO
+    _editor.grab_focus();
   }
 
   /* Toggles the record status */

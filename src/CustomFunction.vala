@@ -43,6 +43,11 @@ public class CustomFunction : TextFunction {
     return( _label );
   }
 
+  /* Clears the contents of this function */
+  public void clear() {
+    _functions.remove_range( 0, _functions.length );
+  }
+
   /*
    This is the main function which will be called from the UI to perform the
    transformation action.  By default, we will run the transformation one time,
