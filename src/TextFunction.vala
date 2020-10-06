@@ -156,11 +156,16 @@ public class TextFunction {
   public virtual Xml.Node* save() {
     Xml.Node* node = new Xml.Node( null, "function" );
     node->set_prop( "name", _name );
+    node->set_prop( "direction", direction.to_string() );
     return( node );
   }
 
   /* Loads the contents of this text function */
   public virtual void load( Xml.Node* node, TextFunctions functions ) {
+    var d = node->get_prop( "direction" );
+    if( d != null ) {
+      direction = FunctionDirection.parse( d );
+    }
   }
 
 }

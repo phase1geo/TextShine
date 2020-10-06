@@ -67,11 +67,12 @@ public class Sidebar {
   private Array<TextChange>   _undo;
   private Array<TextChange>   _redo;
   private SearchEntry         _search;
-  private Revealer            _custom;
   private Box                 _box;
   private Box                 _favorite_box;
   private Box                 _custom_box;
   private bool                _edit_custom;
+
+  public signal void action_applied( TextFunction function );
 
   /* Constructor */
   public Sidebar( MainWindow win, Editor editor, Box box ) {
@@ -121,8 +122,6 @@ public class Sidebar {
 
     var value = _search.text.down();
     var empty = (value == "");
-
-    _custom.reveal_child = empty;
 
     for( int i=0; i<_categories.length; i++ ) {
       _categories.index( i ).show( empty );
@@ -187,6 +186,7 @@ public class Sidebar {
       _editor.grab_focus();
       function.launch( _editor );
       _undo.append_val( function.get_change() );
+      action_applied( function );
     });
 
     var grid = new Grid();

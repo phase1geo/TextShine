@@ -41,6 +41,7 @@ public class MainWindow : ApplicationWindow {
   private InfoBar                  _info;
   private HashMap<string,Revealer> _widgets;
   private TextFunctions            _functions;
+  private CustomFunction           _custom;
   private bool                     _recording;
 
   public TextFunctions functions {
@@ -53,6 +54,7 @@ public class MainWindow : ApplicationWindow {
   public MainWindow() {
 
     _recording = false;
+    _custom    = new CustomFunction( "custom-1", "Custom #1" );
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
 
@@ -103,6 +105,12 @@ public class MainWindow : ApplicationWindow {
     /* Handle the application closing */
     destroy.connect( Gtk.main_quit );
 
+  }
+
+  private void action_applied( TextFunction function ) {
+    if( _recording ) {
+      _custom.functions.append_val( function );
+    }
   }
 
   /* Handles any changes to the dark mode preference gsettings for the desktop */
@@ -255,6 +263,7 @@ public class MainWindow : ApplicationWindow {
     var box = new Box( Orientation.VERTICAL, 0 );
 
     _sidebar = new Sidebar( this, _editor, box );
+    _sidebar.action_applied.connect( action_applied );
 
     return( box );
 
@@ -281,6 +290,7 @@ public class MainWindow : ApplicationWindow {
     // TODO
   }
 
+  /* Toggles the record status */
   private void toggle_record() {
     if( _recording ) {
       _record_btn.image = new Image.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
@@ -288,6 +298,7 @@ public class MainWindow : ApplicationWindow {
     } else {
       _record_btn.image = new Image.from_icon_name( "media-playback-stop", IconSize.LARGE_TOOLBAR );
       _recording        = true;
+      _custom.functions.remove_range( 0, _custom.functions.length );
     }
   }
 

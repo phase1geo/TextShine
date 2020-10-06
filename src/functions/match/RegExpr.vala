@@ -41,7 +41,7 @@ public class RegExpr : TextFunction {
   }
 
   protected override string get_label0() {
-    return( _( "Regulard Expression" ) );
+    return( _( "Regular Expression" ) );
   }
 
   public override TextFunction copy() {

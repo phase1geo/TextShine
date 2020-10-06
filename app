@@ -90,13 +90,8 @@ case $1 in
     ;;
 "debug")
     initialize 0
-    # G_DEBUG=fatal-criticals gdb --args ./com.github.phase1geo.textshine "${@:2}"
-    gdb --args ./com.github.phase1geo.textshine "${@:2}"
-    ;;
-"debug-emmet")
-    initialize 1
-    # G_DEBUG=fatal-criticals gdb --args ./com.github.phase1geo.textshine "${@:2}"
-    gdb --args ./com.github.phase1geo.textshine "${@:2}"
+    G_DEBUG=fatal-criticals gdb --args ./com.github.phase1geo.textshine "${@:2}"
+    # gdb --args ./com.github.phase1geo.textshine "${@:2}"
     ;;
 "test")
     test
