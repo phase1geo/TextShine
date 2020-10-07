@@ -24,8 +24,10 @@ using Gtk;
 public class RegExpr : TextFunction {
 
   private MainWindow  _win;
+  private Regex       _re;
   private SearchEntry _pattern;
   private Entry       _replace;
+  private Button      _find_btn;
   private Button      _replace_btn;
   private Editor      _editor;
   private bool        _tags_exist = false;
@@ -35,6 +37,7 @@ public class RegExpr : TextFunction {
 
     base( "regexpr" );
 
+    _re  = null;
     _win = win;
     _win.add_widget( "reg-expr", create_widget() );
 
@@ -55,6 +58,7 @@ public class RegExpr : TextFunction {
     _pattern.placeholder_text = _( "Regular Expression" );
     _pattern.search_changed.connect( do_search );
     _pattern.activate.connect( do_search );
+    _pattern.populate_popup.connect( populate_pattern_popup );
 
     _replace = new Entry();
     _replace.placeholder_text = _( "Replace With" );
@@ -62,26 +66,22 @@ public class RegExpr : TextFunction {
     _replace.activate.connect(() => {
       _replace_btn.clicked();
     });
+    _replace.populate_popup.connect( populate_replace_popup );
 
     var ebox = new Box( Orientation.VERTICAL, 0 );
     ebox.pack_start( _pattern, false, true, 5 );
     ebox.pack_start( _replace, false, true, 5 );
 
-    var mb = new MenuButton();
-    mb.label = _( "Insert Patterns" );
-    mb.popup = new Gtk.Menu();
-    add_character_patterns( mb );
-    add_iteration_patterns( mb );
-    add_location_patterns( mb );
-    add_advanced_patterns( mb );
-    mb.popup.show_all();
+    _find_btn = new Button.with_label( _( "End Search" ) );
+    _find_btn.set_sensitive( false );
+    _find_btn.clicked.connect( end_search );
 
     _replace_btn = new Button.with_label( _( "Replace" ) );
     _replace_btn.set_sensitive( false );
     _replace_btn.clicked.connect( do_replace );
 
     var bbox = new Box( Orientation.VERTICAL, 0 );
-    bbox.pack_start( mb,           false, true, 5 );
+    bbox.pack_start( _find_btn,    false, true, 5 );
     bbox.pack_start( _replace_btn, false, true, 5 );
 
     var box = new Box( Orientation.HORIZONTAL, 5 );
@@ -92,11 +92,29 @@ public class RegExpr : TextFunction {
 
   }
 
-  private void add_pattern_submenu( MenuButton mb, string name, out Gtk.Menu mnu ) {
-    mnu = new Gtk.Menu();
+  private void populate_pattern_popup( Gtk.Menu menu ) {
+    menu.add( new SeparatorMenuItem() );
+    add_character_patterns( menu );
+    add_iteration_patterns( menu );
+    add_location_patterns( menu );
+    add_advanced_patterns( menu );
+    menu.show_all();
+  }
+
+  private void populate_replace_popup( Gtk.Menu menu ) {
+    if( _tags_exist ) {
+      menu.add( new SeparatorMenuItem() );
+      add_case_patterns( menu );
+      add_position_patterns( menu );
+      menu.show_all();
+    }
+  }
+
+  private void add_submenu( Gtk.Menu menu, string name, out Gtk.Menu submenu ) {
+    submenu = new Gtk.Menu();
     var item = new Gtk.MenuItem.with_label( name );
-    item.submenu = mnu;
-    mb.popup.add( item );
+    item.submenu = submenu;
+    menu.add( item );
   }
 
   private void add_pattern( Gtk.Menu mnu, string lbl, string pattern ) {
@@ -105,54 +123,84 @@ public class RegExpr : TextFunction {
     (item.get_child() as Label).use_markup = true;
     item.activate.connect(() => {
       _pattern.insert_at_cursor( pattern );
-      _pattern.grab_focus();
     });
     mnu.add( item );
   }
 
-  private void add_character_patterns( MenuButton mb ) {
-    Gtk.Menu mnu;
-    add_pattern_submenu( mb, _( "Character Patterns" ), out mnu );
-    add_pattern( mnu, _( "Digit" ),          "\\d" );
-    add_pattern( mnu, _( "Non-Digit" ),      "\\D" );
-    add_pattern( mnu, _( "New-line" ),       "\\n" );
-    add_pattern( mnu, _( "Non-New-line" ),   "\\N" );
-    add_pattern( mnu, _( "Tab" ),            "\\t" );
-    add_pattern( mnu, _( "Page Break" ),     "\\f" );
-    add_pattern( mnu, _( "Whitespace" ),     "\\s" );
-    add_pattern( mnu, _( "Non-Whitespace" ), "\\S" );
-    add_pattern( mnu, _( "Word" ),           "\\w" );
-    add_pattern( mnu, _( "Non-Word" ),       "\\W" );
-    add_pattern( mnu, _( "Any character" ),  "." );
+  private void add_character_patterns( Gtk.Menu menu ) {
+    Gtk.Menu submenu;
+    add_submenu( menu, _( "Character Patterns" ), out submenu );
+    add_pattern( submenu, _( "Digit" ),          """\d""" );
+    add_pattern( submenu, _( "Non-Digit" ),      """\D""" );
+    add_pattern( submenu, _( "New-line" ),       """\n""" );
+    add_pattern( submenu, _( "Non-New-line" ),   """\N""" );
+    add_pattern( submenu, _( "Tab" ),            """\t""" );
+    add_pattern( submenu, _( "Page Break" ),     """\f""" );
+    add_pattern( submenu, _( "Whitespace" ),     """\s""" );
+    add_pattern( submenu, _( "Non-Whitespace" ), """\S""" );
+    add_pattern( submenu, _( "Word" ),           """\w""" );
+    add_pattern( submenu, _( "Non-Word" ),       """\W""" );
+    add_pattern( submenu, _( "Any character" ),  "." );
   }
 
-  private void add_location_patterns( MenuButton mb ) {
-    Gtk.Menu mnu;
-    add_pattern_submenu( mb, _( "Location Patterns" ), out mnu );
-    add_pattern( mnu, _( "Word Boundary" ),     "\\b" );
-    add_pattern( mnu, _( "Non-Word Boundary" ), "\\B" );
-    add_pattern( mnu, _( "Start Of Line" ),     "^" );
-    add_pattern( mnu, _( "End Of Line" ),       "$" );
+  private void add_location_patterns( Gtk.Menu menu ) {
+    Gtk.Menu submenu;
+    add_submenu( menu, _( "Location Patterns" ), out submenu );
+    add_pattern( submenu, _( "Word Boundary" ),     """\b""" );
+    add_pattern( submenu, _( "Non-Word Boundary" ), """\B""" );
+    add_pattern( submenu, _( "Start Of Line" ),     "^" );
+    add_pattern( submenu, _( "End Of Line" ),       "$" );
   }
 
-  private void add_iteration_patterns( MenuButton mb ) {
-    Gtk.Menu mnu;
-    add_pattern_submenu( mb, _( "Iteration Patterns" ), out mnu );
-    add_pattern( mnu, _( "0 or 1 Times" ),    "?" );
-    add_pattern( mnu, _( "0 or More Times" ), "*" );
-    add_pattern( mnu, _( "1 or More Times" ), "+" );
+  private void add_iteration_patterns( Gtk.Menu menu ) {
+    Gtk.Menu submenu;
+    add_submenu( menu, _( "Iteration Patterns" ), out submenu );
+    add_pattern( submenu, _( "0 or 1 Times" ),    "?" );
+    add_pattern( submenu, _( "0 or More Times" ), "*" );
+    add_pattern( submenu, _( "1 or More Times" ), "+" );
   }
 
-  private void add_advanced_patterns( MenuButton mb ) {
-    Gtk.Menu mnu;
-    add_pattern_submenu( mb, _( "Advanced Patterns" ), out mnu );
-    add_pattern( mnu, _( "Word" ),         "\\w+" );
-    add_pattern( mnu, _( "Number" ),       "\\d+" );
-    add_pattern( mnu, _( "URL" ),          """(https?://(?:www\.|(?!www))[^\s\.]+\.\S{2,}|www\.\S+\.\S{2,})""" );
-    add_pattern( mnu, _( "E-mail" ),       """([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})""" );
-    add_pattern( mnu, _( "Date" ),         """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
-    add_pattern( mnu, _( "Phone Number" ), """\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}""" );
-    add_pattern( mnu, _( "HTML Tag" ),     """<("[^"]*"|'[^']*'|[^'">])*>""" );
+  private void add_advanced_patterns( Gtk.Menu menu ) {
+    Gtk.Menu submenu;
+    add_submenu( menu, _( "Advanced Patterns" ), out submenu );
+    add_pattern( submenu, _( "Word" ),         """\w+""" );
+    add_pattern( submenu, _( "Number" ),       """\d+""" );
+    add_pattern( submenu, _( "URL" ),          """(https?://(?:www\.|(?!www))[^\s\.]+\.\S{2,}|www\.\S+\.\S{2,})""" );
+    add_pattern( submenu, _( "E-mail" ),       """([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})""" );
+    add_pattern( submenu, _( "Date" ),         """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
+    add_pattern( submenu, _( "Phone Number" ), """\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}""" );
+    add_pattern( submenu, _( "HTML Tag" ),     """<("[^"]*"|'[^']*'|[^'">])*>""" );
+  }
+
+  private void add_replace( Gtk.Menu mnu, string lbl, string pattern ) {
+    var label = (pattern.length < 5) ? (lbl + " - <b>" + pattern + "</b>") : lbl;
+    var item = new Gtk.MenuItem.with_label( label );
+    (item.get_child() as Label).use_markup = true;
+    item.activate.connect(() => {
+      _replace.insert_at_cursor( pattern );
+    });
+    mnu.add( item );
+  }
+
+  private void add_case_patterns( Gtk.Menu menu ) {
+    Gtk.Menu submenu;
+    add_submenu( menu, _( "Case Patterns" ), out submenu );
+    add_replace( submenu, _( "Uppercase Next Character" ), """\u""" );
+    add_replace( submenu, _( "Lowercase Next Character" ), """\l""" );
+    add_replace( submenu, _( "Start Uppercase Change" ),   """\U""" );
+    add_replace( submenu, _( "Start Lowercase Change" ),   """\L""" );
+    add_replace( submenu, _( "End Case Change" ),          """\E""" );
+  }
+
+  private void add_position_patterns( Gtk.Menu menu ) {
+    var captured = (_re.get_capture_count() > 9) ? 9 : _re.get_capture_count();
+    if( captured == 0 ) return;
+    Gtk.Menu submenu;
+    add_submenu( menu, _( "Positional Patterns" ), out submenu );
+    add_replace( submenu, _( "Matched Pattern" ), """\0""" );
+    for( int i=0; i<captured; i++ ) {
+      add_replace( submenu, _( "Subpattern %d" ).printf( i + 1 ), ( """\%d""" ).printf( i + 1 ) );
+    }
   }
 
   /* Perform search and replacement */
@@ -172,11 +220,10 @@ public class RegExpr : TextFunction {
       return;
     }
 
-    Regex     re;
     MatchInfo match;
 
     try {
-      re = new Regex( _pattern.text );
+      _re = new Regex( _pattern.text );
     } catch( RegexError e ) {
       return;
     }
@@ -186,7 +233,7 @@ public class RegExpr : TextFunction {
       var text        = _editor.get_text( ranges.index( i ).start, ranges.index( i ).end );
       var start_index = ranges.index( i ).start.get_offset();
 
-      while( re.match( text, 0, out match ) ) {
+      while( _re.match( text, 0, out match ) ) {
         TextIter start_iter, end_iter;
         int start, end;
         match.fetch_pos( 0, out start, out end );
@@ -201,6 +248,17 @@ public class RegExpr : TextFunction {
     }
 
     update_replace_btn_state();
+
+  }
+
+  /* Finalizes the search operation (TBD) */
+  private void end_search() {
+
+    /* Close the error display */
+    _win.close_error();
+
+    /* Hide the widget */
+    _win.show_widget( "" );
 
   }
 
