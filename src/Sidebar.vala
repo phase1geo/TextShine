@@ -66,11 +66,12 @@ public class Sidebar {
   private Array<Category>     _categories;
   private Array<TextChange>   _undo;
   private Array<TextChange>   _redo;
+  private Button              _record;
   private SearchEntry         _search;
   private Box                 _box;
   private Box                 _favorite_box;
   private Box                 _custom_box;
-  private bool                _edit_custom;
+  private CustomFunction?     _custom;
 
   public signal void action_applied( TextFunction function );
 
@@ -79,7 +80,6 @@ public class Sidebar {
 
     _win        = win;
     _editor     = editor;
-
     _functions  = new Array<Functions>();
     _categories = new Array<Category>();
     _undo       = new Array<TextChange>();
@@ -87,10 +87,20 @@ public class Sidebar {
 
     box.set_size_request( 300, 600 );
 
+    /* Create custom recording button */
+    _record = new Button.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
+    _record.set_relief( ReliefStyle.NONE );
+    _record.set_tooltip_markup( Utils.tooltip_with_accel( _( "Record Custom Action" ), "<Control>r" ) );
+    _record.clicked.connect( toggle_record );
+
     /* Create search box */
     _search = new SearchEntry();
     _search.placeholder_text = _( "Search Actions" );
     _search.search_changed.connect( search_functions );
+
+    var sbox = new Box( Orientation.HORIZONTAL, 5 );
+    sbox.pack_start( _record, false, false, 0 );
+    sbox.pack_start( _search, true,  true,  0 );
 
     /* Create scrolled box */
     var cbox = new Box( Orientation.VERTICAL, 0 );
@@ -110,11 +120,34 @@ public class Sidebar {
     cbox.pack_start( create_category( "search-replace", _( "Search and Replace" ) ), false, false, 5 );
     cbox.pack_start( create_category( "custom",         _( "Custom" ) ),             false, false, 5 );
 
-    box.pack_start( _search, false, false, 10 );
-    box.pack_start( sw,      true,  true,  10 );
+    box.pack_start( sbox, false, true, 10 );
+    box.pack_start( sw,   true,  true, 10 );
 
     _box = box;
 
+  }
+
+  /* Toggles the record status */
+  private void toggle_record() {
+    if( _custom != null ) {
+      _record.image    = new Image.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
+      if( _custom.functions.length > 0 ) {
+        var popover      = _custom.show_ui( _record, save_new_custom );
+        popover.position = PositionType.LEFT;
+      }
+    } else {
+      _record.image = new Image.from_icon_name( "media-playback-stop", IconSize.LARGE_TOOLBAR );
+      _custom       = new CustomFunction();
+    }
+  }
+
+  /* Saves a new custom action set */
+  private void save_new_custom( CustomFunction function ) {
+    var fn = function.copy();
+    add_custom_function( (CustomFunction)fn );
+    _win.functions.add_function( "custom", fn );
+    _win.functions.save_custom();
+    _custom = null;
   }
 
   /* Performs search of all text functions, displaying only those functions which match the search text */

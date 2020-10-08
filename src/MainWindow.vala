@@ -71,7 +71,7 @@ public class MainWindow : ApplicationWindow {
     Object( application: app );
 
     _recording = false;
-    _custom    = new CustomFunction( "Custom #1" );
+    _custom    = new CustomFunction();
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
 

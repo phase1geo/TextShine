@@ -260,8 +260,7 @@ public class TextFunctions {
 
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
       if( (it->type == Xml.Node.ELEMENT_NODE) && (it->name == "custom") ) {
-        var label  = it->get_prop( "label" );
-        var custom = new CustomFunction( label );
+        var custom = new CustomFunction();
         custom.load( it, this );
         add_function( "custom", custom );
       }
