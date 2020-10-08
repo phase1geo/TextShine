@@ -160,13 +160,8 @@ public class Sidebar {
     _categories.append_val( new Category( setting, exp ) );
 
     switch( name ) {
-      case "favorites" :
-        _favorite_box = item_box;
-        break;
-      case "custom" :
-        _custom_box = item_box;
-        add_create_custom( item_box, exp );
-        break;
+      case "favorites" :  _favorite_box = item_box;  break;
+      case "custom"    :  _custom_box   = item_box;  break;
     }
 
     return( exp );
@@ -174,7 +169,7 @@ public class Sidebar {
   }
 
   /* Adds a function button to the given category item box */
-  private void add_function( string category, Box box, Expander? exp, TextFunction function ) {
+  public void add_function( string category, Box box, Expander? exp, TextFunction function ) {
 
     var fbox = new Box( Orientation.HORIZONTAL, 5 );
 
@@ -195,7 +190,7 @@ public class Sidebar {
     switch( category ) {
       case "favorites" :  break;
       case "custom"    :
-        add_edit_button( grid, function );
+        add_edit_button( fbox, grid, function );
         break;
       default          :
         add_direction_button( grid, button, function );
@@ -219,28 +214,6 @@ public class Sidebar {
         button.label = function.label;
       });
     }
-
-  }
-
-  private void add_create_custom( Box box, Expander? exp ) {
-
-    var fbox = new Box( Orientation.HORIZONTAL, 5 );
-
-    var button = new Button.with_label( "Create Custom Action" );
-    button.halign = Align.START;
-    button.set_relief( ReliefStyle.NONE );
-    button.clicked.connect(() => {
-      edit_custom( null );
-    });
-
-    fbox.pack_start( button, false, true, 0 );
-
-    var revealer = new Revealer();
-    revealer.add( fbox );
-    revealer.border_width = 5;
-    revealer.reveal_child = true;
-
-    box.pack_start( revealer, false, false, 0 );
 
   }
 
@@ -348,6 +321,15 @@ public class Sidebar {
 
   }
 
+  public void add_custom_function( CustomFunction function ) {
+    add_function( "custom", _custom_box, null, function );
+    _custom_box.show_all();
+  }
+
+  public void delete_custom_function( CustomFunction function ) {
+    // FOOBAR
+  }
+
   /* Adds the settings button to the text function */
   private void add_settings_button( Grid grid, TextFunction function ) {
 
@@ -371,85 +353,28 @@ public class Sidebar {
   }
 
   /* Adds the edit button to the custom function */
-  private void add_edit_button( Grid grid, TextFunction function ) {
+  private void add_edit_button( Box fbox, Grid grid, TextFunction function ) {
 
     var edit = new Button.from_icon_name( "edit-symbolic", IconSize.SMALL_TOOLBAR );
     edit.relief = ReliefStyle.NONE;
     edit.set_tooltip_text( _( "Edit Action" ) );
     edit.clicked.connect(() => {
-      edit_custom( (CustomFunction)function );
+      var popover = (function as CustomFunction).show_ui( fbox, save_existing_custom, delete_custom );
+      popover.position = PositionType.LEFT;
     });
 
     grid.attach( edit, 0, 0 );
 
   }
 
-  /* Creates the custom action edit interface, populates it and displays it */
-  private void edit_custom( CustomFunction? function ) {
+  private void save_existing_custom( CustomFunction function ) {
+    // TBD
+    _win.functions.save_custom();
+  }
 
-    var popover = new Popover( _box );
-    var box     = new Box( Orientation.VERTICAL, 5 );
-
-    var lbox = new Box( Orientation.HORIZONTAL, 5 );
-    var llbl = new Label( _( "Name:" ) );
-    var le   = new Entry();
-
-    lbox.pack_start( llbl, false, false, 0 );
-    lbox.pack_start( le,   false, true,  0 );
-
-    /* Create scrolled box */
-    var abox = new Box( Orientation.VERTICAL, 0 );
-    var asw  = new ScrolledWindow( null, null );
-    var avp  = new Viewport( null, null );
-    avp.set_size_request( 300, 600 );
-    avp.add( abox );
-    asw.add( avp );
-
-    var bbox = new Box( Orientation.HORIZONTAL, 5 );
-    var bdel = new Button.with_label( _( "Delete" ) );
-    bdel.clicked.connect(() => {
-      _win.functions.remove_function( function );
-      popover.popdown();
-      _edit_custom = false;
-    });
-    var bcan = new Button.with_label( _( "Cancel" ) );
-    bcan.clicked.connect(() => {
-      popover.popdown();
-      _edit_custom = false;
-    });
-    var bsav = new Button.with_label( _( "Save" ) );
-    bsav.clicked.connect(() => {
-      _win.functions.save_custom();
-      popover.popdown();
-      _edit_custom = false;
-    });
-
-    if( function != null ) {
-      bbox.pack_start( bdel, false, false, 0 );
-    }
-    bbox.pack_end(   bsav, false, false, 0 );
-    bbox.pack_end(   bcan, false, false, 0 );
-
-    box.pack_start( lbox, false, true, 0 );
-    box.pack_start( asw,  true,  true, 0 );
-    box.pack_start( bbox, false, true, 0 );
-
-    /* Populate the UI */
-    if( function != null ) {
-      le.text = function.label;
-      for( int i=0; i<function.functions.length; i++ ) {
-        add_function( "", abox, null, function.functions.index( i ) );
-      }
-    } else {
-      // TBD
-    }
-
-    popover.add( box );
-    popover.modal = false;
-    popover.show_all();
-
-    _edit_custom = true;
-
+  private void delete_custom( CustomFunction function ) {
+    // TBD
+    _win.functions.save_custom();
   }
 
   /* Returns true if we can be undone */

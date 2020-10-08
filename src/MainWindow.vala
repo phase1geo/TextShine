@@ -71,7 +71,7 @@ public class MainWindow : ApplicationWindow {
     Object( application: app );
 
     _recording = false;
-    _custom    = new CustomFunction( "custom-1", "Custom #1" );
+    _custom    = new CustomFunction( "Custom #1" );
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
 
@@ -392,11 +392,20 @@ public class MainWindow : ApplicationWindow {
     if( _recording ) {
       _record_btn.image = new Image.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
       _recording        = false;
+      var popover = _custom.show_ui( _record_btn, save_new_custom );
+      popover.position = PositionType.LEFT;
     } else {
       _record_btn.image = new Image.from_icon_name( "media-playback-stop", IconSize.LARGE_TOOLBAR );
       _recording        = true;
       _custom.functions.remove_range( 0, _custom.functions.length );
     }
+  }
+
+  private void save_new_custom( CustomFunction function ) {
+    var fn = function.copy();
+    _sidebar.add_custom_function( (CustomFunction)fn );
+    functions.add_function( "custom", fn );
+    functions.save_custom();
   }
 
   /* Adds the given widget to the widgets box */

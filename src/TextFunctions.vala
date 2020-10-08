@@ -236,7 +236,7 @@ public class TextFunctions {
     var functions = get_category_functions( "custom" );
 
     Xml.Doc*  doc  = new Xml.Doc( "1.0" );
-    Xml.Node* root = new Xml.Node( null, "custom" );
+    Xml.Node* root = new Xml.Node( null, "customs" );
     root->set_prop( "version", TextShine.version );
 
     for( int i=0; i<functions.length; i++ ) {
@@ -259,16 +259,11 @@ public class TextFunctions {
     }
 
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
-      if( (it->type == Xml.Node.ELEMENT_NODE) && (it->name == "function") ) {
-        var name = it->get_prop( "name" );
-        for( int i=0; i<_functions.length; i++ ) {
-          if( _functions.index( i ).name == name ) {
-            var fn = _functions.index( i ).copy();
-            fn.load( it, this );
-            add_function( "custom", fn );
-            break;
-          }
-        }
+      if( (it->type == Xml.Node.ELEMENT_NODE) && (it->name == "custom") ) {
+        var label  = it->get_prop( "label" );
+        var custom = new CustomFunction( label );
+        custom.load( it, this );
+        add_function( "custom", custom );
       }
     }
 
