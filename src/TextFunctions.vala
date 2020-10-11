@@ -52,6 +52,7 @@ public class TextFunctions {
     add_function( "insert", new InsertLineEnd( win ) );
     add_function( "insert", new InsertLineNumbers() );
     add_function( "insert", new InsertLoremIpsum() );
+    add_function( "insert", new InsertFile( win ) );
 
     /* Category - remove */
     add_function( "remove", new RemoveBlankLines() );
@@ -67,6 +68,7 @@ public class TextFunctions {
     /* Category - sort */
     add_function( "sort", new SortLines() );
     add_function( "sort", new SortReverseChars() );
+    add_function( "sort", new SortMoveLines() );
 
     /* Category - indent */
     add_function( "indent", new Indent() );

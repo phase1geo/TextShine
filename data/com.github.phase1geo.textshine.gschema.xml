@@ -76,5 +76,10 @@
       <summary>Determines the expanded state of the indentation category</summary>
       <description>Determines the expanded state of the indentation category.</description>
     </key>
+    <key name="clear-editor-on-startup" type="b">
+      <default>false</default>
+      <summary>Specifies if the editor should be cleared on startup or display the last content.</summary>
+      <description>Specifies if the editor should be cleared on startup or display the last content.</description>
+    </key>
   </schema>
 </schemalist>

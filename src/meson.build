@@ -11,6 +11,7 @@ sources += files(
     'functions/indent/IndentXML.vala',
     'functions/indent/Unindent.vala',
 
+    'functions/insert/InsertFile.vala',
     'functions/insert/InsertLineEnd.vala',
     'functions/insert/InsertLineNumbers.vala',
     'functions/insert/InsertLineStart.vala',
@@ -28,6 +29,7 @@ sources += files(
     'functions/replace/ReplaceTabsSpaces.vala',
 
     'functions/sort/SortLines.vala',
+    'functions/sort/SortMoveLines.vala',
     'functions/sort/SortReverseChars.vala',
 
     'Application.vala',
