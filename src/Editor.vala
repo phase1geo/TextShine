@@ -130,7 +130,7 @@ public class Editor : SourceView {
   */
   public int get_cursor_pos( TextIter start, TextIter end ) {
     if( (buffer.cursor_position < start.get_offset()) ||
-        (buffer.cursor_position >= end.get_offset()) ) {
+        (buffer.cursor_position > end.get_offset()) ) {
       return( -1 );
     }
     return( buffer.cursor_position - start.get_offset() );
@@ -140,8 +140,8 @@ public class Editor : SourceView {
   public void replace_text( TextIter start, TextIter end, string text ) {
     if( start.compare( end ) != 0 ) {
       buffer.delete( ref start, ref end );
-      buffer.insert( ref start, text, text.length );
     }
+    buffer.insert( ref start, text, text.length );
   }
 
   /* Copies the selected text (if selected) or the entire buffer contents */

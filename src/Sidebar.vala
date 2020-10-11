@@ -256,7 +256,7 @@ public class Sidebar {
 
     if( function.direction == FunctionDirection.NONE ) return;
 
-    var icon_name = function.direction.is_vertical() ? "object-flip-vertical-symbolic" : "media-playlist-repeat-symbolic";
+    var icon_name = "media-playlist-repeat-symbolic";
     var tooltip   = function.direction.is_vertical() ? _( "Switch Direction" ) : _( "Swap Order" );
 
     var direction = new Button.from_icon_name( icon_name, IconSize.SMALL_TOOLBAR );

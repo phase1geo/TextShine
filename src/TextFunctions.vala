@@ -48,9 +48,10 @@ public class TextFunctions {
     add_function( "case", new CaseUpper() );
 
     /* Category - insert */
-    add_function( "insert", new InsertLineStart() );
-    add_function( "insert", new InsertLineEnd() );
+    add_function( "insert", new InsertLineStart( win ) );
+    add_function( "insert", new InsertLineEnd( win ) );
     add_function( "insert", new InsertLineNumbers() );
+    add_function( "insert", new InsertLoremIpsum() );
 
     /* Category - remove */
     add_function( "remove", new RemoveBlankLines() );

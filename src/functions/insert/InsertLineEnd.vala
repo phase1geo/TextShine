@@ -23,12 +23,16 @@ using Gtk;
 
 public class InsertLineEnd : TextFunction {
 
-  private string _value;
+  private MainWindow _win;
+  private Editor     _editor;
+  private Entry      _insert;
+  private Button     _insert_btn;
 
   /* Constructor */
-  public InsertLineEnd() {
+  public InsertLineEnd( MainWindow win ) {
     base( "insert-line-end" );
-    _value = "";
+    _win = win;
+    _win.add_widget( "insert-line-end", create_widget() );
   }
 
   protected override string get_label0() {
@@ -36,18 +40,62 @@ public class InsertLineEnd : TextFunction {
   }
 
   public override TextFunction copy() {
-    var fn = new InsertLineEnd();
-    fn._value = _value;
+    var fn = new InsertLineEnd( _win );
     return( fn );
   }
 
-  /* Perform the transformation */
-  public override string transform_text( string original, int cursor_pos ) {
-    var lines = original.split( "\n" );
-    for( int i=0; i<lines.length; i++ ) {
-      lines[i] = lines[i] + _value;
+  /* Called when the action button is clicked.  Displays the UI. */
+  public override void launch( Editor editor ) {
+    _editor = editor;
+    _insert.text = "";
+    _win.show_widget( "insert-line-end" );
+    _insert.grab_focus();
+  }
+
+  private Box create_widget() {
+
+    _insert = new Entry();
+    _insert.placeholder_text = _( "Inserted Text" );
+    _insert.changed.connect(() => {
+      _insert_btn.set_sensitive( _insert.text != "" );
+    });
+    _insert.activate.connect(() => {
+      _insert_btn.clicked();
+    });
+
+    _insert_btn = new Button.with_label( _( "Insert" ) );
+    _insert_btn.set_sensitive( false );
+    _insert_btn.clicked.connect(() => {
+      do_insert();
+    });
+
+    var box = new Box( Orientation.HORIZONTAL, 5 );
+    box.pack_start( _insert,     true,  true,  0 );
+    box.pack_start( _insert_btn, false, false, 0 );
+
+    return( box );
+
+  }
+
+  private void do_insert() {
+
+    var ranges      = new Array<Editor.Position>();
+    var insert_text = _insert.text;
+
+    _editor.get_ranges( ranges );
+
+    for( int j=0; j<ranges.length; j++ ) {
+      var range = ranges.index( j );
+      var text  = _editor.get_text( range.start, range.end );
+      var lines = text.split( "\n" );
+      for( int i=0; i<lines.length; i++ ) {
+        lines[i] = lines[i] + insert_text;
+      }
+      _editor.replace_text( range.start, range.end, string.joinv( "\n", lines ) );
     }
-    return( string.joinv( "\n", lines ) );
+
+    _win.show_widget( "" );
+
   }
 
 }
