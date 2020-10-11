@@ -23,8 +23,7 @@ using Gtk;
 
 public class ReplaceTabsSpaces : TextFunction {
 
-  private SpinButton _sb;
-  private int        _spaces = 1;
+  private int _spaces = 1;
 
   /* Constructor */
   public ReplaceTabsSpaces() {
@@ -70,24 +69,13 @@ public class ReplaceTabsSpaces : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Box box, int padding ) {
+  public override void add_settings( Grid grid ) {
 
-    var sbox = new Box( Orientation.HORIZONTAL, 5 );
-    var lbl  = new Label( _( "Spaces" ) );
+    add_range_setting( grid, 0, _( "Spaces" ), 1, 20, 1, _spaces, (value) => {
+      _spaces = value;
+      update_button_label();
+    });
 
-    _sb = new SpinButton.with_range( 1, 20, 1 );
-    _sb.value_changed.connect( value_changed );
-
-    sbox.pack_start( lbl, false, true,  5 );
-    sbox.pack_end(   _sb, false, false, 5 );
-
-    box.pack_start( sbox, true, true, padding );
-
-  }
-
-  private void value_changed() {
-    _spaces = (int)_sb.value;
-    update_button_label();
   }
 
   public override Xml.Node* save() {

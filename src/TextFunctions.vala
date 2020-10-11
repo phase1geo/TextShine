@@ -47,6 +47,11 @@ public class TextFunctions {
     add_function( "case", new CaseTitle() );
     add_function( "case", new CaseUpper() );
 
+    /* Category - insert */
+    add_function( "insert", new InsertLineStart() );
+    add_function( "insert", new InsertLineEnd() );
+    add_function( "insert", new InsertLineNumbers() );
+
     /* Category - remove */
     add_function( "remove", new RemoveBlankLines() );
     add_function( "remove", new RemoveDuplicateLines() );
@@ -69,6 +74,7 @@ public class TextFunctions {
     add_function( "search-replace", new RegExpr( win ) );
 
     /* Load the custom functions */
+    load_functions();
     load_custom();
     load_favorites();
 
@@ -90,6 +96,8 @@ public class TextFunctions {
     _functions.append_val( function );
     _map.append_val( ct_index );
 
+    function.settings_changed.connect( save_functions );
+
   }
 
   /* Removes the given function index */
@@ -97,6 +105,7 @@ public class TextFunctions {
 
     for( int i=0; i<_functions.length; i++ ) {
       if( _functions.index( i ) == function ) {
+        _functions.index( i ).settings_changed.disconnect( save_functions );
         _functions.remove_index( i );
         _map.remove_index( i );
         break;
@@ -227,6 +236,46 @@ public class TextFunctions {
     }
 
     delete doc;
+
+  }
+
+  public void save_functions() {
+
+    Xml.Doc*  doc  = new Xml.Doc( "1.0" );
+    Xml.Node* root = new Xml.Node( null, "functions" );
+    root->set_prop( "version", TextShine.version );
+
+    for( int i=0; i<_functions.length; i++ ) {
+      var function = _functions.index( i );
+      var category = _categories.index( _map.index( i ) );
+      if( (category != "favorites") && function.settings_available() ) {
+        root->add_child( function.save() );
+      }
+    }
+
+    doc->set_root_element( root );
+    doc->save_format_file( _custom_file, 1 );
+
+    delete doc;
+
+  }
+
+  public void load_functions() {
+
+    Xml.Doc* doc = Xml.Parser.read_file( _custom_file, null, Xml.ParserOption.HUGE );
+    if( doc == null ) {
+      return;
+    }
+
+    for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
+      if( (it->type == Xml.Node.ELEMENT_NODE) && (it->name == "function") ) {
+        var name     = it->get_prop( "name" );
+        var function = get_function_by_name( name );
+        if( function != null ) {
+          function.load( it, this );
+        }
+      }
+    }
 
   }
 

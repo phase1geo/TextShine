@@ -46,6 +46,11 @@
       <summary>Determines the expanded state of the case category</summary>
       <description>Determines the expanded state of the case category.</description>
     </key>
+    <key name="category-insert-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the insert category</summary>
+      <description>Determines the expanded state of the insert category.</description>
+    </key>
     <key name="category-remove-expanded" type="b">
       <default>true</default>
       <summary>Determines the expanded state of the remove category</summary>

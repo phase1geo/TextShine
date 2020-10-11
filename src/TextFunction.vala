@@ -59,6 +59,10 @@ public enum FunctionDirection {
   }
 }
 
+public delegate void SettingRangeChangedFunc( int value );
+public delegate void SettingStringChangedFunc( string value );
+public delegate void SettingBoolChangedFunc( bool value );
+
 public class TextFunction {
 
   private string _name;
@@ -80,6 +84,7 @@ public class TextFunction {
   public FunctionDirection direction { get; set; default = FunctionDirection.NONE; }
 
   public signal void update_button_label();
+  public signal void settings_changed();
 
   /* Constructor */
   public TextFunction( string name, FunctionDirection dir = FunctionDirection.NONE ) {
@@ -148,8 +153,69 @@ public class TextFunction {
   }
 
   /* Populates the given popover with the text function settings widgets */
-  public virtual void add_settings( Box box, int padding ) {
+  public virtual void add_settings( Grid grid ) {
     // By default, we will do nothing
+  }
+
+  /* Called whenever a number setting with a range needs to be added */
+  protected void add_range_setting( Grid grid, int row, string label, int min_value, int max_value, int step, int init_value, SettingRangeChangedFunc callback ) {
+
+    var lbl = new Label( label );
+    lbl.halign = Align.START;
+
+    var sb = new SpinButton.with_range( min_value, max_value, step );
+    sb.halign = Align.END;
+    sb.value  = init_value;
+    sb.value_changed.connect(() => {
+      callback( (int)sb.value );
+      settings_changed();
+    });
+
+    grid.attach( lbl, 0, row );
+    grid.attach( sb,  1, row );
+
+  }
+
+  /* Called whenever a string setting widget needs to be added */
+  protected void add_string_setting( Grid grid, int row, string label, string init_value, SettingStringChangedFunc callback ) {
+
+    var lbl = new Label( label );
+    lbl.halign = Align.START;
+
+    var entry = new Entry();
+    entry.text = init_value;
+    entry.activate.connect(() => {
+      init_value = entry.text;
+    });
+    entry.focus_out_event.connect((e) => {
+      callback( entry.text );
+      settings_changed();
+      return( false );
+    });
+
+    grid.attach( lbl, 0, row );
+    grid.attach( entry, 1, row );
+
+  }
+
+  /* Called whenever a boolean setting widget needs to be added */
+  protected void add_bool_setting( Grid grid, int row, string label, bool init_value, SettingBoolChangedFunc callback ) {
+
+    var lbl = new Label( label );
+    lbl.halign = Align.START;
+
+    var sw  = new Switch();
+    sw.halign = Align.END;
+    sw.active = init_value;
+    sw.state_set.connect(() => {
+      callback( sw.active );
+      settings_changed();
+      return( false );
+    });
+
+    grid.attach( lbl, 0, row );
+    grid.attach( sw,  1, row );
+
   }
 
   /* Called to save this text function in XML format */

@@ -9,6 +9,10 @@ sources += files(
 
     'functions/indent/IndentXML.vala',
 
+    'functions/insert/InsertLineEnd.vala',
+    'functions/insert/InsertLineStart.vala',
+    'functions/insert/InsertLineNumbers.vala',
+
     'functions/match/RegExpr.vala',
 
     'functions/remove/RemoveBlankLines.vala',

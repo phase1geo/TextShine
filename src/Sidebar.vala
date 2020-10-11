@@ -113,6 +113,7 @@ public class Sidebar {
     /* Add widgets to box */
     cbox.pack_start( create_category( "favorites",      _( "Favorites" ) ),          false, false, 5 );
     cbox.pack_start( create_category( "case",           _( "Change Case" ) ),        false, false, 5 );
+    cbox.pack_start( create_category( "insert",         _( "Insert" ) ),             false, false, 5 );
     cbox.pack_start( create_category( "remove",         _( "Remove" ) ),             false, false, 5 );
     cbox.pack_start( create_category( "replace",        _( "Replace" ) ),            false, false, 5 );
     cbox.pack_start( create_category( "sort",           _( "Sort" ) ),               false, false, 5 );
@@ -266,15 +267,19 @@ public class Sidebar {
       switch( function.direction ) {
         case FunctionDirection.TOP_DOWN :
           function.direction = FunctionDirection.BOTTOM_UP;
+          _win.functions.save_functions();
           break;
         case FunctionDirection.BOTTOM_UP :
           function.direction = FunctionDirection.TOP_DOWN;
+          _win.functions.save_functions();
           break;
         case FunctionDirection.LEFT_TO_RIGHT :
           function.direction = FunctionDirection.RIGHT_TO_LEFT;
+          _win.functions.save_functions();
           break;
         case FunctionDirection.RIGHT_TO_LEFT :
           function.direction = FunctionDirection.LEFT_TO_RIGHT;
+          _win.functions.save_functions();
           break;
       }
       btn.label = function.label;
@@ -369,19 +374,36 @@ public class Sidebar {
     if( !function.settings_available() ) return;
 
     var settings = new MenuButton();
-    settings.image  = new Image.from_icon_name( "open-menu-symbolic", IconSize.SMALL_TOOLBAR );
-    settings.relief = ReliefStyle.NONE;
-    settings.popover   = new Popover( null );
+    settings.image   = new Image.from_icon_name( "open-menu-symbolic", IconSize.SMALL_TOOLBAR );
+    settings.relief  = ReliefStyle.NONE;
+    settings.popover = new Popover( null );
     settings.set_tooltip_text( _( "Settings" ) );
 
-    var box = new Box( Orientation.VERTICAL, 0 );
-
-    function.add_settings( box, 5 );
-
-    settings.popover.add( box );
-    box.show_all();
+    settings.popover.show.connect(() => {
+      on_settings_show( settings.popover, function );
+    });
 
     grid.attach( settings, 0, 0 );
+
+  }
+
+  private void on_settings_show( Popover popover, TextFunction function ) {
+
+    var child = popover.get_child();
+    if( child != null ) {
+      popover.remove( child );
+    }
+
+    var grid = new Grid();
+    grid.border_width   = 5;
+    grid.row_spacing    = 5;
+    grid.column_spacing = 5;
+    grid.column_homogeneous = false;
+
+    function.add_settings( grid );
+    grid.show_all();
+
+    popover.add( grid );
 
   }
 
