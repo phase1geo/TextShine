@@ -69,6 +69,8 @@ public class TextFunctions {
     add_function( "sort", new SortReverseChars() );
 
     /* Category - indent */
+    add_function( "indent", new Indent() );
+    add_function( "indent", new Unindent() );
     add_function( "indent", new IndentXML() );
 
     /* Category - search-replace */

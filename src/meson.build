@@ -7,7 +7,9 @@ sources += files(
     'functions/case/CaseTitle.vala',
     'functions/case/CaseUpper.vala',
 
+    'functions/indent/Indent.vala',
     'functions/indent/IndentXML.vala',
+    'functions/indent/Unindent.vala',
 
     'functions/insert/InsertLineEnd.vala',
     'functions/insert/InsertLineNumbers.vala',
