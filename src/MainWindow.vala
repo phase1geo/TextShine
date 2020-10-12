@@ -86,6 +86,7 @@ public class MainWindow : ApplicationWindow {
 
     /* Create editor */
     _editor = new Editor( this );
+    _editor.buffer_changed.connect( do_buffer_changed );
 
     var sw = new ScrolledWindow( null, null );
     sw.min_content_width  = 600;
@@ -377,13 +378,13 @@ public class MainWindow : ApplicationWindow {
 
   /* Performs an undo operation */
   private void do_undo() {
-    // TODO
+    _editor.undo_buffer.undo();
     _editor.grab_focus();
   }
 
   /* Performs a redo operation */
   private void do_redo() {
-    // TODO
+    _editor.undo_buffer.redo();
     _editor.grab_focus();
   }
 
@@ -445,6 +446,12 @@ public class MainWindow : ApplicationWindow {
   /* Closes the error information bar */
   public void close_error() {
     _info.revealed = false;
+  }
+
+  /* Called whenever the editor buffer changes */
+  private void do_buffer_changed( UndoBuffer buffer ) {
+    _undo_btn.set_sensitive( buffer.undoable() );
+    _redo_btn.set_sensitive( buffer.redoable() );
   }
 
 }

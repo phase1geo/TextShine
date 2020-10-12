@@ -55,10 +55,27 @@ public class Editor : SourceView {
 
   }
 
+  private UndoBuffer _undo_buffer;
+
+  public UndoBuffer undo_buffer {
+    get {
+      return( _undo_buffer );
+    }
+  }
+
+  public signal void buffer_changed( UndoBuffer buf );
+
   /* Constructor */
   public Editor( MainWindow win ) {
 
+    /* TBD - We may want to make this a preference */
     wrap_mode = WrapMode.WORD;
+
+    /* Add the undo_buffer */
+    _undo_buffer = new UndoBuffer( this );
+    _undo_buffer.buffer_changed.connect((buf) => {
+      buffer_changed( buf );
+    });
 
     /* Set a CSS style class so that we can adjust the font */
     get_style_context().add_class( "editor" );
