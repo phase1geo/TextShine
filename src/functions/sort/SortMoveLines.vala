@@ -32,11 +32,19 @@ public class SortMoveLines : TextFunction {
   }
 
   protected override string get_label0() {
-    return( _( "Move %d Lines Down" ).printf( _count ) );
+    if( _count == 1 ) {
+      return( _( "Move 1 Line Down" ) );
+    } else {
+      return( _( "Move %d Lines Down" ).printf( _count ) );
+    }
   }
 
   protected override string get_label1() {
-    return( _( "Move %d Lines Up" ).printf( _count ) );
+    if( _count == 1 ) {
+      return( _( "Move 1 Line Up" ) );
+    } else {
+      return( _( "Move %d Lines Up" ).printf( _count ) );
+    }
   }
 
   public override TextFunction copy() {
@@ -112,7 +120,7 @@ public class SortMoveLines : TextFunction {
 
   public override void add_settings( Grid grid ) {
 
-    add_range_setting( grid, 0, _( "Lines" ), 1, 20, 1, _count, (value) => {
+    add_range_setting( grid, 0, _( "Lines" ), 1, 1000, 1, _count, (value) => {
       _count = value;
       update_button_label();
     });
