@@ -81,7 +81,6 @@ public class InsertLoremIpsum : TextFunction {
     var lorem  = get_lorem_ipsum();
     var prefix = (cursor_pos > 0) ? original.slice( 0, cursor_pos ) : "";
     var suffix = (cursor_pos != -1) ? original.slice( cursor_pos, original.length ) : "";
-    stdout.printf( "%s%s%s\n", prefix, lorem, suffix );
     return( prefix + lorem + suffix );
   }
 
