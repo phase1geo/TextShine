@@ -71,9 +71,11 @@ public class CustomFunction : TextFunction {
    that the user needs to add input to prior to the transformation.
   */
   public override void launch( Editor editor ) {
+    var undo_item = new UndoCustom( label );
     for( int i=0; i<_functions.length; i++ ) {
-      _functions.index( i ).run( editor );
+      _functions.index( i ).run( editor, undo_item );
     }
+    editor.undo_buffer.add_item( undo_item );
   }
 
   /* Returns true if settings are available */

@@ -97,7 +97,9 @@ public class SortMoveLines : TextFunction {
     }
 
     /* Adjust the text */
-    editor.replace_text( first, last, text );
+    var undo_item = new UndoReplacements( label );
+    editor.replace_text( first, last, text, undo_item );
+    editor.undo_buffer.add_item( undo_item );
 
     var adjust = down ? _count : (0 - _count);
 

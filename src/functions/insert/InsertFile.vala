@@ -73,8 +73,11 @@ public class InsertFile : TextFunction {
     if( contents == null ) return;
 
     TextIter cursor;
+    var undo_item = new UndoReplacements( label );
+
     editor.buffer.get_iter_at_mark( out cursor, editor.buffer.get_insert() );
-    editor.replace_text( cursor, cursor, contents );
+    editor.replace_text( cursor, cursor, contents, undo_item );
+    editor.undo_buffer.add_item( undo_item );
 
   }
 

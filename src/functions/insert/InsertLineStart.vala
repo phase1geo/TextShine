@@ -81,6 +81,7 @@ public class InsertLineStart : TextFunction {
 
     var ranges      = new Array<Editor.Position>();
     var insert_text = _insert.text;
+    var undo_item   = new UndoReplacements( label );
 
     _editor.get_ranges( ranges );
 
@@ -91,8 +92,11 @@ public class InsertLineStart : TextFunction {
       for( int i=0; i<lines.length; i++ ) {
         lines[i] = insert_text + lines[i];
       }
-      _editor.replace_text( range.start, range.end, string.joinv( "\n", lines ) );
+      _editor.replace_text( range.start, range.end, string.joinv( "\n", lines ), undo_item );
     }
+
+    /* Add the changes to the undo buffer */
+    _editor.undo_buffer.add_item( undo_item );
 
     _win.show_widget( "" );
 

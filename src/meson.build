@@ -41,7 +41,10 @@ sources += files(
     'TextFunction.vala',
     'TextFunctions.vala',
     'UndoBuffer.vala',
+    'UndoCustom.vala',
     'UndoItem.vala',
+    'UndoReplacements.vala',
+    'UndoSelects.vala',
     'Utils.vala'
 
 )

@@ -31,6 +31,7 @@ public class RegExpr : TextFunction {
   private Button      _replace_btn;
   private Editor      _editor;
   private bool        _tags_exist = false;
+  private UndoSelects _undo_item;
 
   /* Constructor */
   public RegExpr( MainWindow win ) {
@@ -206,10 +207,12 @@ public class RegExpr : TextFunction {
   /* Perform search and replacement */
   private void do_search() {
 
+    _undo_item = new UndoSelects( label );
+
     /* Get the selected ranges and clear them */
     var ranges = new Array<Editor.Position>();
     _editor.get_ranges( ranges, false );
-    _editor.remove_selected();
+    _editor.remove_selected( _undo_item );
 
     /* Clear the tags */
     _tags_exist = false;
@@ -239,7 +242,7 @@ public class RegExpr : TextFunction {
         match.fetch_pos( 0, out start, out end );
         _editor.buffer.get_iter_at_offset( out start_iter, start_index + start );
         _editor.buffer.get_iter_at_offset( out end_iter,   start_index + end );
-        _editor.add_selected( start_iter, end_iter );
+        _editor.add_selected( start_iter, end_iter, _undo_item );
         _tags_exist = true;
         text = text.splice( 0, end );
         start_index += end;
@@ -253,6 +256,9 @@ public class RegExpr : TextFunction {
 
   /* Finalizes the search operation (TBD) */
   private void end_search() {
+
+    /* Add the undo_item to the buffer */
+    _editor.undo_buffer.add_item( _undo_item );
 
     /* Close the error display */
     _win.close_error();
@@ -273,14 +279,17 @@ public class RegExpr : TextFunction {
 
     try {
 
-      var re = new Regex( _pattern.text );
+      var re        = new Regex( _pattern.text );
+      var undo_item = new UndoReplacements( label );
 
       for( int i=0; i<ranges.length; i++ ) {
         var range    = ranges.index( i );
         var text     = _editor.get_text( range.start, range.end );
         var new_text = re.replace( text, text.length, 0, replace_text );
-        _editor.replace_text( range.start, range.end, new_text );
+        _editor.replace_text( range.start, range.end, new_text, undo_item );
       }
+
+      _editor.undo_buffer.add_item( undo_item );
 
     } catch( RegexError e ) {
       _win.show_error( e.message );

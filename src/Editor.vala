@@ -154,7 +154,9 @@ public class Editor : SourceView {
   }
 
   /* Replaces all ranges with the specified text */
-  public void replace_text( TextIter start, TextIter end, string text ) {
+  public void replace_text( TextIter start, TextIter end, string text, UndoReplacements undo_item ) {
+    var old_text = start.get_slice( end );
+    undo_item.add_replacement( start.get_offset(), old_text, text );
     if( start.compare( end ) != 0 ) {
       buffer.delete( ref start, ref end );
     }
@@ -197,20 +199,22 @@ public class Editor : SourceView {
   }
 
   /* Adds a new tag by the given name */
-  public void add_selected( TextIter start, TextIter end ) {
+  public void add_selected( TextIter start, TextIter end, UndoSelects undo_item ) {
     clear_selection();
     if( buffer.tag_table.lookup( "selected" ) == null ) {
       buffer.create_tag( "selected", "background", "Yellow", "foreground", "Black", null );
     }
     buffer.apply_tag_by_name( "selected", start, end );
+    undo_item.add_select( true, start.get_offset(), end.get_offset() );
   }
 
   /* Removes the tag specified by the given name */
-  public void remove_selected() {
+  public void remove_selected( UndoSelects undo_item ) {
     if( buffer.tag_table.lookup( "selected" ) == null ) return;
     TextIter start, end;
     buffer.get_bounds( out start, out end );
     buffer.remove_tag_by_name( "selected", start, end );
+    undo_item.add_select( false, start.get_offset(), end.get_offset() );
   }
 
 }
