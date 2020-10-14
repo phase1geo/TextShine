@@ -100,6 +100,16 @@ public class UndoBuffer : Object {
     output( "ITEM ADDED" );
   }
 
+  /*
+   Returns a handle to the last item in the undo buffer if it is considered to be
+   mergeable with an edit insert or delete operation; otherwise, returns null.
+  */
+  public UndoItem? get_mergeable( bool insert, int start, int end ) {
+    if( _undo_buffer.length == 0 ) return( null );
+    var last = _undo_buffer.index( _undo_buffer.length - 1 );
+    return( last.mergeable( insert, start, end ) ? last : null );
+  }
+
   /* Outputs the state of the undo and redo buffers to standard output */
   public void output( string msg = "BUFFER STATE" ) {
     if( _debug ) {

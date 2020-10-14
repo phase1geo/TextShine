@@ -109,7 +109,7 @@ public class TextFunction {
   }
 
   /* Executes this text function using the editor */
-  protected void run( Editor editor, UndoReplacements undo_item ) {
+  protected void run( Editor editor, UndoItem undo_item ) {
     var ranges = new Array<Editor.Position>();
     editor.get_ranges( ranges );
     for( int i=((int)ranges.length - 1); i>=0; i-- ) {
@@ -126,7 +126,7 @@ public class TextFunction {
    that the user needs to add input to prior to the transformation.
   */
   public virtual void launch( Editor editor ) {
-    var undo_item = new UndoReplacements( label );
+    var undo_item = new UndoItem( label );
     run( editor, undo_item );
     editor.undo_buffer.add_item( undo_item );
   }

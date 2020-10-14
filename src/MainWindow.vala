@@ -331,8 +331,25 @@ public class MainWindow : ApplicationWindow {
   }
 
   private void do_open() {
-    // TBD
+
+    var dialog = new FileChooserNative( _( "Save File" ), this, FileChooserAction.SAVE, _( "Save" ), _( "Cancel" ) );
+    if( dialog.run() != ResponseType.ACCEPT ) return;
+
+    _current_file = dialog.get_filename();
+
+    var file = File.new_for_path( _current_file );
+
+    try {
+      uint8[] contents;
+    		file.load_contents( null, out contents, null );
+    		_editor.clear();
+    		_editor.buffer.text = (string)contents;
+    } catch( Error e ) {
+      show_error( e.message );
+    }
+
     _editor.grab_focus();
+
   }
 
   private void do_save() {

@@ -31,7 +31,7 @@ public class RegExpr : TextFunction {
   private Button      _replace_btn;
   private Editor      _editor;
   private bool        _tags_exist = false;
-  private UndoSelects _undo_item;
+  private UndoItem    _undo_item;
 
   /* Constructor */
   public RegExpr( MainWindow win ) {
@@ -207,7 +207,7 @@ public class RegExpr : TextFunction {
   /* Perform search and replacement */
   private void do_search() {
 
-    _undo_item = new UndoSelects( label );
+    _undo_item = new UndoItem( label );
 
     /* Get the selected ranges and clear them */
     var ranges = new Array<Editor.Position>();
@@ -280,7 +280,7 @@ public class RegExpr : TextFunction {
     try {
 
       var re        = new Regex( _pattern.text );
-      var undo_item = new UndoReplacements( label );
+      var undo_item = new UndoItem( label );
 
       for( int i=0; i<ranges.length; i++ ) {
         var range    = ranges.index( i );

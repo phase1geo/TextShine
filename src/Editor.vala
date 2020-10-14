@@ -85,6 +85,26 @@ public class Editor : SourceView {
     var font_size = TextShine.settings.get_int( "default-font-size" );
     change_name_font( font_name, font_size );
 
+    /* Handle changes to the buffer */
+    buffer.insert_text.connect((ref pos, new_text, new_text_length) => {
+      var start     = pos.get_offset();
+      var undo_item = undo_buffer.get_mergeable( true, start, (start + new_text.char_count()) );
+      if( undo_item == null ) {
+        stdout.printf( "Adding new undo item!\n" );
+        undo_item = new UndoItem( "edit" );
+        undo_buffer.add_item( undo_item );
+      }
+      undo_item.add_edit( true, start, new_text );
+    });
+    buffer.delete_range.connect((start, end) => {
+      var undo_item = undo_buffer.get_mergeable( true, start.get_offset(), end.get_offset() );
+      if( undo_item == null ) {
+        undo_item = new UndoItem( "edit" );
+        undo_buffer.add_item( undo_item );
+      }
+      undo_item.add_edit( false, start.get_offset(), start.get_text( end ) );
+    });
+
   }
 
   /* Updates the font theme */
@@ -154,7 +174,7 @@ public class Editor : SourceView {
   }
 
   /* Replaces all ranges with the specified text */
-  public void replace_text( TextIter start, TextIter end, string text, UndoReplacements undo_item ) {
+  public void replace_text( TextIter start, TextIter end, string text, UndoItem undo_item ) {
     var old_text = start.get_slice( end );
     undo_item.add_replacement( start.get_offset(), old_text, text );
     if( start.compare( end ) != 0 ) {
@@ -181,6 +201,7 @@ public class Editor : SourceView {
     if( start.compare( end ) != 0 ) {
       buffer.delete_range( start, end );
     }
+    undo_buffer.clear();
   }
 
   /* Clears the selection */
@@ -199,7 +220,7 @@ public class Editor : SourceView {
   }
 
   /* Adds a new tag by the given name */
-  public void add_selected( TextIter start, TextIter end, UndoSelects undo_item ) {
+  public void add_selected( TextIter start, TextIter end, UndoItem undo_item ) {
     clear_selection();
     if( buffer.tag_table.lookup( "selected" ) == null ) {
       buffer.create_tag( "selected", "background", "Yellow", "foreground", "Black", null );
@@ -209,7 +230,7 @@ public class Editor : SourceView {
   }
 
   /* Removes the tag specified by the given name */
-  public void remove_selected( UndoSelects undo_item ) {
+  public void remove_selected( UndoItem undo_item ) {
     if( buffer.tag_table.lookup( "selected" ) == null ) return;
     TextIter start, end;
     buffer.get_bounds( out start, out end );

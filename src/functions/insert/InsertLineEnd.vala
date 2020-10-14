@@ -81,7 +81,7 @@ public class InsertLineEnd : TextFunction {
 
     var ranges      = new Array<Editor.Position>();
     var insert_text = _insert.text;
-    var undo_item   = new UndoReplacements( label );
+    var undo_item   = new UndoItem( label );
 
     _editor.get_ranges( ranges );
 
