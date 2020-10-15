@@ -45,9 +45,9 @@ public class UndoItem : GLib.Object {
       editor.buffer.get_iter_at_offset( out start, _start );
       if( curr.length > 0 ) {
         editor.buffer.get_iter_at_offset( out end, (_start + curr.char_count()) );
-        editor.buffer.delete( ref start, ref end );
+        editor.delete_text( ref start, ref end );
       }
-      editor.buffer.insert( ref start, prev, prev.length );
+      editor.insert_text( ref start, prev );
     }
     public override void undo( Editor editor ) {
       replace( editor, _new_text, _old_text );
@@ -100,13 +100,13 @@ public class UndoItem : GLib.Object {
     private void do_insert( Editor editor ) {
       TextIter start;
       editor.buffer.get_iter_at_offset( out start, _start );
-      editor.buffer.insert( ref start, _text, _text.length );
+      editor.insert_text( ref start, _text );
     }
     private void do_delete( Editor editor ) {
       TextIter start, end;
       editor.buffer.get_iter_at_offset( out start, _start );
       editor.buffer.get_iter_at_offset( out end,   (_start + _text.char_count()) );
-      editor.buffer.delete_range( start, end );
+      editor.delete_text( ref start, ref end );
     }
     public override void undo( Editor editor ) {
       if( _insert ) {
@@ -177,7 +177,8 @@ public class UndoItem : GLib.Object {
   */
   public bool mergeable( bool insert, int start, int end ) {
     if( _elements.length == 0 ) return( false );
-    return( _elements.index( _elements.length - 1 ).mergeable( insert, start, end ) );
+    var can_merge = _elements.index( _elements.length - 1 ).mergeable( insert, start, end );
+    return( can_merge );
   }
 
   public string to_string() {

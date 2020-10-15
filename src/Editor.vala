@@ -56,6 +56,7 @@ public class Editor : SourceView {
   }
 
   private UndoBuffer _undo_buffer;
+  private bool       _ignore_edit = false;
 
   public UndoBuffer undo_buffer {
     get {
@@ -87,16 +88,17 @@ public class Editor : SourceView {
 
     /* Handle changes to the buffer */
     buffer.insert_text.connect((ref pos, new_text, new_text_length) => {
+      if( _ignore_edit ) return;
       var start     = pos.get_offset();
       var undo_item = undo_buffer.get_mergeable( true, start, (start + new_text.char_count()) );
       if( undo_item == null ) {
-        stdout.printf( "Adding new undo item!\n" );
         undo_item = new UndoItem( "edit" );
         undo_buffer.add_item( undo_item );
       }
       undo_item.add_edit( true, start, new_text );
     });
     buffer.delete_range.connect((start, end) => {
+      if( _ignore_edit ) return;
       var undo_item = undo_buffer.get_mergeable( true, start.get_offset(), end.get_offset() );
       if( undo_item == null ) {
         undo_item = new UndoItem( "edit" );
@@ -173,14 +175,34 @@ public class Editor : SourceView {
     return( buffer.cursor_position - start.get_offset() );
   }
 
+  /*
+   This should be called whenever library code need to insert text as it avoids
+   placing the change in the undo buffer.
+  */
+  public void insert_text( ref TextIter pos, string text ) {
+    _ignore_edit = true;
+    buffer.insert( ref pos, text, text.length );
+    _ignore_edit = false;
+  }
+
+  /*
+   This should be called whenever library code need to delete text as it avoids
+   placing the change in the undo buffer.
+  */
+  public void delete_text( ref TextIter start, ref TextIter end ) {
+    _ignore_edit = true;
+    buffer.delete( ref start, ref end );
+    _ignore_edit = false;
+  }
+
   /* Replaces all ranges with the specified text */
   public void replace_text( TextIter start, TextIter end, string text, UndoItem undo_item ) {
     var old_text = start.get_slice( end );
     undo_item.add_replacement( start.get_offset(), old_text, text );
     if( start.compare( end ) != 0 ) {
-      buffer.delete( ref start, ref end );
+      delete_text( ref start, ref end );
     }
-    buffer.insert( ref start, text, text.length );
+    insert_text( ref start, text );
   }
 
   /* Copies the selected text (if selected) or the entire buffer contents */
