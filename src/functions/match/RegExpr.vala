@@ -282,7 +282,7 @@ public class RegExpr : TextFunction {
       var re        = new Regex( _pattern.text );
       var undo_item = new UndoItem( label );
 
-      for( int i=0; i<ranges.length; i++ ) {
+      for( int i=((int)ranges.length - 1); i>=0; i-- ) {
         var range    = ranges.index( i );
         var text     = _editor.get_text( range.start, range.end );
         var new_text = re.replace( text, text.length, 0, replace_text );
