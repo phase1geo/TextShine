@@ -17,12 +17,14 @@ sources += files(
     'functions/insert/InsertLineStart.vala',
     'functions/insert/InsertLoremIpsum.vala',
 
+    'functions/match/InvertSelected.vala',
     'functions/match/RegExpr.vala',
 
     'functions/remove/RemoveBlankLines.vala',
     'functions/remove/RemoveDuplicateLines.vala',
     'functions/remove/RemoveLeadingWhitespace.vala',
     'functions/remove/RemoveLineNumbers.vala',
+    'functions/remove/RemoveSelected.vala',
     'functions/remove/RemoveTrailingWhitespace.vala',
 
     'functions/replace/ReplacePeriodsEllipsis.vala',

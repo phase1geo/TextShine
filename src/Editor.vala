@@ -232,10 +232,15 @@ public class Editor : SourceView {
   /* Removes the tag specified by the given name */
   public void remove_selected( UndoItem undo_item ) {
     if( buffer.tag_table.lookup( "selected" ) == null ) return;
+    var ranges = new Array<Editor.Position>();
+    get_ranges( ranges );
+    for( int i=0; i<ranges.length; i++ ) {
+      var range = ranges.index( i );
+      undo_item.add_select( false, range.start.get_offset(), range.end.get_offset() );
+    }
     TextIter start, end;
     buffer.get_bounds( out start, out end );
     buffer.remove_tag_by_name( "selected", start, end );
-    undo_item.add_select( false, start.get_offset(), end.get_offset() );
   }
 
 }

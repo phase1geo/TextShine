@@ -332,7 +332,7 @@ public class MainWindow : ApplicationWindow {
 
   private void do_open() {
 
-    var dialog = new FileChooserNative( _( "Save File" ), this, FileChooserAction.SAVE, _( "Save" ), _( "Cancel" ) );
+    var dialog = new FileChooserNative( _( "Open File" ), this, FileChooserAction.OPEN, _( "Open" ), _( "Cancel" ) );
     if( dialog.run() != ResponseType.ACCEPT ) return;
 
     _current_file = dialog.get_filename();

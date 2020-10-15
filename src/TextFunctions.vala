@@ -60,6 +60,7 @@ public class TextFunctions {
     add_function( "remove", new RemoveLeadingWhitespace() );
     add_function( "remove", new RemoveTrailingWhitespace() );
     add_function( "remove", new RemoveLineNumbers() );
+    add_function( "remove", new RemoveSelected() );
 
     /* Category - replace */
     add_function( "replace", new ReplaceTabsSpaces() );
@@ -77,6 +78,7 @@ public class TextFunctions {
 
     /* Category - search-replace */
     add_function( "search-replace", new RegExpr( win ) );
+    add_function( "search-replace", new InvertSelected() );
 
     /* Load the custom functions */
     load_functions();
