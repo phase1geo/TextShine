@@ -36,6 +36,11 @@ public class InvertSelected : TextFunction {
     return( new InvertSelected() );
   }
 
+  /* Returns true if there is matched text within the editor */
+  public override bool launchable( Editor editor ) {
+    return( editor.is_selected() );
+  }
+
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
 

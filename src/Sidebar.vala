@@ -211,11 +211,13 @@ public class Sidebar {
     button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
-      _win.show_widget( "" );
       _editor.grab_focus();
-      function.launch( _editor );
-      _undo.append_val( function.get_change() );
-      action_applied( function );
+      if( function.launchable( _editor ) ) {
+        _win.show_widget( "" );
+        function.launch( _editor );
+        _undo.append_val( function.get_change() );
+        action_applied( function );
+      }
     });
 
     var grid = new Grid();

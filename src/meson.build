@@ -17,6 +17,8 @@ sources += files(
     'functions/insert/InsertLineStart.vala',
     'functions/insert/InsertLoremIpsum.vala',
 
+    'functions/match/ClearSelected.vala',
+    'functions/match/Find.vala',
     'functions/match/InvertSelected.vala',
     'functions/match/RegExpr.vala',
 
@@ -28,6 +30,7 @@ sources += files(
     'functions/remove/RemoveTrailingWhitespace.vala',
 
     'functions/replace/ReplacePeriodsEllipsis.vala',
+    'functions/replace/ReplaceSelected.vala',
     'functions/replace/ReplaceTabsSpaces.vala',
 
     'functions/sort/SortLines.vala',

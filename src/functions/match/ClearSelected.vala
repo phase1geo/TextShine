@@ -19,28 +19,33 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class RemoveSelected : TextFunction {
+using Gtk;
 
-  public RemoveSelected() {
-    base( "remove-selected" );
+public class ClearSelected : TextFunction {
+
+  /* Constructor */
+  public ClearSelected() {
+    base( "clear-selected" );
   }
 
   protected override string get_label0() {
-    return( _( "Remove Matched Text" ) );
+    return( _( "Clear Match Highlight" ) );
   }
 
   public override TextFunction copy() {
-    return( new RemoveSelected() );
+    return( new ClearSelected() );
   }
 
-  /* Returns true if matched text exists in the editor */
+  /* Returns true if there is matched text within the editor */
   public override bool launchable( Editor editor ) {
     return( editor.is_selected() );
   }
 
-  /* Perform the transformation */
-  public override string transform_text( string original, int cursor_pos ) {
-    return( "" );
+  /* Called when the action button is clicked.  Displays the UI. */
+  public override void launch( Editor editor ) {
+    var undo_item = new UndoItem( name );
+    editor.remove_selected( undo_item );
+    editor.undo_buffer.add_item( undo_item );
   }
 
 }

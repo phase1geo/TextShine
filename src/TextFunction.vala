@@ -119,6 +119,11 @@ public class TextFunction {
     }
   }
 
+  /* Specifies if the user clicks the action, whether we will do anything */
+  public virtual bool launchable( Editor editor ) {
+    return( true );
+  }
+
   /*
    This is the main function which will be called from the UI to perform the
    transformation action.  By default, we will run the transformation one time,

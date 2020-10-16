@@ -65,6 +65,7 @@ public class TextFunctions {
     /* Category - replace */
     add_function( "replace", new ReplaceTabsSpaces() );
     add_function( "replace", new ReplacePeriodsEllipsis() );
+    add_function( "replace", new ReplaceSelected( win ) );
 
     /* Category - sort */
     add_function( "sort", new SortLines() );
@@ -77,8 +78,10 @@ public class TextFunctions {
     add_function( "indent", new IndentXML() );
 
     /* Category - search-replace */
+    add_function( "search-replace", new Find( win ) );
     add_function( "search-replace", new RegExpr( win ) );
     add_function( "search-replace", new InvertSelected() );
+    add_function( "search-replace", new ClearSelected() );
 
     /* Load the custom functions */
     load_functions();
