@@ -30,6 +30,7 @@ sources += files(
     'functions/remove/RemoveTrailingWhitespace.vala',
 
     'functions/replace/ReplacePeriodsEllipsis.vala',
+    'functions/replace/ReplaceReturnSpace.vala',
     'functions/replace/ReplaceSelected.vala',
     'functions/replace/ReplaceTabsSpaces.vala',
 

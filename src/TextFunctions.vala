@@ -65,6 +65,7 @@ public class TextFunctions {
     /* Category - replace */
     add_function( "replace", new ReplaceTabsSpaces() );
     add_function( "replace", new ReplacePeriodsEllipsis() );
+    add_function( "replace", new ReplaceReturnSpace() );
     add_function( "replace", new ReplaceSelected( win ) );
 
     /* Category - sort */
