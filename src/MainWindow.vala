@@ -235,7 +235,7 @@ public class MainWindow : ApplicationWindow {
 
     _header.pack_end( add_properties_button() );
 
-    _record_btn = new Button.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
+    _record_btn = new Button.from_icon_name( "system-run", IconSize.LARGE_TOOLBAR );
     _record_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Record Custom Action" ), "<Control>r" ) );
     _record_btn.clicked.connect( toggle_record );
     _header.pack_end( _record_btn );
