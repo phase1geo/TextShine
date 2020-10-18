@@ -65,6 +65,22 @@ public delegate void SettingBoolChangedFunc( bool value );
 
 public class TextFunction {
 
+  protected const string left_curved_dquote  = "\u201c";
+  protected const string right_curved_dquote = "\u201d";
+  protected const string left_angled_dquote  = "\u00ab";
+  protected const string right_angled_dquote = "\u00bb";
+  protected const string left_german_dquote  = "\u201e";
+  protected const string right_german_dquote = "\u201c";
+  protected const string left_cjk_dquote     = "\u300c";
+  protected const string right_cjk_dquote    = "\u300d";
+
+  protected const string left_curved_squote  = "\u2018";
+  protected const string right_curved_squote = "\u2019";
+  protected const string left_angled_squote  = "\u2039";
+  protected const string right_angled_squote = "\u203A";
+  protected const string left_german_squote  = "\u201a";
+  protected const string right_german_squote = "\u2018";
+
   private string _name;
 
   public string name {
@@ -153,6 +169,71 @@ public class TextFunction {
   protected string replace_text( string original, int start_pos, int end_pos, string replacement ) {
     return( original.splice( 0, start_pos ) + replacement + original.splice( end_pos, original.length ) );
   }
+
+  /* Converts all quotes to straight quotes */
+  protected string straight_quote( string original ) {
+
+    var str = original;
+
+    str = str.replace( right_curved_dquote, "\"" );
+    str = str.replace( right_angled_dquote, "\"" );
+    str = str.replace( right_german_dquote, "\"" );
+    str = str.replace( right_cjk_dquote,    "\"" );
+
+    str = str.replace( left_curved_dquote, "\"" );
+    str = str.replace( left_angled_dquote, "\"" );
+    str = str.replace( left_german_dquote, "\"" );
+    str = str.replace( left_cjk_dquote,    "\"" );
+
+    str = str.replace( right_curved_squote, "'" );
+    str = str.replace( right_angled_squote, "'" );
+    str = str.replace( right_german_squote, "'" );
+
+    str = str.replace( left_curved_squote, "'" );
+    str = str.replace( left_angled_squote, "'" );
+    str = str.replace( left_german_squote, "'" );
+
+    return( str );
+
+  }
+
+  /* Removes all straigh quotes with curved quotes */
+  protected string substitute_straight_quotes( string original, bool single, bool curved = false ) {
+
+    var dbytes = "\"".length;
+    var sbytes = "'".length;
+    var str    = straight_quote( original );
+    var left   = true;
+
+    /* Convert double straight quotes to angled quotes */
+    var index = str.index_of_char( '"' );
+    while( index != -1 ) {
+      str   = str.slice( 0, index ) + (left ? left_angled_dquote : right_angled_dquote) + str.slice( (index + dbytes), str.length );
+      left  = !left;
+      index = str.index_of_char( '"', (index + 1) );
+    }
+
+    /* Convert single quotes to single angled quotes */
+    if( single ) {
+      index = str.index_of_char( '\'' );
+      left  = true;
+      while( index != -1 ) {
+        var prefix = str.slice( 0, index );
+        var suffix = str.slice( (index + sbytes), str.length );
+        if( (prefix != prefix.chomp()) || (suffix != suffix.chug()) ) {
+          str = prefix + (left ? left_angled_squote : right_angled_squote) + suffix;
+          left = !left;
+        } else if( curved ) {
+          str = prefix + right_curved_squote + suffix;
+        }
+        index = str.index_of_char( '\'', (index + 1) );
+      }
+    }
+
+    return( str );
+
+  }
+
 
   /* Returns true if settings are available */
   public virtual bool settings_available() {

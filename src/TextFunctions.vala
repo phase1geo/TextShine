@@ -68,6 +68,13 @@ public class TextFunctions {
     add_function( "replace", new ReplaceReturnSpace() );
     add_function( "replace", new ReplaceSelected( win ) );
 
+    /* Category - quotations */
+    add_function( "quotes", new QuotesCurved() );
+    add_function( "quotes", new QuotesStraight() );
+    add_function( "quotes", new QuotesAngled() );
+    add_function( "quotes", new QuotesGerman() );
+    add_function( "quotes", new QuotesCJK() );
+
     /* Category - sort */
     add_function( "sort", new SortLines() );
     add_function( "sort", new SortReverseChars() );

@@ -22,6 +22,12 @@ sources += files(
     'functions/match/InvertSelected.vala',
     'functions/match/RegExpr.vala',
 
+    'functions/quotes/QuotesAngled.vala',
+    'functions/quotes/QuotesCJK.vala',
+    'functions/quotes/QuotesCurved.vala',
+    'functions/quotes/QuotesGerman.vala',
+    'functions/quotes/QuotesStraight.vala',
+
     'functions/remove/RemoveBlankLines.vala',
     'functions/remove/RemoveDuplicateLines.vala',
     'functions/remove/RemoveLeadingWhitespace.vala',
