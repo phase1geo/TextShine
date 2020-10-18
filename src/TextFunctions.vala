@@ -46,6 +46,7 @@ public class TextFunctions {
     add_function( "case", new CaseSnake() );
     add_function( "case", new CaseTitle() );
     add_function( "case", new CaseUpper() );
+    add_function( "case", new CaseRandom() );
 
     /* Category - insert */
     add_function( "insert", new InsertLineStart( win ) );
