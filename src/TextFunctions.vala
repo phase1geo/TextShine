@@ -74,6 +74,7 @@ public class TextFunctions {
     add_function( "quotes", new QuotesAngled() );
     add_function( "quotes", new QuotesGerman() );
     add_function( "quotes", new QuotesCJK() );
+    add_function( "quotes", new QuotesDoubleSingle() );
 
     /* Category - sort */
     add_function( "sort", new SortLines() );

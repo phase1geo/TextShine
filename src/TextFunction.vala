@@ -170,6 +170,20 @@ public class TextFunction {
     return( original.splice( 0, start_pos ) + replacement + original.splice( end_pos, original.length ) );
   }
 
+  /* Returns true if the given single quote is an apostrophe */
+  protected bool is_apostrophe( string str, int byte_index ) {
+
+    var char_index = str.slice( 0, byte_index ).char_count();
+
+    if( (char_index == 0) && (char_index == str.char_count()) ) return( true );
+
+    var prev_char = str.get_char( str.index_of_nth_char( char_index - 1 ) );
+    var next_char = str.get_char( str.index_of_nth_char( char_index + 1 ) );
+
+    return( prev_char.isalpha() && next_char.isalpha() );
+
+  }
+
   /* Converts all quotes to straight quotes */
   protected string straight_quote( string original ) {
 
@@ -220,7 +234,7 @@ public class TextFunction {
       while( index != -1 ) {
         var prefix = str.slice( 0, index );
         var suffix = str.slice( (index + sbytes), str.length );
-        if( (prefix != prefix.chomp()) || (suffix != suffix.chug()) ) {
+        if( !is_apostrophe( str, index ) ) {
           str = prefix + (left ? left_angled_squote : right_angled_squote) + suffix;
           left = !left;
         } else if( curved ) {

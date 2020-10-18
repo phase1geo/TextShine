@@ -25,6 +25,7 @@ sources += files(
     'functions/quotes/QuotesAngled.vala',
     'functions/quotes/QuotesCJK.vala',
     'functions/quotes/QuotesCurved.vala',
+    'functions/quotes/QuotesDoubleSingle.vala',
     'functions/quotes/QuotesGerman.vala',
     'functions/quotes/QuotesStraight.vala',
 
