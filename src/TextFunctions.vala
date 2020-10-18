@@ -40,13 +40,14 @@ public class TextFunctions {
     _map        = new Array<int>();
 
     /* Category - case */
-    add_function( "case", new CaseCamel() );
+    add_function( "case", new CaseUpper() );
     add_function( "case", new CaseLower() );
     add_function( "case", new CaseSentence() );
-    add_function( "case", new CaseSnake() );
     add_function( "case", new CaseTitle() );
-    add_function( "case", new CaseUpper() );
+    add_function( "case", new CaseCamel() );
+    add_function( "case", new CaseSnake() );
     add_function( "case", new CaseRandom() );
+    add_function( "case", new CaseROT13() );
 
     /* Category - insert */
     add_function( "insert", new InsertLineStart( win ) );
@@ -92,6 +93,12 @@ public class TextFunctions {
     add_function( "search-replace", new RegExpr( win ) );
     add_function( "search-replace", new InvertSelected() );
     add_function( "search-replace", new ClearSelected() );
+
+    /* Category - repair */
+    add_function( "repair", new FixSpaces() );
+
+    /* Category - Markdown */
+    // add_function( "markdown", new MarkdownReferences() );
 
     /* Load the custom functions */
     load_functions();

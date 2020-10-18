@@ -3,6 +3,7 @@ sources += files(
     'functions/case/CaseCamel.vala',
     'functions/case/CaseLower.vala',
     'functions/case/CaseRandom.vala',
+    'functions/case/CaseROT13.vala',
     'functions/case/CaseSentence.vala',
     'functions/case/CaseSnake.vala',
     'functions/case/CaseTitle.vala',
@@ -36,6 +37,8 @@ sources += files(
     'functions/remove/RemoveLineNumbers.vala',
     'functions/remove/RemoveSelected.vala',
     'functions/remove/RemoveTrailingWhitespace.vala',
+
+    'functions/repair/FixSpaces.vala',
 
     'functions/replace/ReplacePeriodsEllipsis.vala',
     'functions/replace/ReplaceReturnSpace.vala',
