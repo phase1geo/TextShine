@@ -98,7 +98,7 @@ public class TextFunctions {
     add_function( "repair", new FixSpaces() );
 
     /* Category - Markdown */
-    // add_function( "markdown", new MarkdownReferences() );
+    add_function( "markdown", new MarkdownReferences() );
 
     /* Load the custom functions */
     load_functions();

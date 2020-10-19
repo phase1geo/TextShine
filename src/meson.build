@@ -19,6 +19,8 @@ sources += files(
     'functions/insert/InsertLineStart.vala',
     'functions/insert/InsertLoremIpsum.vala',
 
+    'functions/markdown/MarkdownReferences.vala',
+
     'functions/match/ClearSelected.vala',
     'functions/match/Find.vala',
     'functions/match/InvertSelected.vala',

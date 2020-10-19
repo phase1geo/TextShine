@@ -26,6 +26,8 @@ public class FixSpaces : TextFunction {
   private Regex _extra_re;
   private Regex _missing_pre_re;
   private Regex _missing_post_re;
+  private Regex _remove1_re;
+  private Regex _remove2_re;
 
   /* Constructor */
   public FixSpaces() {
@@ -34,6 +36,8 @@ public class FixSpaces : TextFunction {
       _extra_re        = new Regex( """ {2,}""" );
       _missing_pre_re  = new Regex( """[^ ]([\(\{\[])""" );
       _missing_post_re = new Regex( """[],.?!\)\}:;%&*-]([^ ])""" );
+      _remove1_re      = new Regex( """\](\s)\[""" );
+      _remove2_re      = new Regex( """\](\s)\(""" );
     } catch( RegexError e ) {}
   }
 
@@ -43,6 +47,28 @@ public class FixSpaces : TextFunction {
 
   public override TextFunction copy() {
     return( new FixSpaces() );
+  }
+
+  private string add_space( string text, Regex re ) {
+    MatchInfo match;
+    var str = text;
+    while( re.match( str, 0, out match ) ) {
+      int start, end;
+      match.fetch_pos( 1, out start, out end );
+      str = str.splice( start, start, " " );
+    }
+    return( str );
+  }
+
+  private string remove_space( string text, Regex re ) {
+    MatchInfo match;
+    var str = text;
+    while( re.match( str, 0, out match ) ) {
+      int start, end;
+      match.fetch_pos( 1, out start, out end );
+      str = str.splice( start, end, "" );
+    }
+    return( str );
   }
 
   public override string transform_text( string original, int cursor_pos ) {
@@ -60,14 +86,10 @@ public class FixSpaces : TextFunction {
       }
 
       /* Add spaces if they are missing */
-      while( _missing_pre_re.match( line, 0, out match ) ) {
-        match.fetch_pos( 1, out start, out end );
-        line = line.splice( start, start, " " );
-      }
-      while( _missing_post_re.match( line, 0, out match ) ) {
-        match.fetch_pos( 1, out start, out end );
-        line = line.splice( start, start, " " );
-      }
+      line = add_space( line, _missing_pre_re );
+      line = add_space( line, _missing_post_re );
+      line = remove_space( line, _remove1_re );
+      line = remove_space( line, _remove2_re );
 
       str += line + "\n";
 
