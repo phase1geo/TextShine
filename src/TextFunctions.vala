@@ -68,6 +68,7 @@ public class TextFunctions {
     add_function( "replace", new ReplaceTabsSpaces() );
     add_function( "replace", new ReplacePeriodsEllipsis() );
     add_function( "replace", new ReplaceReturnSpace() );
+    add_function( "replace", new ReplaceReturns() );
     add_function( "replace", new ReplaceSelected( win ) );
 
     /* Category - quotations */

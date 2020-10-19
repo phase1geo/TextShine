@@ -43,6 +43,7 @@ sources += files(
     'functions/repair/FixSpaces.vala',
 
     'functions/replace/ReplacePeriodsEllipsis.vala',
+    'functions/replace/ReplaceReturns.vala',
     'functions/replace/ReplaceReturnSpace.vala',
     'functions/replace/ReplaceSelected.vala',
     'functions/replace/ReplaceTabsSpaces.vala',
