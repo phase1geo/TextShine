@@ -20,6 +20,7 @@ sources += files(
     'functions/insert/InsertLoremIpsum.vala',
 
     'functions/markdown/MarkdownReferences.vala',
+    'functions/markdown/MarkdownTableBeauty.vala',
 
     'functions/match/ClearSelected.vala',
     'functions/match/Find.vala',

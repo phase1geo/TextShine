@@ -100,6 +100,7 @@ public class TextFunctions {
 
     /* Category - Markdown */
     add_function( "markdown", new MarkdownReferences() );
+    add_function( "markdown", new MarkdownTableBeauty() );
 
     /* Load the custom functions */
     load_functions();
