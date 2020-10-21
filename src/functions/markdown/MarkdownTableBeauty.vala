@@ -76,7 +76,6 @@ public class MarkdownTableBeauty : TextFunction {
         if( colspan > 1 ) {
           total += ((colspan - 1) * 2);
         }
-        stdout.printf( "total: %d, data: %s, data.char_count: %d\n", total, data, data.char_count() );
         return( string.nfill( (total - data.char_count()), ' ' ) );
       }
       public string adjust( ref int[] widths, Array<ColumnAlignment> aligns ) {

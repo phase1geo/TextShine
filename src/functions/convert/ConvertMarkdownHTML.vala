@@ -115,6 +115,10 @@ public class ConvertMarkdownHTML : TextFunction {
           }
         }
         break;
+      case "img"        :
+        var src = node->get_prop( "src" );
+        var alt = node->get_prop( "alt" ) ?? "";
+        return( "![" + alt + "](" + src + ")" );
       case "h1"         :  return( "# " + str + "\n\n" );
       case "h2"         :  return( "## " + str + "\n\n" );
       case "h3"         :  return( "### " + str + "\n\n" );
