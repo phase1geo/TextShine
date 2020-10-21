@@ -89,6 +89,7 @@ public class TextFunctions {
     add_function( "indent", new IndentXML() );
 
     /* Category - convert */
+    add_function( "convert", new ConvertMarkdownHTML() );
     add_function( "convert", new ConvertURLEncode() );
     add_function( "convert", new ConvertROT13() );
 
@@ -104,7 +105,6 @@ public class TextFunctions {
     /* Category - Markdown */
     add_function( "markdown", new MarkdownReferences() );
     add_function( "markdown", new MarkdownTableBeauty() );
-    // add_function( "markdown", new MarkdownHTML() );
 
     /* Load the custom functions */
     load_functions();
