@@ -21,19 +21,19 @@
 
 using Gdk;
 
-public class CaseROT13 : TextFunction {
+public class ConvertROT13 : TextFunction {
 
   /* Constructor */
-  public CaseROT13() {
-    base( "case-rot13" );
+  public ConvertROT13() {
+    base( "convert-rot13" );
   }
 
   protected override string get_label0() {
-    return( _( "ROT-13" ) );
+    return( _( "ROT 13" ) );
   }
 
   public override TextFunction copy() {
-    return( new CaseROT13() );
+    return( new ConvertROT13() );
   }
 
   /* Perform the transformation */

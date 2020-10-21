@@ -66,6 +66,7 @@ dependencies = [
     dependency('gtk+-3.0'),
     dependency('libxml-2.0'),
     dependency('gtksourceview-3.0'),
+    dependency('camel-1.2'),
     math_dep
 ]
 

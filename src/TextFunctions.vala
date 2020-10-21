@@ -47,7 +47,6 @@ public class TextFunctions {
     add_function( "case", new CaseCamel() );
     add_function( "case", new CaseSnake() );
     add_function( "case", new CaseRandom() );
-    add_function( "case", new CaseROT13() );
 
     /* Category - insert */
     add_function( "insert", new InsertLineStart( win ) );
@@ -89,6 +88,10 @@ public class TextFunctions {
     add_function( "indent", new Unindent() );
     add_function( "indent", new IndentXML() );
 
+    /* Category - convert */
+    add_function( "convert", new ConvertURLEncode() );
+    add_function( "convert", new ConvertROT13() );
+
     /* Category - search-replace */
     add_function( "search-replace", new Find( win ) );
     add_function( "search-replace", new RegExpr( win ) );
@@ -101,6 +104,7 @@ public class TextFunctions {
     /* Category - Markdown */
     add_function( "markdown", new MarkdownReferences() );
     add_function( "markdown", new MarkdownTableBeauty() );
+    // add_function( "markdown", new MarkdownHTML() );
 
     /* Load the custom functions */
     load_functions();

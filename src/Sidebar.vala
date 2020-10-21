@@ -121,6 +121,7 @@ public class Sidebar {
     cbox.pack_start( create_category( "indent",         _( "Indentation" ) ),        false, false, 5 );
     cbox.pack_start( create_category( "search-replace", _( "Search and Replace" ) ), false, false, 5 );
     cbox.pack_start( create_category( "repair",         _( "Repair" ) ),             false, false, 5 );
+    cbox.pack_start( create_category( "convert",        _( "Convert" ) ),            false, false, 5 );
     cbox.pack_start( create_category( "markdown",       _( "Markdown" ) ),           false, false, 5 );
     cbox.pack_start( create_category( "custom",         _( "Custom" ) ),             false, false, 5 );
 

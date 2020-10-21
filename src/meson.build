@@ -3,11 +3,13 @@ sources += files(
     'functions/case/CaseCamel.vala',
     'functions/case/CaseLower.vala',
     'functions/case/CaseRandom.vala',
-    'functions/case/CaseROT13.vala',
     'functions/case/CaseSentence.vala',
     'functions/case/CaseSnake.vala',
     'functions/case/CaseTitle.vala',
     'functions/case/CaseUpper.vala',
+
+    'functions/convert/ConvertROT13.vala',
+    'functions/convert/ConvertURLEncode.vala',
 
     'functions/indent/Indent.vala',
     'functions/indent/IndentXML.vala',

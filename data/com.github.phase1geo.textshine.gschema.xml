@@ -86,6 +86,11 @@
       <summary>Determines the expanded state of the repair category</summary>
       <description>Determines the expanded state of the repair category.</description>
     </key>
+    <key name="category-convert-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the convert category</summary>
+      <description>Determines the expanded state of the convert category.</description>
+    </key>
     <key name="category-markdown-expanded" type="b">
       <default>true</default>
       <summary>Determines the expanded state of the markdown category</summary>
