@@ -66,7 +66,8 @@ public class ConvertMarkdownHTML : TextFunction {
 
   /* Converts the given string into Markdown from HTML */
   private string html_to_markdown( string original ) {
-    var doc = Xml.Parser.parse_memory( original, original.length );
+    var html = "<div>" + original + "</div>";
+    var doc = Xml.Parser.parse_memory( html, html.length );
     if( doc == null ) {
       return( original );
     }
@@ -135,8 +136,33 @@ public class ConvertMarkdownHTML : TextFunction {
       case "li"         :  return( "- " + str + "\n" );
       case "blockquote" :  return( "> " + str + "\n" );
       case "p"          :  return( str.chug() + "\n\n" );
+      case "th"         :
+      case "td"         :  return( str + "|" );
+      case "tr"         :  return( "|" + str + "\n" );
+      case "table"      :  return( make_table( str ) + "\n\n" );
     }
     return( str );
+  }
+
+  private string make_table( string text ) {
+
+    var lines = new Array<string>();
+    foreach( string line in text.split( "\n" ) ) {
+      lines.append_val( line );
+    }
+
+    var cells = lines.index( 0 ).split( "|" );
+    var row   = "|";
+    for( int i=1; i<((int)cells.length - 1); i++ ) {
+      row += "-|";
+    }
+
+    lines.insert_val( 1, row );
+
+    var beautifier = new MarkdownTableBeauty();
+
+    return( beautifier.transform_text( string.joinv( "\n", lines.data ), 0 ) );
+
   }
 
 }
