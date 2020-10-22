@@ -72,42 +72,56 @@ public class ConvertMarkdownHTML : TextFunction {
       return( original );
     }
     var root = doc->get_root_element();
-    var text = parse_xml_node( root );
+    var text = parse_children( root, false );
     delete doc;
     return( text );
   }
 
-  private string parse_xml_node( Xml.Node* node ) {
+  private string parse_node( Xml.Node* node, bool verbatim ) {
     var str = "";
-    for( Xml.Node* it=node->children; it!=null; it=it->next ) {
-      str += parse_xml_node( it );
-    }
     switch( node->type ) {
-      case Xml.ElementType.ELEMENT_NODE       :
-        str = parse_element( node, str );
+      case Xml.ElementType.ELEMENT_NODE :
+        str = parse_element( node, verbatim );
         break;
       case Xml.ElementType.CDATA_SECTION_NODE :
-      case Xml.ElementType.TEXT_NODE          :
-        var text = node->get_content();
-        try {
-          text = _re.replace( text, text.length, 0, "" );
-          if( text != "\n" ) {
-            str += text.replace( "\n", " " );
-          }
-        } catch( RegexError e ) {}
+        str = node->get_content();
+        break;
+      case Xml.ElementType.TEXT_NODE :
+        var text     = node->get_content();
+        var stripped = text.strip();
+        if( verbatim ) {
+          str = text;
+        } else if( stripped == "" ) {
+          str = stripped;
+        } else {
+          try {
+            text = _re.replace( text, text.length, 0, "" );
+            if( text != "\n" ) {
+              str += text.replace( "\n", " " );
+            }
+          } catch( RegexError e ) {}
+        }
         break;
     }
     return( str );
   }
 
+  private string parse_children( Xml.Node* node, bool verbatim ) {
+    var str = "";
+    for( Xml.Node* it=node->children; it!=null; it=it->next ) {
+      str += parse_node( it, verbatim );
+    }
+    return( verbatim ? str : str.strip() );
+  }
+
   /* Parses the given element for tag information */
-  private string parse_element( Xml.Node* node, string text ) {
+  private string parse_element( Xml.Node* node, bool verbatim ) {
     var name = node->name.down();
-    var str  = text.strip();
     switch( name ) {
       case "a"          :
         var url = node->get_prop( "href" );
         if( url.get_char( 0 ) != '#' ) {
+          var str = parse_children( node, verbatim );
           if( str == url ) {
             return( "<" + url + ">" );
           } else {
@@ -119,35 +133,56 @@ public class ConvertMarkdownHTML : TextFunction {
         var src = node->get_prop( "src" );
         var alt = node->get_prop( "alt" ) ?? "";
         return( "![" + alt + "](" + src + ")" );
-      case "h1"         :  return( "# " + str + "\n\n" );
-      case "h2"         :  return( "## " + str + "\n\n" );
-      case "h3"         :  return( "### " + str + "\n\n" );
-      case "h4"         :  return( "#### " + str + "\n\n" );
-      case "h5"         :  return( "##### " + str + "\n\n" );
-      case "h6"         :  return( "###### " + str + "\n\n" );
+      case "h1"         :  return( "# " + parse_children( node, false ) + "\n\n" );
+      case "h2"         :  return( "## " + parse_children( node, false ) + "\n\n" );
+      case "h3"         :  return( "### " + parse_children( node, false ) + "\n\n" );
+      case "h4"         :  return( "#### " + parse_children( node, false ) + "\n\n" );
+      case "h5"         :  return( "##### " + parse_children( node, false ) + "\n\n" );
+      case "h6"         :  return( "###### " + parse_children( node, false ) + "\n\n" );
       case "strong"     :
-      case "b"          :  return( "**" + str + "**" );
+      case "b"          :  return( "**" + parse_children( node, verbatim ) + "**" );
       case "em"         :
-      case "i"          :  return( "*" + str + "*" );
-      case "u"          :  return( "__" + str + "__" );
+      case "i"          :  return( "*" + parse_children( node, verbatim ) + "*" );
+      case "u"          :  return( "__" + parse_children( node, verbatim ) + "__" );
       case "s"          :
-      case "del"        :  return( "~~" + str + "~~" );
+      case "del"        :  return( "~~" + parse_children( node, verbatim ) + "~~" );
       case "tt"         :
-      case "code"       :  return( "`" + str + "`" );
-      case "sub"        :  return( "<sub>" + str + "</sub>" );
-      case "sup"        :  return( "<sup>" + str + "</sup>" );
-      case "verbatim"   :  return( "\n```\n" + str + "\n```\n" );
-      case "li"         :  return( "- " + str + "\n" );
-      case "blockquote" :  return( "> " + str + "\n" );
-      case "p"          :  return( str.chug() + "\n\n" );
+      case "code"       :  return( "`" + parse_children( node, verbatim ) + "`" );
+      case "sub"        :  return( "<sub>" + parse_children( node, verbatim ) + "</sub>" );
+      case "sup"        :  return( "<sup>" + parse_children( node, verbatim ) + "</sup>" );
+      case "pre"        :  return( "\n```\n" + parse_children( node, true ) + "\n```\n" );
+      case "li"         :  return( "- " + parse_children( node, verbatim ) + "\n" );
+      case "blockquote" :  return( "> " + parse_children( node, verbatim ) + "\n" );
+      case "br"         :  return( "\n" );
+      case "hr"         :  return( "---\n" );
+      case "p"          :  return( parse_children( node, verbatim ) + "\n\n" );
       case "th"         :
       case "td"         :
         var colspan = node->get_prop( "colspan" );
+        var str     = parse_children( node, false );
         return( ((str == "") ? " " : str) + ((colspan != null) ? string.nfill( int.parse( colspan ), '|' ) : "|") );
-      case "tr"         :  return( "|" + str + "\n" );
-      case "table"      :  return( make_table( str ) + "\n\n" );
+      case "tr"         :  return( "|" + parse_children( node, verbatim ) + "\n" );
+      case "table"      :  return( make_table( parse_children( node, verbatim ) ) + "\n\n" );
+      case "div"        :
+      case "ul"         :
+      case "ol"         :
+      case "span"       :  return( parse_children( node, verbatim ) );
+      case "thead"      :
+      case "tbody"      :  return( parse_children( node, verbatim ) + "\n" );
     }
-    return( text );
+    return( make_html( node, verbatim ) );
+  }
+
+  private string make_html( Xml.Node* node, bool verbatim ) {
+    var name  = node->name.down();
+    var stag  = "<" + name;
+    var etag  = "</" + name + ">";
+    var props = "";
+    for( Xml.Attr* it=node->properties; it!=null; it=it->next ) {
+      props += " " + it->name + "=\"" + node->get_prop( it->name ) + "\"";
+    }
+    stag += props + ">";
+    return( stag + parse_children( node, verbatim ) + etag );
   }
 
   private string make_table( string text ) {
