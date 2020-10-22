@@ -141,11 +141,13 @@ public class ConvertMarkdownHTML : TextFunction {
       case "blockquote" :  return( "> " + str + "\n" );
       case "p"          :  return( str.chug() + "\n\n" );
       case "th"         :
-      case "td"         :  return( str + "|" );
+      case "td"         :
+        var colspan = node->get_prop( "colspan" );
+        return( ((str == "") ? " " : str) + ((colspan != null) ? string.nfill( int.parse( colspan ), '|' ) : "|") );
       case "tr"         :  return( "|" + str + "\n" );
       case "table"      :  return( make_table( str ) + "\n\n" );
     }
-    return( str );
+    return( text );
   }
 
   private string make_table( string text ) {

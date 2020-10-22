@@ -80,7 +80,7 @@ public class MarkdownTableBeauty : TextFunction {
       }
       public string adjust( ref int[] widths, Array<ColumnAlignment> aligns ) {
         var space = spacing( ref widths );
-        var lines = string.nfill( (colspan - 1), ' ' );
+        var lines = string.nfill( (colspan - 1), '|' );
         if( column == 0 ) {
           return( string.nfill( widths[0], ' ' ) );
         } else {
@@ -150,7 +150,8 @@ public class MarkdownTableBeauty : TextFunction {
         var row  = new Matrix.Row();
         var data = rowstr.split( "|" );
         foreach( string item in data[1:data.length-1] ) {
-          row.add_cell( item.strip() );
+          var stripped = item.strip();
+          row.add_cell( (item == "") ? "" : ((stripped == "") ? " " : stripped) );
         }
         add_row( row );
       }
@@ -158,7 +159,7 @@ public class MarkdownTableBeauty : TextFunction {
     private void add_row( Row row ) {
       var row_cols = row.num_columns();
       if( row_cols < _max_column ) {
-        row.pad_columns( ((_rows.length == 1) ? "?" : ""), _max_column );
+        row.pad_columns( ((_rows.length == 1) ? "?" : " "), _max_column );
       } else if( row_cols > _max_column ) {
         _max_column = row_cols;
         for( int i=0; i<_rows.length; i++ ) {
