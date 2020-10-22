@@ -232,8 +232,6 @@ public class MarkdownTableBeauty : TextFunction {
 
   public override string transform_text( string original, int cursor_pos ) {
 
-    stdout.printf( original + "\n" );
-
     MatchInfo match;
     var text   = original;
     var sbytes = -1;

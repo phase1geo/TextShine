@@ -89,7 +89,7 @@ public class ConvertMarkdownHTML : TextFunction {
       case Xml.ElementType.TEXT_NODE :
         var text     = node->get_content();
         var stripped = text.strip();
-        if( verbatim ) {
+        if( verbatim || (text == " ") ) {
           str = text;
         } else if( stripped == "" ) {
           str = stripped;
@@ -147,7 +147,7 @@ public class ConvertMarkdownHTML : TextFunction {
       case "s"          :
       case "del"        :  return( "~~" + parse_children( node, verbatim ) + "~~" );
       case "tt"         :
-      case "code"       :  return( "`" + parse_children( node, verbatim ) + "`" );
+      case "code"       :  return( (verbatim ? "" : "`") + parse_children( node, verbatim ) + (verbatim ? "" : "`") );
       case "sub"        :  return( "<sub>" + parse_children( node, verbatim ) + "</sub>" );
       case "sup"        :  return( "<sup>" + parse_children( node, verbatim ) + "</sup>" );
       case "pre"        :  return( "\n```\n" + parse_children( node, true ) + "\n```\n" );
@@ -155,6 +155,7 @@ public class ConvertMarkdownHTML : TextFunction {
       case "blockquote" :  return( "> " + parse_children( node, verbatim ) + "\n" );
       case "br"         :  return( "\n" );
       case "hr"         :  return( "---\n" );
+      case "div"        :
       case "p"          :  return( parse_children( node, verbatim ) + "\n\n" );
       case "th"         :
       case "td"         :
@@ -163,7 +164,6 @@ public class ConvertMarkdownHTML : TextFunction {
         return( ((str == "") ? " " : str) + ((colspan != null) ? string.nfill( int.parse( colspan ), '|' ) : "|") );
       case "tr"         :  return( "|" + parse_children( node, verbatim ) + "\n" );
       case "table"      :  return( make_table( parse_children( node, verbatim ) ) + "\n\n" );
-      case "div"        :
       case "ul"         :
       case "ol"         :
       case "span"       :  return( parse_children( node, verbatim ) );
