@@ -40,12 +40,13 @@ public class TextFunctions {
     _map        = new Array<int>();
 
     /* Category - case */
-    add_function( "case", new CaseCamel() );
+    add_function( "case", new CaseUpper() );
     add_function( "case", new CaseLower() );
     add_function( "case", new CaseSentence() );
-    add_function( "case", new CaseSnake() );
     add_function( "case", new CaseTitle() );
-    add_function( "case", new CaseUpper() );
+    add_function( "case", new CaseCamel() );
+    add_function( "case", new CaseSnake() );
+    add_function( "case", new CaseRandom() );
 
     /* Category - insert */
     add_function( "insert", new InsertLineStart( win ) );
@@ -66,7 +67,16 @@ public class TextFunctions {
     add_function( "replace", new ReplaceTabsSpaces() );
     add_function( "replace", new ReplacePeriodsEllipsis() );
     add_function( "replace", new ReplaceReturnSpace() );
+    add_function( "replace", new ReplaceReturns() );
     add_function( "replace", new ReplaceSelected( win ) );
+
+    /* Category - quotations */
+    add_function( "quotes", new QuotesCurved() );
+    add_function( "quotes", new QuotesStraight() );
+    add_function( "quotes", new QuotesAngled() );
+    add_function( "quotes", new QuotesGerman() );
+    add_function( "quotes", new QuotesCJK() );
+    add_function( "quotes", new QuotesDoubleSingle() );
 
     /* Category - sort */
     add_function( "sort", new SortLines() );
@@ -78,11 +88,23 @@ public class TextFunctions {
     add_function( "indent", new Unindent() );
     add_function( "indent", new IndentXML() );
 
+    /* Category - convert */
+    add_function( "convert", new ConvertMarkdownHTML() );
+    add_function( "convert", new ConvertURLEncode() );
+    add_function( "convert", new ConvertROT13() );
+
     /* Category - search-replace */
     add_function( "search-replace", new Find( win ) );
     add_function( "search-replace", new RegExpr( win ) );
     add_function( "search-replace", new InvertSelected() );
     add_function( "search-replace", new ClearSelected() );
+
+    /* Category - repair */
+    add_function( "repair", new FixSpaces() );
+
+    /* Category - Markdown */
+    add_function( "markdown", new MarkdownReferences() );
+    add_function( "markdown", new MarkdownTableBeauty() );
 
     /* Load the custom functions */
     load_functions();

@@ -116,9 +116,13 @@ public class Sidebar {
     cbox.pack_start( create_category( "insert",         _( "Insert" ) ),             false, false, 5 );
     cbox.pack_start( create_category( "remove",         _( "Remove" ) ),             false, false, 5 );
     cbox.pack_start( create_category( "replace",        _( "Replace" ) ),            false, false, 5 );
+    cbox.pack_start( create_category( "quotes",         _( "Quotes" ) ),             false, false, 5 );
     cbox.pack_start( create_category( "sort",           _( "Sort" ) ),               false, false, 5 );
     cbox.pack_start( create_category( "indent",         _( "Indentation" ) ),        false, false, 5 );
     cbox.pack_start( create_category( "search-replace", _( "Search and Replace" ) ), false, false, 5 );
+    cbox.pack_start( create_category( "repair",         _( "Repair" ) ),             false, false, 5 );
+    cbox.pack_start( create_category( "convert",        _( "Convert" ) ),            false, false, 5 );
+    cbox.pack_start( create_category( "markdown",       _( "Markdown" ) ),           false, false, 5 );
     cbox.pack_start( create_category( "custom",         _( "Custom" ) ),             false, false, 5 );
 
     box.pack_start( sbox, false, true, 10 );

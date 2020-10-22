@@ -48,15 +48,15 @@ cc = meson.get_compiler('c')
 math_dep = cc.find_library('m', required: false)
 
 # Add the Markdown library
-#cc = meson.get_compiler('c')
-#libmarkdown = cc.find_library('markdown', required: true)
+cc = meson.get_compiler('c')
+libmarkdown = cc.find_library('markdown', required: true)
 
-#add_project_arguments([
-#        '--vapidir', join_paths(meson.current_source_dir(), 'vapi'),
-#        '--disable-warnings'
-#    ],
-#    language: 'vala',
-#)
+add_project_arguments([
+        '--vapidir', join_paths(meson.current_source_dir(), 'vapi'),
+        '--disable-warnings'
+    ],
+    language: 'vala',
+)
 
 dependencies = [
     dependency('gobject-2.0'),
@@ -66,6 +66,8 @@ dependencies = [
     dependency('gtk+-3.0'),
     dependency('libxml-2.0'),
     dependency('gtksourceview-3.0'),
+    dependency('camel-1.2'),
+    libmarkdown,
     math_dep
 ]
 
@@ -74,6 +76,9 @@ e = executable('com.github.phase1geo.textshine',
     gresource,
     c_args: c_args,
     dependencies: dependencies,
+    vala_args: [
+        meson.source_root() + '/vapi/libmarkdown.vapi'
+    ],
     install : true
 )
 
