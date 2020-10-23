@@ -157,11 +157,6 @@ public class TextFunction {
     return( original );
   }
 
-  /* Returns the text change from this function */
-  public virtual TextChange get_change() {
-    return( new TextChange( this ) );
-  }
-
   /*
    Helper function which returns the new string that replaces the given range
    from the original text with the new replacement text.

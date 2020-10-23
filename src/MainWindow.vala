@@ -311,14 +311,12 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Create list of transformation buttons */
-  private Box create_sidebar() {
+  private Stack create_sidebar() {
 
-    var box = new Box( Orientation.VERTICAL, 0 );
-
-    _sidebar = new Sidebar( this, _editor, box );
+    _sidebar = new Sidebar( this, _editor );
     _sidebar.action_applied.connect( action_applied );
 
-    return( box );
+    return( _sidebar );
 
   }
 
@@ -421,7 +419,7 @@ public class MainWindow : ApplicationWindow {
 
   private void save_new_custom( CustomFunction function ) {
     var fn = function.copy();
-    _sidebar.add_custom_function( (CustomFunction)fn );
+    // TBD - _sidebar.add_custom_function( (CustomFunction)fn );
     functions.add_function( "custom", fn );
     functions.save_custom();
   }

@@ -25,9 +25,22 @@ public class TextFunctions {
 
   private Array<TextFunction> _functions;
   private Array<string>       _categories;
+  private Array<string>       _category_labels;
   private Array<int>          _map;
   private string              _favorites_file;
   private string              _custom_file;
+
+  public Array<TextFunction> functions {
+    get {
+      return( _functions );
+    }
+  }
+
+  public Array<string> categories {
+    get {
+      return( _categories );
+    }
+  }
 
   /* Constructor */
   public TextFunctions( MainWindow win ) {
@@ -35,9 +48,24 @@ public class TextFunctions {
     _favorites_file = GLib.Path.build_filename( TextShine.get_home_dir(), "favorites.xml" );
     _custom_file    = GLib.Path.build_filename( TextShine.get_home_dir(), "custom.xml" );
 
-    _functions  = new Array<TextFunction>();
-    _categories = new Array<string>();
-    _map        = new Array<int>();
+    _functions       = new Array<TextFunction>();
+    _categories      = new Array<string>();
+    _category_labels = new Array<string>();
+    _map             = new Array<int>();
+
+    add_category( "favorites",      _( "Favorites" ) );
+    add_category( "case",           _( "Change Case" ) );
+    add_category( "insert",         _( "Insert" ) );
+    add_category( "remove",         _( "Remove" ) );
+    add_category( "replace",        _( "Replace" ) );
+    add_category( "quotes",         _( "Quotes" ) );
+    add_category( "sort",           _( "Sort" ) );
+    add_category( "indent",         _( "Indentation" ) );
+    add_category( "search-replace", _( "Search and Replace" ) );
+    add_category( "repair",         _( "Repair" ) );
+    add_category( "convert",        _( "Convert" ) );
+    add_category( "markdown",       _( "Markdown" ) );
+    add_category( "custom",         _( "Custom" ) );
 
     /* Category - case */
     add_function( "case", new CaseUpper() );
@@ -113,6 +141,12 @@ public class TextFunctions {
 
   }
 
+  /* Adds a new category */
+  public void add_category( string name, string label ) {
+    _categories.append_val( name );
+    _category_labels.append_val( label );
+  }
+
   /*
    Populate the functions and categories lists and creates a mapping between the
    two.
@@ -120,11 +154,7 @@ public class TextFunctions {
   public void add_function( string category, TextFunction function ) {
 
     var ct_index = category_index( category );
-
-    if( ct_index == -1 ) {
-      ct_index = (int)_categories.length;
-      _categories.append_val( category );
-    }
+    if( ct_index == -1 ) return;
 
     _functions.append_val( function );
     _map.append_val( ct_index );
@@ -135,7 +165,6 @@ public class TextFunctions {
 
   /* Removes the given function index */
   public void remove_function( TextFunction function ) {
-
     for( int i=0; i<_functions.length; i++ ) {
       if( _functions.index( i ) == function ) {
         _functions.index( i ).settings_changed.disconnect( save_functions );
@@ -144,20 +173,32 @@ public class TextFunctions {
         break;
       }
     }
-
   }
 
   /* Returns the index of the given category in the array */
   private int category_index( string category ) {
-
     for( int i=0; i<_categories.length; i++ ) {
       if( _categories.index( i ) == category ) {
         return( i );
       }
     }
-
     return( -1 );
+  }
 
+  /* Returns the translated label used for the given category name */
+  public string get_category_label( string name ) {
+    var index = category_index( name );
+    return( (index != -1) ? _category_labels.index( index ) : "" );
+  }
+
+  /* Returns the category label for the given function */
+  public string get_category_label_for_function( TextFunction function ) {
+    for( int i=0; i<_functions.length; i++ ) {
+      if( _functions.index( i ) == function ) {
+        return( _categories.index( _map.index( i ) ) );
+      }
+    }
+    return( "" );
   }
 
   /* Returns the list of text functions associated with the given category */
