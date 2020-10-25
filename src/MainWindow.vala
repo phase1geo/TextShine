@@ -36,7 +36,6 @@ public class MainWindow : ApplicationWindow {
   private Button                   _copy_btn;
   private Button                   _undo_btn;
   private Button                   _redo_btn;
-  private Button                   _record_btn;
   private MenuButton               _prop_btn;
   private FontButton               _font;
   private Sidebar                  _sidebar;
@@ -45,7 +44,6 @@ public class MainWindow : ApplicationWindow {
   private HashMap<string,Revealer> _widgets;
   private TextFunctions            _functions;
   private CustomFunction           _custom;
-  private bool                     _recording;
   private string?                  _current_file = null;
 
   private const GLib.ActionEntry[] action_entries = {
@@ -70,8 +68,7 @@ public class MainWindow : ApplicationWindow {
 
     Object( application: app );
 
-    _recording = false;
-    _custom    = new CustomFunction();
+    _custom = new CustomFunction();
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
 
@@ -146,9 +143,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   private void action_applied( TextFunction function ) {
-    if( _recording ) {
-      _custom.functions.append_val( function );
-    }
+    // TBD
   }
 
   /* Handles any changes to the dark mode preference gsettings for the desktop */
@@ -234,11 +229,6 @@ public class MainWindow : ApplicationWindow {
     _header.pack_start( _redo_btn );
 
     _header.pack_end( add_properties_button() );
-
-    _record_btn = new Button.from_icon_name( "system-run", IconSize.LARGE_TOOLBAR );
-    _record_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Record Custom Action" ), "<Control>r" ) );
-    _record_btn.clicked.connect( toggle_record );
-    _header.pack_end( _record_btn );
 
     set_titlebar( _header );
 
@@ -401,20 +391,6 @@ public class MainWindow : ApplicationWindow {
   private void do_redo() {
     _editor.undo_buffer.redo();
     _editor.grab_focus();
-  }
-
-  /* Toggles the record status */
-  private void toggle_record() {
-    if( _recording ) {
-      _record_btn.image = new Image.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
-      _recording        = false;
-      var popover = _custom.show_ui( _record_btn, save_new_custom );
-      popover.position = PositionType.LEFT;
-    } else {
-      _record_btn.image = new Image.from_icon_name( "media-playback-stop", IconSize.LARGE_TOOLBAR );
-      _recording        = true;
-      _custom.functions.remove_range( 0, _custom.functions.length );
-    }
   }
 
   private void save_new_custom( CustomFunction function ) {

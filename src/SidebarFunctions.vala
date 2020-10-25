@@ -39,11 +39,10 @@ public class SidebarFunctions : SidebarBox {
 
   private Array<Functions> _functions;
   private Array<Category>  _categories;
-  private Button           _record;
   private SearchEntry      _search;
   private Box              _favorite_box;
   private Box              _custom_box;
-  private CustomFunction?  _custom;
+  private Revealer         _custom_revealer;
 
   /* Constructor */
   public SidebarFunctions( MainWindow win, Editor editor ) {
@@ -53,19 +52,12 @@ public class SidebarFunctions : SidebarBox {
     _functions  = new Array<Functions>();
     _categories = new Array<Category>();
 
-    /* Create custom recording button */
-    _record = new Button.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
-    _record.set_relief( ReliefStyle.NONE );
-    _record.set_tooltip_markup( Utils.tooltip_with_accel( _( "Record Custom Action" ), "<Control>r" ) );
-    _record.clicked.connect( toggle_record );
-
     /* Create search box */
     _search = new SearchEntry();
     _search.placeholder_text = _( "Search Actions" );
     _search.search_changed.connect( search_functions );
 
     var sbox = new Box( Orientation.HORIZONTAL, 5 );
-    sbox.pack_start( _record, false, false, 0 );
     sbox.pack_start( _search, true,  true,  0 );
 
     /* Create scrolled box */
@@ -88,29 +80,6 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Toggles the record status */
-  private void toggle_record() {
-    if( _custom != null ) {
-      _record.image    = new Image.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
-      if( _custom.functions.length > 0 ) {
-        var popover      = _custom.show_ui( _record, save_new_custom );
-        popover.position = PositionType.LEFT;
-      }
-    } else {
-      _record.image = new Image.from_icon_name( "media-playback-stop", IconSize.LARGE_TOOLBAR );
-      _custom       = new CustomFunction();
-    }
-  }
-
-  /* Saves a new custom action set */
-  private void save_new_custom( CustomFunction function ) {
-    var fn = function.copy();
-    add_custom_function( (CustomFunction)fn );
-    win.functions.add_function( "custom", fn );
-    win.functions.save_custom();
-    _custom = null;
-  }
-
   /* Performs search of all text functions, displaying only those functions which match the search text */
   private void search_functions() {
 
@@ -120,6 +89,8 @@ public class SidebarFunctions : SidebarBox {
     for( int i=0; i<_categories.length; i++ ) {
       _categories.index( i ).show( empty );
     }
+
+    _custom_revealer.reveal_child = empty;
 
     for( int i=0; i<_functions.length; i++ ) {
       _functions.index( i ).reveal( value );
@@ -140,24 +111,26 @@ public class SidebarFunctions : SidebarBox {
       TextShine.settings.set_boolean( setting, !exp.expanded );
     });
 
-    var item_box = new Box( Orientation.VERTICAL, 0 );
-    item_box.border_width = 10;
+    var ibox = new Box( Orientation.VERTICAL, 0 );
+    ibox.border_width = 10;
 
-    exp.add( item_box );
+    exp.add( ibox );
 
     /* Populate item_box with functions */
     var functions = win.functions.get_category_functions( name );
     for( int i=0; i<functions.length; i++ ) {
-      add_function( name, item_box, exp, functions.index( i ) );
+      add_function( name, ibox, exp, functions.index( i ) );
     }
 
     _categories.append_val( new Category( setting, exp ) );
 
     switch( name ) {
-      case "favorites" :  _favorite_box = item_box;  break;
+      case "favorites" :
+        _favorite_box = ibox;
+        break;
       case "custom"    :
-        _custom_box = item_box;
-        add_create_custom( item_box );
+        _custom_box = ibox;
+        add_create_custom();
         break;
     }
 
@@ -166,7 +139,7 @@ public class SidebarFunctions : SidebarBox {
   }
 
   /* Adds the create custom button */
-  private void add_create_custom( Box box ) {
+  private void add_create_custom() {
 
     var fbox = new Box( Orientation.HORIZONTAL, 5 );
 
@@ -179,12 +152,12 @@ public class SidebarFunctions : SidebarBox {
 
     fbox.pack_start( button, false, true, 0 );
 
-    var revealer = new Revealer();
-    revealer.add( fbox );
-    revealer.border_width = 5;
-    revealer.reveal_child = true;
+    _custom_revealer = new Revealer();
+    _custom_revealer.add( fbox );
+    _custom_revealer.border_width = 5;
+    _custom_revealer.reveal_child = true;
 
-    box.pack_start( revealer, false, false, 0 );
+    _custom_box.pack_start( _custom_revealer, false, false, 0 );
 
   }
 
@@ -230,7 +203,7 @@ public class SidebarFunctions : SidebarBox {
     box.pack_start( revealer, false, false, 0 );
 
     if( exp != null ) {
-      _functions.append_val( new Functions( function, revealer, exp ) );
+      _functions.append_val( new Functions( function, revealer, null, exp ) );
       function.update_button_label.connect(() => {
         button.label = function.label;
       });
@@ -352,7 +325,15 @@ public class SidebarFunctions : SidebarBox {
   }
 
   public void delete_custom_function( CustomFunction function ) {
-    // FOOBAR
+    _custom_box.get_children().@foreach((w) => {
+      _custom_box.remove( w );
+    });
+    var functions = win.functions.get_category_functions( "custom" );
+    for( int i=0; i<functions.length; i++ ) {
+      add_custom_function( (CustomFunction)functions.index( i ) );
+    }
+    add_create_custom();
+    _custom_box.show_all();
   }
 
   /* Adds the settings button to the text function */
@@ -406,6 +387,14 @@ public class SidebarFunctions : SidebarBox {
 
     grid.attach( edit, 0, 0 );
 
+  }
+
+  /* Called when this panel is displayed */
+  public void displayed( SwitchStackReason reason, TextFunction? function ) {
+    switch( reason ) {
+      case SwitchStackReason.ADD    :  add_custom_function( (CustomFunction)function );     break;
+      case SwitchStackReason.DELETE :  delete_custom_function( (CustomFunction)function );  break;
+    }
   }
 
 }

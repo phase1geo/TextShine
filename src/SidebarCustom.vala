@@ -34,7 +34,7 @@ public class SidebarCustom : SidebarBox {
   private Button           _save;
   private Label            _new_action_label;
   private Box              _cbox;
-  private Box              _pbox;
+  private Grid             _pbox;
   private int              _insert_index;
 
   /* Constructor */
@@ -105,10 +105,13 @@ public class SidebarCustom : SidebarBox {
     switch( reason ) {
       case SwitchStackReason.NEW :
         _custom = new CustomFunction();
+        _name.text = _custom.label;
+        _name.grab_focus();
         _delete_reveal.reveal_child = false;
         break;
       case SwitchStackReason.EDIT :
         _custom = (CustomFunction)function;
+        _name.text = _custom.label;
         _delete_reveal.reveal_child = true;
         insert_actions();
         break;
@@ -126,35 +129,52 @@ public class SidebarCustom : SidebarBox {
   /* Adds a function button to the given category item box */
   public Box add_function( TextFunction function ) {
 
-    var fbox = new Box( Orientation.HORIZONTAL, 5 );
+    var index = (int)_custom.functions.length;
 
-    var button = new Button.with_label( function.label );
-    button.halign = Align.START;
-    button.set_relief( ReliefStyle.NONE );
-    button.clicked.connect(() => {
-      editor.grab_focus();
-      if( function.launchable( editor ) ) {
-        win.show_widget( "" );
-        function.launch( editor );
-        action_applied( function );
-      }
+    var label = new Label( function.label );
+    label.halign = Align.START;
+    label.drag_begin.connect((ctx) => {
+      stdout.printf( "Drag started\n" );
+    });
+    label.drag_end.connect((ctx) => {
+      stdout.printf( "Drag ended\n" );
     });
 
     var grid = new Grid();
-    add_direction_button( grid, button, function );
+    add_direction_button( grid, label, function );
     add_settings_button(  grid, function );
 
-    fbox.pack_start( button, false, true,  0 );
-    fbox.pack_end(   grid,   false, false, 0 );
+    var lbox = new Box( Orientation.HORIZONTAL, 0 );
+    lbox.pack_start( label, false, true,  10 );
+    lbox.pack_end(   grid,  false, false, 10 );
 
-    _cbox.pack_start( fbox, false, false, 0 );
+    var fbox  = new Box( Orientation.VERTICAL, 0 );
+    fbox.pack_start( lbox, false, false,  20 );
+
+    var frame = new Frame( null );
+    frame.shadow_type = ShadowType.ETCHED_OUT;
+    frame.add( fbox );
+    frame.add_events( EventMask.BUTTON_PRESS_MASK );
+    frame.button_press_event.connect((e) => {
+      stdout.printf( "In button press event\n" );
+      if( e.button == Gdk.BUTTON_SECONDARY ) {
+        show_action_menu( frame, index );
+      }
+      return( true );
+    });
+
+    _cbox.pack_start( frame, false, false, 5 );
 
     function.update_button_label.connect(() => {
-      button.label = function.label;
+      label.label = function.label;
     });
 
     return( fbox );
 
+  }
+
+  private void show_action_menu( Widget action, int index ) {
+    stdout.printf( "In show_action_popup, index: %d\n", index );
   }
 
   /* Inserts the new action label in the given position */
@@ -208,15 +228,15 @@ public class SidebarCustom : SidebarBox {
     _search.search_changed.connect( search_functions );
 
     /* Create scrolled box */
-    _pbox = new Box( Orientation.VERTICAL, 0 );
+    _pbox = new Grid();
     var sw   = new ScrolledWindow( null, null );
     var vp   = new Viewport( null, null );
-    vp.set_size_request( 300, 600 );
+    vp.set_size_request( 320, 600 );
     vp.add( _pbox );
     sw.add( vp );
 
     var box = new Box( Orientation.VERTICAL, 0 );
-    box.set_size_request( 300, 500 );
+    box.set_size_request( 320, 500 );
     box.pack_start( _search, false, true, 5 );
     box.pack_start( sw,      true,  true, 5 );
 
@@ -242,7 +262,7 @@ public class SidebarCustom : SidebarBox {
     /* Insert the new elements */
     var functions = win.functions.functions;
     for( int i=0; i<functions.length; i++ ) {
-      add_popup_function( functions.index( i ) );
+      add_popup_function( i, functions.index( i ) );
     }
 
     _pbox.show_all();
@@ -266,11 +286,16 @@ public class SidebarCustom : SidebarBox {
   }
 
   /* Adds a function button to the popup box */
-  public void add_popup_function( TextFunction function ) {
+  public void add_popup_function( int row, TextFunction function ) {
 
-    var label = win.functions.get_category_label_for_function( function ) + " - " + function.label;
+    var label = new Label( win.functions.get_category_label_for_function( function ).up() + ": " );
+    label.xalign = (float)0;
 
-    var button = new Button.with_label( label );
+    var lreveal = new Revealer();
+    lreveal.reveal_child = true;
+    lreveal.add( label );
+
+    var button = new Button.with_label( function.label );
     button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
@@ -278,19 +303,20 @@ public class SidebarCustom : SidebarBox {
       _popover.popdown();
     });
 
-    var reveal = new Revealer();
-    reveal.reveal_child = true;
-    reveal.add( button );
+    var breveal = new Revealer();
+    breveal.reveal_child = true;
+    breveal.add( button );
 
-    _pbox.pack_start( reveal, false, true, 0 );
+    _pbox.attach( lreveal, 0, row );
+    _pbox.attach( breveal, 1, row );
 
     /* Add the function so that we can hide it while searching */
-    _functions.append_val( new Functions( function, reveal ) );
+    _functions.append_val( new Functions( function, lreveal, breveal ) );
 
   }
 
   /* Creates the direction button (if necessary) and adds it to the given box */
-  private void add_direction_button( Grid grid, Button btn, TextFunction function ) {
+  private void add_direction_button( Grid grid, Label lbl, TextFunction function ) {
 
     if( function.direction == FunctionDirection.NONE ) return;
 
@@ -320,7 +346,7 @@ public class SidebarCustom : SidebarBox {
           win.functions.save_functions();
           break;
       }
-      btn.label = function.label;
+      lbl.label = function.label;
     });
 
     grid.attach( direction, 1, 0 );
@@ -367,15 +393,16 @@ public class SidebarCustom : SidebarBox {
   }
 
   private void save_custom() {
-    // _custom
+    _custom.label = _name.text;
+    win.functions.add_function( "custom", _custom );
     win.functions.save_custom();
-    switch_stack( SwitchStackReason.ADD, _custom );
+    switch_stack( (_delete_reveal.reveal_child ? SwitchStackReason.EDIT : SwitchStackReason.ADD), _custom );
   }
 
   private void delete_custom() {
-    // _custom
+    win.functions.remove_function( _custom );
     win.functions.save_custom();
-    switch_stack( SwitchStackReason.DELETE, null );
+    switch_stack( SwitchStackReason.DELETE, _custom );
   }
 
 }
