@@ -45,6 +45,9 @@ public class MainWindow : ApplicationWindow {
   private TextFunctions            _functions;
   private CustomFunction           _custom;
   private string?                  _current_file = null;
+  private Label                    _stats_chars;
+  private Label                    _stats_words;
+  private Label                    _stats_lines;
 
   private const GLib.ActionEntry[] action_entries = {
     { "action_clear", do_clear },
@@ -229,8 +232,75 @@ public class MainWindow : ApplicationWindow {
     _header.pack_start( _redo_btn );
 
     _header.pack_end( add_properties_button() );
+    _header.pack_end( add_stats_button() );
 
     set_titlebar( _header );
+
+  }
+
+  /* Adds the statistics functionality */
+  private Button add_stats_button() {
+
+    var stats_btn = new MenuButton();
+    stats_btn.set_image( new Image.from_icon_name( "org.gnome.PowerStats", IconSize.LARGE_TOOLBAR ) );
+    stats_btn.set_tooltip_markup( _( "Statistics" ) );
+    stats_btn.clicked.connect( stats_clicked );
+
+    var grid = new Grid();
+    grid.border_width       = 10;
+    grid.row_spacing        = 10;
+    // grid.column_homogeneous = true;
+    grid.column_spacing     = 10;
+
+    var lmargin = "    ";
+
+    var group_text = new Label( _( "<b>Text Statistics</b>" ) );
+    group_text.xalign     = 0;
+    group_text.use_markup = true;
+
+    var lbl_chars = new Label( lmargin + _( "Characters:") );
+    lbl_chars.xalign = 0;
+    _stats_chars = new Label( "0" );
+    _stats_chars.xalign = 0;
+
+    var lbl_words = new Label( lmargin + _( "Words:" ) );
+    lbl_words.xalign = 0;
+    _stats_words = new Label( "0" );
+    _stats_words.xalign = 0;
+
+    var lbl_lines = new Label( lmargin + _( "Lines:") );
+    lbl_lines.xalign = 0;
+    _stats_lines = new Label( "0" );
+    _stats_lines.xalign = 0;
+
+    grid.attach( group_text,    0, 0, 2 );
+    grid.attach( lbl_chars,     0, 1 );
+    grid.attach( _stats_chars,  1, 1 );
+    grid.attach( lbl_words,     0, 2 );
+    grid.attach( _stats_words,  1, 2 );
+    grid.attach( lbl_lines,     0, 3 );
+    grid.attach( _stats_lines,  1, 3 );
+    grid.show_all();
+
+    /* Create the popover and associate it with the menu button */
+    stats_btn.popover = new Popover( null );
+    stats_btn.popover.add( grid );
+
+    return( stats_btn );
+
+  }
+
+  /* Toggle the statistics bar */
+  private void stats_clicked() {
+
+    var text       = _editor.buffer.text;
+    var char_count = text.char_count();
+    var word_count = text.strip().split_set( " \t\r\n" ).length;
+    var line_count = text.strip().split_set( "\n" ).length;
+
+    _stats_chars.label = char_count.to_string();
+    _stats_words.label = word_count.to_string();
+    _stats_lines.label = line_count.to_string();
 
   }
 

@@ -319,11 +319,13 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
+  /* Adds a new custom function to the sidebar */
   public void add_custom_function( CustomFunction function ) {
     add_function( "custom", _custom_box, null, function );
     _custom_box.show_all();
   }
 
+  /* Deletes an existing custom function from the sidebar */
   public void delete_custom_function( CustomFunction function ) {
     _custom_box.get_children().@foreach((w) => {
       _custom_box.remove( w );
