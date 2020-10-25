@@ -112,20 +112,21 @@ public class Find : TextFunction {
     for( int i=0; i<ranges.length; i++ ) {
 
       var text        = _editor.get_text( ranges.index( i ).start, ranges.index( i ).end );
-      var start_index = ranges.index( i ).start.get_offset();
+      var start_index = ranges.index( i ).start.get_offset();   // In chars
 
       if( ignore_case ) {
         text = text.down();
       }
 
-      var start = text.index_of( find_text, 0 );
+      var start = text.index_of( find_text, 0 );   // In bytes
 
       while( start != -1 ) {
         TextIter start_iter, end_iter;
-        _editor.buffer.get_iter_at_offset( out start_iter, start_index + start );
-        _editor.buffer.get_iter_at_offset( out end_iter,   start_index + (start + find_len) );
+        var start_chars = text.slice( 0, start ).char_count();
+        _editor.buffer.get_iter_at_offset( out start_iter, start_index + start_chars );
+        _editor.buffer.get_iter_at_offset( out end_iter,   start_index + (start_chars + find_len) );
         _editor.add_selected( start_iter, end_iter, _undo_item );
-        start = text.index_of( find_text, (start + find_len) );
+        start = text.index_of( find_text, (start + find_text.length) );
       }
 
     }

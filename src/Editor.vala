@@ -241,6 +241,26 @@ public class Editor : SourceView {
     return( (tag != null) && iter.forward_to_tag_toggle( tag ) );
   }
 
+  /* Returns the number of matches currenly highlighted in the text */
+  public int num_selected() {
+
+    var count = 0;
+    var tag   = buffer.tag_table.lookup( "selected" );
+
+    if( tag != null ) {
+      TextIter end;
+      buffer.get_start_iter( out end );
+      while( end.forward_to_tag_toggle( tag ) ) {
+        if( end.ends_tag( tag ) ) {
+          count++;
+        }
+      }
+    }
+
+    return( count );
+
+  }
+
   /* Adds a new tag by the given name */
   public void add_selected( TextIter start, TextIter end, UndoItem undo_item ) {
     clear_selection();

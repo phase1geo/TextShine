@@ -48,6 +48,7 @@ public class MainWindow : ApplicationWindow {
   private Label                    _stats_chars;
   private Label                    _stats_words;
   private Label                    _stats_lines;
+  private Label                    _stats_matches;
 
   private const GLib.ActionEntry[] action_entries = {
     { "action_clear", do_clear },
@@ -247,10 +248,9 @@ public class MainWindow : ApplicationWindow {
     stats_btn.clicked.connect( stats_clicked );
 
     var grid = new Grid();
-    grid.border_width       = 10;
-    grid.row_spacing        = 10;
-    // grid.column_homogeneous = true;
-    grid.column_spacing     = 10;
+    grid.border_width   = 10;
+    grid.row_spacing    = 10;
+    grid.column_spacing = 10;
 
     var lmargin = "    ";
 
@@ -273,13 +273,20 @@ public class MainWindow : ApplicationWindow {
     _stats_lines = new Label( "0" );
     _stats_lines.xalign = 0;
 
-    grid.attach( group_text,    0, 0, 2 );
-    grid.attach( lbl_chars,     0, 1 );
-    grid.attach( _stats_chars,  1, 1 );
-    grid.attach( lbl_words,     0, 2 );
-    grid.attach( _stats_words,  1, 2 );
-    grid.attach( lbl_lines,     0, 3 );
-    grid.attach( _stats_lines,  1, 3 );
+    var lbl_matches = new Label( lmargin + _( "Matches:") );
+    lbl_matches.xalign = 0;
+    _stats_matches = new Label( "0" );
+    _stats_matches.xalign = 0;
+
+    grid.attach( group_text,     0, 0, 2 );
+    grid.attach( lbl_chars,      0, 1 );
+    grid.attach( _stats_chars,   1, 1 );
+    grid.attach( lbl_words,      0, 2 );
+    grid.attach( _stats_words,   1, 2 );
+    grid.attach( lbl_lines,      0, 3 );
+    grid.attach( _stats_lines,   1, 3 );
+    grid.attach( lbl_matches,    0, 4 );
+    grid.attach( _stats_matches, 1, 4 );
     grid.show_all();
 
     /* Create the popover and associate it with the menu button */
@@ -293,14 +300,16 @@ public class MainWindow : ApplicationWindow {
   /* Toggle the statistics bar */
   private void stats_clicked() {
 
-    var text       = _editor.buffer.text;
-    var char_count = text.char_count();
-    var word_count = text.strip().split_set( " \t\r\n" ).length;
-    var line_count = text.strip().split_set( "\n" ).length;
+    var text        = _editor.buffer.text;
+    var char_count  = text.char_count();
+    var word_count  = text.strip().split_set( " \t\r\n" ).length;
+    var line_count  = text.strip().split_set( "\n" ).length;
+    var match_count = _editor.num_selected();
 
-    _stats_chars.label = char_count.to_string();
-    _stats_words.label = word_count.to_string();
-    _stats_lines.label = line_count.to_string();
+    _stats_chars.label   = char_count.to_string();
+    _stats_words.label   = word_count.to_string();
+    _stats_lines.label   = line_count.to_string();
+    _stats_matches.label = match_count.to_string();
 
   }
 
