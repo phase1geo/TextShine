@@ -27,6 +27,7 @@ public class SidebarCustom : SidebarBox {
 
   private Array<Functions> _functions;
   private Entry            _name;
+  private Revealer         _add_revealer;
   private SearchEntry      _search;
   private CustomFunction?  _custom;
   private Popover          _popover;
@@ -48,16 +49,9 @@ public class SidebarCustom : SidebarBox {
 
     _name = new Entry();
 
-    var add = new Button.from_icon_name( "list-add-symbolic", IconSize.SMALL_TOOLBAR );
-    add.tooltip_text = _( "Add new function" );
-    add.clicked.connect(() => {
-      insert_new_action( -1 );
-    });
-
     var nbox = new Box( Orientation.HORIZONTAL, 0 );
-    nbox.pack_start( nlbl, false, false, 5 );
-    nbox.pack_start( _name, true, true, 5 );
-    nbox.pack_end( add, false, false, 5 );
+    nbox.pack_start( nlbl,  false, false, 5 );
+    nbox.pack_start( _name, true,  true,  5 );
 
     /* Create scrolled box */
     _cbox  = new Box( Orientation.VERTICAL, 0 );
@@ -66,6 +60,16 @@ public class SidebarCustom : SidebarBox {
     vp.set_size_request( 300, 600 );
     vp.add( _cbox );
     sw.add( vp );
+
+    var add = new Button.with_label( _( "Add New Action" ) );
+    add.set_relief( ReliefStyle.NONE );
+    add.clicked.connect(() => {
+      insert_new_action( 0 );
+    });
+
+    _add_revealer = new Revealer();
+    _add_revealer.reveal_child = true;
+    _add_revealer.add( add );
 
     var del = new Button.with_label( _( "Delete" ) );
     del.get_style_context().add_class( "destructive-action" );
@@ -90,9 +94,10 @@ public class SidebarCustom : SidebarBox {
     bbox.pack_end(   _save,          false, false, 5 );
     bbox.pack_end(   cancel,         false, false, 5 );
 
-    pack_start( nbox, false, true, 5 );
-    pack_start( sw,   true,  true, 5 );
-    pack_start( bbox, false, true, 5 );
+    pack_start( nbox,          false, true, 5 );
+    pack_start( _add_revealer, false, true, 5 );
+    pack_start( sw,            true,  true, 5 );
+    pack_start( bbox,          false, true, 5 );
 
     /* Create the action insertion popover */
     create_popover();
@@ -121,72 +126,137 @@ public class SidebarCustom : SidebarBox {
 
   /* Inserts the current custom actions */
   private void insert_actions() {
+    _cbox.get_children().@foreach((w) => {
+      _cbox.remove( w );
+    });
     for( int i=0; i<_custom.functions.length; i++ ) {
       add_function( _custom.functions.index( i ) );
     }
+    _cbox.show_all();
   }
 
   /* Adds a function button to the given category item box */
   public Box add_function( TextFunction function ) {
 
-    var index = (int)_custom.functions.length;
+    var box = new Box( Orientation.VERTICAL, 0 );
 
     var label = new Label( function.label );
     label.halign = Align.START;
-    label.drag_begin.connect((ctx) => {
-      stdout.printf( "Drag started\n" );
-    });
-    label.drag_end.connect((ctx) => {
-      stdout.printf( "Drag ended\n" );
-    });
 
     var grid = new Grid();
     add_direction_button( grid, label, function );
     add_settings_button(  grid, function );
 
     var lbox = new Box( Orientation.HORIZONTAL, 0 );
-    lbox.pack_start( label, false, true,  10 );
-    lbox.pack_end(   grid,  false, false, 10 );
+    lbox.pack_start( label, false, true,  5 );
+    lbox.pack_end(   grid,  false, false, 5 );
+
+    var ebox = new EventBox();
+    ebox.add( lbox );
+    ebox.button_press_event.connect((e) => {
+      if( e.button == Gdk.BUTTON_SECONDARY ) {
+        show_action_menu( e, box );
+      }
+      return( false );
+    });
+    ebox.drag_begin.connect((ctx) => {
+      stdout.printf( "Drag started\n" );
+    });
+    ebox.drag_end.connect((ctx) => {
+      stdout.printf( "Drag ended\n" );
+    });
 
     var fbox  = new Box( Orientation.VERTICAL, 0 );
-    fbox.pack_start( lbox, false, false,  20 );
+    fbox.margin_top    = 10;
+    fbox.margin_bottom = 10;
+    fbox.margin_left   = 5;
+    fbox.margin_right  = 5;
+    fbox.pack_start( ebox, false, true, 5 );
 
     var frame = new Frame( null );
     frame.shadow_type = ShadowType.ETCHED_OUT;
     frame.add( fbox );
-    frame.add_events( EventMask.BUTTON_PRESS_MASK );
-    frame.button_press_event.connect((e) => {
-      stdout.printf( "In button press event\n" );
-      if( e.button == Gdk.BUTTON_SECONDARY ) {
-        show_action_menu( frame, index );
-      }
-      return( true );
-    });
 
-    _cbox.pack_start( frame, false, false, 5 );
+    var add = new Label( _( "Add New Action" ) );
+    var add_revealer = new Revealer();
+    add_revealer.reveal_child = false;
+    add_revealer.add( add );
+
+    box.pack_start( frame,        false, true, 5 );
+    box.pack_start( add_revealer, false, true, 5 );
+
+    _cbox.pack_start( box, false, false, 5 );
 
     function.update_button_label.connect(() => {
       label.label = function.label;
     });
 
-    return( fbox );
+    return( box );
 
   }
 
-  private void show_action_menu( Widget action, int index ) {
-    stdout.printf( "In show_action_popup, index: %d\n", index );
+  private void show_action_menu( EventButton event, Box box ) {
+
+    var index = 0;
+    _cbox.get_children().@foreach((w) => {
+      if( (Box)w == box ) {
+        return;
+      }
+      index++;
+    });
+
+    stdout.printf( "In show_action_menu, index: %d\n", index );
+
+    var menu = new Gtk.Menu();
+
+    var add_above = new Gtk.MenuItem.with_label( _( "Add New Action Above" ) );
+    add_above.activate.connect(() => {
+      insert_new_action( index );
+    });
+
+    var add_below = new Gtk.MenuItem.with_label( _( "Add New Action Below" ) );
+    add_below.activate.connect(() => {
+      insert_new_action( index + 1 );
+    });
+
+    var del = new Gtk.MenuItem.with_label( _( "Remove Action" ) );
+    del.activate.connect(() => {
+      delete_action( index );
+    });
+
+    menu.add( add_above );
+    menu.add( add_below );
+    menu.add( new Gtk.SeparatorMenuItem() );
+    menu.add( del );
+    menu.show_all();
+
+    menu.popup_at_pointer( event );
+
+
+  }
+
+  /* Returns the revealer at the given index */
+  private Revealer get_revealer( int index ) {
+    if( index == 0 ) {
+      return( _add_revealer );
+    } else {
+      var box = (Box)_cbox.get_children().nth_data( _insert_index - 1 );
+      return( (Revealer)box.get_children().nth_data( 1 ) );
+    }
   }
 
   /* Inserts the new action label in the given position */
   private void insert_new_action( int index ) {
-    var num_funcs = (int)_custom.functions.length;
-    _insert_index = (index == -1) ? num_funcs : index;
-    _cbox.pack_start( _new_action_label, false, true, 5 );
-    if( num_funcs != index ) {
-      _cbox.reorder_child( _new_action_label, index );
-    }
-    _cbox.show_all();
+
+    /* Figure out what index we are going to insert at */
+    _insert_index = (index == -1) ? (int)_custom.functions.length : index;
+
+    var revealer = get_revealer( _insert_index );
+    revealer.reveal_child = true;
+
+    _popover.relative_to = revealer;
     _popover.popup();
+
   }
 
   /*
@@ -194,22 +264,17 @@ public class SidebarCustom : SidebarBox {
    calculated insert index.  Updates the internal custom function contents.
   */
   private void insert_function( TextFunction function ) {
-    var fbox = add_function( function );
-    _cbox.reorder_child( fbox, _insert_index );
+    get_revealer( _insert_index ).reveal_child = false;
+    var box = add_function( function );
+    _cbox.reorder_child( box, _insert_index );
     _cbox.show_all();
     _custom.functions.insert_val( _insert_index, function );
   }
 
-  /* Saves a new custom action set */
-  /*
-  private void save_new_custom( CustomFunction function ) {
-    var fn = function.copy();
-    add_custom_function( (CustomFunction)fn );
-    win.functions.add_function( "custom", fn );
-    win.functions.save_custom();
-    _custom = null;
+  private void delete_action( int index ) {
+    _cbox.remove( _cbox.get_children().nth_data( index ) );
+    _custom.functions.remove_index( index );
   }
-  */
 
   //----------------------------------------------------------------------------
   //  POPOVER
@@ -247,7 +312,7 @@ public class SidebarCustom : SidebarBox {
     _popover.relative_to = _new_action_label;
     _popover.position    = PositionType.LEFT;
     _popover.add( box );
-    _popover.realize.connect( popover_opened );
+    _popover.show.connect( popover_opened );
     _popover.closed.connect( popover_closed );
 
   }
