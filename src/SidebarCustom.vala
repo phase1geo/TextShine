@@ -64,7 +64,7 @@ public class SidebarCustom : SidebarBox {
     var add = new Button.with_label( _( "Add New Action" ) );
     add.set_relief( ReliefStyle.NONE );
     add.clicked.connect(() => {
-      insert_new_action( 0 );
+      insert_new_action( null, 0 );
     });
 
     _add_revealer = new Revealer();
@@ -126,6 +126,7 @@ public class SidebarCustom : SidebarBox {
 
   /* Inserts the current custom actions */
   private void insert_actions() {
+    _add_revealer.reveal_child = false;
     _cbox.get_children().@foreach((w) => {
       _cbox.remove( w );
     });
@@ -146,6 +147,27 @@ public class SidebarCustom : SidebarBox {
     var grid = new Grid();
     add_direction_button( grid, label, function );
     add_settings_button(  grid, function );
+
+    var add = new Button.from_icon_name( "list-add-symbolic", IconSize.SMALL_TOOLBAR );
+    add.border_width = 2;
+    add.set_tooltip_text( _( "Click to add new action below\nShift-Click to add new action above" ) );
+    add.get_style_context().add_class( "circular" );
+    add.button_release_event.connect((e) => {
+      var shift = (bool)(e.state & ModifierType.SHIFT_MASK);
+      insert_new_action( box, (shift ? 0 : 1) );
+      return( false );
+    });
+
+    var del = new Button.from_icon_name( "list-remove-symbolic", IconSize.SMALL_TOOLBAR );
+    del.border_width = 2;
+    del.set_tooltip_text( _( "Click to delete action" ) );
+    del.get_style_context().add_class( "circular" );
+    del.clicked.connect(() => {
+      delete_function( box );
+    });
+
+    grid.attach( add, 3, 0 );
+    grid.attach( del, 4, 0 );
 
     var lbox = new Box( Orientation.HORIZONTAL, 0 );
     lbox.pack_start( label, false, true,  5 );
@@ -177,15 +199,15 @@ public class SidebarCustom : SidebarBox {
     frame.shadow_type = ShadowType.ETCHED_OUT;
     frame.add( fbox );
 
-    var add = new Label( _( "Add New Action" ) );
-    var add_revealer = new Revealer();
+    var add_placeholder = new Label( _( "Add New Action" ) );
+    var add_revealer    = new Revealer();
     add_revealer.reveal_child = false;
-    add_revealer.add( add );
+    add_revealer.add( add_placeholder );
 
     box.pack_start( frame,        false, true, 5 );
     box.pack_start( add_revealer, false, true, 5 );
 
-    _cbox.pack_start( box, false, false, 5 );
+    _cbox.pack_start( box, false, false, 0 );
 
     function.update_button_label.connect(() => {
       label.label = function.label;
@@ -195,33 +217,41 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  private void show_action_menu( EventButton event, Box box ) {
+  /* Returns the index of the given action box */
+  private int get_action_index( Box box ) {
 
     var index = 0;
+    var i     = 0;
+
     _cbox.get_children().@foreach((w) => {
       if( (Box)w == box ) {
-        return;
+        index = i;
       }
-      index++;
+      i++;
     });
 
-    stdout.printf( "In show_action_menu, index: %d\n", index );
+    return( index );
 
-    var menu = new Gtk.Menu();
+  }
+
+  private void show_action_menu( EventButton event, Box box ) {
+
+    var index = get_action_index( box );
+    var menu  = new Gtk.Menu();
 
     var add_above = new Gtk.MenuItem.with_label( _( "Add New Action Above" ) );
     add_above.activate.connect(() => {
-      insert_new_action( index );
+      insert_new_action( box, 0 );
     });
 
     var add_below = new Gtk.MenuItem.with_label( _( "Add New Action Below" ) );
     add_below.activate.connect(() => {
-      insert_new_action( index + 1 );
+      insert_new_action( box, 1 );
     });
 
     var del = new Gtk.MenuItem.with_label( _( "Remove Action" ) );
     del.activate.connect(() => {
-      delete_action( index );
+      delete_function( box );
     });
 
     menu.add( add_above );
@@ -246,10 +276,12 @@ public class SidebarCustom : SidebarBox {
   }
 
   /* Inserts the new action label in the given position */
-  private void insert_new_action( int index ) {
+  private void insert_new_action( Box? box, int add_to_index ) {
+
+    var index = get_action_index( box ) + add_to_index;
 
     /* Figure out what index we are going to insert at */
-    _insert_index = (index == -1) ? (int)_custom.functions.length : index;
+    _insert_index = (box == null) ? 0 : (get_action_index( box ) + add_to_index);
 
     var revealer = get_revealer( _insert_index );
     revealer.reveal_child = true;
@@ -271,7 +303,9 @@ public class SidebarCustom : SidebarBox {
     _custom.functions.insert_val( _insert_index, function );
   }
 
-  private void delete_action( int index ) {
+  /* Removes the action at the given index */
+  private void delete_function( Box box ) {
+    var index = get_action_index( box );
     _cbox.remove( _cbox.get_children().nth_data( index ) );
     _custom.functions.remove_index( index );
   }
@@ -317,6 +351,10 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  /*
+   Called when the function popover is displayed.  Populates the popover with
+   the current list of available functions.
+  */
   private void popover_opened() {
 
     /* Clear the contents */
@@ -334,8 +372,11 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  /* Called whenever the popover is closed */
   private void popover_closed() {
-    _cbox.remove( _new_action_label );
+
+    get_revealer( _insert_index ).reveal_child = false;
+
   }
 
   /* Performs search of all text functions, displaying only those functions which match the search text */
@@ -437,6 +478,7 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  /* Populates the settings popover with the list of options from the function */
   private void on_settings_show( Popover popover, TextFunction function ) {
 
     var child = popover.get_child();
@@ -457,17 +499,23 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  /* Saves the current custom function */
   private void save_custom() {
+
     _custom.label = _name.text;
     win.functions.add_function( "custom", _custom );
     win.functions.save_custom();
     switch_stack( (_delete_reveal.reveal_child ? SwitchStackReason.EDIT : SwitchStackReason.ADD), _custom );
+
   }
 
+  /* Deletes the current custom function */
   private void delete_custom() {
+
     win.functions.remove_function( _custom );
     win.functions.save_custom();
     switch_stack( SwitchStackReason.DELETE, _custom );
+
   }
 
 }
