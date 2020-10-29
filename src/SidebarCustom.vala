@@ -181,8 +181,14 @@ public class SidebarCustom : SidebarBox {
       }
       return( false );
     });
+    Gtk.drag_source_set( ebox, Gdk.ModifierType.BUTTON1_MASK, null, Gdk.DragAction.MOVE );
     ebox.drag_begin.connect((ctx) => {
-      stdout.printf( "Drag started\n" );
+      Allocation alloc;
+      ebox.get_allocation( out alloc );
+      var surface = new Cairo.ImageSurface( Cairo.Format.ARGB32, alloc.width, alloc.height);
+      var cr      = new Cairo.Context( surface );
+      ebox.draw( cr );
+      drag_set_icon_surface( ctx, surface );
     });
     ebox.drag_end.connect((ctx) => {
       stdout.printf( "Drag ended\n" );
