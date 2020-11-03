@@ -37,6 +37,11 @@ public class SidebarCustom : SidebarBox {
   private Box              _cbox;
   private Grid             _pbox;
   private int              _insert_index;
+  private Box?             _drag_box;
+
+  static TargetEntry[] entries = {
+    { "TEXTSHINE_CUSTOM_ROW", TargetFlags.SAME_APP, 0 }
+  };
 
   /* Constructor */
   public SidebarCustom( MainWindow win, Editor editor ) {
@@ -61,15 +66,23 @@ public class SidebarCustom : SidebarBox {
     vp.add( _cbox );
     sw.add( vp );
 
+    /* Setup the cbox to be a drag destination */
+    // _cbox FOOBAR
+
     var add = new Button.with_label( _( "Add New Action" ) );
     add.set_relief( ReliefStyle.NONE );
     add.clicked.connect(() => {
       insert_new_action( null, 0 );
     });
 
+    var ins = new Label( " " );
+    var stack = new Stack();
+    stack.add_named( add, "add" );
+    stack.add_named( ins, "ins" );
+
     _add_revealer = new Revealer();
     _add_revealer.reveal_child = true;
-    _add_revealer.add( add );
+    _add_revealer.add( stack );
 
     var del = new Button.with_label( _( "Delete" ) );
     del.get_style_context().add_class( "destructive-action" );
@@ -166,32 +179,48 @@ public class SidebarCustom : SidebarBox {
       delete_function( box );
     });
 
-    grid.attach( add, 3, 0 );
-    grid.attach( del, 4, 0 );
-
     var lbox = new Box( Orientation.HORIZONTAL, 0 );
     lbox.pack_start( label, false, true,  5 );
     lbox.pack_end(   grid,  false, false, 5 );
 
+    var bbox = new Box( Orientation.HORIZONTAL, 2 );
+    bbox.pack_start( del, false, false, 0 );
+    bbox.pack_start( add, false, false, 0 );
+
+    var lbbox = new Box( Orientation.HORIZONTAL, 0 );
+    lbbox.pack_start( lbox, true,  true,  2 );
+    lbbox.pack_end(   bbox, false, false, 2 );
+
     var ebox = new EventBox();
-    ebox.add( lbox );
+    ebox.add( lbbox );
     ebox.button_press_event.connect((e) => {
       if( e.button == Gdk.BUTTON_SECONDARY ) {
         show_action_menu( e, box );
       }
       return( false );
     });
-    Gtk.drag_source_set( ebox, Gdk.ModifierType.BUTTON1_MASK, null, Gdk.DragAction.MOVE );
+
+    Gtk.drag_source_set( ebox, Gdk.ModifierType.BUTTON1_MASK, entries, Gdk.DragAction.MOVE );
+    Gtk.drag_dest_set( ebox, DestDefaults.ALL, entries, Gdk.DragAction.MOVE );
+
     ebox.drag_begin.connect((ctx) => {
       Allocation alloc;
-      ebox.get_allocation( out alloc );
+      lbox.get_allocation( out alloc );
       var surface = new Cairo.ImageSurface( Cairo.Format.ARGB32, alloc.width, alloc.height);
       var cr      = new Cairo.Context( surface );
-      ebox.draw( cr );
+      lbox.draw( cr );
+      cr.rectangle( 0, 0, alloc.width, alloc.height );
+      cr.stroke();
       drag_set_icon_surface( ctx, surface );
+      _drag_box = box;
     });
     ebox.drag_end.connect((ctx) => {
-      stdout.printf( "Drag ended\n" );
+      _drag_box = null;
+    });
+    ebox.drag_drop.connect((ctx, x, y, time_) => {
+      var index = get_action_index( box );
+      _cbox.reorder_child( _drag_box, index );
+      return( true );
     });
 
     var fbox  = new Box( Orientation.VERTICAL, 0 );
@@ -206,9 +235,13 @@ public class SidebarCustom : SidebarBox {
     frame.add( fbox );
 
     var add_placeholder = new Label( _( "Add New Action" ) );
+    var ins_placeholder = new Label( " " );
+    var placeholder_stack = new Stack();
+    placeholder_stack.add_named( add_placeholder, "add" );
+    placeholder_stack.add_named( ins_placeholder, "ins" );
     var add_revealer    = new Revealer();
     add_revealer.reveal_child = false;
-    add_revealer.add( add_placeholder );
+    add_revealer.add( placeholder_stack );
 
     box.pack_start( frame,        false, true, 5 );
     box.pack_start( add_revealer, false, true, 5 );
@@ -284,8 +317,6 @@ public class SidebarCustom : SidebarBox {
   /* Inserts the new action label in the given position */
   private void insert_new_action( Box? box, int add_to_index ) {
 
-    var index = get_action_index( box ) + add_to_index;
-
     /* Figure out what index we are going to insert at */
     _insert_index = (box == null) ? 0 : (get_action_index( box ) + add_to_index);
 
@@ -302,18 +333,29 @@ public class SidebarCustom : SidebarBox {
    calculated insert index.  Updates the internal custom function contents.
   */
   private void insert_function( TextFunction function ) {
+
     get_revealer( _insert_index ).reveal_child = false;
+
     var box = add_function( function );
+
     _cbox.reorder_child( box, _insert_index );
     _cbox.show_all();
     _custom.functions.insert_val( _insert_index, function );
+
   }
 
   /* Removes the action at the given index */
   private void delete_function( Box box ) {
+
     var index = get_action_index( box );
+
     _cbox.remove( _cbox.get_children().nth_data( index ) );
     _custom.functions.remove_index( index );
+
+    if( _custom.functions.length == 0 ) {
+      _add_revealer.reveal_child = true;
+    }
+
   }
 
   //----------------------------------------------------------------------------
@@ -381,7 +423,9 @@ public class SidebarCustom : SidebarBox {
   /* Called whenever the popover is closed */
   private void popover_closed() {
 
-    get_revealer( _insert_index ).reveal_child = false;
+    if( _custom.functions.length > 0 ) {
+      get_revealer( _insert_index ).reveal_child = false;
+    }
 
   }
 
