@@ -27,12 +27,20 @@ public class InsertLineEnd : TextFunction {
   private Editor     _editor;
   private Entry      _insert;
   private Button     _insert_btn;
+  private Box        _wbox;
 
   /* Constructor */
   public InsertLineEnd( MainWindow win, bool custom = false ) {
+
     base( "insert-line-end", custom );
-    _win = win;
-    _win.add_widget( "insert-line-end", create_widget() );
+
+    _win  = win;
+    _wbox = create_widget();
+
+    if( !custom ) {
+      _win.add_widget( "insert-line-end", _wbox );
+    }
+
   }
 
   protected override string get_label0() {
@@ -40,41 +48,61 @@ public class InsertLineEnd : TextFunction {
   }
 
   public override TextFunction copy( bool custom ) {
-    var fn = new InsertLineEnd( _win, custom );
-    return( fn );
+    return( new InsertLineEnd( _win, custom ) );
   }
 
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
     _editor = editor;
-    _insert.text = "";
-    _win.show_widget( "insert-line-end" );
-    _insert.grab_focus();
+    if( custom ) {
+      do_insert();
+    } else {
+      _insert.text = "";
+      _win.show_widget( "insert-line-end" );
+      _insert.grab_focus();
+    }
   }
 
   private Box create_widget() {
 
     _insert = new Entry();
     _insert.placeholder_text = _( "Inserted Text" );
-    _insert.changed.connect(() => {
-      _insert_btn.set_sensitive( _insert.text != "" );
-    });
-    _insert.activate.connect(() => {
-      _insert_btn.clicked();
-    });
 
-    _insert_btn = new Button.with_label( _( "Insert" ) );
-    _insert_btn.set_sensitive( false );
-    _insert_btn.clicked.connect(() => {
-      do_insert();
-    });
+    if( custom ) {
 
-    var box = new Box( Orientation.HORIZONTAL, 5 );
-    box.pack_start( _insert,     true,  true,  0 );
-    box.pack_start( _insert_btn, false, false, 0 );
+      var box = new Box( Orientation.VERTICAL, 0 );
+      box.pack_start( _insert, false, true, 5 );
 
-    return( box );
+      return( box );
 
+    } else {
+
+      _insert.changed.connect(() => {
+        _insert_btn.set_sensitive( _insert.text != "" );
+      });
+      _insert.activate.connect(() => {
+        _insert_btn.clicked();
+      });
+
+      _insert_btn = new Button.with_label( _( "Insert" ) );
+      _insert_btn.set_sensitive( false );
+      _insert_btn.clicked.connect(() => {
+        do_insert();
+      });
+
+      var box = new Box( Orientation.HORIZONTAL, 5 );
+      box.pack_start( _insert,     true,  true,  0 );
+      box.pack_start( _insert_btn, false, false, 0 );
+
+      return( box );
+
+    }
+
+  }
+
+  public override Box? get_widget() {
+    _wbox.unparent();
+    return( _wbox );
   }
 
   private void do_insert() {
@@ -100,6 +128,20 @@ public class InsertLineEnd : TextFunction {
 
     _win.show_widget( "" );
 
+  }
+
+  public override Xml.Node* save() {
+    Xml.Node* node = base.save();
+    node->set_prop( "insert", _insert.text );
+    return( node );
+  }
+
+  public override void load( Xml.Node* node, TextFunctions functions ) {
+    base.load( node, functions );
+    string? i = node->get_prop( "insert" );
+    if( i != null ) {
+      _insert.text = i;
+    }
   }
 
 }

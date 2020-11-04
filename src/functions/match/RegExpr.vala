@@ -32,15 +32,20 @@ public class RegExpr : TextFunction {
   private Editor      _editor;
   private bool        _tags_exist = false;
   private UndoItem    _undo_item;
+  private Box         _wbox;
 
   /* Constructor */
   public RegExpr( MainWindow win, bool custom = false ) {
 
     base( "regexpr", custom );
 
-    _re  = null;
-    _win = win;
-    _win.add_widget( "reg-expr", create_widget() );
+    _re   = null;
+    _win  = win;
+    _wbox = create_widget();
+
+    if( !custom ) {
+      _win.add_widget( "reg-expr", _wbox );
+    }
 
   }
 
@@ -53,20 +58,24 @@ public class RegExpr : TextFunction {
   }
 
   /* Creates the search UI */
-  public override Box? create_widget() {
+  private Box create_widget() {
 
     _pattern = new SearchEntry();
     _pattern.placeholder_text = _( "Regular Expression" );
-    _pattern.search_changed.connect( do_search );
-    _pattern.activate.connect( do_search );
+    if( !custom ) {
+      _pattern.search_changed.connect( do_search );
+      _pattern.activate.connect( do_search );
+    }
     _pattern.populate_popup.connect( populate_pattern_popup );
 
     _replace = new Entry();
     _replace.placeholder_text = _( "Replace With" );
-    _replace.changed.connect( replace_changed );
-    _replace.activate.connect(() => {
-      _replace_btn.clicked();
-    });
+    if( !custom ) {
+      _replace.changed.connect( replace_changed );
+      _replace.activate.connect(() => {
+        _replace_btn.clicked();
+      });
+    }
     _replace.populate_popup.connect( populate_replace_popup );
 
     var ebox = new Box( Orientation.VERTICAL, 0 );
@@ -99,6 +108,11 @@ public class RegExpr : TextFunction {
 
     }
 
+  }
+
+  public override Box? get_widget() {
+    _wbox.unparent();
+    return( _wbox );
   }
 
   private void populate_pattern_popup( Gtk.Menu menu ) {
@@ -315,19 +329,47 @@ public class RegExpr : TextFunction {
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
     _editor = editor;
-    _pattern.text = "";
-    _replace.text = "";
-    _win.show_widget( "reg-expr" );
-    _pattern.grab_focus();
+    if( custom ) {
+      do_search();
+      if( _replace.text != "" ) {
+        do_replace();
+      }
+    } else {
+      _pattern.text = "";
+      _replace.text = "";
+      _win.show_widget( "reg-expr" );
+      _pattern.grab_focus();
+    }
   }
 
   private void update_replace_btn_state() {
-    _replace_btn.set_sensitive( _tags_exist && (_replace.text != "") );
+    if( !custom ) {
+      _replace_btn.set_sensitive( _tags_exist && (_replace.text != "") );
+    }
   }
 
   /* Called whenever the replace entry contents change */
   private void replace_changed() {
     update_replace_btn_state();
+  }
+
+  public override Xml.Node* save() {
+    Xml.Node* node = base.save();
+    node->set_prop( "pattern", _pattern.text );
+    node->set_prop( "replace", _replace.text );
+    return( node );
+  }
+
+  public override void load( Xml.Node* node, TextFunctions functions ) {
+    base.load( node, functions );
+    string? p = node->get_prop( "pattern" );
+    if( p != null ) {
+      _pattern.text = p;
+    }
+    string? r = node->get_prop( "replace" );
+    if( r != null ) {
+      _replace.text = r;
+    }
   }
 
 }

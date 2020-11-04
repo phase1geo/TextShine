@@ -29,14 +29,19 @@ public class Find : TextFunction {
   private Button      _find_btn;
   private Editor      _editor;
   private UndoItem    _undo_item;
+  private Box         _wbox;
 
   /* Constructor */
   public Find( MainWindow win, bool custom = false ) {
 
     base( "find", custom );
 
-    _win = win;
-    _win.add_widget( name, create_widget() );
+    _win  = win;
+    _wbox = create_widget();
+
+    if( !custom ) {
+      _win.add_widget( name, _wbox );
+    }
 
   }
 
@@ -49,7 +54,7 @@ public class Find : TextFunction {
   }
 
   /* Creates the search UI */
-  public override Box? create_widget() {
+  private Box create_widget() {
 
     _find = new Entry();
     _find.placeholder_text = _( "Search Text" );
@@ -85,6 +90,11 @@ public class Find : TextFunction {
 
     }
 
+  }
+
+  public override Box? get_widget() {
+    _wbox.unparent();
+    return( _wbox );
   }
 
   private void add_insert( Gtk.Menu mnu, string lbl, string str ) {
@@ -158,10 +168,14 @@ public class Find : TextFunction {
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
     _editor = editor;
-    _find.text = "";
-    _case_sensitive.active = false;
-    _win.show_widget( name );
-    _find.grab_focus();
+    if( custom ) {
+      do_find();
+    } else {
+      _find.text = "";
+      _case_sensitive.active = false;
+      _win.show_widget( name );
+      _find.grab_focus();
+    }
   }
 
   /* Called whenever the find entry contents change */
@@ -169,4 +183,22 @@ public class Find : TextFunction {
     _find_btn.set_sensitive( _find.text != "" );
   }
 
+  public override Xml.Node* save() {
+    Xml.Node* node = base.save();
+    node->set_prop( "find", _find.text );
+    node->set_prop( "case-sensitive", _case_sensitive.active.to_string() );
+    return( node );
+  }
+
+  public override void load( Xml.Node* node, TextFunctions functions ) {
+    base.load( node, functions );
+    string? f = node->get_prop( "find" );
+    if( f != null ) {
+      _find.text = f;
+    }
+    string? c = node->get_prop( "case-sensitive" );
+    if( c != null ) {
+      _case_sensitive.active = bool.parse( c );
+    }
+  }
 }

@@ -193,7 +193,7 @@ public class SidebarCustom : SidebarBox {
 
     var ebox = new EventBox();
 
-    var wbox = function.create_widget();
+    var wbox = function.get_widget();
     if( wbox != null ) {
       var lbw = new Box( Orientation.VERTICAL, 0 );
       lbw.pack_start( lbbox, false, true, 5 );

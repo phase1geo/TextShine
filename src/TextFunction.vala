@@ -251,7 +251,7 @@ public class TextFunction {
   }
 
   /* Returns the widget as a Box container to add to the UI */
-  public virtual Box? create_widget() {
+  public virtual Box? get_widget() {
     return( null );
   }
 

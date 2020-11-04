@@ -27,14 +27,19 @@ public class ReplaceSelected : TextFunction {
   private Entry      _replace;
   private Button     _replace_btn;
   private Editor     _editor;
+  private Box        _wbox;
 
   /* Constructor */
   public ReplaceSelected( MainWindow win, bool custom = false ) {
 
     base( "replace-selected", custom );
 
-    _win = win;
-    _win.add_widget( name, create_widget() );
+    _win  = win;
+    _wbox = create_widget();
+
+    if( !custom ) {
+      _win.add_widget( name, _wbox );
+    }
 
   }
 
@@ -52,7 +57,7 @@ public class ReplaceSelected : TextFunction {
   }
 
   /* Creates the search UI */
-  public override Box? create_widget() {
+  private Box create_widget() {
 
     _replace = new Entry();
     _replace.placeholder_text = _( "Replace With" );
@@ -83,6 +88,11 @@ public class ReplaceSelected : TextFunction {
 
     }
 
+  }
+
+  public override Box? get_widget() {
+    _wbox.unparent();
+    return( _wbox );
   }
 
   private void add_insert( Gtk.Menu mnu, string lbl, string str ) {
@@ -123,15 +133,33 @@ public class ReplaceSelected : TextFunction {
 
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
-    _editor       = editor;
-    _replace.text = "";
-    _win.show_widget( name );
-    _replace.grab_focus();
+    _editor = editor;
+    if( custom ) {
+      do_replace();
+    } else {
+      _replace.text = "";
+      _win.show_widget( name );
+      _replace.grab_focus();
+    }
   }
 
   /* Called whenever the replace entry contents change */
   private void replace_changed() {
     _replace_btn.set_sensitive( _replace.text != "" );
+  }
+
+  public override Xml.Node* save() {
+    Xml.Node* node = base.save();
+    node->set_prop( "replace", _replace.text );
+    return( node );
+  }
+
+  public override void load( Xml.Node* node, TextFunctions functions ) {
+    base.load( node, functions );
+    string? r = node->get_prop( "replace" );
+    if( r != null ) {
+      _replace.text = r;
+    }
   }
 
 }
