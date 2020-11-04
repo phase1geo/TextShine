@@ -22,16 +22,16 @@
 public class QuotesCJK : TextFunction {
 
   /* Constructor */
-  public QuotesCJK() {
-    base( "quotes-cjk", FunctionDirection.NONE );
+  public QuotesCJK( bool custom = false ) {
+    base( "quotes-cjk", custom, FunctionDirection.NONE );
   }
 
   protected override string get_label0() {
     return( _( "Change to CJK Quotes" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new QuotesCJK();
+  public override TextFunction copy( bool custom ) {
+    var fn = new QuotesCJK( custom );
     return( fn );
   }
 

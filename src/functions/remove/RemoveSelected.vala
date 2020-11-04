@@ -21,16 +21,16 @@
 
 public class RemoveSelected : TextFunction {
 
-  public RemoveSelected() {
-    base( "remove-selected" );
+  public RemoveSelected( bool custom = false ) {
+    base( "remove-selected", custom );
   }
 
   protected override string get_label0() {
     return( _( "Remove Matched Text" ) );
   }
 
-  public override TextFunction copy() {
-    return( new RemoveSelected() );
+  public override TextFunction copy( bool custom ) {
+    return( new RemoveSelected( custom ) );
   }
 
   /* Returns true if matched text exists in the editor */

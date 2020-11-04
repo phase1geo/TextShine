@@ -473,7 +473,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   private void save_new_custom( CustomFunction function ) {
-    var fn = function.copy();
+    var fn = function.copy( false );
     // TBD - _sidebar.add_custom_function( (CustomFunction)fn );
     functions.add_function( "custom", fn );
     functions.save_custom();

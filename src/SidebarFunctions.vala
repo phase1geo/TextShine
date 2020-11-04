@@ -64,7 +64,7 @@ public class SidebarFunctions : SidebarBox {
     var cbox = new Box( Orientation.VERTICAL, 0 );
     var sw   = new ScrolledWindow( null, null );
     var vp   = new Viewport( null, null );
-    vp.set_size_request( 300, 600 );
+    vp.set_size_request( width, height );
     vp.add( cbox );
     sw.add( vp );
 
@@ -284,7 +284,7 @@ public class SidebarFunctions : SidebarBox {
       button.image = new Image.from_icon_name( "non-starred-symbolic", IconSize.SMALL_TOOLBAR );
       button.set_tooltip_text( _( "Favorite" ) );
     } else {
-      favorite_function( function.copy() );
+      favorite_function( function.copy( false ) );
       button.image = new Image.from_icon_name( "starred-symbolic", IconSize.SMALL_TOOLBAR );
       button.set_tooltip_text( _( "Unfavorite" ) );
     }
@@ -294,7 +294,7 @@ public class SidebarFunctions : SidebarBox {
   /* Add the given function to the favorite list */
   private void favorite_function( TextFunction function ) {
 
-    var fn = function.copy();
+    var fn = function.copy( false );
 
     /* Mark the function as a favorite */
     win.functions.favorite_function( fn );

@@ -25,8 +25,8 @@ public class CaseCamel : TextFunction {
   private static Regex _is;
 
   /* Constructor */
-  public CaseCamel() {
-    base( "case-camel" );
+  public CaseCamel( bool custom = false ) {
+    base( "case-camel", custom );
     try {
       _re = new Regex( "[a-zA-Z]( )([a-z])" );
       _is = new Regex( "(^|[A-Z])[a-z]*" );
@@ -37,8 +37,8 @@ public class CaseCamel : TextFunction {
     return( _( "Camel Case" ) );
   }
 
-  public override TextFunction copy() {
-    return( new CaseCamel() );
+  public override TextFunction copy( bool custom ) {
+    return( new CaseCamel( custom ) );
   }
 
   /* Perform the transformation */

@@ -23,16 +23,16 @@ using Gee;
 
 public class RemoveDuplicateLines : TextFunction {
 
-  public RemoveDuplicateLines() {
-    base( "remove-duplicate-lines" );
+  public RemoveDuplicateLines( bool custom = false ) {
+    base( "remove-duplicate-lines", custom );
   }
 
   protected override string get_label0() {
     return( _( "Remove Duplicate Lines" ) );
   }
 
-  public override TextFunction copy() {
-    return( new RemoveDuplicateLines() );
+  public override TextFunction copy( bool custom ) {
+    return( new RemoveDuplicateLines( custom ) );
   }
 
   /* Perform the transformation */

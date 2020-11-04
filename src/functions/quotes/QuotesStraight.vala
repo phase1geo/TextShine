@@ -22,16 +22,16 @@
 public class QuotesStraight : TextFunction {
 
   /* Constructor */
-  public QuotesStraight() {
-    base( "quotes-straight", FunctionDirection.NONE );
+  public QuotesStraight( bool custom = false ) {
+    base( "quotes-straight", custom, FunctionDirection.NONE );
   }
 
   protected override string get_label0() {
     return( _( "Change to Straight Quotes" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new QuotesStraight();
+  public override TextFunction copy( bool custom ) {
+    var fn = new QuotesStraight( custom );
     return( fn );
   }
 

@@ -26,8 +26,8 @@ public class SortMoveLines : TextFunction {
   private int _count;
 
   /* Constructor */
-  public SortMoveLines() {
-    base( "sort-move-lines", FunctionDirection.TOP_DOWN );
+  public SortMoveLines( bool custom = false ) {
+    base( "sort-move-lines", custom, FunctionDirection.TOP_DOWN );
     _count = 1;
   }
 
@@ -47,8 +47,8 @@ public class SortMoveLines : TextFunction {
     }
   }
 
-  public override TextFunction copy() {
-    var fn = new SortMoveLines();
+  public override TextFunction copy( bool custom ) {
+    var fn = new SortMoveLines( custom );
     fn._count = _count;
     return( fn );
   }

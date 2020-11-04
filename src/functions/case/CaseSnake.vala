@@ -24,8 +24,8 @@ public class CaseSnake : TextFunction {
   private static Regex _is;
 
   /* Constructor */
-  public CaseSnake() {
-    base( "case-snake" );
+  public CaseSnake( bool custom = false ) {
+    base( "case-snake", custom );
     try {
       _is = new Regex( "^[a-z_]+$" );
     } catch( RegexError e ) {}
@@ -35,8 +35,8 @@ public class CaseSnake : TextFunction {
     return( _( "Snake Case" ) );
   }
 
-  public override TextFunction copy() {
-    return( new CaseSnake() );
+  public override TextFunction copy( bool custom ) {
+    return( new CaseSnake( custom ) );
   }
 
   /* Perform the transformation */

@@ -24,8 +24,8 @@ public class CaseTitle : TextFunction {
   Regex _re;
 
   /* Constructor */
-  public CaseTitle() {
-    base( "case-title" );
+  public CaseTitle( bool custom = false ) {
+    base( "case-title", custom );
     try {
       _re = new Regex( "(^|\\W)([a-z])" );
     } catch( RegexError e ) {}
@@ -35,8 +35,8 @@ public class CaseTitle : TextFunction {
     return( _( "Title Case" ) );
   }
 
-  public override TextFunction copy() {
-    return( new CaseTitle() );
+  public override TextFunction copy( bool custom ) {
+    return( new CaseTitle( custom ) );
   }
 
   /* Perform the transformation */

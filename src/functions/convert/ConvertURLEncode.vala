@@ -24,16 +24,16 @@ using Camel;
 public class ConvertURLEncode : TextFunction {
 
   /* Constructor */
-  public ConvertURLEncode() {
-    base( "convert-url-encode" );
+  public ConvertURLEncode( bool custom = false ) {
+    base( "convert-url-encode", custom );
   }
 
   protected override string get_label0() {
     return( _( "Encode URL" ) );
   }
 
-  public override TextFunction copy() {
-    return( new ConvertURLEncode() );
+  public override TextFunction copy( bool custom ) {
+    return( new ConvertURLEncode( custom ) );
   }
 
   /* Perform the transformation */

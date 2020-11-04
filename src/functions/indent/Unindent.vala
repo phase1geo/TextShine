@@ -24,16 +24,16 @@ using Xml;
 public class Unindent : TextFunction {
 
   /* Constructor */
-  public Unindent() {
-    base( "unindent" );
+  public Unindent( bool custom = false ) {
+    base( "unindent", false );
   }
 
   protected override string get_label0() {
     return( _( "Unindent One Level" ) );
   }
 
-  public override TextFunction copy() {
-    return( new Unindent() );
+  public override TextFunction copy( bool custom ) {
+    return( new Unindent( custom ) );
   }
 
   /* Perform the transformation */

@@ -24,8 +24,8 @@ using Gtk;
 public class ReplaceReturnSpace : TextFunction {
 
   /* Constructor */
-  public ReplaceReturnSpace() {
-    base( "replace-return-space", FunctionDirection.LEFT_TO_RIGHT );
+  public ReplaceReturnSpace( bool custom = false ) {
+    base( "replace-return-space", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
   protected override string get_label0() {
@@ -36,8 +36,8 @@ public class ReplaceReturnSpace : TextFunction {
     return( _( "Space With Return" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new ReplaceReturnSpace();
+  public override TextFunction copy( bool custom ) {
+    var fn = new ReplaceReturnSpace( custom );
     fn.direction = direction;
     return( fn );
   }

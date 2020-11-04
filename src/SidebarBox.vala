@@ -25,6 +25,8 @@ public class SidebarBox : Box {
 
   protected MainWindow win;
   protected Editor     editor;
+  protected const int  width  = 350;
+  protected const int  height = 600;
 
   public signal void action_applied( TextFunction function );
   public signal void switch_stack( SwitchStackReason reason, TextFunction? function );
@@ -34,7 +36,7 @@ public class SidebarBox : Box {
 
     Object( orientation: Orientation.VERTICAL, spacing: 0 );
 
-    set_size_request( 320, 600 );
+    set_size_request( width, height );
 
     this.win    = win;
     this.editor = editor;

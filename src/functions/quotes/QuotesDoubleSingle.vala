@@ -22,8 +22,8 @@
 public class QuotesDoubleSingle : TextFunction {
 
   /* Constructor */
-  public QuotesDoubleSingle() {
-    base( "quotes-double-single", FunctionDirection.LEFT_TO_RIGHT );
+  public QuotesDoubleSingle( bool custom = false ) {
+    base( "quotes-double-single", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
   protected override string get_label0() {
@@ -33,8 +33,8 @@ public class QuotesDoubleSingle : TextFunction {
   protected override string get_label1() {
     return( _( "Single to Double Quotes" ) );
   }
-  public override TextFunction copy() {
-    var fn = new QuotesDoubleSingle();
+  public override TextFunction copy( bool custom ) {
+    var fn = new QuotesDoubleSingle( custom );
     fn.direction = direction;
     return( fn );
   }

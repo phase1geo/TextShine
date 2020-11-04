@@ -300,7 +300,7 @@ public class TextFunctions {
         var name = it->get_prop( "name" );
         for( int i=0; i<_functions.length; i++ ) {
           if( _functions.index( i ).name == name ) {
-            var fn = _functions.index( i ).copy();
+            var fn = _functions.index( i ).copy( false );
             fn.load( it, this );
             add_function( "favorites", fn );
             break;

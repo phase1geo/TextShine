@@ -29,9 +29,9 @@ public class ReplaceSelected : TextFunction {
   private Editor     _editor;
 
   /* Constructor */
-  public ReplaceSelected( MainWindow win ) {
+  public ReplaceSelected( MainWindow win, bool custom = false ) {
 
-    base( "replace-selected" );
+    base( "replace-selected", custom );
 
     _win = win;
     _win.add_widget( name, create_widget() );
@@ -42,8 +42,8 @@ public class ReplaceSelected : TextFunction {
     return( _( "Replace Matched Text" ) );
   }
 
-  public override TextFunction copy() {
-    return( new ReplaceSelected( _win ) );
+  public override TextFunction copy( bool custom ) {
+    return( new ReplaceSelected( _win, custom ) );
   }
 
   /* Returns true if matched text exists in the editor */
@@ -52,7 +52,7 @@ public class ReplaceSelected : TextFunction {
   }
 
   /* Creates the search UI */
-  private Box create_widget() {
+  public override Box? create_widget() {
 
     _replace = new Entry();
     _replace.placeholder_text = _( "Replace With" );
@@ -62,15 +62,26 @@ public class ReplaceSelected : TextFunction {
     });
     _replace.populate_popup.connect( populate_replace_popup );
 
-    _replace_btn = new Button.with_label( _( "Replace" ) );
-    _replace_btn.set_sensitive( false );
-    _replace_btn.clicked.connect( do_replace );
+    if( custom ) {
 
-    var box = new Box( Orientation.HORIZONTAL, 0 );
-    box.pack_start( _replace,     true,  true, 5 );
-    box.pack_start( _replace_btn, false, true, 5 );
+      var box = new Box( Orientation.VERTICAL, 0 );
+      box.pack_start( _replace, false, true, 5 );
 
-    return( box );
+      return( box );
+
+    } else {
+
+      _replace_btn = new Button.with_label( _( "Replace" ) );
+      _replace_btn.set_sensitive( false );
+      _replace_btn.clicked.connect( do_replace );
+
+      var box = new Box( Orientation.HORIZONTAL, 0 );
+      box.pack_start( _replace,     true,  true, 5 );
+      box.pack_start( _replace_btn, false, true, 5 );
+
+      return( box );
+
+    }
 
   }
 

@@ -62,7 +62,7 @@ public class SidebarCustom : SidebarBox {
     _cbox  = new Box( Orientation.VERTICAL, 0 );
     var sw = new ScrolledWindow( null, null );
     var vp = new Viewport( null, null );
-    vp.set_size_request( 300, 600 );
+    vp.set_size_request( width, height );
     vp.add( _cbox );
     sw.add( vp );
 
@@ -192,13 +192,16 @@ public class SidebarCustom : SidebarBox {
     lbbox.pack_end(   bbox, false, false, 2 );
 
     var ebox = new EventBox();
-    ebox.add( lbbox );
-    ebox.button_press_event.connect((e) => {
-      if( e.button == Gdk.BUTTON_SECONDARY ) {
-        show_action_menu( e, box );
-      }
-      return( false );
-    });
+
+    var wbox = function.create_widget();
+    if( wbox != null ) {
+      var lbw = new Box( Orientation.VERTICAL, 0 );
+      lbw.pack_start( lbbox, false, true, 5 );
+      lbw.pack_start( wbox,  false, true, 5 );
+      ebox.add( lbw );
+    } else {
+      ebox.add( lbbox );
+    }
 
     Gtk.drag_source_set( ebox, Gdk.ModifierType.BUTTON1_MASK, entries, Gdk.DragAction.MOVE );
     Gtk.drag_dest_set( ebox, DestDefaults.ALL, entries, Gdk.DragAction.MOVE );
@@ -214,9 +217,11 @@ public class SidebarCustom : SidebarBox {
       drag_set_icon_surface( ctx, surface );
       _drag_box = box;
     });
+
     ebox.drag_end.connect((ctx) => {
       _drag_box = null;
     });
+
     ebox.drag_drop.connect((ctx, x, y, time_) => {
       var index = get_action_index( box );
       _cbox.reorder_child( _drag_box, index );
@@ -273,37 +278,6 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  private void show_action_menu( EventButton event, Box box ) {
-
-    var index = get_action_index( box );
-    var menu  = new Gtk.Menu();
-
-    var add_above = new Gtk.MenuItem.with_label( _( "Add New Action Above" ) );
-    add_above.activate.connect(() => {
-      insert_new_action( box, 0 );
-    });
-
-    var add_below = new Gtk.MenuItem.with_label( _( "Add New Action Below" ) );
-    add_below.activate.connect(() => {
-      insert_new_action( box, 1 );
-    });
-
-    var del = new Gtk.MenuItem.with_label( _( "Remove Action" ) );
-    del.activate.connect(() => {
-      delete_function( box );
-    });
-
-    menu.add( add_above );
-    menu.add( add_below );
-    menu.add( new Gtk.SeparatorMenuItem() );
-    menu.add( del );
-    menu.show_all();
-
-    menu.popup_at_pointer( event );
-
-
-  }
-
   /* Returns the revealer at the given index */
   private Revealer get_revealer( int index ) {
     if( index == 0 ) {
@@ -336,11 +310,12 @@ public class SidebarCustom : SidebarBox {
 
     get_revealer( _insert_index ).reveal_child = false;
 
-    var box = add_function( function );
+    var fn  = function.copy( true );
+    var box = add_function( fn );
 
     _cbox.reorder_child( box, _insert_index );
     _cbox.show_all();
-    _custom.functions.insert_val( _insert_index, function );
+    _custom.functions.insert_val( _insert_index, fn );
 
   }
 
@@ -372,20 +347,22 @@ public class SidebarCustom : SidebarBox {
     /* Create search box */
     _search = new SearchEntry();
     _search.placeholder_text = _( "Search Actions" );
+    _search.margin = 5;
     _search.search_changed.connect( search_functions );
 
     /* Create scrolled box */
     _pbox = new Grid();
+    _pbox.border_width = 5;
     var sw   = new ScrolledWindow( null, null );
     var vp   = new Viewport( null, null );
-    vp.set_size_request( 320, 600 );
+    vp.set_size_request( width, height );
     vp.add( _pbox );
     sw.add( vp );
 
     var box = new Box( Orientation.VERTICAL, 0 );
-    box.set_size_request( 320, 500 );
-    box.pack_start( _search, false, true, 5 );
-    box.pack_start( sw,      true,  true, 5 );
+    box.set_size_request( 350, 500 );
+    box.pack_start( _search, false, true, 0 );
+    box.pack_start( sw,      true,  true, 0 );
 
     box.show_all();
 

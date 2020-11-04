@@ -22,8 +22,8 @@
 public class ReplacePeriodsEllipsis : TextFunction {
 
   /* Constructor */
-  public ReplacePeriodsEllipsis() {
-    base( "replace-periods-ellipsis", FunctionDirection.LEFT_TO_RIGHT );
+  public ReplacePeriodsEllipsis( bool custom = false ) {
+    base( "replace-periods-ellipsis", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
   protected override string get_label0() {
@@ -34,8 +34,8 @@ public class ReplacePeriodsEllipsis : TextFunction {
     return( _( "Ellipsis With Three Periods" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new ReplacePeriodsEllipsis();
+  public override TextFunction copy( bool custom ) {
+    var fn = new ReplacePeriodsEllipsis( custom );
     fn.direction = direction;
     return( fn );
   }

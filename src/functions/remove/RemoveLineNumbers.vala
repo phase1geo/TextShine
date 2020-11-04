@@ -23,8 +23,8 @@ public class RemoveLineNumbers : TextFunction {
 
   private Regex _re;
 
-  public RemoveLineNumbers() {
-    base( "remove-line-numbers" );
+  public RemoveLineNumbers( bool custom = false ) {
+    base( "remove-line-numbers", custom );
     try {
       _re = new Regex( """^\s*\d+[^a-zA-Z_\s]?(.*)$""" );
     } catch( RegexError e ) {}
@@ -34,8 +34,8 @@ public class RemoveLineNumbers : TextFunction {
     return( _( "Remove Line Numbers" ) );
   }
 
-  public override TextFunction copy() {
-    return( new RemoveLineNumbers() );
+  public override TextFunction copy( bool custom ) {
+    return( new RemoveLineNumbers( custom ) );
   }
 
   /* Perform the transformation */

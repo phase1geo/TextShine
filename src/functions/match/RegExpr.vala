@@ -34,9 +34,9 @@ public class RegExpr : TextFunction {
   private UndoItem    _undo_item;
 
   /* Constructor */
-  public RegExpr( MainWindow win ) {
+  public RegExpr( MainWindow win, bool custom = false ) {
 
-    base( "regexpr" );
+    base( "regexpr", custom );
 
     _re  = null;
     _win = win;
@@ -48,12 +48,12 @@ public class RegExpr : TextFunction {
     return( _( "Regular Expression" ) );
   }
 
-  public override TextFunction copy() {
-    return( new RegExpr( _win ) );
+  public override TextFunction copy( bool custom ) {
+    return( new RegExpr( _win, custom ) );
   }
 
   /* Creates the search UI */
-  private Box create_widget() {
+  public override Box? create_widget() {
 
     _pattern = new SearchEntry();
     _pattern.placeholder_text = _( "Regular Expression" );
@@ -73,23 +73,31 @@ public class RegExpr : TextFunction {
     ebox.pack_start( _pattern, false, true, 5 );
     ebox.pack_start( _replace, false, true, 5 );
 
-    _find_btn = new Button.with_label( _( "End Search" ) );
-    _find_btn.set_sensitive( false );
-    _find_btn.clicked.connect( end_search );
+    if( custom ) {
 
-    _replace_btn = new Button.with_label( _( "Replace" ) );
-    _replace_btn.set_sensitive( false );
-    _replace_btn.clicked.connect( do_replace );
+      return( ebox );
 
-    var bbox = new Box( Orientation.VERTICAL, 0 );
-    bbox.pack_start( _find_btn,    false, true, 5 );
-    bbox.pack_start( _replace_btn, false, true, 5 );
+    } else {
 
-    var box = new Box( Orientation.HORIZONTAL, 5 );
-    box.pack_start( ebox, true,  true,  0 );
-    box.pack_start( bbox, false, false, 0 );
+      _find_btn = new Button.with_label( _( "End Search" ) );
+      _find_btn.set_sensitive( false );
+      _find_btn.clicked.connect( end_search );
 
-    return( box );
+      _replace_btn = new Button.with_label( _( "Replace" ) );
+      _replace_btn.set_sensitive( false );
+      _replace_btn.clicked.connect( do_replace );
+
+      var bbox = new Box( Orientation.VERTICAL, 0 );
+      bbox.pack_start( _find_btn,    false, true, 5 );
+      bbox.pack_start( _replace_btn, false, true, 5 );
+
+      var box = new Box( Orientation.HORIZONTAL, 5 );
+      box.pack_start( ebox, true,  true,  0 );
+      box.pack_start( bbox, false, false, 0 );
+
+      return( box );
+
+    }
 
   }
 

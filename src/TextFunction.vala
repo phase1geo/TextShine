@@ -82,6 +82,7 @@ public class TextFunction {
   protected const string right_german_squote = "\u2018";
 
   private string _name;
+  private bool   _custom = false;
 
   public string name {
     get {
@@ -98,13 +99,19 @@ public class TextFunction {
     }
   }
   public FunctionDirection direction { get; set; default = FunctionDirection.NONE; }
+  public bool custom {
+    get {
+      return( _custom );
+    }
+  }
 
   public signal void update_button_label();
   public signal void settings_changed();
 
   /* Constructor */
-  public TextFunction( string name, FunctionDirection dir = FunctionDirection.NONE ) {
+  public TextFunction( string name, bool custom, FunctionDirection dir = FunctionDirection.NONE ) {
     _name     = name;
+    _custom   = custom;
     direction = dir;
   }
 
@@ -119,9 +126,9 @@ public class TextFunction {
   }
 
   /* Creates a copy of this function */
-  public virtual TextFunction copy() {
+  public virtual TextFunction copy( bool custom ) {
     assert( false );
-    return( new TextFunction( _name, direction ) );
+    return( new TextFunction( _name, custom, direction ) );
   }
 
   /* Executes this text function using the editor */
@@ -243,6 +250,10 @@ public class TextFunction {
 
   }
 
+  /* Returns the widget as a Box container to add to the UI */
+  public virtual Box? create_widget() {
+    return( null );
+  }
 
   /* Returns true if settings are available */
   public virtual bool settings_available() {

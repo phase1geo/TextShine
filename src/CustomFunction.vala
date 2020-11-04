@@ -46,18 +46,18 @@ public class CustomFunction : TextFunction {
   }
 
   /* Constructor */
-  public CustomFunction() {
-    base( "custom-%d".printf( custom_id ) );
+  public CustomFunction( bool custom = false ) {
+    base( "custom-%d".printf( custom_id ), custom );
     _label     = "Custom #%d".printf( custom_id++ );
     _functions = new Array<TextFunction>();
   }
 
   /* Creates a copy of this custom function and returns it to the caller */
-  public override TextFunction copy() {
-    var fn = new CustomFunction();
+  public override TextFunction copy( bool custom ) {
+    var fn = new CustomFunction( custom );
     fn._label = _label;
     for( int i=0; i<_functions.length; i++ ) {
-      fn._functions.append_val( _functions.index( i ).copy() );
+      fn._functions.append_val( _functions.index( i ).copy( true ) );
     }
     return( fn );
   }
@@ -106,7 +106,7 @@ public class CustomFunction : TextFunction {
     _label = node->get_prop( "label" );
     for( Xml.Node* it=node->children; it!=null; it=it->next ) {
       if( (it->type == Xml.Node.ELEMENT_NODE) && (it->name == "function") ) {
-        var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy();
+        var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy( true );
         function.load( it, functions );
         _functions.append_val( function );
       }

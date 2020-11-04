@@ -26,8 +26,8 @@ public class InsertFile : TextFunction {
   private MainWindow _win;
 
   /* Constructor */
-  public InsertFile( MainWindow win ) {
-    base( "insert-file" );
+  public InsertFile( MainWindow win, bool custom = false ) {
+    base( "insert-file", custom );
     _win = win;
   }
 
@@ -35,9 +35,8 @@ public class InsertFile : TextFunction {
     return( _( "Insert File Text" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new InsertFile( _win );
-    return( fn );
+  public override TextFunction copy( bool custom ) {
+    return( new InsertFile( _win, custom ) );
   }
 
   private string? get_file() {

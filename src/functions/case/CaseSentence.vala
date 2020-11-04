@@ -24,8 +24,8 @@ public class CaseSentence : TextFunction {
   Regex _re;
 
   /* Constructor */
-  public CaseSentence() {
-    base( "case-sentence" );
+  public CaseSentence( bool custom = false ) {
+    base( "case-sentence", custom );
     try {
       _re = new Regex( "(^\\s*|[.!?]\\s+)([a-z])" );
     } catch( RegexError e ) {}
@@ -35,8 +35,8 @@ public class CaseSentence : TextFunction {
     return( _( "Sentence Case" ) );
   }
 
-  public override TextFunction copy() {
-    return( new CaseSentence() );
+  public override TextFunction copy( bool custom ) {
+    return( new CaseSentence( custom ) );
   }
 
   /* Perform the transformation */

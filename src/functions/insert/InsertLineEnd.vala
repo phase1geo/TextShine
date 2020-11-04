@@ -29,8 +29,8 @@ public class InsertLineEnd : TextFunction {
   private Button     _insert_btn;
 
   /* Constructor */
-  public InsertLineEnd( MainWindow win ) {
-    base( "insert-line-end" );
+  public InsertLineEnd( MainWindow win, bool custom = false ) {
+    base( "insert-line-end", custom );
     _win = win;
     _win.add_widget( "insert-line-end", create_widget() );
   }
@@ -39,8 +39,8 @@ public class InsertLineEnd : TextFunction {
     return( _( "Insert At Line End" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new InsertLineEnd( _win );
+  public override TextFunction copy( bool custom ) {
+    var fn = new InsertLineEnd( _win, custom );
     return( fn );
   }
 

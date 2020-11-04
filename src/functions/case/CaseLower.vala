@@ -22,16 +22,16 @@
 public class CaseLower : TextFunction {
 
   /* Constructor */
-  public CaseLower() {
-    base( "case-lower" );
+  public CaseLower( bool custom = false ) {
+    base( "case-lower", custom );
   }
 
   protected override string get_label0() {
     return( _( "Lower Case" ) );
   }
 
-  public override TextFunction copy() {
-    return( new CaseLower() );
+  public override TextFunction copy( bool custom ) {
+    return( new CaseLower( custom ) );
   }
 
   /* Perform the transformation */

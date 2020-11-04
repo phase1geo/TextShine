@@ -24,8 +24,8 @@ public class ConvertMarkdownHTML : TextFunction {
   private Regex _re;
 
   /* Constructor */
-  public ConvertMarkdownHTML() {
-    base( "convert-markdown-html", FunctionDirection.LEFT_TO_RIGHT );
+  public ConvertMarkdownHTML( bool custom = false ) {
+    base( "convert-markdown-html", custom, FunctionDirection.LEFT_TO_RIGHT );
     try {
       _re = new Regex( """(\t| {2,})""" );
     } catch( RegexError e ) {}
@@ -39,8 +39,8 @@ public class ConvertMarkdownHTML : TextFunction {
     return( _( "Convert HTML to Markdown" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new ConvertMarkdownHTML();
+  public override TextFunction copy( bool custom ) {
+    var fn = new ConvertMarkdownHTML( custom );
     fn.direction = direction;
     return( fn );
   }

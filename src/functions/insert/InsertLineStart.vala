@@ -29,8 +29,8 @@ public class InsertLineStart : TextFunction {
   private Button     _insert_btn;
 
   /* Constructor */
-  public InsertLineStart( MainWindow win ) {
-    base( "insert-line-start" );
+  public InsertLineStart( MainWindow win, bool custom = false ) {
+    base( "insert-line-start", custom );
     _win = win;
     _win.add_widget( "insert-line-start", create_widget() );
   }
@@ -39,8 +39,8 @@ public class InsertLineStart : TextFunction {
     return( _( "Insert At Line Start" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new InsertLineStart( _win );
+  public override TextFunction copy( bool custom ) {
+    var fn = new InsertLineStart( _win, custom );
     return( fn );
   }
 

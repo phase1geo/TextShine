@@ -22,16 +22,16 @@
 public class QuotesGerman : TextFunction {
 
   /* Constructor */
-  public QuotesGerman() {
-    base( "quotes-german", FunctionDirection.NONE );
+  public QuotesGerman( bool custom = false ) {
+    base( "quotes-german", custom, FunctionDirection.NONE );
   }
 
   protected override string get_label0() {
     return( _( "Change to German Quotes" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new QuotesGerman();
+  public override TextFunction copy( bool custom ) {
+    var fn = new QuotesGerman( custom );
     return( fn );
   }
 

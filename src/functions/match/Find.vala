@@ -31,9 +31,9 @@ public class Find : TextFunction {
   private UndoItem    _undo_item;
 
   /* Constructor */
-  public Find( MainWindow win ) {
+  public Find( MainWindow win, bool custom = false ) {
 
-    base( "find" );
+    base( "find", custom );
 
     _win = win;
     _win.add_widget( name, create_widget() );
@@ -44,12 +44,12 @@ public class Find : TextFunction {
     return( _( "Find" ) );
   }
 
-  public override TextFunction copy() {
-    return( new Find( _win ) );
+  public override TextFunction copy( bool custom ) {
+    return( new Find( _win, custom ) );
   }
 
   /* Creates the search UI */
-  private Box create_widget() {
+  public override Box? create_widget() {
 
     _find = new Entry();
     _find.placeholder_text = _( "Search Text" );
@@ -62,16 +62,28 @@ public class Find : TextFunction {
     _case_sensitive = new CheckButton.with_label( "Case-sensitive" );
     _case_sensitive.toggled.connect( do_find );
 
-    _find_btn = new Button.with_label( _( "Find" ) );
-    _find_btn.set_sensitive( false );
-    _find_btn.clicked.connect( complete_find );
+    if( custom ) {
 
-    var box = new Box( Orientation.HORIZONTAL, 0 );
-    box.pack_start( _find,           true,  true,  5 );
-    box.pack_start( _case_sensitive, false, false, 5 );
-    box.pack_start( _find_btn,       false, false, 5 );
+      var box = new Box( Orientation.VERTICAL, 0 );
+      box.pack_start( _find, false, true, 5 );
+      box.pack_start( _case_sensitive, false, false, 5 );
 
-    return( box );
+      return( box );
+
+    } else {
+
+      _find_btn = new Button.with_label( _( "Find" ) );
+      _find_btn.set_sensitive( false );
+      _find_btn.clicked.connect( complete_find );
+
+      var box = new Box( Orientation.HORIZONTAL, 0 );
+      box.pack_start( _find,           true,  true,  5 );
+      box.pack_start( _case_sensitive, false, false, 5 );
+      box.pack_start( _find_btn,       false, false, 5 );
+
+      return( box );
+
+    }
 
   }
 

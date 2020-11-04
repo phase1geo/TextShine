@@ -24,16 +24,16 @@ using Gdk;
 public class ConvertROT13 : TextFunction {
 
   /* Constructor */
-  public ConvertROT13() {
-    base( "convert-rot13" );
+  public ConvertROT13( bool custom = false ) {
+    base( "convert-rot13", custom );
   }
 
   protected override string get_label0() {
     return( _( "ROT 13" ) );
   }
 
-  public override TextFunction copy() {
-    return( new ConvertROT13() );
+  public override TextFunction copy( bool custom ) {
+    return( new ConvertROT13( custom ) );
   }
 
   /* Perform the transformation */

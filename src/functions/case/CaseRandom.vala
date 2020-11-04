@@ -22,16 +22,16 @@
 public class CaseRandom : TextFunction {
 
   /* Constructor */
-  public CaseRandom() {
-    base( "case-random" );
+  public CaseRandom( bool custom = false ) {
+    base( "case-random", custom );
   }
 
   protected override string get_label0() {
     return( _( "Random Case" ) );
   }
 
-  public override TextFunction copy() {
-    return( new CaseRandom() );
+  public override TextFunction copy( bool custom ) {
+    return( new CaseRandom( custom ) );
   }
 
   /* Perform the transformation */
