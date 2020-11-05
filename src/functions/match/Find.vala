@@ -58,16 +58,19 @@ public class Find : TextFunction {
 
     _find = new Entry();
     _find.placeholder_text = _( "Search Text" );
-    _find.changed.connect( do_find );
-    _find.activate.connect(() => {
-      _find_btn.clicked();
-    });
     _find.populate_popup.connect( populate_find_popup );
 
     _case_sensitive = new CheckButton.with_label( "Case-sensitive" );
-    _case_sensitive.toggled.connect( do_find );
 
     if( custom ) {
+
+      _find.changed.connect(() => {
+        custom_changed();
+      });
+
+      _case_sensitive.toggled.connect(() => {
+        custom_changed();
+      });
 
       var box = new Box( Orientation.VERTICAL, 0 );
       box.pack_start( _find, false, true, 5 );
@@ -76,6 +79,13 @@ public class Find : TextFunction {
       return( box );
 
     } else {
+
+      _find.changed.connect( do_find );
+      _find.activate.connect(() => {
+        _find_btn.clicked();
+      });
+
+      _case_sensitive.toggled.connect( do_find );
 
       _find_btn = new Button.with_label( _( "Find" ) );
       _find_btn.set_sensitive( false );

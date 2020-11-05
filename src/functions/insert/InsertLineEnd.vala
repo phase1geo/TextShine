@@ -70,6 +70,10 @@ public class InsertLineEnd : TextFunction {
 
     if( custom ) {
 
+      _insert.changed.connect(() => {
+        custom_changed();
+      });
+
       var box = new Box( Orientation.VERTICAL, 0 );
       box.pack_start( _insert, false, true, 5 );
 

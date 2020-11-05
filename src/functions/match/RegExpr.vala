@@ -62,20 +62,10 @@ public class RegExpr : TextFunction {
 
     _pattern = new SearchEntry();
     _pattern.placeholder_text = _( "Regular Expression" );
-    if( !custom ) {
-      _pattern.search_changed.connect( do_search );
-      _pattern.activate.connect( do_search );
-    }
     _pattern.populate_popup.connect( populate_pattern_popup );
 
     _replace = new Entry();
     _replace.placeholder_text = _( "Replace With" );
-    if( !custom ) {
-      _replace.changed.connect( replace_changed );
-      _replace.activate.connect(() => {
-        _replace_btn.clicked();
-      });
-    }
     _replace.populate_popup.connect( populate_replace_popup );
 
     var ebox = new Box( Orientation.VERTICAL, 0 );
@@ -84,9 +74,25 @@ public class RegExpr : TextFunction {
 
     if( custom ) {
 
+      _pattern.changed.connect(() => {
+        custom_changed();
+      });
+
+      _replace.changed.connect(() => {
+        custom_changed();
+      });
+
       return( ebox );
 
     } else {
+
+      _pattern.search_changed.connect( do_search );
+      _pattern.activate.connect( do_search );
+
+      _replace.changed.connect( replace_changed );
+      _replace.activate.connect(() => {
+        _replace_btn.clicked();
+      });
 
       _find_btn = new Button.with_label( _( "End Search" ) );
       _find_btn.set_sensitive( false );

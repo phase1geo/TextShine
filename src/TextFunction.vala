@@ -107,6 +107,7 @@ public class TextFunction {
 
   public signal void update_button_label();
   public signal void settings_changed();
+  public signal void custom_changed();
 
   /* Constructor */
   public TextFunction( string name, bool custom, FunctionDirection dir = FunctionDirection.NONE ) {
@@ -276,7 +277,11 @@ public class TextFunction {
     sb.value  = init_value;
     sb.value_changed.connect(() => {
       callback( (int)sb.value );
-      settings_changed();
+      if( custom ) {
+        custom_changed();
+      } else {
+        settings_changed();
+      }
     });
 
     grid.attach( lbl, 0, row );
@@ -297,7 +302,11 @@ public class TextFunction {
     });
     entry.focus_out_event.connect((e) => {
       callback( entry.text );
-      settings_changed();
+      if( custom ) {
+        custom_changed();
+      } else {
+        settings_changed();
+      }
       return( false );
     });
 
@@ -317,7 +326,11 @@ public class TextFunction {
     sw.active = init_value;
     sw.state_set.connect(() => {
       callback( sw.active );
-      settings_changed();
+      if( custom ) {
+        custom_changed();
+      } else {
+        settings_changed();
+      }
       return( false );
     });
 

@@ -53,6 +53,7 @@ public class SidebarCustom : SidebarBox {
     var nlbl = new Label( _( "Name:" ) );
 
     _name = new Entry();
+    _name.changed.connect( changed );
 
     var nbox = new Box( Orientation.HORIZONTAL, 0 );
     nbox.pack_start( nlbl,  false, false, 5 );
@@ -126,6 +127,7 @@ public class SidebarCustom : SidebarBox {
         _name.text = _custom.label;
         _name.grab_focus();
         _delete_reveal.reveal_child = false;
+        clear_actions();
         break;
       case SwitchStackReason.EDIT :
         _custom = (CustomFunction)function;
@@ -135,6 +137,17 @@ public class SidebarCustom : SidebarBox {
         break;
     }
 
+    /* Clear the status of the Save button */
+    _save.set_sensitive( false );
+
+  }
+
+  private void clear_actions() {
+    _add_revealer.reveal_child = true;
+    _cbox.get_children().@foreach((w) => {
+      _cbox.remove( w );
+    });
+    _cbox.show_all();
   }
 
   /* Inserts the current custom actions */
@@ -144,7 +157,9 @@ public class SidebarCustom : SidebarBox {
       _cbox.remove( w );
     });
     for( int i=0; i<_custom.functions.length; i++ ) {
-      add_function( _custom.functions.index( i ) );
+      var fn = _custom.functions.index( i );
+      fn.custom_changed.connect( changed );
+      add_function( fn );
     }
     _cbox.show_all();
   }
@@ -317,12 +332,17 @@ public class SidebarCustom : SidebarBox {
     _cbox.show_all();
     _custom.functions.insert_val( _insert_index, fn );
 
+    changed();
+
   }
 
   /* Removes the action at the given index */
   private void delete_function( Box box ) {
 
     var index = get_action_index( box );
+    var fn    = _custom.functions.index( index );
+
+    fn.custom_changed.disconnect( changed );
 
     _cbox.remove( _cbox.get_children().nth_data( index ) );
     _custom.functions.remove_index( index );
@@ -331,6 +351,13 @@ public class SidebarCustom : SidebarBox {
       _add_revealer.reveal_child = true;
     }
 
+    changed();
+
+  }
+
+  /* Indicate that something within the custom action changed */
+  private void changed() {
+    _save.set_sensitive( (_name.text != "") && (_custom.functions.length > 0) );
   }
 
   //----------------------------------------------------------------------------

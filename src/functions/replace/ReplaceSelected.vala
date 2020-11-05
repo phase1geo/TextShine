@@ -61,13 +61,13 @@ public class ReplaceSelected : TextFunction {
 
     _replace = new Entry();
     _replace.placeholder_text = _( "Replace With" );
-    _replace.changed.connect( replace_changed );
-    _replace.activate.connect(() => {
-      _replace_btn.clicked();
-    });
     _replace.populate_popup.connect( populate_replace_popup );
 
     if( custom ) {
+
+      _replace.changed.connect(() => {
+        custom_changed();
+      });
 
       var box = new Box( Orientation.VERTICAL, 0 );
       box.pack_start( _replace, false, true, 5 );
@@ -75,6 +75,11 @@ public class ReplaceSelected : TextFunction {
       return( box );
 
     } else {
+
+      _replace.changed.connect( replace_changed );
+      _replace.activate.connect(() => {
+        _replace_btn.clicked();
+      });
 
       _replace_btn = new Button.with_label( _( "Replace" ) );
       _replace_btn.set_sensitive( false );
