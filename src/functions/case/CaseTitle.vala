@@ -21,7 +21,7 @@
 
 public class CaseTitle : TextFunction {
 
-  Regex _re;
+  private Regex _re;
 
   /* Constructor */
   public CaseTitle( bool custom = false ) {
