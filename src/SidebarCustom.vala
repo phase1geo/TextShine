@@ -34,10 +34,10 @@ public class SidebarCustom : SidebarBox {
   private Revealer         _delete_reveal;
   private Button           _save;
   private Label            _new_action_label;
-  private Box              _cbox;
   private Grid             _pbox;
   private int              _insert_index;
   private Box?             _drag_box;
+  private Notebook         _nb;
 
   static TargetEntry[] entries = {
     { "TEXTSHINE_CUSTOM_ROW", TargetFlags.SAME_APP, 0 }
@@ -59,16 +59,11 @@ public class SidebarCustom : SidebarBox {
     nbox.pack_start( nlbl,  false, false, 5 );
     nbox.pack_start( _name, true,  true,  5 );
 
-    /* Create scrolled box */
-    _cbox  = new Box( Orientation.VERTICAL, 0 );
-    var sw = new ScrolledWindow( null, null );
-    var vp = new Viewport( null, null );
-    vp.set_size_request( width, height );
-    vp.add( _cbox );
-    sw.add( vp );
-
-    /* Setup the cbox to be a drag destination */
-    // _cbox FOOBAR
+    /* Create notebook */
+    _nb = new Notebook();
+    _nb.scrollable = true;
+    _nb.show_tabs  = true;
+    _nb.tab_pos    = PositionType.LEFT;
 
     var add = new Button.with_label( _( "Add New Action" ) );
     add.set_relief( ReliefStyle.NONE );
@@ -76,14 +71,9 @@ public class SidebarCustom : SidebarBox {
       insert_new_action( null, 0 );
     });
 
-    var ins = new Label( " " );
-    var stack = new Stack();
-    stack.add_named( add, "add" );
-    stack.add_named( ins, "ins" );
-
     _add_revealer = new Revealer();
     _add_revealer.reveal_child = true;
-    _add_revealer.add( stack );
+    _add_revealer.add( add );
 
     var del = new Button.with_label( _( "Delete" ) );
     del.get_style_context().add_class( "destructive-action" );
@@ -110,7 +100,7 @@ public class SidebarCustom : SidebarBox {
 
     pack_start( nbox,          false, true, 5 );
     pack_start( _add_revealer, false, true, 5 );
-    pack_start( sw,            true,  true, 5 );
+    pack_start( _nb,           true,  true, 5 );
     pack_start( bbox,          false, true, 5 );
 
     /* Create the action insertion popover */
@@ -144,30 +134,28 @@ public class SidebarCustom : SidebarBox {
 
   private void clear_actions() {
     _add_revealer.reveal_child = true;
-    _cbox.get_children().@foreach((w) => {
-      _cbox.remove( w );
-    });
-    _cbox.show_all();
+    while( _nb.get_n_pages() > 0 ) {
+      _nb.remove_page( 0 );
+    }
   }
 
   /* Inserts the current custom actions */
   private void insert_actions() {
     _add_revealer.reveal_child = false;
-    _cbox.get_children().@foreach((w) => {
-      _cbox.remove( w );
-    });
+    while( _nb.get_n_pages() > 0 ) {
+      _nb.remove_page( 0 );
+    }
     for( int i=0; i<_custom.functions.length; i++ ) {
       var fn = _custom.functions.index( i );
       fn.custom_changed.connect( changed );
-      add_function( fn );
+      add_function( fn, -1 );
     }
-    _cbox.show_all();
   }
 
   /* Adds a function button to the given category item box */
-  public Box add_function( TextFunction function ) {
+  public Box add_function( TextFunction function, int index ) {
 
-    var box = new Box( Orientation.VERTICAL, 0 );
+    var pbox = (index == -1) ? new Box( Orientation.VERTICAL, 0 ) : (Box)_nb.get_nth_page( index );
 
     var label = new Label( function.label );
     label.halign = Align.START;
@@ -182,7 +170,7 @@ public class SidebarCustom : SidebarBox {
     add.get_style_context().add_class( "circular" );
     add.button_release_event.connect((e) => {
       var shift = (bool)(e.state & ModifierType.SHIFT_MASK);
-      insert_new_action( box, (shift ? 0 : 1) );
+      insert_new_action( pbox, (shift ? 0 : 1) );
       return( false );
     });
 
@@ -191,7 +179,7 @@ public class SidebarCustom : SidebarBox {
     del.set_tooltip_text( _( "Click to delete action" ) );
     del.get_style_context().add_class( "circular" );
     del.clicked.connect(() => {
-      delete_function( box );
+      delete_function( pbox );
     });
 
     var lbox = new Box( Orientation.HORIZONTAL, 0 );
@@ -206,101 +194,40 @@ public class SidebarCustom : SidebarBox {
     lbbox.pack_start( lbox, true,  true,  2 );
     lbbox.pack_end(   bbox, false, false, 2 );
 
-    var ebox = new EventBox();
-
     var wbox = function.get_widget();
-    if( wbox != null ) {
-      var lbw = new Box( Orientation.VERTICAL, 0 );
-      lbw.pack_start( lbbox, false, true, 5 );
-      lbw.pack_start( wbox,  false, true, 5 );
-      ebox.add( lbw );
-    } else {
-      ebox.add( lbbox );
-    }
 
-    Gtk.drag_source_set( ebox, Gdk.ModifierType.BUTTON1_MASK, entries, Gdk.DragAction.MOVE );
-    Gtk.drag_dest_set( ebox, DestDefaults.ALL, entries, Gdk.DragAction.MOVE );
-
-    ebox.drag_begin.connect((ctx) => {
-      Allocation alloc;
-      lbox.get_allocation( out alloc );
-      var surface = new Cairo.ImageSurface( Cairo.Format.ARGB32, alloc.width, alloc.height);
-      var cr      = new Cairo.Context( surface );
-      lbox.draw( cr );
-      cr.rectangle( 0, 0, alloc.width, alloc.height );
-      cr.stroke();
-      drag_set_icon_surface( ctx, surface );
-      _drag_box = box;
-    });
-
-    ebox.drag_end.connect((ctx) => {
-      _drag_box = null;
-    });
-
-    ebox.drag_drop.connect((ctx, x, y, time_) => {
-      var index = get_action_index( box );
-      _cbox.reorder_child( _drag_box, index );
-      return( true );
-    });
-
-    var fbox  = new Box( Orientation.VERTICAL, 0 );
+    var fbox = new Box( Orientation.VERTICAL, 0 );
     fbox.margin_top    = 10;
     fbox.margin_bottom = 10;
     fbox.margin_left   = 5;
     fbox.margin_right  = 5;
-    fbox.pack_start( ebox, false, true, 5 );
+    fbox.pack_start( lbbox, false, true, 5 );
 
-    var frame = new Frame( null );
-    frame.shadow_type = ShadowType.ETCHED_OUT;
-    frame.add( fbox );
+    if( wbox != null ) {
+      fbox.pack_start( wbox, false, true, 5 );
+    }
 
-    var add_placeholder = new Label( _( "Add New Action" ) );
-    var ins_placeholder = new Label( " " );
-    var placeholder_stack = new Stack();
-    placeholder_stack.add_named( add_placeholder, "add" );
-    placeholder_stack.add_named( ins_placeholder, "ins" );
-    var add_revealer    = new Revealer();
-    add_revealer.reveal_child = false;
-    add_revealer.add( placeholder_stack );
+    fbox.show_all();
+    pbox.show_all();
 
-    box.pack_start( frame,        false, true, 5 );
-    box.pack_start( add_revealer, false, true, 5 );
-
-    _cbox.pack_start( box, false, false, 0 );
+    if( index == -1 ) {
+      _nb.insert_page( pbox, fbox, index );
+    } else {
+      _nb.set_tab_label( _nb.get_nth_page( index ), fbox );
+    }
+    _nb.set_tab_reorderable( pbox, true );
 
     function.update_button_label.connect(() => {
       label.label = function.label;
     });
 
-    return( box );
+    return( pbox );
 
   }
 
   /* Returns the index of the given action box */
   private int get_action_index( Box box ) {
-
-    var index = 0;
-    var i     = 0;
-
-    _cbox.get_children().@foreach((w) => {
-      if( (Box)w == box ) {
-        index = i;
-      }
-      i++;
-    });
-
-    return( index );
-
-  }
-
-  /* Returns the revealer at the given index */
-  private Revealer get_revealer( int index ) {
-    if( index == 0 ) {
-      return( _add_revealer );
-    } else {
-      var box = (Box)_cbox.get_children().nth_data( _insert_index - 1 );
-      return( (Revealer)box.get_children().nth_data( 1 ) );
-    }
+    return( _nb.page_num( box ) );
   }
 
   /* Inserts the new action label in the given position */
@@ -309,10 +236,11 @@ public class SidebarCustom : SidebarBox {
     /* Figure out what index we are going to insert at */
     _insert_index = (box == null) ? 0 : (get_action_index( box ) + add_to_index);
 
-    var revealer = get_revealer( _insert_index );
-    revealer.reveal_child = true;
+    /* Add a tab where the action will be inserted */
+    var lbl = new Label( _( "Add New Action..." ) );
+    _nb.insert_page( new Box( Orientation.VERTICAL, 0 ), lbl, _insert_index );
 
-    _popover.relative_to = revealer;
+    _popover.relative_to = lbl;
     _popover.popup();
 
   }
@@ -323,13 +251,9 @@ public class SidebarCustom : SidebarBox {
   */
   private void insert_function( TextFunction function ) {
 
-    get_revealer( _insert_index ).reveal_child = false;
+    var fn = function.copy( true );
+    add_function( fn, _insert_index );
 
-    var fn  = function.copy( true );
-    var box = add_function( fn );
-
-    _cbox.reorder_child( box, _insert_index );
-    _cbox.show_all();
     _custom.functions.insert_val( _insert_index, fn );
 
     changed();
@@ -344,7 +268,7 @@ public class SidebarCustom : SidebarBox {
 
     fn.custom_changed.disconnect( changed );
 
-    _cbox.remove( _cbox.get_children().nth_data( index ) );
+    _nb.remove_page( _nb.page_num( box ) );
     _custom.functions.remove_index( index );
 
     if( _custom.functions.length == 0 ) {
@@ -427,8 +351,8 @@ public class SidebarCustom : SidebarBox {
   /* Called whenever the popover is closed */
   private void popover_closed() {
 
-    if( _custom.functions.length > 0 ) {
-      get_revealer( _insert_index ).reveal_child = false;
+    if( _custom.functions.length == 0 ) {
+      _add_revealer.reveal_child = true;
     }
 
   }
