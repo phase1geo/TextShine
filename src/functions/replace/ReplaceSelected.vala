@@ -100,26 +100,69 @@ public class ReplaceSelected : TextFunction {
     return( _wbox );
   }
 
-  private void add_insert( Gtk.Menu mnu, string lbl, string str ) {
-    var item = new Gtk.MenuItem.with_label( lbl );
+  private string replace_date( string value ) {
+    var now = new DateTime.now_local();
+    return( now.format( value ) );
+  }
+
+  private void add_submenu( Gtk.Menu menu, string name, out Gtk.Menu submenu ) {
+    submenu = new Gtk.Menu();
+    var item = new Gtk.MenuItem.with_label( name );
+    item.submenu = submenu;
+    menu.add( item );
+  }
+
+  private void add_pattern( Gtk.Menu mnu, string lbl, string pattern ) {
+    var label = (pattern.length < 5) ? (lbl + " - <b>" + pattern + "</b>") : lbl;
+    var item = new Gtk.MenuItem.with_label( label );
+    (item.get_child() as Label).use_markup = true;
     item.activate.connect(() => {
-      _replace.insert_at_cursor( str );
+      _replace.insert_at_cursor( pattern );
     });
     mnu.add( item );
   }
 
   private void populate_replace_popup( Gtk.Menu menu ) {
+
+    Gtk.Menu date, time;
+
     menu.add( new SeparatorMenuItem() );
-    add_insert( menu, _( "Insert New-line" ),   "\n" );
-    add_insert( menu, _( "Insert Page Break" ), "\f" );
+    add_pattern( menu, _( "Insert New-line" ),   "\n" );
+    add_pattern( menu, _( "Insert Page Break" ), "\f" );
+    add_pattern( menu, _( "Insert Percent Sign" ), "%%" );
+
+    add_submenu( menu, _( "Insert Date" ), out date );
+    add_pattern( date, _( "Standard Date" ), "%x" );
+    date.add( new SeparatorMenuItem() );
+    add_pattern( date, _( "Day of Month (1-31)" ), "%e" );
+    add_pattern( date, _( "Day of Month (01-31)" ), "%d" );
+    add_pattern( date, _( "Month (01-12)" ), "%m" );
+    add_pattern( date, _( "Year (YYYY)" ), "%Y" );
+    add_pattern( date, _( "Year (YY)" ), "%y" );
+    add_pattern( date, _( "Day of Week" ), "%A" );
+    add_pattern( date, _( "Day of Week (Abbreviated)" ), "%a" );
+    add_pattern( date, _( "Name of Month" ), "%B" );
+    add_pattern( date, _( "Name of Month (Abbreviated)" ), "%b" );
+
+    add_submenu( menu, _( "Insert Time" ), out time );
+    add_pattern( time, _( "Standard Time" ), "%X" );
+    time.add( new SeparatorMenuItem() );
+    add_pattern( time, _( "Seconds (00-59)" ), "%S" );
+    add_pattern( time, _( "Minutes (00-59)" ), "%M" );
+    add_pattern( time, _( "Hours (00-12)" ), "%H" );
+    add_pattern( time, _( "Hours (00-23)" ), "%I" );
+    add_pattern( time, _( "AM/PM" ), "%p" );
+    add_pattern( time, _( "Timezone" ), "%Z" );
+
     menu.show_all();
+
   }
 
   /* Replace all matches with the replacement text */
   private void do_replace() {
 
     var ranges       = new Array<Editor.Position>();
-    var replace_text = _replace.text;
+    var replace_text = replace_date( _replace.text );
     var undo_item    = new UndoItem( label );
 
     _editor.get_ranges( ranges );

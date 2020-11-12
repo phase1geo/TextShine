@@ -34,7 +34,7 @@ public class SidebarCustom : SidebarBox {
   private Revealer         _delete_reveal;
   private Button           _save;
   private Label            _new_action_label;
-  private Box              _cbox;
+  private ListBox          _lb;
   private Grid             _pbox;
   private int              _insert_index;
   private Box?             _drag_box;
@@ -60,15 +60,14 @@ public class SidebarCustom : SidebarBox {
     nbox.pack_start( _name, true,  true,  5 );
 
     /* Create scrolled box */
-    _cbox  = new Box( Orientation.VERTICAL, 0 );
+    _lb = new ListBox();
+    _lb.selection_mode = SelectionMode.NONE;
+
     var sw = new ScrolledWindow( null, null );
     var vp = new Viewport( null, null );
     vp.set_size_request( width, height );
-    vp.add( _cbox );
+    vp.add( _lb );
     sw.add( vp );
-
-    /* Setup the cbox to be a drag destination */
-    // _cbox FOOBAR
 
     var add = new Button.with_label( _( "Add New Action" ) );
     add.set_relief( ReliefStyle.NONE );
@@ -144,28 +143,28 @@ public class SidebarCustom : SidebarBox {
 
   private void clear_actions() {
     _add_revealer.reveal_child = true;
-    _cbox.get_children().@foreach((w) => {
-      _cbox.remove( w );
+    _lb.get_children().@foreach((w) => {
+      _lb.remove( w );
     });
-    _cbox.show_all();
+    _lb.show_all();
   }
 
   /* Inserts the current custom actions */
   private void insert_actions() {
     _add_revealer.reveal_child = false;
-    _cbox.get_children().@foreach((w) => {
-      _cbox.remove( w );
+    _lb.get_children().@foreach((w) => {
+      _lb.remove( w );
     });
     for( int i=0; i<_custom.functions.length; i++ ) {
       var fn = _custom.functions.index( i );
       fn.custom_changed.connect( changed );
       add_function( fn );
     }
-    _cbox.show_all();
+    _lb.show_all();
   }
 
   /* Adds a function button to the given category item box */
-  public Box add_function( TextFunction function ) {
+  public Box add_function( TextFunction function, int index = -1 ) {
 
     var box = new Box( Orientation.VERTICAL, 0 );
 
@@ -218,30 +217,12 @@ public class SidebarCustom : SidebarBox {
       ebox.add( lbbox );
     }
 
-    Gtk.drag_source_set( ebox, Gdk.ModifierType.BUTTON1_MASK, entries, Gdk.DragAction.MOVE );
-    Gtk.drag_dest_set( ebox, DestDefaults.ALL, entries, Gdk.DragAction.MOVE );
+    var move_mask = ModifierType.BUTTON1_MASK;
+    var copy_mask = (ModifierType.BUTTON1_MASK | ModifierType.CONTROL_MASK);
 
-    ebox.drag_begin.connect((ctx) => {
-      Allocation alloc;
-      lbox.get_allocation( out alloc );
-      var surface = new Cairo.ImageSurface( Cairo.Format.ARGB32, alloc.width, alloc.height);
-      var cr      = new Cairo.Context( surface );
-      lbox.draw( cr );
-      cr.rectangle( 0, 0, alloc.width, alloc.height );
-      cr.stroke();
-      drag_set_icon_surface( ctx, surface );
-      _drag_box = box;
-    });
-
-    ebox.drag_end.connect((ctx) => {
-      _drag_box = null;
-    });
-
-    ebox.drag_drop.connect((ctx, x, y, time_) => {
-      var index = get_action_index( box );
-      _cbox.reorder_child( _drag_box, index );
-      return( true );
-    });
+    Gtk.drag_source_set( ebox, move_mask, entries, Gdk.DragAction.MOVE );
+    Gtk.drag_source_set( ebox, copy_mask, entries, Gdk.DragAction.COPY );
+    Gtk.drag_dest_set( ebox, DestDefaults.ALL, entries, (Gdk.DragAction.MOVE | Gdk.DragAction.COPY) );
 
     var fbox  = new Box( Orientation.VERTICAL, 0 );
     fbox.margin_top    = 10;
@@ -254,19 +235,41 @@ public class SidebarCustom : SidebarBox {
     frame.shadow_type = ShadowType.ETCHED_OUT;
     frame.add( fbox );
 
+    ebox.drag_begin.connect((ctx) => {
+      _lb.remove( box );
+      drag_set_icon_widget( ctx, box, 0, 0 );
+      _drag_box = box;
+    });
+
+    ebox.drag_end.connect((ctx) => {
+      _drag_box = null;
+    });
+
+    ebox.drag_drop.connect((ctx, x, y, time_) => {
+      var box_index = get_action_index( box );
+      stdout.printf( "In drag_drop, index: %d\n", box_index );
+      // _drag_box.unparent();
+      _lb.insert( _drag_box, box_index );
+      return( true );
+    });
+
     var add_placeholder = new Label( _( "Add New Action" ) );
     var ins_placeholder = new Label( " " );
     var placeholder_stack = new Stack();
     placeholder_stack.add_named( add_placeholder, "add" );
     placeholder_stack.add_named( ins_placeholder, "ins" );
-    var add_revealer    = new Revealer();
+    var add_revealer = new Revealer();
     add_revealer.reveal_child = false;
     add_revealer.add( placeholder_stack );
 
     box.pack_start( frame,        false, true, 5 );
     box.pack_start( add_revealer, false, true, 5 );
 
-    _cbox.pack_start( box, false, false, 0 );
+    if( index == -1 ) {
+      _lb.add( box );
+    } else {
+      _lb.insert( box, index );
+    }
 
     function.update_button_label.connect(() => {
       label.label = function.label;
@@ -282,7 +285,7 @@ public class SidebarCustom : SidebarBox {
     var index = 0;
     var i     = 0;
 
-    _cbox.get_children().@foreach((w) => {
+    _lb.get_children().@foreach((w) => {
       if( (Box)w == box ) {
         index = i;
       }
@@ -298,7 +301,7 @@ public class SidebarCustom : SidebarBox {
     if( index == 0 ) {
       return( _add_revealer );
     } else {
-      var box = (Box)_cbox.get_children().nth_data( _insert_index - 1 );
+      var box = (Box)_lb.get_children().nth_data( _insert_index - 1 );
       return( (Revealer)box.get_children().nth_data( 1 ) );
     }
   }
@@ -326,10 +329,8 @@ public class SidebarCustom : SidebarBox {
     get_revealer( _insert_index ).reveal_child = false;
 
     var fn  = function.copy( true );
-    var box = add_function( fn );
+    var box = add_function( fn, _insert_index );
 
-    _cbox.reorder_child( box, _insert_index );
-    _cbox.show_all();
     _custom.functions.insert_val( _insert_index, fn );
 
     changed();
@@ -344,7 +345,7 @@ public class SidebarCustom : SidebarBox {
 
     fn.custom_changed.disconnect( changed );
 
-    _cbox.remove( _cbox.get_children().nth_data( index ) );
+    _lb.remove( _lb.get_children().nth_data( index ) );
     _custom.functions.remove_index( index );
 
     if( _custom.functions.length == 0 ) {
