@@ -135,6 +135,7 @@ public class RegExpr : TextFunction {
       menu.add( new SeparatorMenuItem() );
       add_case_patterns( menu );
       add_position_patterns( menu );
+      Utils.populate_insert_popup( menu, _replace );
       menu.show_all();
     }
   }
@@ -300,7 +301,7 @@ public class RegExpr : TextFunction {
   private void do_replace() {
 
     var ranges       = new Array<Editor.Position>();
-    var replace_text = _replace.text;
+    var replace_text = Utils.replace_date( _replace.text );
 
     _editor.get_ranges( ranges );
     // _editor.remove_selected();

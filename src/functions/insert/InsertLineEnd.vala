@@ -67,6 +67,9 @@ public class InsertLineEnd : TextFunction {
 
     _insert = new Entry();
     _insert.placeholder_text = _( "Inserted Text" );
+    _insert.populate_popup.connect((mnu) => {
+      Utils.populate_insert_popup( mnu, _insert );
+    });
 
     if( custom ) {
 
@@ -112,7 +115,7 @@ public class InsertLineEnd : TextFunction {
   private void do_insert() {
 
     var ranges      = new Array<Editor.Position>();
-    var insert_text = _insert.text;
+    var insert_text = Utils.replace_date( _insert.text );
     var undo_item   = new UndoItem( label );
 
     _editor.get_ranges( ranges );

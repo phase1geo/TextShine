@@ -32,7 +32,6 @@ public class SidebarCustom : SidebarBox {
   private CustomFunction?  _custom;
   private Popover          _popover;
   private Revealer         _delete_reveal;
-  private Button           _save;
   private Label            _new_action_label;
   private ListBox          _lb;
   private Grid             _pbox;
@@ -53,7 +52,6 @@ public class SidebarCustom : SidebarBox {
     var nlbl = new Label( _( "Name:" ) );
 
     _name = new Entry();
-    _name.changed.connect( changed );
 
     var nbox = new Box( Orientation.HORIZONTAL, 0 );
     nbox.pack_start( nlbl,  false, false, 5 );
@@ -88,14 +86,8 @@ public class SidebarCustom : SidebarBox {
     del.get_style_context().add_class( "destructive-action" );
     del.clicked.connect( delete_custom );
 
-    var cancel = new Button.with_label( _( "Cancel" ) );
-    cancel.clicked.connect(() => {
-      switch_stack( SwitchStackReason.NONE, null );
-    });
-
-    _save = new Button.with_label( _( "Save" ) );
-    _save.get_style_context().add_class( "suggested-action" );
-    _save.clicked.connect( save_custom );
+    var done = new Button.with_label( _( "Done" ) );
+    done.clicked.connect( save_custom );
 
     _delete_reveal = new Revealer();
     _delete_reveal.reveal_child    = true;
@@ -104,8 +96,7 @@ public class SidebarCustom : SidebarBox {
 
     var bbox = new Box( Orientation.HORIZONTAL, 0 );
     bbox.pack_start( _delete_reveal, false, false, 5 );
-    bbox.pack_end(   _save,          false, false, 5 );
-    bbox.pack_end(   cancel,         false, false, 5 );
+    bbox.pack_end( done, false, false, 5 );
 
     pack_start( nbox,          false, true, 5 );
     pack_start( _add_revealer, false, true, 5 );
@@ -136,9 +127,6 @@ public class SidebarCustom : SidebarBox {
         break;
     }
 
-    /* Clear the status of the Save button */
-    _save.set_sensitive( false );
-
   }
 
   private void clear_actions() {
@@ -157,7 +145,6 @@ public class SidebarCustom : SidebarBox {
     });
     for( int i=0; i<_custom.functions.length; i++ ) {
       var fn = _custom.functions.index( i );
-      fn.custom_changed.connect( changed );
       add_function( fn );
     }
     _lb.show_all();
@@ -236,8 +223,12 @@ public class SidebarCustom : SidebarBox {
     frame.add( fbox );
 
     ebox.drag_begin.connect((ctx) => {
-      _lb.remove( box );
-      drag_set_icon_widget( ctx, box, 0, 0 );
+      Allocation alloc;
+      box.get_allocation( out alloc );
+      var surface = new Cairo.ImageSurface( Cairo.Format.ARGB32, alloc.width, alloc.height );
+      var cr      = new Cairo.Context( surface );
+      box.draw( cr );
+      drag_set_icon_surface( ctx, surface );
       _drag_box = box;
     });
 
@@ -247,8 +238,7 @@ public class SidebarCustom : SidebarBox {
 
     ebox.drag_drop.connect((ctx, x, y, time_) => {
       var box_index = get_action_index( box );
-      stdout.printf( "In drag_drop, index: %d\n", box_index );
-      // _drag_box.unparent();
+      _lb.remove( _drag_box );
       _lb.insert( _drag_box, box_index );
       return( true );
     });
@@ -262,8 +252,9 @@ public class SidebarCustom : SidebarBox {
     add_revealer.reveal_child = false;
     add_revealer.add( placeholder_stack );
 
-    box.pack_start( frame,        false, true, 5 );
-    box.pack_start( add_revealer, false, true, 5 );
+    box.pack_start( frame,        false, true, 0 );
+    box.pack_start( add_revealer, false, true, 0 );
+    box.show_all();
 
     if( index == -1 ) {
       _lb.add( box );
@@ -286,7 +277,9 @@ public class SidebarCustom : SidebarBox {
     var i     = 0;
 
     _lb.get_children().@foreach((w) => {
-      if( (Box)w == box ) {
+      var row = (ListBoxRow)w;
+      var b   = (Box)row.get_children().nth_data( 0 );
+      if( b == box ) {
         index = i;
       }
       i++;
@@ -301,7 +294,8 @@ public class SidebarCustom : SidebarBox {
     if( index == 0 ) {
       return( _add_revealer );
     } else {
-      var box = (Box)_lb.get_children().nth_data( _insert_index - 1 );
+      var row = (ListBoxRow)_lb.get_children().nth_data( _insert_index - 1 );
+      var box = (Box)row.get_children().nth_data( 0 );
       return( (Revealer)box.get_children().nth_data( 1 ) );
     }
   }
@@ -333,8 +327,6 @@ public class SidebarCustom : SidebarBox {
 
     _custom.functions.insert_val( _insert_index, fn );
 
-    changed();
-
   }
 
   /* Removes the action at the given index */
@@ -343,8 +335,6 @@ public class SidebarCustom : SidebarBox {
     var index = get_action_index( box );
     var fn    = _custom.functions.index( index );
 
-    fn.custom_changed.disconnect( changed );
-
     _lb.remove( _lb.get_children().nth_data( index ) );
     _custom.functions.remove_index( index );
 
@@ -352,13 +342,6 @@ public class SidebarCustom : SidebarBox {
       _add_revealer.reveal_child = true;
     }
 
-    changed();
-
-  }
-
-  /* Indicate that something within the custom action changed */
-  private void changed() {
-    _save.set_sensitive( (_name.text != "") && (_custom.functions.length > 0) );
   }
 
   //----------------------------------------------------------------------------
