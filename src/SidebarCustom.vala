@@ -237,9 +237,16 @@ public class SidebarCustom : SidebarBox {
     });
 
     ebox.drag_drop.connect((ctx, x, y, time_) => {
-      var box_index = get_action_index( box );
-      _lb.remove( _drag_box );
-      _lb.insert( _drag_box, box_index );
+      if( box == _drag_box ) return( false );
+      var box_index  = get_action_index( box );
+      var drag_index = get_action_index( _drag_box );
+      var db_row     = _drag_box.get_parent();
+      db_row.ref();
+      _lb.remove( db_row );
+      _lb.insert( db_row, box_index );
+      db_row.unref();
+      var fn = _custom.functions.remove_index( drag_index );
+      _custom.functions.insert_val( box_index, fn );
       return( true );
     });
 
