@@ -112,27 +112,33 @@ public class SidebarCustom : SidebarBox {
   public override void displayed( SwitchStackReason reason, TextFunction? function ) {
 
     switch( reason ) {
+
       case SwitchStackReason.NEW :
-        _custom = new CustomFunction();
+        _custom    = new CustomFunction();
         _name.text = _custom.label;
         _name.grab_focus();
         _delete_reveal.reveal_child = false;
         clear_actions();
         break;
+
       case SwitchStackReason.EDIT :
-        _custom = (CustomFunction)function;
+        _custom    = (CustomFunction)function;
         _name.text = _custom.label;
         _delete_reveal.reveal_child = true;
+        clear_actions();
         insert_actions();
         break;
+
     }
 
   }
 
   private void clear_actions() {
     _add_revealer.reveal_child = true;
+    int i = 0;
     _lb.get_children().@foreach((w) => {
       _lb.remove( w );
+      i++;
     });
     _lb.show_all();
   }
@@ -140,9 +146,6 @@ public class SidebarCustom : SidebarBox {
   /* Inserts the current custom actions */
   private void insert_actions() {
     _add_revealer.reveal_child = false;
-    _lb.get_children().@foreach((w) => {
-      _lb.remove( w );
-    });
     for( int i=0; i<_custom.functions.length; i++ ) {
       var fn = _custom.functions.index( i );
       add_function( fn );
@@ -548,7 +551,9 @@ public class SidebarCustom : SidebarBox {
   private void save_custom() {
 
     _custom.label = _name.text;
-    win.functions.add_function( "custom", _custom );
+    if( !_delete_reveal.reveal_child ) {
+      win.functions.add_function( "custom", _custom );
+    }
     win.functions.save_custom();
     switch_stack( (_delete_reveal.reveal_child ? SwitchStackReason.EDIT : SwitchStackReason.ADD), _custom );
 

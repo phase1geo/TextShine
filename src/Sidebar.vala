@@ -74,7 +74,7 @@ public class Sidebar : Stack {
     });
     functions.switch_stack.connect((reason, fn) => {
       visible_child_name = "custom";
-      custom.displayed( reason, fn );
+      // custom.displayed( reason, fn );
     });
 
     custom.action_applied.connect((fn) => {

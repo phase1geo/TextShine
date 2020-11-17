@@ -163,6 +163,17 @@ public class TextFunctions {
 
   }
 
+  /* Replaces the function with the given function */
+  public void replace_function( TextFunction function ) {
+    for( int i=0; i<_functions.length; i++ ) {
+      if( _functions.index( i ) == function ) {
+        _functions.remove_index( i );
+        _functions.insert_val( i, function );
+        break;
+      }
+    }
+  }
+
   /* Removes the given function index */
   public void remove_function( TextFunction function ) {
     for( int i=0; i<_functions.length; i++ ) {
