@@ -111,6 +111,8 @@ public class SidebarCustom : SidebarBox {
   /* Called when we get displayed */
   public override void displayed( SwitchStackReason reason, TextFunction? function ) {
 
+    clear_actions();
+
     switch( reason ) {
 
       case SwitchStackReason.NEW :
@@ -118,14 +120,12 @@ public class SidebarCustom : SidebarBox {
         _name.text = _custom.label;
         _name.grab_focus();
         _delete_reveal.reveal_child = false;
-        clear_actions();
         break;
 
       case SwitchStackReason.EDIT :
         _custom    = (CustomFunction)function;
         _name.text = _custom.label;
         _delete_reveal.reveal_child = true;
-        clear_actions();
         insert_actions();
         break;
 
@@ -135,20 +135,17 @@ public class SidebarCustom : SidebarBox {
 
   private void clear_actions() {
     _add_revealer.reveal_child = true;
-    int i = 0;
     _lb.get_children().@foreach((w) => {
-      _lb.remove( w );
-      i++;
+      w.destroy();
     });
-    _lb.show_all();
   }
 
   /* Inserts the current custom actions */
   private void insert_actions() {
-    _add_revealer.reveal_child = false;
     for( int i=0; i<_custom.functions.length; i++ ) {
       var fn = _custom.functions.index( i );
       add_function( fn );
+      _add_revealer.reveal_child = false;
     }
     _lb.show_all();
   }
@@ -266,11 +263,7 @@ public class SidebarCustom : SidebarBox {
     box.pack_start( add_revealer, false, true, 0 );
     box.show_all();
 
-    if( index == -1 ) {
-      _lb.add( box );
-    } else {
-      _lb.insert( box, index );
-    }
+    _lb.insert( box, index );
 
     function.update_button_label.connect(() => {
       label.label = function.label;
@@ -550,12 +543,21 @@ public class SidebarCustom : SidebarBox {
   /* Saves the current custom function */
   private void save_custom() {
 
+    var edit  = _delete_reveal.reveal_child;
+    var empty = _custom.functions.length == 0;
+
     _custom.label = _name.text;
-    if( !_delete_reveal.reveal_child ) {
+
+    if( edit ) {
+      win.functions.save_custom();
+      switch_stack( SwitchStackReason.EDIT, _custom );
+    } else if( !empty ) {
       win.functions.add_function( "custom", _custom );
+      win.functions.save_custom();
+      switch_stack( SwitchStackReason.ADD, _custom );
+    } else {
+      switch_stack( SwitchStackReason.NONE, _custom );
     }
-    win.functions.save_custom();
-    switch_stack( (_delete_reveal.reveal_child ? SwitchStackReason.EDIT : SwitchStackReason.ADD), _custom );
 
   }
 

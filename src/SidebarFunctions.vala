@@ -43,6 +43,7 @@ public class SidebarFunctions : SidebarBox {
   private Box              _favorite_box;
   private Box              _custom_box;
   private Revealer         _custom_revealer;
+  private Box              _edit_fbox;
 
   /* Constructor */
   public SidebarFunctions( MainWindow win, Editor editor ) {
@@ -116,22 +117,22 @@ public class SidebarFunctions : SidebarBox {
 
     exp.add( ibox );
 
-    /* Populate item_box with functions */
-    var functions = win.functions.get_category_functions( name );
-    for( int i=0; i<functions.length; i++ ) {
-      add_function( name, ibox, exp, functions.index( i ) );
-    }
-
     _categories.append_val( new Category( setting, exp ) );
 
     switch( name ) {
       case "favorites" :
         _favorite_box = ibox;
         break;
-      case "custom"    :
+      case "custom" :
         _custom_box = ibox;
         add_create_custom();
         break;
+    }
+
+    /* Populate item_box with functions */
+    var functions = win.functions.get_category_functions( name );
+    for( int i=0; i<functions.length; i++ ) {
+      add_function( name, ibox, exp, functions.index( i ) );
     }
 
     return( exp );
@@ -384,6 +385,7 @@ public class SidebarFunctions : SidebarBox {
     edit.relief = ReliefStyle.NONE;
     edit.set_tooltip_text( _( "Edit Action" ) );
     edit.clicked.connect(() => {
+      _edit_fbox = fbox;
       switch_stack( SwitchStackReason.EDIT, function );
     });
 
@@ -391,10 +393,19 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
+  /* Updates the custom button name that was being edited */
+  private void update_custom_name( TextFunction function ) {
+
+    var btn = (Button)_edit_fbox.get_children().nth_data( 0 );
+    btn.label = function.label;
+
+  }
+
   /* Called when this panel is displayed */
   public void displayed( SwitchStackReason reason, TextFunction? function ) {
     switch( reason ) {
       case SwitchStackReason.ADD    :  add_custom_function( (CustomFunction)function );     break;
+      case SwitchStackReason.EDIT   :  update_custom_name( function );                      break;
       case SwitchStackReason.DELETE :  delete_custom_function( (CustomFunction)function );  break;
     }
   }
