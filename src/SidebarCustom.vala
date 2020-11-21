@@ -136,7 +136,7 @@ public class SidebarCustom : SidebarBox {
   private void clear_actions() {
     _add_revealer.reveal_child = true;
     _lb.get_children().@foreach((w) => {
-      w.destroy();
+      _lb.remove( w );
     });
   }
 
