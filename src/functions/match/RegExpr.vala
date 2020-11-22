@@ -28,8 +28,8 @@ public class RegExpr : TextFunction {
   private Editor      _editor;
   private bool        _tags_exist = false;
   private UndoItem    _undo_item;
-  private string      _find_text;
-  private string      _replace_text;
+  private string      _find_text = "";
+  private string      _replace_text = "";
 
   /* Constructor */
   public RegExpr( MainWindow win, bool custom = false ) {
@@ -66,11 +66,13 @@ public class RegExpr : TextFunction {
 
     if( custom ) {
 
+      pattern.text = _find_text;
       pattern.changed.connect(() => {
         _find_text = pattern.text;
         custom_changed();
       });
 
+      replace.text = _replace_text;
       replace.changed.connect(() => {
         _replace_text = replace.text;
         custom_changed();
@@ -80,14 +82,15 @@ public class RegExpr : TextFunction {
 
       pattern.search_changed.connect(() => {
         _find_text = pattern.text;
-        do_search();
+        _undo_item = new UndoItem( label );
+        do_search( _undo_item );
       });
       pattern.activate.connect( end_search );
       pattern.grab_focus();
 
       replace.activate.connect(() => {
         _replace_text = replace.text;
-        do_replace();
+        do_replace( _undo_item );
       });
 
     }
@@ -217,9 +220,7 @@ public class RegExpr : TextFunction {
   }
 
   /* Perform search and replacement */
-  private void do_search() {
-
-    _undo_item = new UndoItem( label );
+  private void do_search( UndoItem? undo_item ) {
 
     /* Get the selected ranges and clear them */
     var ranges = new Array<Editor.Position>();
@@ -278,18 +279,16 @@ public class RegExpr : TextFunction {
   }
 
   /* Replace all matches with the replacement text */
-  private void do_replace() {
+  private void do_replace( UndoItem undo_item ) {
 
     var ranges       = new Array<Editor.Position>();
     var replace_text = Utils.replace_date( _replace_text );
 
     _editor.get_ranges( ranges );
-    // _editor.remove_selected();
 
     try {
 
-      var re        = new Regex( _find_text );
-      var undo_item = new UndoItem( label );
+      var re = new Regex( _find_text );
 
       for( int i=((int)ranges.length - 1); i>=0; i-- ) {
         var range    = ranges.index( i );
@@ -297,8 +296,6 @@ public class RegExpr : TextFunction {
         var new_text = re.replace( text, text.length, 0, replace_text );
         _editor.replace_text( range.start, range.end, new_text, undo_item );
       }
-
-      _editor.undo_buffer.add_item( undo_item );
 
     } catch( RegexError e ) {
       _win.show_error( e.message );
@@ -313,13 +310,21 @@ public class RegExpr : TextFunction {
 
   }
 
+  public override void run( Editor editor, UndoItem undo_item ) {
+    _editor = editor;
+    do_search( undo_item );
+    if( _replace_text != "" ) {
+      do_replace( undo_item );
+    }
+  }
+
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
     _editor = editor;
     if( custom ) {
-      do_search();
+      do_search( null );
       if( _replace_text != "" ) {
-        do_replace();
+        do_replace( null );
       }
     } else {
       _win.add_widget( create_widget() );

@@ -26,8 +26,8 @@ public class Find : TextFunction {
   private MainWindow  _win;
   private Editor      _editor;
   private UndoItem    _undo_item;
-  private string      _find_text;
-  private bool        _case_sensitive;
+  private string      _find_text = "";
+  private bool        _case_sensitive = false;
 
   /* Constructor */
   public Find( MainWindow win, bool custom = false ) {
@@ -56,15 +56,16 @@ public class Find : TextFunction {
     });
 
     var case_sensitive = new CheckButton.with_label( "Case-sensitive" );
-    case_sensitive.active = _case_sensitive;
 
     if( custom ) {
 
+      find.text = _find_text;
       find.changed.connect(() => {
         _find_text = find.text;
         custom_changed();
       });
 
+      case_sensitive.active = _case_sensitive;
       case_sensitive.toggled.connect(() => {
         _case_sensitive = case_sensitive.get_active();
         custom_changed();
@@ -74,14 +75,16 @@ public class Find : TextFunction {
 
       find.changed.connect(() => {
         _find_text = find.text;
-        do_find();
+        _undo_item = new UndoItem( label );
+        do_find( _undo_item );
       });
       find.activate.connect( complete_find );
       find.grab_focus();
 
       case_sensitive.toggled.connect(() => {
         _case_sensitive = case_sensitive.active;
-        do_find();
+        _undo_item = new UndoItem( label );
+        do_find( _undo_item );
       });
 
     }
@@ -113,14 +116,12 @@ public class Find : TextFunction {
     menu.show_all();
   }
 
-  private void do_find() {
-
-    _undo_item = new UndoItem( label );
+  private void do_find( UndoItem? undo_item ) {
 
     /* Get the selected ranges and clear them */
     var ranges = new Array<Editor.Position>();
     _editor.get_ranges( ranges, false );
-    _editor.remove_selected( _undo_item );
+    _editor.remove_selected( undo_item );
 
     /* If the pattern text is empty, just return now */
     if( _find_text == "" ) {
@@ -147,7 +148,7 @@ public class Find : TextFunction {
         var start_chars = text.slice( 0, start ).char_count();
         _editor.buffer.get_iter_at_offset( out start_iter, start_index + start_chars );
         _editor.buffer.get_iter_at_offset( out end_iter,   start_index + (start_chars + find_len) );
-        _editor.add_selected( start_iter, end_iter, _undo_item );
+        _editor.add_selected( start_iter, end_iter, undo_item );
         start = text.index_of( find_text, (start + find_text.length) );
       }
 
@@ -167,7 +168,7 @@ public class Find : TextFunction {
   public override void launch( Editor editor ) {
     _editor = editor;
     if( custom ) {
-      do_find();
+      do_find( null );
     } else {
       _win.add_widget( create_widget() );
     }

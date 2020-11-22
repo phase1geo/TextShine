@@ -133,7 +133,7 @@ public class TextFunction {
   }
 
   /* Executes this text function using the editor */
-  protected void run( Editor editor, UndoItem undo_item ) {
+  public virtual void run( Editor editor, UndoItem undo_item ) {
     var ranges = new Array<Editor.Position>();
     editor.get_ranges( ranges );
     for( int i=((int)ranges.length - 1); i>=0; i-- ) {

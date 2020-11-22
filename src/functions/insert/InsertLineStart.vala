@@ -44,12 +44,16 @@ public class InsertLineStart : TextFunction {
     return( new InsertLineStart( _win, custom ) );
   }
 
+  public override void run( Editor editor, UndoItem undo_item ) {
+    _editor = editor;
+    do_insert( undo_item );
+  }
+
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
-    stdout.printf( "In launch, custom: %s\n", custom.to_string() );
     _editor = editor;
     if( custom ) {
-      do_insert();
+      do_insert( null );
     } else {
       _win.add_widget( create_widget() );
     }
@@ -75,7 +79,9 @@ public class InsertLineStart : TextFunction {
 
       insert.activate.connect(() => {
         _insert_text = insert.text;
-        do_insert();
+        var undo_item = new UndoItem( label );
+        do_insert( undo_item );
+        _editor.undo_buffer.add_item( undo_item );
       });
       insert.grab_focus();
 
@@ -92,13 +98,10 @@ public class InsertLineStart : TextFunction {
     return( create_widget() );
   }
 
-  private void do_insert() {
-
-    stdout.printf( "In do_insert, text: %s\n", _insert_text );
+  private void do_insert( UndoItem? undo_item ) {
 
     var ranges      = new Array<Editor.Position>();
     var insert_text = Utils.replace_date( _insert_text );
-    var undo_item   = new UndoItem( label );
 
     _editor.get_ranges( ranges );
 
@@ -112,10 +115,6 @@ public class InsertLineStart : TextFunction {
       _editor.replace_text( range.start, range.end, string.joinv( "\n", lines ), undo_item );
     }
 
-    /* Add the changes to the undo buffer */
-    _editor.undo_buffer.add_item( undo_item );
-
-    /* Remove the widget */
     _win.remove_widget();
 
   }

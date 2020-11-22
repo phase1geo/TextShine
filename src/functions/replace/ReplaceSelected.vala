@@ -25,7 +25,7 @@ public class ReplaceSelected : TextFunction {
 
   private MainWindow _win;
   private Editor     _editor;
-  private string     _replace_text;
+  private string     _replace_text = "";
 
   /* Constructor */
   public ReplaceSelected( MainWindow win, bool custom = false ) {
@@ -60,6 +60,7 @@ public class ReplaceSelected : TextFunction {
 
     if( custom ) {
 
+      replace.text = _replace_text;
       replace.changed.connect(() => {
         _replace_text = replace.text;
         custom_changed();
@@ -69,7 +70,9 @@ public class ReplaceSelected : TextFunction {
 
       replace.activate.connect(() => {
         _replace_text = replace.text;
-        do_replace();
+        var undo_item = new UndoItem( label );
+        do_replace( undo_item );
+        _editor.undo_buffer.add_item( undo_item );
       });
       replace.grab_focus();
 
@@ -87,11 +90,10 @@ public class ReplaceSelected : TextFunction {
   }
 
   /* Replace all matches with the replacement text */
-  private void do_replace() {
+  private void do_replace( UndoItem? undo_item ) {
 
     var ranges       = new Array<Editor.Position>();
     var replace_text = Utils.replace_date( _replace_text );
-    var undo_item    = new UndoItem( label );
 
     _editor.get_ranges( ranges );
 
@@ -100,18 +102,21 @@ public class ReplaceSelected : TextFunction {
       _editor.replace_text( range.start, range.end, replace_text, undo_item );
     }
 
-    _editor.undo_buffer.add_item( undo_item );
-
     /* Hide the widget */
     _win.remove_widget();
 
+  }
+
+  public override void run( Editor editor, UndoItem undo_item ) {
+    _editor = editor;
+    do_replace( undo_item );
   }
 
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
     _editor = editor;
     if( custom ) {
-      do_replace();
+      do_replace( null );
     } else {
       _win.add_widget( create_widget() );
     }
