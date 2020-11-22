@@ -30,6 +30,7 @@ public class CustomFunction : TextFunction {
 
   private Array<TextFunction> _functions;
   private string              _label;
+  private int                 _breakpoint;
 
   public Array<TextFunction> functions {
     get {
@@ -48,8 +49,9 @@ public class CustomFunction : TextFunction {
   /* Constructor */
   public CustomFunction( bool custom = false ) {
     base( "custom-%d".printf( custom_id ), custom );
-    _label     = "Custom #%d".printf( custom_id++ );
-    _functions = new Array<TextFunction>();
+    _label      = "Custom #%d".printf( custom_id++ );
+    _functions  = new Array<TextFunction>();
+    _breakpoint = -1;
   }
 
   /* Creates a copy of this custom function and returns it to the caller */
@@ -83,6 +85,16 @@ public class CustomFunction : TextFunction {
       _functions.index( i ).run( editor, undo_item );
     }
     editor.undo_buffer.add_item( undo_item );
+  }
+
+  /*
+   Plays the custom function until we have hit the breakpoint.
+  */
+  public void test( Editor editor, UndoItem undo_item ) {
+    var func_len = (_breakpoint == -1) ? _functions.length : _breakpoint;
+    for( int i=0; i<func_len; i++ ) {
+      _functions.index( i ).run( editor, undo_item );
+    }
   }
 
   /* Returns true if settings are available */

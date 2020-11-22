@@ -37,6 +37,8 @@ public class SidebarCustom : SidebarBox {
   private Grid             _pbox;
   private int              _insert_index;
   private Box?             _drag_box;
+  private Revealer         _play_reveal;
+  private UndoItem?        _test_undo = null;
 
   static TargetEntry[] entries = {
     { "TEXTSHINE_CUSTOM_ROW", TargetFlags.SAME_APP, 0 }
@@ -53,9 +55,21 @@ public class SidebarCustom : SidebarBox {
 
     _name = new Entry();
 
+    var play = new Button.from_icon_name( "media-playback-start-symbolic", IconSize.SMALL_TOOLBAR );
+    play.tooltip_text = _( "Test run custom actions" );
+    play.clicked.connect(() => {
+      play_refresh( play );
+    });
+
+    _play_reveal = new Revealer();
+    _play_reveal.add( play );
+    _play_reveal.reveal_child = false;
+    _play_reveal.transition_duration = 0;
+
     var nbox = new Box( Orientation.HORIZONTAL, 0 );
-    nbox.pack_start( nlbl,  false, false, 5 );
-    nbox.pack_start( _name, true,  true,  5 );
+    nbox.pack_start( nlbl,            false, false, 5 );
+    nbox.pack_start( _name,           true,  true,  5 );
+    nbox.pack_end(   _play_reveal,    false, false, 5 );
 
     /* Create scrolled box */
     _lb = new ListBox();
@@ -106,6 +120,31 @@ public class SidebarCustom : SidebarBox {
     /* Create the action insertion popover */
     create_popover();
 
+  }
+
+  private void play_refresh( Button play ) {
+    var play_img    = "media-playback-start-symbolic";
+    var refresh_img = "view-refresh-symbolic";
+    var img         = (Gtk.Image)play.image;
+    if( img.icon_name == play_img ) {
+      play.image = new Image.from_icon_name( refresh_img, IconSize.SMALL_TOOLBAR );
+      play.tooltip_text = _( "Refresh text" );
+      play_action();
+    } else {
+      play.image = new Image.from_icon_name( play_img, IconSize.SMALL_TOOLBAR );
+      play.tooltip_text = _( "Test run custom actions" );
+      refresh_text();
+    }
+  }
+
+  private void play_action() {
+    _test_undo = new UndoItem( "" );
+    _custom.test( editor, _test_undo );
+  }
+
+  private void refresh_text() {
+    _test_undo.undo( editor );
+    _test_undo = null;
   }
 
   /* Called when we get displayed */
@@ -264,6 +303,7 @@ public class SidebarCustom : SidebarBox {
     box.show_all();
 
     _lb.insert( box, index );
+    _play_reveal.reveal_child = true;
 
     function.update_button_label.connect(() => {
       label.label = function.label;
@@ -545,6 +585,11 @@ public class SidebarCustom : SidebarBox {
 
     var edit  = _delete_reveal.reveal_child;
     var empty = _custom.functions.length == 0;
+
+    /* If we tested the actions, make sure that we revert our changes */
+    if( _test_undo != null ) {
+      _test_undo.undo( editor );
+    }
 
     _custom.label = _name.text;
 
