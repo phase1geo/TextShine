@@ -41,7 +41,6 @@ public class MainWindow : ApplicationWindow {
   private Sidebar                  _sidebar;
   private Box                      _widget_box;
   private InfoBar                  _info;
-  private HashMap<string,Revealer> _widgets;
   private TextFunctions            _functions;
   private CustomFunction           _custom;
   private string?                  _current_file = null;
@@ -109,7 +108,6 @@ public class MainWindow : ApplicationWindow {
     ebox.pack_start( sw,          true,  true, 0 );
 
     /* Create the widgets and functions after we have added some of the UI elements */
-    _widgets   = new HashMap<string,Revealer>();
     _functions = new TextFunctions( this );
 
     /* Create sidebar */
@@ -480,7 +478,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Adds the given widget to the widgets box */
-  public void add_widget( string name, Widget w ) {
+  public void add_widget( Widget w ) {
 
     var revealer = new Revealer();
     revealer.add( w );
@@ -488,19 +486,15 @@ public class MainWindow : ApplicationWindow {
     revealer.border_width = 5;
 
     _widget_box.pack_start( revealer, true, true, 0 );
+    _widget_box.show_all();
 
-    _widgets.@set( name, revealer );
+    revealer.reveal_child = true;
 
   }
 
-  /* Displays the specified widget */
-  public void show_widget( string name ) {
-    _widgets.values.@foreach((w) => {
-      w.reveal_child = false;
-      return( true );
-    });
-    if( _widgets.has_key( name ) ) {
-      _widgets.@get( name ).reveal_child = true;
+  public void remove_widget() {
+    if( _widget_box.get_children().length() > 0 ) {
+      _widget_box.remove( _widget_box.get_children().nth_data( 0 ) );
     }
   }
 

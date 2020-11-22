@@ -171,9 +171,11 @@ public class SidebarFunctions : SidebarBox {
     button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
+      stdout.printf( "In button clicked\n" );
       editor.grab_focus();
       if( function.launchable( editor ) ) {
-        win.show_widget( "" );
+        stdout.printf( "  HERE A\n" );
+        win.remove_widget();
         function.launch( editor );
         action_applied( function );
       }

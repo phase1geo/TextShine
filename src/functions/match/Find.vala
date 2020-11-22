@@ -24,24 +24,17 @@ using Gtk;
 public class Find : TextFunction {
 
   private MainWindow  _win;
-  private Entry       _find;
-  private CheckButton _case_sensitive;
-  private Button      _find_btn;
   private Editor      _editor;
   private UndoItem    _undo_item;
-  private Box         _wbox;
+  private string      _find_text;
+  private bool        _case_sensitive;
 
   /* Constructor */
   public Find( MainWindow win, bool custom = false ) {
 
     base( "find", custom );
 
-    _win  = win;
-    _wbox = create_widget();
-
-    if( !custom ) {
-      _win.add_widget( name, _wbox );
-    }
+    _win = win;
 
   }
 
@@ -56,69 +49,67 @@ public class Find : TextFunction {
   /* Creates the search UI */
   private Box create_widget() {
 
-    _find = new Entry();
-    _find.placeholder_text = _( "Search Text" );
-    _find.populate_popup.connect( populate_find_popup );
+    var find = new Entry();
+    find.placeholder_text = _( "Search Text" );
+    find.populate_popup.connect((menu) => {
+      populate_find_popup( menu, find );
+    });
 
-    _case_sensitive = new CheckButton.with_label( "Case-sensitive" );
+    var case_sensitive = new CheckButton.with_label( "Case-sensitive" );
+    case_sensitive.active = _case_sensitive;
 
     if( custom ) {
 
-      _find.changed.connect(() => {
+      find.changed.connect(() => {
+        _find_text = find.text;
         custom_changed();
       });
 
-      _case_sensitive.toggled.connect(() => {
+      case_sensitive.toggled.connect(() => {
+        _case_sensitive = case_sensitive.get_active();
         custom_changed();
       });
-
-      var box = new Box( Orientation.VERTICAL, 0 );
-      box.pack_start( _find, false, true, 5 );
-      box.pack_start( _case_sensitive, false, false, 5 );
-
-      return( box );
 
     } else {
 
-      _find.changed.connect( do_find );
-      _find.activate.connect(() => {
-        _find_btn.clicked();
+      find.changed.connect(() => {
+        _find_text = find.text;
+        do_find();
+      });
+      find.activate.connect( complete_find );
+      find.grab_focus();
+
+      case_sensitive.toggled.connect(() => {
+        _case_sensitive = case_sensitive.active;
+        do_find();
       });
 
-      _case_sensitive.toggled.connect( do_find );
-
-      _find_btn = new Button.with_label( _( "Find" ) );
-      _find_btn.set_sensitive( false );
-      _find_btn.clicked.connect( complete_find );
-
-      var box = new Box( Orientation.HORIZONTAL, 0 );
-      box.pack_start( _find,           true,  true,  5 );
-      box.pack_start( _case_sensitive, false, false, 5 );
-      box.pack_start( _find_btn,       false, false, 5 );
-
-      return( box );
-
     }
+
+    var box = new Box( Orientation.HORIZONTAL, 0 );
+    box.pack_start( find,           true,  true,  5 );
+    box.pack_start( case_sensitive, false, false, 5 );
+
+    return( box );
 
   }
 
   public override Box? get_widget() {
-    _wbox.unparent();
-    return( _wbox );
+    return( create_widget() );
   }
 
-  private void add_insert( Gtk.Menu mnu, string lbl, string str ) {
+  private void add_insert( Gtk.Menu mnu, Entry entry, string lbl, string str ) {
     var item = new Gtk.MenuItem.with_label( lbl );
     item.activate.connect(() => {
-      _find.insert_at_cursor( str );
+      entry.insert_at_cursor( str );
     });
     mnu.add( item );
   }
 
-  private void populate_find_popup( Gtk.Menu menu ) {
+  private void populate_find_popup( Gtk.Menu menu, Entry entry ) {
     menu.add( new SeparatorMenuItem() );
-    add_insert( menu, _( "Insert New-line" ),   "\n" );
-    add_insert( menu, _( "Insert Page Break" ), "\f" );
+    add_insert( menu, entry, _( "Insert New-line" ),   "\n" );
+    add_insert( menu, entry, _( "Insert Page Break" ), "\f" );
     menu.show_all();
   }
 
@@ -132,13 +123,12 @@ public class Find : TextFunction {
     _editor.remove_selected( _undo_item );
 
     /* If the pattern text is empty, just return now */
-    if( _find.text == "" ) {
-      find_changed();
+    if( _find_text == "" ) {
       return;
     }
 
-    var ignore_case = !_case_sensitive.get_active();
-    var find_text   = ignore_case ? _find.text.down() : _find.text;
+    var ignore_case = !_case_sensitive;
+    var find_text   = ignore_case ? _find_text.down() : _find_text;
     var find_len    = find_text.char_count();
 
     for( int i=0; i<ranges.length; i++ ) {
@@ -163,15 +153,13 @@ public class Find : TextFunction {
 
     }
 
-    find_changed();
-
   }
 
   public void complete_find() {
     if( _editor.is_selected() ) {
       _editor.undo_buffer.add_item( _undo_item );
     }
-    _win.show_widget( "" );
+    _win.remove_widget();
     _editor.grab_focus();
   }
 
@@ -181,22 +169,14 @@ public class Find : TextFunction {
     if( custom ) {
       do_find();
     } else {
-      _find.text = "";
-      _case_sensitive.active = false;
-      _win.show_widget( name );
-      _find.grab_focus();
+      _win.add_widget( create_widget() );
     }
-  }
-
-  /* Called whenever the find entry contents change */
-  private void find_changed() {
-    _find_btn.set_sensitive( _find.text != "" );
   }
 
   public override Xml.Node* save() {
     Xml.Node* node = base.save();
-    node->set_prop( "find", _find.text );
-    node->set_prop( "case-sensitive", _case_sensitive.active.to_string() );
+    node->set_prop( "find", _find_text );
+    node->set_prop( "case-sensitive", _case_sensitive.to_string() );
     return( node );
   }
 
@@ -204,11 +184,11 @@ public class Find : TextFunction {
     base.load( node, functions );
     string? f = node->get_prop( "find" );
     if( f != null ) {
-      _find.text = f;
+      _find_text = f;
     }
     string? c = node->get_prop( "case-sensitive" );
     if( c != null ) {
-      _case_sensitive.active = bool.parse( c );
+      _case_sensitive = bool.parse( c );
     }
   }
 }

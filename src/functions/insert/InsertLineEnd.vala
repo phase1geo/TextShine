@@ -25,21 +25,14 @@ public class InsertLineEnd : TextFunction {
 
   private MainWindow _win;
   private Editor     _editor;
-  private Entry      _insert;
-  private Button     _insert_btn;
-  private Box        _wbox;
+  private string     _insert_text;
 
   /* Constructor */
   public InsertLineEnd( MainWindow win, bool custom = false ) {
 
     base( "insert-line-end", custom );
 
-    _win  = win;
-    _wbox = create_widget();
-
-    if( !custom ) {
-      _win.add_widget( "insert-line-end", _wbox );
-    }
+    _win = win;
 
   }
 
@@ -57,65 +50,50 @@ public class InsertLineEnd : TextFunction {
     if( custom ) {
       do_insert();
     } else {
-      _insert.text = "";
-      _win.show_widget( "insert-line-end" );
-      _insert.grab_focus();
+      _win.add_widget( create_widget() );
     }
   }
 
   private Box create_widget() {
 
-    _insert = new Entry();
-    _insert.placeholder_text = _( "Inserted Text" );
-    _insert.populate_popup.connect((mnu) => {
-      Utils.populate_insert_popup( mnu, _insert );
+    var insert = new Entry();
+    insert.placeholder_text = _( "Inserted Text" );
+    insert.populate_popup.connect((mnu) => {
+      Utils.populate_insert_popup( mnu, insert );
     });
 
     if( custom ) {
 
-      _insert.changed.connect(() => {
+      insert.changed.connect(() => {
+        _insert_text = insert.text;
         custom_changed();
       });
 
-      var box = new Box( Orientation.VERTICAL, 0 );
-      box.pack_start( _insert, false, true, 5 );
-
-      return( box );
-
     } else {
 
-      _insert.changed.connect(() => {
-        _insert_btn.set_sensitive( _insert.text != "" );
-      });
-      _insert.activate.connect(() => {
-        _insert_btn.clicked();
-      });
-
-      _insert_btn = new Button.with_label( _( "Insert" ) );
-      _insert_btn.set_sensitive( false );
-      _insert_btn.clicked.connect(() => {
+      insert.activate.connect(() => {
+        _insert_text = insert.text;
         do_insert();
       });
-
-      var box = new Box( Orientation.HORIZONTAL, 5 );
-      box.pack_start( _insert,     true,  true,  0 );
-      box.pack_start( _insert_btn, false, false, 0 );
-
-      return( box );
+      insert.grab_focus();
 
     }
+
+    var box = new Box( Orientation.HORIZONTAL, 5 );
+    box.pack_start( insert, true, true, 0 );
+
+    return( box );
 
   }
 
   public override Box? get_widget() {
-    _wbox.unparent();
-    return( _wbox );
+    return( create_widget() );
   }
 
   private void do_insert() {
 
     var ranges      = new Array<Editor.Position>();
-    var insert_text = Utils.replace_date( _insert.text );
+    var insert_text = Utils.replace_date( _insert_text );
     var undo_item   = new UndoItem( label );
 
     _editor.get_ranges( ranges );
@@ -133,13 +111,14 @@ public class InsertLineEnd : TextFunction {
     /* Add the changes to the undo buffer */
     _editor.undo_buffer.add_item( undo_item );
 
-    _win.show_widget( "" );
+    /* Remove the packed widget */
+    _win.remove_widget();
 
   }
 
   public override Xml.Node* save() {
     Xml.Node* node = base.save();
-    node->set_prop( "insert", _insert.text );
+    node->set_prop( "insert", _insert_text );
     return( node );
   }
 
@@ -147,7 +126,7 @@ public class InsertLineEnd : TextFunction {
     base.load( node, functions );
     string? i = node->get_prop( "insert" );
     if( i != null ) {
-      _insert.text = i;
+      _insert_text = i;
     }
   }
 

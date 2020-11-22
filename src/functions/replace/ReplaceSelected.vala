@@ -24,22 +24,15 @@ using Gtk;
 public class ReplaceSelected : TextFunction {
 
   private MainWindow _win;
-  private Entry      _replace;
-  private Button     _replace_btn;
   private Editor     _editor;
-  private Box        _wbox;
+  private string     _replace_text;
 
   /* Constructor */
   public ReplaceSelected( MainWindow win, bool custom = false ) {
 
     base( "replace-selected", custom );
 
-    _win  = win;
-    _wbox = create_widget();
-
-    if( !custom ) {
-      _win.add_widget( name, _wbox );
-    }
+    _win = win;
 
   }
 
@@ -59,54 +52,45 @@ public class ReplaceSelected : TextFunction {
   /* Creates the search UI */
   private Box create_widget() {
 
-    _replace = new Entry();
-    _replace.placeholder_text = _( "Replace With" );
-    _replace.populate_popup.connect((mnu) => {
-      Utils.populate_insert_popup( mnu, _replace );
+    var replace = new Entry();
+    replace.placeholder_text = _( "Replace With" );
+    replace.populate_popup.connect((mnu) => {
+      Utils.populate_insert_popup( mnu, replace );
     });
 
     if( custom ) {
 
-      _replace.changed.connect(() => {
+      replace.changed.connect(() => {
+        _replace_text = replace.text;
         custom_changed();
       });
 
-      var box = new Box( Orientation.VERTICAL, 0 );
-      box.pack_start( _replace, false, true, 5 );
-
-      return( box );
-
     } else {
 
-      _replace.changed.connect( replace_changed );
-      _replace.activate.connect(() => {
-        _replace_btn.clicked();
+      replace.activate.connect(() => {
+        _replace_text = replace.text;
+        do_replace();
       });
-
-      _replace_btn = new Button.with_label( _( "Replace" ) );
-      _replace_btn.set_sensitive( false );
-      _replace_btn.clicked.connect( do_replace );
-
-      var box = new Box( Orientation.HORIZONTAL, 0 );
-      box.pack_start( _replace,     true,  true, 5 );
-      box.pack_start( _replace_btn, false, true, 5 );
-
-      return( box );
+      replace.grab_focus();
 
     }
+
+    var box = new Box( Orientation.HORIZONTAL, 0 );
+    box.pack_start( replace, true, true, 5 );
+
+    return( box );
 
   }
 
   public override Box? get_widget() {
-    _wbox.unparent();
-    return( _wbox );
+    return( create_widget() );
   }
 
   /* Replace all matches with the replacement text */
   private void do_replace() {
 
     var ranges       = new Array<Editor.Position>();
-    var replace_text = Utils.replace_date( _replace.text );
+    var replace_text = Utils.replace_date( _replace_text );
     var undo_item    = new UndoItem( label );
 
     _editor.get_ranges( ranges );
@@ -119,7 +103,7 @@ public class ReplaceSelected : TextFunction {
     _editor.undo_buffer.add_item( undo_item );
 
     /* Hide the widget */
-    _win.show_widget( "" );
+    _win.remove_widget();
 
   }
 
@@ -129,20 +113,13 @@ public class ReplaceSelected : TextFunction {
     if( custom ) {
       do_replace();
     } else {
-      _replace.text = "";
-      _win.show_widget( name );
-      _replace.grab_focus();
+      _win.add_widget( create_widget() );
     }
-  }
-
-  /* Called whenever the replace entry contents change */
-  private void replace_changed() {
-    _replace_btn.set_sensitive( _replace.text != "" );
   }
 
   public override Xml.Node* save() {
     Xml.Node* node = base.save();
-    node->set_prop( "replace", _replace.text );
+    node->set_prop( "replace", _replace_text );
     return( node );
   }
 
@@ -150,7 +127,7 @@ public class ReplaceSelected : TextFunction {
     base.load( node, functions );
     string? r = node->get_prop( "replace" );
     if( r != null ) {
-      _replace.text = r;
+      _replace_text = r;
     }
   }
 
