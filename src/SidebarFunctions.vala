@@ -194,7 +194,7 @@ public class SidebarFunctions : SidebarBox {
     });
 
     var grid = new Grid();
-    add_favorite_button(  grid, function );
+    var fav  = add_favorite_button(  grid, function );
 
     switch( category ) {
       case "favorites" :  break;
@@ -218,7 +218,7 @@ public class SidebarFunctions : SidebarBox {
     box.pack_start( revealer, false, false, 0 );
 
     if( exp != null ) {
-      _functions.append_val( new Functions( function, revealer, null, exp ) );
+      _functions.append_val( new Functions( function, fav, revealer, null, exp ) );
       function.update_button_label.connect(() => {
         button.label = function.label;
       });
@@ -274,7 +274,7 @@ public class SidebarFunctions : SidebarBox {
     return( false );
   }
 
-  private void add_favorite_button( Grid grid, TextFunction function ) {
+  private Button add_favorite_button( Grid grid, TextFunction function ) {
 
     var favorited = is_favorite( function );
     var icon_name = favorited ? "starred-symbolic" : "non-starred-symbolic";
@@ -288,6 +288,8 @@ public class SidebarFunctions : SidebarBox {
     });
 
     grid.attach( favorite, 2, 0 );
+
+    return( favorite );
 
   }
 
@@ -321,6 +323,13 @@ public class SidebarFunctions : SidebarBox {
 
   /* Removes the given function from the favorite list */
   private void unfavorite_function( TextFunction function ) {
+
+    /* Clear the function indicator in the sidebar */
+    for( int i=0; i<_functions.length; i++ ) {
+      if( _functions.index( i ).unfavorite( function ) ) {
+        break;
+      }
+    }
 
     /* Remove the function as a favorite */
     var index  = win.functions.unfavorite_function( function );

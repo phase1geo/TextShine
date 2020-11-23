@@ -47,6 +47,18 @@ public class InsertLineNumbers : TextFunction {
     return( fn );
   }
 
+  public override bool matches( TextFunction function ) {
+    if( base.matches( function ) ) {
+      var func = (InsertLineNumbers)function;
+      return(
+        (_separator == func._separator) &&
+        (_pad == func._pad) &&
+        (_skip_blanks == func._skip_blanks)
+      );
+    }
+    return( false );
+  }
+
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
     var lines     = original.split( "\n" );

@@ -226,7 +226,7 @@ public class SidebarCustom : SidebarBox {
 
     var ebox = new EventBox();
 
-    var wbox = function.get_widget();
+    var wbox = function.get_widget( editor );
     if( wbox != null ) {
       var lbw = new Box( Orientation.VERTICAL, 0 );
       lbw.pack_start( lbbox, false, true, 5 );
@@ -555,7 +555,7 @@ public class SidebarCustom : SidebarBox {
     _pbox.attach( breveal, 1, row );
 
     /* Add the function so that we can hide it while searching */
-    _functions.append_val( new Functions( function, lreveal, breveal ) );
+    _functions.append_val( new Functions( function, null, lreveal, breveal ) );
 
   }
 

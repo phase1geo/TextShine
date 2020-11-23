@@ -66,6 +66,10 @@ public class InsertLoremIpsum : TextFunction {
     return( fn );
   }
 
+  public override bool matches( TextFunction function ) {
+    return( base.matches( function ) && (_paragraphs == ((InsertLoremIpsum)function)._paragraphs) );
+  }
+
   private string get_lorem_ipsum() {
     var rand = new Rand();
     var rn   = rand.int_range( 0, ((int)_lorem.length - 1) );

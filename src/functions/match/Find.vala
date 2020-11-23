@@ -24,7 +24,6 @@ using Gtk;
 public class Find : TextFunction {
 
   private MainWindow  _win;
-  private Editor      _editor;
   private UndoItem    _undo_item;
   private string      _find_text = "";
   private bool        _case_sensitive = false;
@@ -46,8 +45,19 @@ public class Find : TextFunction {
     return( new Find( _win, custom ) );
   }
 
+  public override bool matches( TextFunction function ) {
+    if( base.matches( function ) ) {
+      var func = (Find)function;
+      return(
+        (_find_text == func._find_text) &&
+        (_case_sensitive == func._case_sensitive)
+      );
+    }
+    return( false );
+  }
+
   /* Creates the search UI */
-  private Box create_widget() {
+  private Box create_widget( Editor editor ) {
 
     var find = new Entry();
     find.placeholder_text = _( "Search Text" );
@@ -76,15 +86,17 @@ public class Find : TextFunction {
       find.changed.connect(() => {
         _find_text = find.text;
         _undo_item = new UndoItem( label );
-        do_find( _undo_item );
+        do_find( editor, _undo_item );
       });
-      find.activate.connect( complete_find );
+      find.activate.connect(() => {
+        complete_find( editor );
+      });
       find.grab_focus();
 
       case_sensitive.toggled.connect(() => {
         _case_sensitive = case_sensitive.active;
         _undo_item = new UndoItem( label );
-        do_find( _undo_item );
+        do_find( editor, _undo_item );
       });
 
     }
@@ -97,8 +109,8 @@ public class Find : TextFunction {
 
   }
 
-  public override Box? get_widget() {
-    return( create_widget() );
+  public override Box? get_widget( Editor editor ) {
+    return( create_widget( editor ) );
   }
 
   private void add_insert( Gtk.Menu mnu, Entry entry, string lbl, string str ) {
@@ -116,12 +128,12 @@ public class Find : TextFunction {
     menu.show_all();
   }
 
-  private void do_find( UndoItem? undo_item ) {
+  private void do_find( Editor editor, UndoItem? undo_item ) {
 
     /* Get the selected ranges and clear them */
     var ranges = new Array<Editor.Position>();
-    _editor.get_ranges( ranges, false );
-    _editor.remove_selected( undo_item );
+    editor.get_ranges( ranges, false );
+    editor.remove_selected( undo_item );
 
     /* If the pattern text is empty, just return now */
     if( _find_text == "" ) {
@@ -134,7 +146,7 @@ public class Find : TextFunction {
 
     for( int i=0; i<ranges.length; i++ ) {
 
-      var text        = _editor.get_text( ranges.index( i ).start, ranges.index( i ).end );
+      var text        = editor.get_text( ranges.index( i ).start, ranges.index( i ).end );
       var start_index = ranges.index( i ).start.get_offset();   // In chars
 
       if( ignore_case ) {
@@ -146,9 +158,9 @@ public class Find : TextFunction {
       while( start != -1 ) {
         TextIter start_iter, end_iter;
         var start_chars = text.slice( 0, start ).char_count();
-        _editor.buffer.get_iter_at_offset( out start_iter, start_index + start_chars );
-        _editor.buffer.get_iter_at_offset( out end_iter,   start_index + (start_chars + find_len) );
-        _editor.add_selected( start_iter, end_iter, undo_item );
+        editor.buffer.get_iter_at_offset( out start_iter, start_index + start_chars );
+        editor.buffer.get_iter_at_offset( out end_iter,   start_index + (start_chars + find_len) );
+        editor.add_selected( start_iter, end_iter, undo_item );
         start = text.index_of( find_text, (start + find_text.length) );
       }
 
@@ -156,26 +168,24 @@ public class Find : TextFunction {
 
   }
 
-  public void complete_find() {
-    if( _editor.is_selected() ) {
-      _editor.undo_buffer.add_item( _undo_item );
+  public void complete_find( Editor editor ) {
+    if( editor.is_selected() ) {
+      editor.undo_buffer.add_item( _undo_item );
     }
     _win.remove_widget();
-    _editor.grab_focus();
+    editor.grab_focus();
   }
 
   public override void run( Editor editor, UndoItem undo_item ) {
-    _editor = editor;
-    do_find( undo_item );
+    do_find( editor, undo_item );
   }
 
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
-    _editor = editor;
     if( custom ) {
-      do_find( null );
+      do_find( editor, null );
     } else {
-      _win.add_widget( create_widget() );
+      _win.add_widget( create_widget( editor ) );
     }
   }
 

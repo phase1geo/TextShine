@@ -25,6 +25,7 @@ using Gee;
 
 public class Functions {
   private TextFunction _func;
+  private Button?      _favorite;
   private Revealer     _revealer1;
   private Revealer     _revealer2;
   private Expander?    _exp;
@@ -33,8 +34,9 @@ public class Functions {
       return( _func );
     }
   }
-  public Functions( TextFunction func, Revealer revealer1, Revealer? revealer2 = null, Expander? exp = null ) {
+  public Functions( TextFunction func, Button? favorite, Revealer revealer1, Revealer? revealer2 = null, Expander? exp = null ) {
     _func      = func;
+    _favorite  = favorite;
     _revealer1 = revealer1;
     _revealer2 = revealer2;
     _exp       = exp;
@@ -48,6 +50,13 @@ public class Functions {
     if( (_exp != null) && contains ) {
       _exp.expanded = true;
     }
+  }
+  public bool unfavorite( TextFunction function ) {
+    if( _func.matches( function ) && (_favorite != null) ) {
+      _favorite.image = new Image.from_icon_name( "non-starred-symbolic", IconSize.SMALL_TOOLBAR );
+      return( true );
+    }
+    return( false );
   }
 }
 

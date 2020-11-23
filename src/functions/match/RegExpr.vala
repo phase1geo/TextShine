@@ -25,7 +25,6 @@ public class RegExpr : TextFunction {
 
   private MainWindow  _win;
   private Regex       _re;
-  private Editor      _editor;
   private bool        _tags_exist = false;
   private UndoItem    _undo_item;
   private string      _find_text = "";
@@ -49,8 +48,19 @@ public class RegExpr : TextFunction {
     return( new RegExpr( _win, custom ) );
   }
 
+  public override bool matches( TextFunction function ) {
+    if( base.matches( function ) ) {
+      var func = (RegExpr)function;
+      return(
+        (_find_text == func._find_text) &&
+        (_replace_text == func._replace_text)
+      );
+    }
+    return( false );
+  }
+
   /* Creates the search UI */
-  private Box create_widget() {
+  private Box create_widget( Editor editor ) {
 
     var pattern = new SearchEntry();
     pattern.placeholder_text = _( "Regular Expression" );
@@ -83,14 +93,16 @@ public class RegExpr : TextFunction {
       pattern.search_changed.connect(() => {
         _find_text = pattern.text;
         _undo_item = new UndoItem( label );
-        do_search( _undo_item );
+        do_search( editor, _undo_item );
       });
-      pattern.activate.connect( end_search );
+      pattern.activate.connect(() => {
+        end_search( editor );
+      });
       pattern.grab_focus();
 
       replace.activate.connect(() => {
         _replace_text = replace.text;
-        do_replace( _undo_item );
+        do_replace( editor, _undo_item );
       });
 
     }
@@ -103,8 +115,8 @@ public class RegExpr : TextFunction {
 
   }
 
-  public override Box? get_widget() {
-    return( create_widget() );
+  public override Box? get_widget( Editor editor ) {
+    return( create_widget( editor ) );
   }
 
   private void populate_pattern_popup( Gtk.Menu menu, Entry entry ) {
@@ -220,12 +232,12 @@ public class RegExpr : TextFunction {
   }
 
   /* Perform search and replacement */
-  private void do_search( UndoItem? undo_item ) {
+  private void do_search( Editor editor, UndoItem? undo_item ) {
 
     /* Get the selected ranges and clear them */
     var ranges = new Array<Editor.Position>();
-    _editor.get_ranges( ranges, false );
-    _editor.remove_selected( _undo_item );
+    editor.get_ranges( ranges, false );
+    editor.remove_selected( _undo_item );
 
     /* Clear the tags */
     _tags_exist = false;
@@ -245,16 +257,16 @@ public class RegExpr : TextFunction {
 
     for( int i=0; i<ranges.length; i++ ) {
 
-      var text        = _editor.get_text( ranges.index( i ).start, ranges.index( i ).end );
+      var text        = editor.get_text( ranges.index( i ).start, ranges.index( i ).end );
       var start_index = ranges.index( i ).start.get_offset();
 
       while( _re.match( text, 0, out match ) ) {
         TextIter start_iter, end_iter;
         int start, end;
         match.fetch_pos( 0, out start, out end );
-        _editor.buffer.get_iter_at_offset( out start_iter, start_index + start );
-        _editor.buffer.get_iter_at_offset( out end_iter,   start_index + end );
-        _editor.add_selected( start_iter, end_iter, _undo_item );
+        editor.buffer.get_iter_at_offset( out start_iter, start_index + start );
+        editor.buffer.get_iter_at_offset( out end_iter,   start_index + end );
+        editor.add_selected( start_iter, end_iter, _undo_item );
         _tags_exist = true;
         text = text.splice( 0, end );
         start_index += end;
@@ -265,10 +277,10 @@ public class RegExpr : TextFunction {
   }
 
   /* Finalizes the search operation (TBD) */
-  private void end_search() {
+  private void end_search( Editor editor ) {
 
     /* Add the undo_item to the buffer */
-    _editor.undo_buffer.add_item( _undo_item );
+    editor.undo_buffer.add_item( _undo_item );
 
     /* Close the error display */
     _win.close_error();
@@ -279,12 +291,12 @@ public class RegExpr : TextFunction {
   }
 
   /* Replace all matches with the replacement text */
-  private void do_replace( UndoItem undo_item ) {
+  private void do_replace( Editor editor, UndoItem undo_item ) {
 
     var ranges       = new Array<Editor.Position>();
     var replace_text = Utils.replace_date( _replace_text );
 
-    _editor.get_ranges( ranges );
+    editor.get_ranges( ranges );
 
     try {
 
@@ -292,9 +304,9 @@ public class RegExpr : TextFunction {
 
       for( int i=((int)ranges.length - 1); i>=0; i-- ) {
         var range    = ranges.index( i );
-        var text     = _editor.get_text( range.start, range.end );
+        var text     = editor.get_text( range.start, range.end );
         var new_text = re.replace( text, text.length, 0, replace_text );
-        _editor.replace_text( range.start, range.end, new_text, undo_item );
+        editor.replace_text( range.start, range.end, new_text, undo_item );
       }
 
     } catch( RegexError e ) {
@@ -311,23 +323,21 @@ public class RegExpr : TextFunction {
   }
 
   public override void run( Editor editor, UndoItem undo_item ) {
-    _editor = editor;
-    do_search( undo_item );
+    do_search( editor, undo_item );
     if( _replace_text != "" ) {
-      do_replace( undo_item );
+      do_replace( editor, undo_item );
     }
   }
 
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
-    _editor = editor;
     if( custom ) {
-      do_search( null );
+      do_search( editor, null );
       if( _replace_text != "" ) {
-        do_replace( null );
+        do_replace( editor, null );
       }
     } else {
-      _win.add_widget( create_widget() );
+      _win.add_widget( create_widget( editor ) );
     }
   }
 

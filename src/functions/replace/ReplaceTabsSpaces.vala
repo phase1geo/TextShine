@@ -53,6 +53,10 @@ public class ReplaceTabsSpaces : TextFunction {
     return( fn );
   }
 
+  public override bool matches( TextFunction function ) {
+    return( base.matches( function ) && (_spaces == ((ReplaceTabsSpaces)function)._spaces) );
+  }
+
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
     var spaces = string.nfill( _spaces, ' ' );

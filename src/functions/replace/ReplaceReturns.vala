@@ -45,6 +45,10 @@ public class ReplaceReturns : TextFunction {
     return( fn );
   }
 
+  public override bool matches( TextFunction function ) {
+    return( base.matches( function ) && (_returns == ((ReplaceReturns)function)._returns) );
+  }
+
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
     var returns = string.nfill( _returns, '\n' );

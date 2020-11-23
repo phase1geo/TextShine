@@ -53,6 +53,10 @@ public class SortMoveLines : TextFunction {
     return( fn );
   }
 
+  public override bool matches( TextFunction function ) {
+    return( base.matches( function ) && (_count == ((SortMoveLines)function)._count) );
+  }
+
   public override void launch( Editor editor ) {
 
     TextIter start, end, first, last, cursor;

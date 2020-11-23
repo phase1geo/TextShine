@@ -132,6 +132,11 @@ public class TextFunction {
     return( new TextFunction( _name, custom, direction ) );
   }
 
+  /* Returns true if the given function matches this function */
+  public virtual bool matches( TextFunction function ) {
+    return( (name == function.name) && (direction == function.direction) );
+  }
+
   /* Executes this text function using the editor */
   public virtual void run( Editor editor, UndoItem undo_item ) {
     var ranges = new Array<Editor.Position>();
@@ -252,7 +257,7 @@ public class TextFunction {
   }
 
   /* Returns the widget as a Box container to add to the UI */
-  public virtual Box? get_widget() {
+  public virtual Box? get_widget( Editor editor ) {
     return( null );
   }
 

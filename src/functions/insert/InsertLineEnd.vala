@@ -24,7 +24,6 @@ using Gtk;
 public class InsertLineEnd : TextFunction {
 
   private MainWindow _win;
-  private Editor     _editor;
   private string     _insert_text = "";
 
   /* Constructor */
@@ -44,22 +43,24 @@ public class InsertLineEnd : TextFunction {
     return( new InsertLineEnd( _win, custom ) );
   }
 
+  public override bool matches( TextFunction function ) {
+    return( base.matches( function ) && (_insert_text == ((InsertLineEnd)function)._insert_text) );
+  }
+
   public override void run( Editor editor, UndoItem undo_item ) {
-    _editor = editor;
-    do_insert( undo_item );
+    do_insert( editor, undo_item );
   }
 
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
-    _editor = editor;
     if( custom ) {
-      do_insert( null );
+      do_insert( editor, null );
     } else {
-      _win.add_widget( create_widget() );
+      _win.add_widget( create_widget( editor ) );
     }
   }
 
-  private Box create_widget() {
+  private Box create_widget( Editor editor ) {
 
     var insert = new Entry();
     insert.placeholder_text = _( "Inserted Text" );
@@ -80,8 +81,8 @@ public class InsertLineEnd : TextFunction {
       insert.activate.connect(() => {
         _insert_text = insert.text;
         var undo_item = new UndoItem( label );
-        do_insert( undo_item );
-        _editor.undo_buffer.add_item( undo_item );
+        do_insert( editor, undo_item );
+        editor.undo_buffer.add_item( undo_item );
       });
       insert.grab_focus();
 
@@ -94,25 +95,25 @@ public class InsertLineEnd : TextFunction {
 
   }
 
-  public override Box? get_widget() {
-    return( create_widget() );
+  public override Box? get_widget( Editor editor ) {
+    return( create_widget( editor ) );
   }
 
-  private void do_insert( UndoItem? undo_item ) {
+  private void do_insert( Editor editor, UndoItem? undo_item ) {
 
     var ranges      = new Array<Editor.Position>();
     var insert_text = Utils.replace_date( _insert_text );
 
-    _editor.get_ranges( ranges );
+    editor.get_ranges( ranges );
 
     for( int j=0; j<ranges.length; j++ ) {
       var range = ranges.index( j );
-      var text  = _editor.get_text( range.start, range.end );
+      var text  = editor.get_text( range.start, range.end );
       var lines = text.split( "\n" );
       for( int i=0; i<lines.length; i++ ) {
         lines[i] = lines[i] + insert_text;
       }
-      _editor.replace_text( range.start, range.end, string.joinv( "\n", lines ), undo_item );
+      editor.replace_text( range.start, range.end, string.joinv( "\n", lines ), undo_item );
     }
 
     /* Remove the packed widget */
