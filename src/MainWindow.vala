@@ -36,17 +36,18 @@ public class MainWindow : ApplicationWindow {
   private Button                   _copy_btn;
   private Button                   _undo_btn;
   private Button                   _redo_btn;
-  private Button                   _record_btn;
   private MenuButton               _prop_btn;
   private FontButton               _font;
   private Sidebar                  _sidebar;
   private Box                      _widget_box;
   private InfoBar                  _info;
-  private HashMap<string,Revealer> _widgets;
   private TextFunctions            _functions;
   private CustomFunction           _custom;
-  private bool                     _recording;
   private string?                  _current_file = null;
+  private Label                    _stats_chars;
+  private Label                    _stats_words;
+  private Label                    _stats_lines;
+  private Label                    _stats_matches;
 
   private const GLib.ActionEntry[] action_entries = {
     { "action_clear", do_clear },
@@ -70,8 +71,7 @@ public class MainWindow : ApplicationWindow {
 
     Object( application: app );
 
-    _recording = false;
-    _custom    = new CustomFunction();
+    _custom = new CustomFunction();
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
 
@@ -108,7 +108,6 @@ public class MainWindow : ApplicationWindow {
     ebox.pack_start( sw,          true,  true, 0 );
 
     /* Create the widgets and functions after we have added some of the UI elements */
-    _widgets   = new HashMap<string,Revealer>();
     _functions = new TextFunctions( this );
 
     /* Create sidebar */
@@ -146,9 +145,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   private void action_applied( TextFunction function ) {
-    if( _recording ) {
-      _custom.functions.append_val( function );
-    }
+    // TBD
   }
 
   /* Handles any changes to the dark mode preference gsettings for the desktop */
@@ -234,13 +231,83 @@ public class MainWindow : ApplicationWindow {
     _header.pack_start( _redo_btn );
 
     _header.pack_end( add_properties_button() );
-
-    _record_btn = new Button.from_icon_name( "system-run", IconSize.LARGE_TOOLBAR );
-    _record_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Record Custom Action" ), "<Control>r" ) );
-    _record_btn.clicked.connect( toggle_record );
-    _header.pack_end( _record_btn );
+    _header.pack_end( add_stats_button() );
 
     set_titlebar( _header );
+
+  }
+
+  /* Adds the statistics functionality */
+  private Button add_stats_button() {
+
+    var stats_btn = new MenuButton();
+    stats_btn.set_image( new Image.from_icon_name( "org.gnome.PowerStats", IconSize.LARGE_TOOLBAR ) );
+    stats_btn.set_tooltip_markup( _( "Statistics" ) );
+    stats_btn.clicked.connect( stats_clicked );
+
+    var grid = new Grid();
+    grid.border_width   = 10;
+    grid.row_spacing    = 10;
+    grid.column_spacing = 10;
+
+    var lmargin = "    ";
+
+    var group_text = new Label( _( "<b>Text Statistics</b>" ) );
+    group_text.xalign     = 0;
+    group_text.use_markup = true;
+
+    var lbl_chars = new Label( lmargin + _( "Characters:") );
+    lbl_chars.xalign = 0;
+    _stats_chars = new Label( "0" );
+    _stats_chars.xalign = 0;
+
+    var lbl_words = new Label( lmargin + _( "Words:" ) );
+    lbl_words.xalign = 0;
+    _stats_words = new Label( "0" );
+    _stats_words.xalign = 0;
+
+    var lbl_lines = new Label( lmargin + _( "Lines:") );
+    lbl_lines.xalign = 0;
+    _stats_lines = new Label( "0" );
+    _stats_lines.xalign = 0;
+
+    var lbl_matches = new Label( lmargin + _( "Matches:") );
+    lbl_matches.xalign = 0;
+    _stats_matches = new Label( "0" );
+    _stats_matches.xalign = 0;
+
+    grid.attach( group_text,     0, 0, 2 );
+    grid.attach( lbl_chars,      0, 1 );
+    grid.attach( _stats_chars,   1, 1 );
+    grid.attach( lbl_words,      0, 2 );
+    grid.attach( _stats_words,   1, 2 );
+    grid.attach( lbl_lines,      0, 3 );
+    grid.attach( _stats_lines,   1, 3 );
+    grid.attach( lbl_matches,    0, 4 );
+    grid.attach( _stats_matches, 1, 4 );
+    grid.show_all();
+
+    /* Create the popover and associate it with the menu button */
+    stats_btn.popover = new Popover( null );
+    stats_btn.popover.add( grid );
+
+    return( stats_btn );
+
+  }
+
+  /* Toggle the statistics bar */
+  private void stats_clicked() {
+
+    var text        = _editor.buffer.text;
+    var char_count  = text.char_count();
+    var word_count  = text.strip().split_set( " \t\r\n" ).length;
+    var line_count  = text.strip().split_set( "\n" ).length;
+    var match_count = _editor.num_selected();
+
+    _stats_chars.label   = char_count.to_string();
+    _stats_words.label   = word_count.to_string();
+    _stats_lines.label   = line_count.to_string();
+    _stats_matches.label = match_count.to_string();
 
   }
 
@@ -311,14 +378,12 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Create list of transformation buttons */
-  private Box create_sidebar() {
+  private Stack create_sidebar() {
 
-    var box = new Box( Orientation.VERTICAL, 0 );
-
-    _sidebar = new Sidebar( this, _editor, box );
+    _sidebar = new Sidebar( this, _editor );
     _sidebar.action_applied.connect( action_applied );
 
-    return( box );
+    return( _sidebar );
 
   }
 
@@ -405,29 +470,15 @@ public class MainWindow : ApplicationWindow {
     _editor.grab_focus();
   }
 
-  /* Toggles the record status */
-  private void toggle_record() {
-    if( _recording ) {
-      _record_btn.image = new Image.from_icon_name( "media-record", IconSize.LARGE_TOOLBAR );
-      _recording        = false;
-      var popover = _custom.show_ui( _record_btn, save_new_custom );
-      popover.position = PositionType.LEFT;
-    } else {
-      _record_btn.image = new Image.from_icon_name( "media-playback-stop", IconSize.LARGE_TOOLBAR );
-      _recording        = true;
-      _custom.functions.remove_range( 0, _custom.functions.length );
-    }
-  }
-
   private void save_new_custom( CustomFunction function ) {
-    var fn = function.copy();
-    _sidebar.add_custom_function( (CustomFunction)fn );
+    var fn = function.copy( false );
+    // TBD - _sidebar.add_custom_function( (CustomFunction)fn );
     functions.add_function( "custom", fn );
     functions.save_custom();
   }
 
   /* Adds the given widget to the widgets box */
-  public void add_widget( string name, Widget w ) {
+  public void add_widget( Widget w ) {
 
     var revealer = new Revealer();
     revealer.add( w );
@@ -435,19 +486,15 @@ public class MainWindow : ApplicationWindow {
     revealer.border_width = 5;
 
     _widget_box.pack_start( revealer, true, true, 0 );
+    _widget_box.show_all();
 
-    _widgets.@set( name, revealer );
+    revealer.reveal_child = true;
 
   }
 
-  /* Displays the specified widget */
-  public void show_widget( string name ) {
-    _widgets.values.@foreach((w) => {
-      w.reveal_child = false;
-      return( true );
-    });
-    if( _widgets.has_key( name ) ) {
-      _widgets.@get( name ).reveal_child = true;
+  public void remove_widget() {
+    if( _widget_box.get_children().length() > 0 ) {
+      _widget_box.remove( _widget_box.get_children().nth_data( 0 ) );
     }
   }
 

@@ -22,16 +22,16 @@
 public class QuotesCurved : TextFunction {
 
   /* Constructor */
-  public QuotesCurved() {
-    base( "quotes-curved", FunctionDirection.NONE );
+  public QuotesCurved( bool custom = false ) {
+    base( "quotes-curved", custom, FunctionDirection.NONE );
   }
 
   protected override string get_label0() {
     return( _( "Change to Curved Quotes" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new QuotesCurved();
+  public override TextFunction copy( bool custom ) {
+    var fn = new QuotesCurved( custom );
     return( fn );
   }
 

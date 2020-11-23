@@ -19,40 +19,32 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-public class TextChange {
+using Gtk;
 
-  private TextFunction _function;
+public class SidebarBox : Box {
 
-  public string label {
-    owned get {
-      return( _function.label );
-    }
-  }
+  protected MainWindow win;
+  protected Editor     editor;
+  protected const int  width  = 350;
+  protected const int  height = 600;
+
+  public signal void action_applied( TextFunction function );
+  public signal void switch_stack( SwitchStackReason reason, TextFunction? function );
 
   /* Constructor */
-  public TextChange( TextFunction function ) {
-    _function = function;
+  public SidebarBox( MainWindow win, Editor editor ) {
+
+    Object( orientation: Orientation.VERTICAL, spacing: 0 );
+
+    set_size_request( width, height );
+
+    this.win    = win;
+    this.editor = editor;
+
   }
 
-  /* Called to save this text function */
-  public Xml.Node* save() {
-    Xml.Node* n = new Xml.Node( null, "function" );
-    n->set_prop( "name",      _function.name );
-    n->set_prop( "direction", _function.direction.to_string() );
-    save_contents( n );
-    return( n );
-  }
-
-  /* Loads the contents of this Xml node */
-  public void load( Xml.Node* n ) {
-    load_contents( n );
-  }
-
-  /* Loads the contents of this node */
-  protected virtual void save_contents( Xml.Node* n ) {}
-
-  /* Saves the contents of this node */
-  protected virtual void load_contents( Xml.Node* n ) {}
+  /* Called by sidebar when the stack switches to display this element */
+  public virtual void displayed( SwitchStackReason reason, TextFunction? function ) {}
 
 }
 

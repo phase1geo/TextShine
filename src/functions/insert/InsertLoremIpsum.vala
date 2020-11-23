@@ -30,8 +30,8 @@ public class InsertLoremIpsum : TextFunction {
   private Array<string> _lorem;
 
   /* Constructor */
-  public InsertLoremIpsum() {
-    base( "insert-lorem-ipsum" );
+  public InsertLoremIpsum( bool custom = false ) {
+    base( "insert-lorem-ipsum", custom );
     _paragraphs = 1;
     _lorem = new Array<string>();
     _lorem.append_val( "Etiam ultricies libero vel cursus dapibus. Morbi bibendum erat eget orci feugiat, vel consectetur massa consequat. Praesent facilisis tempus gravida. Nullam quis massa id tortor maximus varius. Quisque eu luctus nisl. Curabitur suscipit congue varius. Aliquam facilisis, nunc at facilisis pretium, nulla risus venenatis odio, in elementum libero metus sed lectus." );
@@ -60,8 +60,8 @@ public class InsertLoremIpsum : TextFunction {
     return( _( "Insert Lorem Ipsum" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new InsertLoremIpsum();
+  public override TextFunction copy( bool custom ) {
+    var fn = new InsertLoremIpsum( custom );
     fn._paragraphs = _paragraphs;
     return( fn );
   }

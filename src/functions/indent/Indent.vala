@@ -24,16 +24,16 @@ using Xml;
 public class Indent : TextFunction {
 
   /* Constructor */
-  public Indent() {
-    base( "indent" );
+  public Indent( bool custom = false ) {
+    base( "indent", custom );
   }
 
   protected override string get_label0() {
     return( _( "Indent One Level" ) );
   }
 
-  public override TextFunction copy() {
-    return( new Indent() );
+  public override TextFunction copy( bool custom ) {
+    return( new Indent( custom ) );
   }
 
   /* Perform the transformation */

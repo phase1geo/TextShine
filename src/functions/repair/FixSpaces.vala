@@ -30,8 +30,8 @@ public class FixSpaces : TextFunction {
   private Regex _remove2_re;
 
   /* Constructor */
-  public FixSpaces() {
-    base( "fix-spaces" );
+  public FixSpaces( bool custom = false ) {
+    base( "fix-spaces", custom );
     try {
       _extra_re        = new Regex( """ {2,}""" );
       _missing_pre_re  = new Regex( """[^ ]([\(\{\[])""" );
@@ -45,8 +45,8 @@ public class FixSpaces : TextFunction {
     return( _( "Fix Spaces" ) );
   }
 
-  public override TextFunction copy() {
-    return( new FixSpaces() );
+  public override TextFunction copy( bool custom ) {
+    return( new FixSpaces( custom ) );
   }
 
   private string add_space( string text, Regex re ) {

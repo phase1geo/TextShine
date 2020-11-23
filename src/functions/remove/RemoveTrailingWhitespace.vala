@@ -23,16 +23,16 @@ using Gee;
 
 public class RemoveTrailingWhitespace : TextFunction {
 
-  public RemoveTrailingWhitespace() {
-    base( "remove-trailing-whitespace" );
+  public RemoveTrailingWhitespace( bool custom = false ) {
+    base( "remove-trailing-whitespace", custom );
   }
 
   protected override string get_label0() {
     return( _( "Remove Trailing Whitespace" ) );
   }
 
-  public override TextFunction copy() {
-    return( new RemoveTrailingWhitespace() );
+  public override TextFunction copy( bool custom ) {
+    return( new RemoveTrailingWhitespace( custom ) );
   }
 
   /* Perform the transformation */

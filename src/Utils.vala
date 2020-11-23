@@ -118,4 +118,90 @@ public class Utils {
 #endif
   }
 
+  /*
+   Replaces all of the date and time placeholders with the current date/time
+   values.
+  */
+  public static string replace_date( string value ) {
+    var now = new DateTime.now_local();
+    return( now.format( value ) );
+  }
+
+  /*
+   Adds a submenu to the given menu with the specified name, returning the
+   created submenu.
+  */
+  public static void add_submenu( Gtk.Menu menu, string name, out Gtk.Menu submenu ) {
+    submenu = new Gtk.Menu();
+    var item = new Gtk.MenuItem.with_label( name );
+    item.submenu = submenu;
+    menu.add( item );
+  }
+
+  /*
+   Adds a new menu item that inserts a given pattern at the current insertion
+   point.
+  */
+  public static void add_literal_pattern( Gtk.Entry entry, Gtk.Menu mnu, string lbl, string pattern ) {
+    var item = new Gtk.MenuItem.with_label( lbl );
+    item.activate.connect(() => {
+      entry.insert_at_cursor( pattern );
+    });
+    mnu.add( item );
+  }
+
+  /*
+   Adds a new menu item that inserts a given pattern at the current insertion
+   point.
+  */
+  public static void add_pattern( Gtk.Entry entry, Gtk.Menu mnu, string lbl, string pattern ) {
+    var label = (pattern.length < 5) ? (lbl + " - <b>" + pattern + "</b>") : lbl;
+    var item = new Gtk.MenuItem.with_label( label );
+    (item.get_child() as Label).use_markup = true;
+    item.activate.connect(() => {
+      entry.insert_at_cursor( pattern );
+    });
+    mnu.add( item );
+  }
+
+  /* Adds items to the popup menu for a text insertion based widget */
+  public static void populate_insert_popup( Gtk.Menu menu, Gtk.Entry entry ) {
+
+    Gtk.Menu chars, date, time;
+
+    menu.add( new SeparatorMenuItem() );
+    add_submenu( menu, _( "Insert Characters" ), out chars );
+    add_submenu( menu, _( "Insert Date" ), out date );
+    add_submenu( menu, _( "Insert Time" ), out time );
+
+    add_literal_pattern( entry, chars, _( "Insert New-line" ),   "\n" );
+    add_literal_pattern( entry, chars, _( "Insert Tab" ),        "\t" );
+    add_literal_pattern( entry, chars, _( "Insert Page Break" ), "\f" );
+    add_pattern( entry, chars, _( "Insert Percent Sign" ), "%%" );
+
+    add_pattern( entry, date, _( "Standard Date" ), "%x" );
+    date.add( new SeparatorMenuItem() );
+    add_pattern( entry, date, _( "Day of Month (1-31)" ), "%e" );
+    add_pattern( entry, date, _( "Day of Month (01-31)" ), "%d" );
+    add_pattern( entry, date, _( "Month (01-12)" ), "%m" );
+    add_pattern( entry, date, _( "Year (YYYY)" ), "%Y" );
+    add_pattern( entry, date, _( "Year (YY)" ), "%y" );
+    add_pattern( entry, date, _( "Day of Week" ), "%A" );
+    add_pattern( entry, date, _( "Day of Week (Abbreviated)" ), "%a" );
+    add_pattern( entry, date, _( "Name of Month" ), "%B" );
+    add_pattern( entry, date, _( "Name of Month (Abbreviated)" ), "%b" );
+
+    add_pattern( entry, time, _( "Standard Time" ), "%X" );
+    time.add( new SeparatorMenuItem() );
+    add_pattern( entry, time, _( "Seconds (00-59)" ), "%S" );
+    add_pattern( entry, time, _( "Minutes (00-59)" ), "%M" );
+    add_pattern( entry, time, _( "Hours (00-12)" ), "%H" );
+    add_pattern( entry, time, _( "Hours (00-23)" ), "%I" );
+    add_pattern( entry, time, _( "AM/PM" ), "%p" );
+    add_pattern( entry, time, _( "Timezone" ), "%Z" );
+
+    menu.show_all();
+
+  }
+
 }

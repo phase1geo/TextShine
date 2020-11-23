@@ -22,16 +22,16 @@
 public class QuotesAngled : TextFunction {
 
   /* Constructor */
-  public QuotesAngled() {
-    base( "quotes-angled", FunctionDirection.NONE );
+  public QuotesAngled( bool custom = false ) {
+    base( "quotes-angled", custom, FunctionDirection.NONE );
   }
 
   protected override string get_label0() {
     return( _( "Change to Angled Quotes" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new QuotesAngled();
+  public override TextFunction copy( bool custom ) {
+    var fn = new QuotesAngled( custom );
     return( fn );
   }
 

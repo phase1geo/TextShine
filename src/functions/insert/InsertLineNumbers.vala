@@ -28,8 +28,8 @@ public class InsertLineNumbers : TextFunction {
   private bool   _skip_blanks;
 
   /* Constructor */
-  public InsertLineNumbers() {
-    base( "insert-line-numbers" );
+  public InsertLineNumbers( bool custom = false ) {
+    base( "insert-line-numbers", custom );
     _separator   = ".";
     _pad         = false;
     _skip_blanks = true;
@@ -39,8 +39,8 @@ public class InsertLineNumbers : TextFunction {
     return( _( "Insert Line Numbers" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new InsertLineNumbers();
+  public override TextFunction copy( bool custom ) {
+    var fn = new InsertLineNumbers( custom );
     fn._separator   = _separator;
     fn._pad         = _pad;
     fn._skip_blanks = _skip_blanks;

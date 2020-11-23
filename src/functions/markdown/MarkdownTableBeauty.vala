@@ -215,8 +215,8 @@ public class MarkdownTableBeauty : TextFunction {
   private Regex _table_re;
 
   /* Constructor */
-  public MarkdownTableBeauty() {
-    base( "markdown-table-beautifier" );
+  public MarkdownTableBeauty( bool custom = false ) {
+    base( "markdown-table-beautifier", custom );
     try {
       _table_re = new Regex( """^[ \t]*\|""" );
     } catch( RegexError e ) {}
@@ -226,8 +226,8 @@ public class MarkdownTableBeauty : TextFunction {
     return( _( "Beautify Tables" ) );
   }
 
-  public override TextFunction copy() {
-    return( new MarkdownTableBeauty() );
+  public override TextFunction copy( bool custom ) {
+    return( new MarkdownTableBeauty( custom ) );
   }
 
   public override string transform_text( string original, int cursor_pos ) {

@@ -22,16 +22,16 @@
 public class CaseUpper : TextFunction {
 
   /* Constructor */
-  public CaseUpper() {
-    base( "case-upper" );
+  public CaseUpper( bool custom = false ) {
+    base( "case-upper", custom );
   }
 
   protected override string get_label0() {
     return( _( "Upper Case" ) );
   }
 
-  public override TextFunction copy() {
-    return( new CaseUpper() );
+  public override TextFunction copy( bool custom ) {
+    return( new CaseUpper( custom ) );
   }
 
   /* Perform the transformation */

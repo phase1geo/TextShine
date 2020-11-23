@@ -26,8 +26,8 @@ public class ReplaceReturns : TextFunction {
   private int _returns = 2;
 
   /* Constructor */
-  public ReplaceReturns() {
-    base( "replace-returns", FunctionDirection.LEFT_TO_RIGHT );
+  public ReplaceReturns( bool custom = false ) {
+    base( "replace-returns", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
   protected override string get_label0() {
@@ -38,8 +38,8 @@ public class ReplaceReturns : TextFunction {
     return( _( "%d Returns With Single Return" ).printf( _returns ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new ReplaceReturns();
+  public override TextFunction copy( bool custom ) {
+    var fn = new ReplaceReturns( custom );
     fn.direction = direction;
     fn._returns  = _returns;
     return( fn );

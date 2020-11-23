@@ -22,16 +22,16 @@
 public class SortReverseChars : TextFunction {
 
   /* Constructor */
-  public SortReverseChars() {
-    base( "sort-reverse" );
+  public SortReverseChars( bool custom = false ) {
+    base( "sort-reverse", custom );
   }
 
   protected override string get_label0() {
     return( _( "Reverse Characters" ) );
   }
 
-  public override TextFunction copy() {
-    return( new SortReverseChars() );
+  public override TextFunction copy( bool custom ) {
+    return( new SortReverseChars( custom ) );
   }
 
   /* Perform the transformation */

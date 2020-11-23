@@ -24,17 +24,15 @@ using Gtk;
 public class ReplaceSelected : TextFunction {
 
   private MainWindow _win;
-  private Entry      _replace;
-  private Button     _replace_btn;
   private Editor     _editor;
+  private string     _replace_text = "";
 
   /* Constructor */
-  public ReplaceSelected( MainWindow win ) {
+  public ReplaceSelected( MainWindow win, bool custom = false ) {
 
-    base( "replace-selected" );
+    base( "replace-selected", custom );
 
     _win = win;
-    _win.add_widget( name, create_widget() );
 
   }
 
@@ -42,8 +40,8 @@ public class ReplaceSelected : TextFunction {
     return( _( "Replace Matched Text" ) );
   }
 
-  public override TextFunction copy() {
-    return( new ReplaceSelected( _win ) );
+  public override TextFunction copy( bool custom ) {
+    return( new ReplaceSelected( _win, custom ) );
   }
 
   /* Returns true if matched text exists in the editor */
@@ -54,47 +52,48 @@ public class ReplaceSelected : TextFunction {
   /* Creates the search UI */
   private Box create_widget() {
 
-    _replace = new Entry();
-    _replace.placeholder_text = _( "Replace With" );
-    _replace.changed.connect( replace_changed );
-    _replace.activate.connect(() => {
-      _replace_btn.clicked();
+    var replace = new Entry();
+    replace.placeholder_text = _( "Replace With" );
+    replace.populate_popup.connect((mnu) => {
+      Utils.populate_insert_popup( mnu, replace );
     });
-    _replace.populate_popup.connect( populate_replace_popup );
 
-    _replace_btn = new Button.with_label( _( "Replace" ) );
-    _replace_btn.set_sensitive( false );
-    _replace_btn.clicked.connect( do_replace );
+    if( custom ) {
+
+      replace.text = _replace_text;
+      replace.changed.connect(() => {
+        _replace_text = replace.text;
+        custom_changed();
+      });
+
+    } else {
+
+      replace.activate.connect(() => {
+        _replace_text = replace.text;
+        var undo_item = new UndoItem( label );
+        do_replace( undo_item );
+        _editor.undo_buffer.add_item( undo_item );
+      });
+      replace.grab_focus();
+
+    }
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
-    box.pack_start( _replace,     true,  true, 5 );
-    box.pack_start( _replace_btn, false, true, 5 );
+    box.pack_start( replace, true, true, 5 );
 
     return( box );
 
   }
 
-  private void add_insert( Gtk.Menu mnu, string lbl, string str ) {
-    var item = new Gtk.MenuItem.with_label( lbl );
-    item.activate.connect(() => {
-      _replace.insert_at_cursor( str );
-    });
-    mnu.add( item );
-  }
-
-  private void populate_replace_popup( Gtk.Menu menu ) {
-    menu.add( new SeparatorMenuItem() );
-    add_insert( menu, _( "Insert New-line" ),   "\n" );
-    add_insert( menu, _( "Insert Page Break" ), "\f" );
-    menu.show_all();
+  public override Box? get_widget() {
+    return( create_widget() );
   }
 
   /* Replace all matches with the replacement text */
-  private void do_replace() {
+  private void do_replace( UndoItem? undo_item ) {
 
     var ranges       = new Array<Editor.Position>();
-    var replace_text = _replace.text;
-    var undo_item    = new UndoItem( label );
+    var replace_text = Utils.replace_date( _replace_text );
 
     _editor.get_ranges( ranges );
 
@@ -103,24 +102,38 @@ public class ReplaceSelected : TextFunction {
       _editor.replace_text( range.start, range.end, replace_text, undo_item );
     }
 
-    _editor.undo_buffer.add_item( undo_item );
-
     /* Hide the widget */
-    _win.show_widget( "" );
+    _win.remove_widget();
 
+  }
+
+  public override void run( Editor editor, UndoItem undo_item ) {
+    _editor = editor;
+    do_replace( undo_item );
   }
 
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
-    _editor       = editor;
-    _replace.text = "";
-    _win.show_widget( name );
-    _replace.grab_focus();
+    _editor = editor;
+    if( custom ) {
+      do_replace( null );
+    } else {
+      _win.add_widget( create_widget() );
+    }
   }
 
-  /* Called whenever the replace entry contents change */
-  private void replace_changed() {
-    _replace_btn.set_sensitive( _replace.text != "" );
+  public override Xml.Node* save() {
+    Xml.Node* node = base.save();
+    node->set_prop( "replace", _replace_text );
+    return( node );
+  }
+
+  public override void load( Xml.Node* node, TextFunctions functions ) {
+    base.load( node, functions );
+    string? r = node->get_prop( "replace" );
+    if( r != null ) {
+      _replace_text = r;
+    }
   }
 
 }

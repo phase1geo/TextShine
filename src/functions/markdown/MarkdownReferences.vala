@@ -32,8 +32,8 @@ public class MarkdownReferences : TextFunction {
   private HashMap<string,string> _old_to_new;
 
   /* Constructor */
-  public MarkdownReferences() {
-    base( "markdown-references" );
+  public MarkdownReferences( bool custom = false ) {
+    base( "markdown-references", custom );
     try {
       _link_re = new Regex( """\[[^]]*\](\(([^\)]+)\)|\[([^]]+)\])""" );
       _ref_re  = new Regex( """^\[(.*?)\]:\s+(.*)$""" );
@@ -44,8 +44,8 @@ public class MarkdownReferences : TextFunction {
     return( _( "Generate References" ) );
   }
 
-  public override TextFunction copy() {
-    return( new MarkdownReferences() );
+  public override TextFunction copy( bool custom ) {
+    return( new MarkdownReferences( custom ) );
   }
 
   public override void launch( Editor editor ) {

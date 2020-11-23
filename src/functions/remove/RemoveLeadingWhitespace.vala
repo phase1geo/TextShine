@@ -23,16 +23,16 @@ using Gee;
 
 public class RemoveLeadingWhitespace : TextFunction {
 
-  public RemoveLeadingWhitespace() {
-    base( "remove-leading-whitespace" );
+  public RemoveLeadingWhitespace( bool custom = false ) {
+    base( "remove-leading-whitespace", custom );
   }
 
   protected override string get_label0() {
     return( _( "Remove Leading Whitespace" ) );
   }
 
-  public override TextFunction copy() {
-    return( new RemoveLeadingWhitespace() );
+  public override TextFunction copy( bool custom ) {
+    return( new RemoveLeadingWhitespace( custom ) );
   }
 
   /* Perform the transformation */

@@ -82,6 +82,7 @@ public class TextFunction {
   protected const string right_german_squote = "\u2018";
 
   private string _name;
+  private bool   _custom = false;
 
   public string name {
     get {
@@ -98,13 +99,20 @@ public class TextFunction {
     }
   }
   public FunctionDirection direction { get; set; default = FunctionDirection.NONE; }
+  public bool custom {
+    get {
+      return( _custom );
+    }
+  }
 
   public signal void update_button_label();
   public signal void settings_changed();
+  public signal void custom_changed();
 
   /* Constructor */
-  public TextFunction( string name, FunctionDirection dir = FunctionDirection.NONE ) {
+  public TextFunction( string name, bool custom, FunctionDirection dir = FunctionDirection.NONE ) {
     _name     = name;
+    _custom   = custom;
     direction = dir;
   }
 
@@ -119,13 +127,13 @@ public class TextFunction {
   }
 
   /* Creates a copy of this function */
-  public virtual TextFunction copy() {
+  public virtual TextFunction copy( bool custom ) {
     assert( false );
-    return( new TextFunction( _name, direction ) );
+    return( new TextFunction( _name, custom, direction ) );
   }
 
   /* Executes this text function using the editor */
-  protected void run( Editor editor, UndoItem undo_item ) {
+  public virtual void run( Editor editor, UndoItem undo_item ) {
     var ranges = new Array<Editor.Position>();
     editor.get_ranges( ranges );
     for( int i=((int)ranges.length - 1); i>=0; i-- ) {
@@ -155,11 +163,6 @@ public class TextFunction {
   /* Transforms the given text */
   protected virtual string transform_text( string original, int cursor_pos ) {
     return( original );
-  }
-
-  /* Returns the text change from this function */
-  public virtual TextChange get_change() {
-    return( new TextChange( this ) );
   }
 
   /*
@@ -248,6 +251,10 @@ public class TextFunction {
 
   }
 
+  /* Returns the widget as a Box container to add to the UI */
+  public virtual Box? get_widget() {
+    return( null );
+  }
 
   /* Returns true if settings are available */
   public virtual bool settings_available() {
@@ -270,7 +277,11 @@ public class TextFunction {
     sb.value  = init_value;
     sb.value_changed.connect(() => {
       callback( (int)sb.value );
-      settings_changed();
+      if( custom ) {
+        custom_changed();
+      } else {
+        settings_changed();
+      }
     });
 
     grid.attach( lbl, 0, row );
@@ -291,7 +302,11 @@ public class TextFunction {
     });
     entry.focus_out_event.connect((e) => {
       callback( entry.text );
-      settings_changed();
+      if( custom ) {
+        custom_changed();
+      } else {
+        settings_changed();
+      }
       return( false );
     });
 
@@ -311,7 +326,11 @@ public class TextFunction {
     sw.active = init_value;
     sw.state_set.connect(() => {
       callback( sw.active );
-      settings_changed();
+      if( custom ) {
+        custom_changed();
+      } else {
+        settings_changed();
+      }
       return( false );
     });
 

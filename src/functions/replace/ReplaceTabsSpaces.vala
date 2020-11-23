@@ -26,8 +26,8 @@ public class ReplaceTabsSpaces : TextFunction {
   private int _spaces = 1;
 
   /* Constructor */
-  public ReplaceTabsSpaces() {
-    base( "replace-tabs-spaces", FunctionDirection.LEFT_TO_RIGHT );
+  public ReplaceTabsSpaces( bool custom = false ) {
+    base( "replace-tabs-spaces", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
   protected override string get_label0() {
@@ -46,8 +46,8 @@ public class ReplaceTabsSpaces : TextFunction {
     }
   }
 
-  public override TextFunction copy() {
-    var fn = new ReplaceTabsSpaces();
+  public override TextFunction copy( bool custom ) {
+    var fn = new ReplaceTabsSpaces( custom );
     fn.direction = direction;
     fn._spaces   = _spaces;
     return( fn );

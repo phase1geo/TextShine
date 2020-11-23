@@ -24,16 +24,16 @@ using Gtk;
 public class InvertSelected : TextFunction {
 
   /* Constructor */
-  public InvertSelected() {
-    base( "invert-selected" );
+  public InvertSelected( bool custom = false ) {
+    base( "invert-selected", custom );
   }
 
   protected override string get_label0() {
     return( _( "Invert Matched Text" ) );
   }
 
-  public override TextFunction copy() {
-    return( new InvertSelected() );
+  public override TextFunction copy( bool custom ) {
+    return( new InvertSelected( custom ) );
   }
 
   /* Returns true if there is matched text within the editor */

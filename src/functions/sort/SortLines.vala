@@ -22,8 +22,8 @@
 public class SortLines : TextFunction {
 
   /* Constructor */
-  public SortLines() {
-    base( "sort-lines", FunctionDirection.TOP_DOWN );
+  public SortLines( bool custom = false ) {
+    base( "sort-lines", custom, FunctionDirection.TOP_DOWN );
   }
 
   protected override string get_label0() {
@@ -34,8 +34,8 @@ public class SortLines : TextFunction {
     return( _( "Sort Lines Reversed" ) );
   }
 
-  public override TextFunction copy() {
-    var fn = new SortLines();
+  public override TextFunction copy( bool custom ) {
+    var fn = new SortLines( custom );
     fn.direction = direction;
     return( fn );
   }

@@ -21,16 +21,16 @@
 
 public class RemoveBlankLines : TextFunction {
 
-  public RemoveBlankLines() {
-    base( "remove-blank-lines" );
+  public RemoveBlankLines( bool custom = false ) {
+    base( "remove-blank-lines", custom );
   }
 
   protected override string get_label0() {
     return( _( "Remove Blank Lines" ) );
   }
 
-  public override TextFunction copy() {
-    return( new RemoveBlankLines() );
+  public override TextFunction copy( bool custom ) {
+    return( new RemoveBlankLines( custom ) );
   }
 
   /* Perform the transformation */

@@ -25,22 +25,19 @@ public class RegExpr : TextFunction {
 
   private MainWindow  _win;
   private Regex       _re;
-  private SearchEntry _pattern;
-  private Entry       _replace;
-  private Button      _find_btn;
-  private Button      _replace_btn;
   private Editor      _editor;
   private bool        _tags_exist = false;
   private UndoItem    _undo_item;
+  private string      _find_text = "";
+  private string      _replace_text = "";
 
   /* Constructor */
-  public RegExpr( MainWindow win ) {
+  public RegExpr( MainWindow win, bool custom = false ) {
 
-    base( "regexpr" );
+    base( "regexpr", custom );
 
     _re  = null;
     _win = win;
-    _win.add_widget( "reg-expr", create_widget() );
 
   }
 
@@ -48,65 +45,83 @@ public class RegExpr : TextFunction {
     return( _( "Regular Expression" ) );
   }
 
-  public override TextFunction copy() {
-    return( new RegExpr( _win ) );
+  public override TextFunction copy( bool custom ) {
+    return( new RegExpr( _win, custom ) );
   }
 
   /* Creates the search UI */
   private Box create_widget() {
 
-    _pattern = new SearchEntry();
-    _pattern.placeholder_text = _( "Regular Expression" );
-    _pattern.search_changed.connect( do_search );
-    _pattern.activate.connect( do_search );
-    _pattern.populate_popup.connect( populate_pattern_popup );
-
-    _replace = new Entry();
-    _replace.placeholder_text = _( "Replace With" );
-    _replace.changed.connect( replace_changed );
-    _replace.activate.connect(() => {
-      _replace_btn.clicked();
+    var pattern = new SearchEntry();
+    pattern.placeholder_text = _( "Regular Expression" );
+    pattern.populate_popup.connect((menu) => {
+      populate_pattern_popup( menu, pattern );
     });
-    _replace.populate_popup.connect( populate_replace_popup );
 
-    var ebox = new Box( Orientation.VERTICAL, 0 );
-    ebox.pack_start( _pattern, false, true, 5 );
-    ebox.pack_start( _replace, false, true, 5 );
+    var replace = new Entry();
+    replace.placeholder_text = _( "Replace With" );
+    replace.populate_popup.connect((menu) => {
+      populate_replace_popup( menu, replace );
+    });
 
-    _find_btn = new Button.with_label( _( "End Search" ) );
-    _find_btn.set_sensitive( false );
-    _find_btn.clicked.connect( end_search );
+    if( custom ) {
 
-    _replace_btn = new Button.with_label( _( "Replace" ) );
-    _replace_btn.set_sensitive( false );
-    _replace_btn.clicked.connect( do_replace );
+      pattern.text = _find_text;
+      pattern.changed.connect(() => {
+        _find_text = pattern.text;
+        custom_changed();
+      });
 
-    var bbox = new Box( Orientation.VERTICAL, 0 );
-    bbox.pack_start( _find_btn,    false, true, 5 );
-    bbox.pack_start( _replace_btn, false, true, 5 );
+      replace.text = _replace_text;
+      replace.changed.connect(() => {
+        _replace_text = replace.text;
+        custom_changed();
+      });
 
-    var box = new Box( Orientation.HORIZONTAL, 5 );
-    box.pack_start( ebox, true,  true,  0 );
-    box.pack_start( bbox, false, false, 0 );
+    } else {
+
+      pattern.search_changed.connect(() => {
+        _find_text = pattern.text;
+        _undo_item = new UndoItem( label );
+        do_search( _undo_item );
+      });
+      pattern.activate.connect( end_search );
+      pattern.grab_focus();
+
+      replace.activate.connect(() => {
+        _replace_text = replace.text;
+        do_replace( _undo_item );
+      });
+
+    }
+
+    var box = new Box( Orientation.VERTICAL, 0 );
+    box.pack_start( pattern, false, true, 5 );
+    box.pack_start( replace, false, true, 5 );
 
     return( box );
 
   }
 
-  private void populate_pattern_popup( Gtk.Menu menu ) {
+  public override Box? get_widget() {
+    return( create_widget() );
+  }
+
+  private void populate_pattern_popup( Gtk.Menu menu, Entry entry ) {
     menu.add( new SeparatorMenuItem() );
-    add_character_patterns( menu );
-    add_iteration_patterns( menu );
-    add_location_patterns( menu );
-    add_advanced_patterns( menu );
+    add_character_patterns( menu, entry );
+    add_iteration_patterns( menu, entry );
+    add_location_patterns( menu, entry );
+    add_advanced_patterns( menu, entry );
     menu.show_all();
   }
 
-  private void populate_replace_popup( Gtk.Menu menu ) {
+  private void populate_replace_popup( Gtk.Menu menu, Entry entry ) {
     if( _tags_exist ) {
       menu.add( new SeparatorMenuItem() );
-      add_case_patterns( menu );
-      add_position_patterns( menu );
+      add_case_patterns( menu, entry );
+      add_position_patterns( menu, entry );
+      Utils.populate_insert_popup( menu, entry );
       menu.show_all();
     }
   }
@@ -118,96 +133,94 @@ public class RegExpr : TextFunction {
     menu.add( item );
   }
 
-  private void add_pattern( Gtk.Menu mnu, string lbl, string pattern ) {
+  private void add_pattern( Gtk.Menu mnu, Entry entry, string lbl, string pattern ) {
     var label = (pattern.length < 5) ? (lbl + " - <b>" + pattern + "</b>") : lbl;
     var item = new Gtk.MenuItem.with_label( label );
     (item.get_child() as Label).use_markup = true;
     item.activate.connect(() => {
-      _pattern.insert_at_cursor( pattern );
+      entry.insert_at_cursor( pattern );
     });
     mnu.add( item );
   }
 
-  private void add_character_patterns( Gtk.Menu menu ) {
+  private void add_character_patterns( Gtk.Menu menu, Entry entry ) {
     Gtk.Menu submenu;
     add_submenu( menu, _( "Character Patterns" ), out submenu );
-    add_pattern( submenu, _( "Digit" ),          """\d""" );
-    add_pattern( submenu, _( "Non-Digit" ),      """\D""" );
-    add_pattern( submenu, _( "New-line" ),       """\n""" );
-    add_pattern( submenu, _( "Non-New-line" ),   """\N""" );
-    add_pattern( submenu, _( "Tab" ),            """\t""" );
-    add_pattern( submenu, _( "Page Break" ),     """\f""" );
-    add_pattern( submenu, _( "Whitespace" ),     """\s""" );
-    add_pattern( submenu, _( "Non-Whitespace" ), """\S""" );
-    add_pattern( submenu, _( "Word" ),           """\w""" );
-    add_pattern( submenu, _( "Non-Word" ),       """\W""" );
-    add_pattern( submenu, _( "Any character" ),  "." );
+    add_pattern( submenu, entry, _( "Digit" ),          """\d""" );
+    add_pattern( submenu, entry, _( "Non-Digit" ),      """\D""" );
+    add_pattern( submenu, entry, _( "New-line" ),       """\n""" );
+    add_pattern( submenu, entry, _( "Non-New-line" ),   """\N""" );
+    add_pattern( submenu, entry, _( "Tab" ),            """\t""" );
+    add_pattern( submenu, entry, _( "Page Break" ),     """\f""" );
+    add_pattern( submenu, entry, _( "Whitespace" ),     """\s""" );
+    add_pattern( submenu, entry, _( "Non-Whitespace" ), """\S""" );
+    add_pattern( submenu, entry, _( "Word" ),           """\w""" );
+    add_pattern( submenu, entry, _( "Non-Word" ),       """\W""" );
+    add_pattern( submenu, entry, _( "Any character" ),  "." );
   }
 
-  private void add_location_patterns( Gtk.Menu menu ) {
+  private void add_location_patterns( Gtk.Menu menu, Entry entry ) {
     Gtk.Menu submenu;
     add_submenu( menu, _( "Location Patterns" ), out submenu );
-    add_pattern( submenu, _( "Word Boundary" ),     """\b""" );
-    add_pattern( submenu, _( "Non-Word Boundary" ), """\B""" );
-    add_pattern( submenu, _( "Start Of Line" ),     "^" );
-    add_pattern( submenu, _( "End Of Line" ),       "$" );
+    add_pattern( submenu, entry, _( "Word Boundary" ),     """\b""" );
+    add_pattern( submenu, entry, _( "Non-Word Boundary" ), """\B""" );
+    add_pattern( submenu, entry, _( "Start Of Line" ),     "^" );
+    add_pattern( submenu, entry, _( "End Of Line" ),       "$" );
   }
 
-  private void add_iteration_patterns( Gtk.Menu menu ) {
+  private void add_iteration_patterns( Gtk.Menu menu, Entry entry ) {
     Gtk.Menu submenu;
     add_submenu( menu, _( "Iteration Patterns" ), out submenu );
-    add_pattern( submenu, _( "0 or 1 Times" ),    "?" );
-    add_pattern( submenu, _( "0 or More Times" ), "*" );
-    add_pattern( submenu, _( "1 or More Times" ), "+" );
+    add_pattern( submenu, entry, _( "0 or 1 Times" ),    "?" );
+    add_pattern( submenu, entry, _( "0 or More Times" ), "*" );
+    add_pattern( submenu, entry, _( "1 or More Times" ), "+" );
   }
 
-  private void add_advanced_patterns( Gtk.Menu menu ) {
+  private void add_advanced_patterns( Gtk.Menu menu, Entry entry ) {
     Gtk.Menu submenu;
     add_submenu( menu, _( "Advanced Patterns" ), out submenu );
-    add_pattern( submenu, _( "Word" ),         """\w+""" );
-    add_pattern( submenu, _( "Number" ),       """\d+""" );
-    add_pattern( submenu, _( "URL" ),          """(https?://(?:www\.|(?!www))[^\s\.]+\.\S{2,}|www\.\S+\.\S{2,})""" );
-    add_pattern( submenu, _( "E-mail" ),       """([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})""" );
-    add_pattern( submenu, _( "Date" ),         """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
-    add_pattern( submenu, _( "Phone Number" ), """\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}""" );
-    add_pattern( submenu, _( "HTML Tag" ),     """<("[^"]*"|'[^']*'|[^'">])*>""" );
+    add_pattern( submenu, entry, _( "Word" ),         """\w+""" );
+    add_pattern( submenu, entry, _( "Number" ),       """\d+""" );
+    add_pattern( submenu, entry, _( "URL" ),          """(https?://(?:www\.|(?!www))[^\s\.]+\.\S{2,}|www\.\S+\.\S{2,})""" );
+    add_pattern( submenu, entry, _( "E-mail" ),       """([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})""" );
+    add_pattern( submenu, entry, _( "Date" ),         """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
+    add_pattern( submenu, entry, _( "Phone Number" ), """\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}""" );
+    add_pattern( submenu, entry, _( "HTML Tag" ),     """<("[^"]*"|'[^']*'|[^'">])*>""" );
   }
 
-  private void add_replace( Gtk.Menu mnu, string lbl, string pattern ) {
+  private void add_replace( Gtk.Menu mnu, Entry entry, string lbl, string pattern ) {
     var label = (pattern.length < 5) ? (lbl + " - <b>" + pattern + "</b>") : lbl;
     var item = new Gtk.MenuItem.with_label( label );
     (item.get_child() as Label).use_markup = true;
     item.activate.connect(() => {
-      _replace.insert_at_cursor( pattern );
+      entry.insert_at_cursor( pattern );
     });
     mnu.add( item );
   }
 
-  private void add_case_patterns( Gtk.Menu menu ) {
+  private void add_case_patterns( Gtk.Menu menu, Entry entry ) {
     Gtk.Menu submenu;
     add_submenu( menu, _( "Case Patterns" ), out submenu );
-    add_replace( submenu, _( "Uppercase Next Character" ), """\u""" );
-    add_replace( submenu, _( "Lowercase Next Character" ), """\l""" );
-    add_replace( submenu, _( "Start Uppercase Change" ),   """\U""" );
-    add_replace( submenu, _( "Start Lowercase Change" ),   """\L""" );
-    add_replace( submenu, _( "End Case Change" ),          """\E""" );
+    add_replace( submenu, entry, _( "Uppercase Next Character" ), """\u""" );
+    add_replace( submenu, entry, _( "Lowercase Next Character" ), """\l""" );
+    add_replace( submenu, entry, _( "Start Uppercase Change" ),   """\U""" );
+    add_replace( submenu, entry, _( "Start Lowercase Change" ),   """\L""" );
+    add_replace( submenu, entry, _( "End Case Change" ),          """\E""" );
   }
 
-  private void add_position_patterns( Gtk.Menu menu ) {
+  private void add_position_patterns( Gtk.Menu menu, Entry entry ) {
     var captured = (_re.get_capture_count() > 9) ? 9 : _re.get_capture_count();
     if( captured == 0 ) return;
     Gtk.Menu submenu;
     add_submenu( menu, _( "Positional Patterns" ), out submenu );
-    add_replace( submenu, _( "Matched Pattern" ), """\0""" );
+    add_replace( submenu, entry, _( "Matched Pattern" ), """\0""" );
     for( int i=0; i<captured; i++ ) {
-      add_replace( submenu, _( "Subpattern %d" ).printf( i + 1 ), ( """\%d""" ).printf( i + 1 ) );
+      add_replace( submenu, entry, _( "Subpattern %d" ).printf( i + 1 ), ( """\%d""" ).printf( i + 1 ) );
     }
   }
 
   /* Perform search and replacement */
-  private void do_search() {
-
-    _undo_item = new UndoItem( label );
+  private void do_search( UndoItem? undo_item ) {
 
     /* Get the selected ranges and clear them */
     var ranges = new Array<Editor.Position>();
@@ -218,15 +231,14 @@ public class RegExpr : TextFunction {
     _tags_exist = false;
 
     /* If the pattern text is empty, just return now */
-    if( _pattern.text == "" ) {
-      update_replace_btn_state();
+    if( _find_text == "" ) {
       return;
     }
 
     MatchInfo match;
 
     try {
-      _re = new Regex( _pattern.text );
+      _re = new Regex( _find_text );
     } catch( RegexError e ) {
       return;
     }
@@ -250,8 +262,6 @@ public class RegExpr : TextFunction {
 
     }
 
-    update_replace_btn_state();
-
   }
 
   /* Finalizes the search operation (TBD) */
@@ -264,23 +274,21 @@ public class RegExpr : TextFunction {
     _win.close_error();
 
     /* Hide the widget */
-    _win.show_widget( "" );
+    _win.remove_widget();
 
   }
 
   /* Replace all matches with the replacement text */
-  private void do_replace() {
+  private void do_replace( UndoItem undo_item ) {
 
     var ranges       = new Array<Editor.Position>();
-    var replace_text = _replace.text;
+    var replace_text = Utils.replace_date( _replace_text );
 
     _editor.get_ranges( ranges );
-    // _editor.remove_selected();
 
     try {
 
-      var re        = new Regex( _pattern.text );
-      var undo_item = new UndoItem( label );
+      var re = new Regex( _find_text );
 
       for( int i=((int)ranges.length - 1); i>=0; i-- ) {
         var range    = ranges.index( i );
@@ -288,8 +296,6 @@ public class RegExpr : TextFunction {
         var new_text = re.replace( text, text.length, 0, replace_text );
         _editor.replace_text( range.start, range.end, new_text, undo_item );
       }
-
-      _editor.undo_buffer.add_item( undo_item );
 
     } catch( RegexError e ) {
       _win.show_error( e.message );
@@ -300,26 +306,48 @@ public class RegExpr : TextFunction {
     _win.close_error();
 
     /* Hide the widget */
-    _win.show_widget( "" );
+    _win.remove_widget();
 
+  }
+
+  public override void run( Editor editor, UndoItem undo_item ) {
+    _editor = editor;
+    do_search( undo_item );
+    if( _replace_text != "" ) {
+      do_replace( undo_item );
+    }
   }
 
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
     _editor = editor;
-    _pattern.text = "";
-    _replace.text = "";
-    _win.show_widget( "reg-expr" );
-    _pattern.grab_focus();
+    if( custom ) {
+      do_search( null );
+      if( _replace_text != "" ) {
+        do_replace( null );
+      }
+    } else {
+      _win.add_widget( create_widget() );
+    }
   }
 
-  private void update_replace_btn_state() {
-    _replace_btn.set_sensitive( _tags_exist && (_replace.text != "") );
+  public override Xml.Node* save() {
+    Xml.Node* node = base.save();
+    node->set_prop( "pattern", _find_text );
+    node->set_prop( "replace", _replace_text );
+    return( node );
   }
 
-  /* Called whenever the replace entry contents change */
-  private void replace_changed() {
-    update_replace_btn_state();
+  public override void load( Xml.Node* node, TextFunctions functions ) {
+    base.load( node, functions );
+    string? p = node->get_prop( "pattern" );
+    if( p != null ) {
+      _find_text = p;
+    }
+    string? r = node->get_prop( "replace" );
+    if( r != null ) {
+      _replace_text = r;
+    }
   }
 
 }

@@ -24,16 +24,16 @@ using Gtk;
 public class ClearSelected : TextFunction {
 
   /* Constructor */
-  public ClearSelected() {
-    base( "clear-selected" );
+  public ClearSelected( bool custom = false ) {
+    base( "clear-selected", custom );
   }
 
   protected override string get_label0() {
     return( _( "Clear Match Highlight" ) );
   }
 
-  public override TextFunction copy() {
-    return( new ClearSelected() );
+  public override TextFunction copy( bool custom ) {
+    return( new ClearSelected( custom ) );
   }
 
   /* Returns true if there is matched text within the editor */
