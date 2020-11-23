@@ -313,8 +313,6 @@ public class SidebarCustom : SidebarBox {
     var bpoint = _custom.breakpoint == index;
     var mnu    = new Gtk.Menu();
 
-    stdout.printf( "breakpoint: %d, index: %d, bpoint: %s\n", _custom.breakpoint, index, bpoint.to_string() );
-
     var add_above = new Gtk.MenuItem.with_label( _( "Add Action Above" ) );
     add_above.activate.connect(() => {
       insert_new_action( box, 0 );
@@ -639,20 +637,27 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Saves the current custom function */
-  private void save_custom() {
-
-    var edit  = _delete_reveal.reveal_child;
-    var empty = _custom.functions.length == 0;
+  private void cleanup() {
 
     /* If we tested the actions, make sure that we revert our changes */
     if( _test_undo != null ) {
       _test_undo.undo( editor );
     }
 
-    _custom.label = _name.text;
     _custom.breakpoint = -1;
     _break_reveal = null;
+
+  }
+
+  /* Saves the current custom function */
+  private void save_custom() {
+
+    var edit  = _delete_reveal.reveal_child;
+    var empty = _custom.functions.length == 0;
+
+    cleanup();
+
+    _custom.label = _name.text;
 
     if( edit ) {
       win.functions.save_custom();
@@ -669,6 +674,8 @@ public class SidebarCustom : SidebarBox {
 
   /* Deletes the current custom function */
   private void delete_custom() {
+
+    cleanup();
 
     win.functions.remove_function( _custom );
     win.functions.save_custom();
