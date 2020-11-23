@@ -26,12 +26,17 @@ using Gee;
 public class Category {
   private string   _name;
   private Expander _exp;
-  public Category( string name, Expander exp ) {
+  private Revealer _rev;
+  public Category( string name, Expander exp, Revealer rev ) {
     _name = name;
     _exp  = exp;
+    _rev  = rev;
   }
   public void show( bool value ) {
     _exp.expanded = value ? TextShine.settings.get_boolean( _name ) : false;
+  }
+  public void hide() {
+    _rev.reveal_child = _exp.expanded;
   }
 }
 
@@ -73,7 +78,7 @@ public class SidebarFunctions : SidebarBox {
     var functions = win.functions;
     for( int i=0; i<functions.categories.length; i++ ) {
       var category = functions.categories.index( i );
-      cbox.pack_start( create_category( category, functions.get_category_label( category ) ), false, false, 5 );
+      cbox.pack_start( create_category( category, functions.get_category_label( category ) ), false, false, 0 );
     }
 
     pack_start( sbox, false, true, 10 );
@@ -97,15 +102,20 @@ public class SidebarFunctions : SidebarBox {
       _functions.index( i ).reveal( value );
     }
 
+    for( int i=0; i<_categories.length; i++ ) {
+      _categories.index( i ).hide();
+    }
+
   }
 
   /* Creates category returning expander and item box */
-  private Expander create_category( string name, string label ) {
+  private Revealer create_category( string name, string label ) {
 
     var setting = "category-" + name + "-expanded";
 
     /* Create expander */
     var exp = new Expander( "  " + Utils.make_title( label ) );
+    exp.margin_top = 5;
     exp.use_markup = true;
     exp.expanded   = TextShine.settings.get_boolean( setting );
     exp.activate.connect(() => {
@@ -117,7 +127,11 @@ public class SidebarFunctions : SidebarBox {
 
     exp.add( ibox );
 
-    _categories.append_val( new Category( setting, exp ) );
+    var rev = new Revealer();
+    rev.add( exp );
+    rev.reveal_child = true;
+
+    _categories.append_val( new Category( setting, exp, rev ) );
 
     switch( name ) {
       case "favorites" :
@@ -135,7 +149,7 @@ public class SidebarFunctions : SidebarBox {
       add_function( name, ibox, exp, functions.index( i ) );
     }
 
-    return( exp );
+    return( rev );
 
   }
 
