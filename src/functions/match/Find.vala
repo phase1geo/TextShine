@@ -164,6 +164,11 @@ public class Find : TextFunction {
     _editor.grab_focus();
   }
 
+  public override void run( Editor editor, UndoItem undo_item ) {
+    _editor = editor;
+    do_find( undo_item );
+  }
+
   /* Called when the action button is clicked.  Displays the UI. */
   public override void launch( Editor editor ) {
     _editor = editor;

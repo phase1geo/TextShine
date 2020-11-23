@@ -39,6 +39,7 @@ public class SidebarCustom : SidebarBox {
   private Box?             _drag_box;
   private Revealer         _play_reveal;
   private UndoItem?        _test_undo = null;
+  private Revealer?        _break_reveal = null;
 
   static TargetEntry[] entries = {
     { "TEXTSHINE_CUSTOM_ROW", TargetFlags.SAME_APP, 0 }
@@ -201,35 +202,27 @@ public class SidebarCustom : SidebarBox {
     add_direction_button( grid, label, function );
     add_settings_button(  grid, function );
 
-    var add = new Button.from_icon_name( "list-add-symbolic", IconSize.SMALL_TOOLBAR );
-    add.border_width = 2;
-    add.set_tooltip_text( _( "Click to add new action below\nShift-Click to add new action above" ) );
-    add.get_style_context().add_class( "circular" );
-    add.button_release_event.connect((e) => {
-      var shift = (bool)(e.state & ModifierType.SHIFT_MASK);
-      insert_new_action( box, (shift ? 0 : 1) );
-      return( false );
-    });
+    var breakpoint = new Image.from_icon_name( "media-playback-stop-symbolic", IconSize.SMALL_TOOLBAR );
+    breakpoint.tooltip_text = _( "Test run stops after this action" );
 
-    var del = new Button.from_icon_name( "list-remove-symbolic", IconSize.SMALL_TOOLBAR );
-    del.border_width = 2;
-    del.set_tooltip_text( _( "Click to delete action" ) );
-    del.get_style_context().add_class( "circular" );
-    del.clicked.connect(() => {
-      delete_function( box );
+    var break_reveal = new Revealer();
+    break_reveal.add( breakpoint );
+    break_reveal.transition_type = RevealerTransitionType.NONE;
+
+    var more = new Button.from_icon_name( "view-more-symbolic", IconSize.SMALL_TOOLBAR );
+    more.relief = ReliefStyle.NONE;
+    more.clicked.connect(() => {
+      show_action_menu( box, more, break_reveal );
     });
 
     var lbox = new Box( Orientation.HORIZONTAL, 0 );
     lbox.pack_start( label, false, true,  5 );
     lbox.pack_end(   grid,  false, false, 5 );
 
-    var bbox = new Box( Orientation.HORIZONTAL, 2 );
-    bbox.pack_start( del, false, false, 0 );
-    bbox.pack_start( add, false, false, 0 );
-
     var lbbox = new Box( Orientation.HORIZONTAL, 0 );
     lbbox.pack_start( lbox, true,  true,  2 );
-    lbbox.pack_end(   bbox, false, false, 2 );
+    lbbox.pack_end(   more, false, false, 2 );
+    lbbox.pack_end(   break_reveal, false, false, 2 );
 
     var ebox = new EventBox();
 
@@ -313,6 +306,47 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  /* Adds the action menu */
+  private void show_action_menu( Box box, Button btn, Revealer break_reveal ) {
+
+    var index  = get_action_index( box );
+    var bpoint = _custom.breakpoint == index;
+    var mnu    = new Gtk.Menu();
+
+    stdout.printf( "breakpoint: %d, index: %d, bpoint: %s\n", _custom.breakpoint, index, bpoint.to_string() );
+
+    var add_above = new Gtk.MenuItem.with_label( _( "Add Action Above" ) );
+    add_above.activate.connect(() => {
+      insert_new_action( box, 0 );
+    });
+
+    var add_below = new Gtk.MenuItem.with_label( _( "Add Action Below" ) );
+    add_below.activate.connect(() => {
+      insert_new_action( box, 1 );
+    });
+
+    var del = new Gtk.MenuItem.with_label( _( "Remove Action" ) );
+    del.activate.connect(() => {
+      delete_function( box );
+    });
+
+    var breakpoint = new Gtk.MenuItem.with_label( bpoint ? _( "Remove Breakpoint" ) : _( "Set Breakpoint" ) );
+    breakpoint.activate.connect(() => {
+      handle_breakpoint( box, breakpoint, break_reveal );
+    });
+
+    mnu.add( add_above );
+    mnu.add( add_below );
+    mnu.add( new Gtk.SeparatorMenuItem() );
+    mnu.add( del );
+    mnu.add( new Gtk.SeparatorMenuItem() );
+    mnu.add( breakpoint );
+
+    mnu.show_all();
+    mnu.popup_at_widget( btn, Gravity.CENTER, Gravity.NORTH_EAST );
+
+  }
+
   /* Returns the index of the given action box */
   private int get_action_index( Box box ) {
 
@@ -385,6 +419,31 @@ public class SidebarCustom : SidebarBox {
       _add_revealer.reveal_child = true;
     }
 
+  }
+
+  private void handle_breakpoint( Box box, Gtk.MenuItem menu_item, Revealer break_reveal ) {
+    if( menu_item.label == _( "Set Breakpoint" ) ) {
+      set_breakpoint( box );
+      break_reveal.reveal_child = true;
+      if( _break_reveal != null ) {
+        _break_reveal.reveal_child = false;
+      }
+      _break_reveal = break_reveal;
+    } else {
+      clear_breakpoint();
+      _break_reveal.reveal_child = false;
+      _break_reveal = null;
+    }
+  }
+
+  /* Sets the given box as a breakpoint */
+  private void set_breakpoint( Box box ) {
+    _custom.breakpoint = get_action_index( box );
+  }
+
+  /* Clears the breakpoint */
+  private void clear_breakpoint() {
+    _custom.breakpoint = -1;
   }
 
   //----------------------------------------------------------------------------
@@ -592,6 +651,8 @@ public class SidebarCustom : SidebarBox {
     }
 
     _custom.label = _name.text;
+    _custom.breakpoint = -1;
+    _break_reveal = null;
 
     if( edit ) {
       win.functions.save_custom();

@@ -45,6 +45,14 @@ public class CustomFunction : TextFunction {
       _label = value;
     }
   }
+  public int breakpoint {
+    get {
+      return( _breakpoint );
+    }
+    set {
+      _breakpoint = (value < _functions.length) ? value : -1;
+    }
+  }
 
   /* Constructor */
   public CustomFunction( bool custom = false ) {
@@ -91,7 +99,7 @@ public class CustomFunction : TextFunction {
    Plays the custom function until we have hit the breakpoint.
   */
   public void test( Editor editor, UndoItem undo_item ) {
-    var func_len = (_breakpoint == -1) ? _functions.length : _breakpoint;
+    var func_len = (_breakpoint == -1) ? _functions.length : (_breakpoint + 1);
     for( int i=0; i<func_len; i++ ) {
       _functions.index( i ).run( editor, undo_item );
     }
