@@ -124,7 +124,14 @@ public class Utils {
   */
   public static string replace_date( string value ) {
     var now = new DateTime.now_local();
-    return( now.format( value ) );
+    return( now.format( value.replace( "%1", "%%1" ) ) );
+  }
+
+  /* Replace the given string with the given value */
+  public static string replace_index( string pattern, ref int value ) {
+    var str = pattern.replace( "%1", value.to_string() );
+    value++;
+    return( str );
   }
 
   /*
@@ -177,6 +184,7 @@ public class Utils {
     add_literal_pattern( entry, chars, _( "Insert New-line" ),   "\n" );
     add_literal_pattern( entry, chars, _( "Insert Tab" ),        "\t" );
     add_literal_pattern( entry, chars, _( "Insert Page Break" ), "\f" );
+    add_pattern( entry, chars, _( "Insert Incrementing Decimal" ), "%1" );
     add_pattern( entry, chars, _( "Insert Percent Sign" ), "%%" );
 
     add_pattern( entry, date, _( "Standard Date" ), "%x" );

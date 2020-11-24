@@ -77,8 +77,7 @@ public class TextFunctions {
     add_function( "case", new CaseRandom() );
 
     /* Category - insert */
-    add_function( "insert", new InsertLineStart( win ) );
-    add_function( "insert", new InsertLineEnd( win ) );
+    add_function( "insert", new InsertText( win ) );
     add_function( "insert", new InsertLineNumbers() );
     add_function( "insert", new InsertLoremIpsum() );
     add_function( "insert", new InsertFile( win ) );

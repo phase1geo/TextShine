@@ -97,12 +97,13 @@ public class ReplaceSelected : TextFunction {
 
     var ranges       = new Array<Editor.Position>();
     var replace_text = Utils.replace_date( _replace_text );
+    var int_value    = 1;
 
     editor.get_ranges( ranges );
 
     for( int i=((int)ranges.length - 1); i>=0; i-- ) {
       var range = ranges.index( i );
-      editor.replace_text( range.start, range.end, replace_text, undo_item );
+      editor.replace_text( range.start, range.end, Utils.replace_index( replace_text, ref int_value ), undo_item );
     }
 
     /* Hide the widget */

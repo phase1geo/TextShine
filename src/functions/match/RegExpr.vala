@@ -300,12 +300,13 @@ public class RegExpr : TextFunction {
 
     try {
 
-      var re = new Regex( _find_text );
+      var re        = new Regex( _find_text );
+      var int_value = 1;
 
       for( int i=((int)ranges.length - 1); i>=0; i-- ) {
         var range    = ranges.index( i );
         var text     = editor.get_text( range.start, range.end );
-        var new_text = re.replace( text, text.length, 0, replace_text );
+        var new_text = re.replace( text, text.length, 0, Utils.replace_index( replace_text, ref int_value ) );
         editor.replace_text( range.start, range.end, new_text, undo_item );
       }
 

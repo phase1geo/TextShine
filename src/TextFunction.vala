@@ -62,6 +62,8 @@ public enum FunctionDirection {
 public delegate void SettingRangeChangedFunc( int value );
 public delegate void SettingStringChangedFunc( string value );
 public delegate void SettingBoolChangedFunc( bool value );
+public delegate string SettingMenuButtonLabelFunc( int value );
+public delegate void SettingMenuButtonChangedFunc( int value );
 
 public class TextFunction {
 
@@ -274,7 +276,7 @@ public class TextFunction {
   /* Called whenever a number setting with a range needs to be added */
   protected void add_range_setting( Grid grid, int row, string label, int min_value, int max_value, int step, int init_value, SettingRangeChangedFunc callback ) {
 
-    var lbl = new Label( label );
+    var lbl = new Label( label + ": " );
     lbl.halign = Align.START;
 
     var sb = new SpinButton.with_range( min_value, max_value, step );
@@ -297,7 +299,7 @@ public class TextFunction {
   /* Called whenever a string setting widget needs to be added */
   protected void add_string_setting( Grid grid, int row, string label, string init_value, SettingStringChangedFunc callback ) {
 
-    var lbl = new Label( label );
+    var lbl = new Label( label + ": " );
     lbl.halign = Align.START;
 
     var entry = new Entry();
@@ -323,7 +325,7 @@ public class TextFunction {
   /* Called whenever a boolean setting widget needs to be added */
   protected void add_bool_setting( Grid grid, int row, string label, bool init_value, SettingBoolChangedFunc callback ) {
 
-    var lbl = new Label( label );
+    var lbl = new Label( label + ": " );
     lbl.halign = Align.START;
 
     var sw  = new Switch();
@@ -341,6 +343,34 @@ public class TextFunction {
 
     grid.attach( lbl, 0, row );
     grid.attach( sw,  1, row );
+
+  }
+
+  /* Called whenever a menubutton setting widget needs to be added */
+  protected void add_menubutton_setting( Grid grid, int row, string label, string init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
+
+    var lbl = new Label( label + ": " );
+    lbl.halign = Align.START;
+
+    var mb   = new MenuButton();
+    var menu = new Gtk.Menu();
+    for( int i=0; i<value_len; i++ ) {
+      var item_val = i;
+      var item_lbl = label_func( i );
+      var item     = new Gtk.MenuItem.with_label( item_lbl );
+      item.activate.connect(() => {
+        mb.label = item_lbl;
+        changed_func( item_val );
+      });
+      menu.add( item );
+    }
+    menu.show_all();
+
+    mb.label = init_value;
+    mb.popup = menu;
+
+    grid.attach( lbl, 0, row );
+    grid.attach( mb,  1, row );
 
   }
 
