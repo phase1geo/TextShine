@@ -71,6 +71,11 @@ public class MainWindow : ApplicationWindow {
 
     Object( application: app );
 
+    /* Add the application CSS */
+    var provider = new Gtk.CssProvider ();
+    provider.load_from_resource( "/com/github/phase1geo/textshine/css/style.css" );
+    StyleContext.add_provider_for_screen( Gdk.Screen.get_default(), provider, STYLE_PROVIDER_PRIORITY_APPLICATION );
+
     _custom = new CustomFunction();
 
     var box = new Box( Orientation.HORIZONTAL, 0 );
