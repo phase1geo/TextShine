@@ -20,7 +20,7 @@ In addition to the built-in actions, TextShine allows you to create and test
 custom text conversion workflows. These custom workflows can then be used in the
 same way that built-in actions are used within the application.
 
-## Features
+## Key Features
 
 - Load text from clipboard or from a file.
 - Save text back to clipboard, to the same file or to a new file.
@@ -29,6 +29,8 @@ same way that built-in actions are used within the application.
 - Support for action favoriting.
 - Support for creating and testing custom actions.
 - Quickly search available text actions.
+- Character, word, line and match statistics.
+- Support for font size changes.
 - Categorized text actions which include:
      * Changing case
      * Inserting text, line numbers, lorem ipsum and file contents
