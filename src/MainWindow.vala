@@ -50,7 +50,7 @@ public class MainWindow : ApplicationWindow {
   private Label                    _stats_matches;
 
   private const GLib.ActionEntry[] action_entries = {
-    { "action_clear", do_clear },
+    { "action_new",   do_new },
     { "action_open",  do_open },
     { "action_save",  do_save },
     { "action_quit",  do_quit },
@@ -139,14 +139,14 @@ public class MainWindow : ApplicationWindow {
 
   /* Adds keyboard shortcuts for the menu actions */
   private void add_keyboard_shortcuts( Gtk.Application app ) {
-    app.set_accels_for_action( "win.action_clear",         { "<Control>BackSpace" } );
-    app.set_accels_for_action( "win.action_open",          { "<Control>o" } );
-    app.set_accels_for_action( "win.action_save",          { "<Control>s" } );
-    app.set_accels_for_action( "win.action_quit",          { "<Control>q" } );
-    app.set_accels_for_action( "win.action_paste",         { "<Control>v" } );
-    app.set_accels_for_action( "win.action_copy",          { "<Control>c" } );
-    app.set_accels_for_action( "win.action_undo",          { "<Control>z" } );
-    app.set_accels_for_action( "win.action_redo",          { "<Control><Shift>z" } );
+    app.set_accels_for_action( "win.action_new",   { "<Control>n" } );
+    app.set_accels_for_action( "win.action_open",  { "<Control>o" } );
+    app.set_accels_for_action( "win.action_save",  { "<Control>s" } );
+    app.set_accels_for_action( "win.action_quit",  { "<Control>q" } );
+    app.set_accels_for_action( "win.action_paste", { "<Control>v" } );
+    app.set_accels_for_action( "win.action_copy",  { "<Control>c" } );
+    app.set_accels_for_action( "win.action_undo",  { "<Control>z" } );
+    app.set_accels_for_action( "win.action_redo",  { "<Control><Shift>z" } );
   }
 
   private void action_applied( TextFunction function ) {
@@ -198,9 +198,9 @@ public class MainWindow : ApplicationWindow {
     _header = new HeaderBar();
     _header.set_show_close_button( true );
 
-    _clear_btn = new Button.from_icon_name( "edit-clear", IconSize.LARGE_TOOLBAR );
-    _clear_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Clear Text" ), "<Control>BackSpace" ) );
-    _clear_btn.clicked.connect( do_clear );
+    _clear_btn = new Button.from_icon_name( "document-new", IconSize.LARGE_TOOLBAR );
+    _clear_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "New Workspace" ), "<Control>n" ) );
+    _clear_btn.clicked.connect( do_new );
     _header.pack_start( _clear_btn );
 
     _open_btn = new Button.from_icon_name( "document-open", IconSize.LARGE_TOOLBAR );
@@ -393,7 +393,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Clears the buffer for reuse */
-  private void do_clear() {
+  private void do_new() {
     _current_file = null;
     _editor.clear();
     _custom.clear();
