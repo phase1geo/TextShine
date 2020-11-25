@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2020 Trevor Williams <phase1geo@gmail.com> -->
+<component type="desktop-application">
+  <id>com.github.phase1geo.textshine</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>TextShine</name>
+  <summary>Powerfully transform text</summary>
+  <developer_name>Trevor Williams</developer_name>
+  <provides>
+    <binary>com.github.phase1geo.textshine</binary>
+  </provides>
+  <screenshots>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot.png</image>
+    </screenshot>
+  </screenshots>
+  <description>
+    <p>
+        Easily paste text from the clipboard or load text from a file, modify the text
+        with loads of built-in text actions and user-created custom text workflows, and
+        save the changes to the clipboard or to a file.
+      </p>
+    <p>
+        In addition to the built-in actions, TextShine allows you to create and test
+        custom text conversion workflows. These custom workflows can then be used in the
+        same way that built-in actions are used within the application.
+      </p>
+    <p>
+        Key features include the following:
+      </p>
+    <ul>
+      <li>Load text from clipboard or from a file.</li>
+      <li>Save text back to clipboard, to the same file or to a new file.</li>
+      <li>Unlimited undo/redo of text changes.</li>
+      <li>Apply a text action in a single click.</li>
+      <li>Support for action favoriting.</li>
+      <li>Support for creating and testing custom actions.</li>
+      <li>Quickly search available text actions.</li>
+      <li>Character, word, line and match statistics.</li>
+      <li>Support for font size changes.</li>
+      <li>Categorized text actions which include:</li>
+      <li>Action: Changing case</li>
+      <li>Action: Inserting text, line numbers, lorem ipsum and file contents</li>
+      <li>Action: Removing line numbers, blank lines/spaces and matched text</li>
+      <li>Action: Replacement of text</li>
+      <li>Action: Quotation conversion</li>
+      <li>Action: Line sorting</li>
+      <li>Action: Indentation handling</li>
+      <li>Action: Search and replace (includes regular expression support)</li>
+      <li>Action: Automatic text repair</li>
+      <li>Action: Text conversion</li>
+      <li>Action: Markdown utilities</li>
+    </ul>
+  </description>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+  <url type="homepage">https://github.com/phase1geo/TextShine</url>
+  <url type="bugtracker">https://github.com/phase1geo/TextShine/issues</url>
+  <url type="help">https://github.com/phase1geo/TextShine/wiki</url>
+  <update_contact>phase1geo@gmail.com</update_contact>
+  <custom>
+    <value key="x-appcenter-color-primary">#D48E15</value>
+    <value key="x-appcenter-color-primary-text">#000000</value>
+    <value key="x-appcenter-suggested-price">5</value>
+  </custom>
+  <releases>
+    <release version="1.0.0" date="2020-11-25">
+      <description>
+        <p>Initial release</p>
+      </description>
+    </release>
+  </releases>
+</component>

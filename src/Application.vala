@@ -50,7 +50,7 @@ public class TextShine : Granite.Application {
     default_theme.add_resource_path( "/com/github/phase1geo/textshine" );
 
     /* Create the main window */
-    appwin = new MainWindow();
+    appwin = new MainWindow( this );
 
     /* Handle any changes to the position of the window */
     appwin.configure_event.connect(() => {
@@ -101,6 +101,13 @@ public class TextShine : Granite.Application {
       Process.exit( 0 );
     }
 
+  }
+
+  /* Creates the home directory and returns it */
+  public static string get_home_dir() {
+    var dir = GLib.Path.build_filename( Environment.get_user_data_dir(), "textshine" );
+    DirUtils.create_with_parents( dir, 0775 );
+    return( dir );
   }
 
   /* Main routine which gets everything started */

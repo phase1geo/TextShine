@@ -19,15 +19,32 @@
 * Authored by: Trevor Williams <phase1geo@gmail.com>
 */
 
-using Gtk;
+using Xml;
 
-public class RegExpr {
+public class Unindent : TextFunction {
 
   /* Constructor */
-  public RegExpr() {
+  public Unindent( bool custom = false ) {
+    base( "unindent", false );
+  }
 
-    // FOOBAR
+  protected override string get_label0() {
+    return( _( "Unindent One Level" ) );
+  }
 
+  public override TextFunction copy( bool custom ) {
+    return( new Unindent( custom ) );
+  }
+
+  /* Perform the transformation */
+  public override string transform_text( string original, int cursor_pos ) {
+    var lines = original.split( "\n" );
+    for( int i=0; i<lines.length; i++ ) {
+      if( lines[i].get_char( 0 ) == '\t' ) {
+        lines[i] = lines[i].slice( lines[i].index_of_nth_char( 1 ), lines[i].length );
+      }
+    }
+    return( string.joinv( "\n", lines ) );
   }
 
 }

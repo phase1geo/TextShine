@@ -31,5 +31,75 @@
       <summary>Default font size</summary>
       <description>Default font size to use for the editor.</description>
     </key>
+    <key name="category-custom-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the custom category</summary>
+      <description>Determines the expanded state of the custom category.</description>
+    </key>
+    <key name="category-favorites-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the favorites category</summary>
+      <description>Determines the expanded state of the favorites category.</description>
+    </key>
+    <key name="category-case-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the case category</summary>
+      <description>Determines the expanded state of the case category.</description>
+    </key>
+    <key name="category-insert-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the insert category</summary>
+      <description>Determines the expanded state of the insert category.</description>
+    </key>
+    <key name="category-remove-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the remove category</summary>
+      <description>Determines the expanded state of the remove category.</description>
+    </key>
+    <key name="category-replace-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the replace category</summary>
+      <description>Determines the expanded state of the replace category.</description>
+    </key>
+    <key name="category-quotes-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the quotes category</summary>
+      <description>Determines the expanded state of the quotes category.</description>
+    </key>
+    <key name="category-search-replace-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the search/replace category</summary>
+      <description>Determines the expanded state of the search/replace category.</description>
+    </key>
+    <key name="category-sort-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the sort category</summary>
+      <description>Determines the expanded state of the sort category.</description>
+    </key>
+    <key name="category-indent-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the indentation category</summary>
+      <description>Determines the expanded state of the indentation category.</description>
+    </key>
+    <key name="category-repair-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the repair category</summary>
+      <description>Determines the expanded state of the repair category.</description>
+    </key>
+    <key name="category-convert-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the convert category</summary>
+      <description>Determines the expanded state of the convert category.</description>
+    </key>
+    <key name="category-markdown-expanded" type="b">
+      <default>true</default>
+      <summary>Determines the expanded state of the markdown category</summary>
+      <description>Determines the expanded state of the markdown category.</description>
+    </key>
+    <key name="clear-editor-on-startup" type="b">
+      <default>false</default>
+      <summary>Specifies if the editor should be cleared on startup or display the last content.</summary>
+      <description>Specifies if the editor should be cleared on startup or display the last content.</description>
+    </key>
   </schema>
 </schemalist>
