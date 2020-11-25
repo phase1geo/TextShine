@@ -52,7 +52,8 @@ public class SidebarCustom : SidebarBox {
 
     _functions = new Array<Functions>();
 
-    var nlbl = new Label( _( "Name:" ) );
+    var nlbl = new Label( Utils.make_title( _( "Name:" ) ) );
+    nlbl.use_markup = true;
 
     _name = new Entry();
 
@@ -102,6 +103,7 @@ public class SidebarCustom : SidebarBox {
     del.clicked.connect( delete_custom );
 
     var done = new Button.with_label( _( "Done" ) );
+    done.get_style_context().add_class( "suggested-action" );
     done.clicked.connect( save_custom );
 
     _delete_reveal = new Revealer();
@@ -195,8 +197,9 @@ public class SidebarCustom : SidebarBox {
 
     var box = new Box( Orientation.VERTICAL, 0 );
 
-    var label = new Label( function.label );
+    var label = new Label( Utils.make_title( function.label ) );
     label.halign = Align.START;
+    label.use_markup = true;
 
     var grid = new Grid();
     add_direction_button( grid, label, function );
@@ -217,12 +220,12 @@ public class SidebarCustom : SidebarBox {
 
     var lbox = new Box( Orientation.HORIZONTAL, 0 );
     lbox.pack_start( label, false, true,  5 );
-    lbox.pack_end(   grid,  false, false, 5 );
+    lbox.pack_end(   grid,  false, false, 0 );
 
     var lbbox = new Box( Orientation.HORIZONTAL, 0 );
     lbbox.pack_start( lbox, true,  true,  2 );
     lbbox.pack_end(   more, false, false, 2 );
-    lbbox.pack_end(   break_reveal, false, false, 2 );
+    lbbox.pack_end(   break_reveal, false, false, 0 );
 
     var ebox = new EventBox();
 

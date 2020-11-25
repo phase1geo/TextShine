@@ -10,4 +10,4 @@ Type=Application
 MimeType=application/com.github.phase1geo.textshine;
 X-GNOME-Gettext-Domain=TextShine
 X-GNOME-UsesNotifications=true
-Keywords=textshine;text;
+Keywords=textshine;text;conversion;convert;
