@@ -28,6 +28,7 @@ sources += files(
     'functions/match/Find.vala',
     'functions/match/InvertSelected.vala',
     'functions/match/RegExpr.vala',
+    'functions/match/ReplaceSelected.vala',
 
     'functions/quotes/QuotesAngled.vala',
     'functions/quotes/QuotesCJK.vala',
@@ -48,7 +49,6 @@ sources += files(
     'functions/replace/ReplacePeriodsEllipsis.vala',
     'functions/replace/ReplaceReturns.vala',
     'functions/replace/ReplaceReturnSpace.vala',
-    'functions/replace/ReplaceSelected.vala',
     'functions/replace/ReplaceTabsSpaces.vala',
 
     'functions/sort/SortLines.vala',

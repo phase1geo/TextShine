@@ -239,6 +239,7 @@ public class MainWindow : ApplicationWindow {
     _header.pack_end( add_stats_button() );
 
     set_titlebar( _header );
+    set_title( _( "TextShine" ) );
 
   }
 
