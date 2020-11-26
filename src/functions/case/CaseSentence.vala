@@ -27,7 +27,7 @@ public class CaseSentence : TextFunction {
   public CaseSentence( bool custom = false ) {
     base( "case-sentence", custom );
     try {
-      _re = new Regex( "(^\\s*|[.!?]\\s+)([a-z])" );
+      _re = new Regex( """(^\s*|[.!?]\s+)([a-z])""" );
     } catch( RegexError e ) {}
   }
 

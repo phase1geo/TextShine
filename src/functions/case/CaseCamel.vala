@@ -67,9 +67,10 @@ public class CaseCamel : TextFunction {
     MatchInfo matches;
     parts = {};
     try {
-      if( _is.match( text, 0, out matches ) ) {
+      if( Regex.match_simple( "[a-z][A-Z]", text ) ) {
         var arr = new Array<string>();
         int start, end = 0;
+        _is.match( text, 0, out matches );
         while( matches.matches() ) {
           var str = matches.fetch( 0 ).ascii_down();
           matches.fetch_pos( 0, out start, out end );
