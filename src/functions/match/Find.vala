@@ -91,13 +91,15 @@ public class Find : TextFunction {
       find.activate.connect(() => {
         complete_find( editor );
       });
-      find.grab_focus();
 
       case_sensitive.toggled.connect(() => {
         _case_sensitive = case_sensitive.active;
         _undo_item = new UndoItem( label );
         do_find( editor, _undo_item );
       });
+
+      handle_widget_escape( find, _win );
+      handle_widget_escape( case_sensitive, _win );
 
       entry = find;
 

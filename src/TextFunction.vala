@@ -180,6 +180,16 @@ public class TextFunction {
     return( original.splice( 0, start_pos ) + replacement + original.splice( end_pos, original.length ) );
   }
 
+  /* Handles a widget escape */
+  protected void handle_widget_escape( Widget w, MainWindow win ) {
+    w.key_press_event.connect((e) => {
+      if( e.keyval == Gdk.Key.Escape ) {
+        win.remove_widget();
+      }
+      return( false );
+    });
+  }
+
   /* Returns true if the given single quote is an apostrophe */
   protected bool is_apostrophe( string str, int byte_index ) {
 

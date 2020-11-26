@@ -77,7 +77,8 @@ public class ReplaceSelected : TextFunction {
         do_replace( editor, undo_item );
         editor.undo_buffer.add_item( undo_item );
       });
-      replace.grab_focus();
+
+      handle_widget_escape( replace, _win );
 
       entry = replace;
 

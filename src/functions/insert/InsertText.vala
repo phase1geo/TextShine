@@ -154,7 +154,8 @@ public class InsertText : TextFunction {
         do_insert( editor, undo_item );
         editor.undo_buffer.add_item( undo_item );
       });
-      insert.grab_focus();
+
+      handle_widget_escape( insert, _win );
 
       focus = insert;
 

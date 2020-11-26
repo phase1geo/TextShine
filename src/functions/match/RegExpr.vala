@@ -98,12 +98,14 @@ public class RegExpr : TextFunction {
       pattern.activate.connect(() => {
         end_search( editor );
       });
-      pattern.grab_focus();
 
       replace.activate.connect(() => {
         _replace_text = replace.text;
         do_replace( editor, _undo_item );
       });
+
+      handle_widget_escape( pattern, _win );
+      handle_widget_escape( replace, _win );
 
       entry = pattern;
 

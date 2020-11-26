@@ -506,6 +506,7 @@ public class MainWindow : ApplicationWindow {
     if( _widget_box.get_children().length() > 0 ) {
       _widget_box.remove( _widget_box.get_children().nth_data( 0 ) );
     }
+    _editor.grab_focus();
   }
 
   /* Displays the given error message */
