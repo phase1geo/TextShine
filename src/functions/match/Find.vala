@@ -57,7 +57,7 @@ public class Find : TextFunction {
   }
 
   /* Creates the search UI */
-  private Box create_widget( Editor editor ) {
+  private void create_widget( Editor editor, out Box box, out Entry entry ) {
 
     var find = new Entry();
     find.placeholder_text = _( "Search Text" );
@@ -99,18 +99,21 @@ public class Find : TextFunction {
         do_find( editor, _undo_item );
       });
 
+      entry = find;
+
     }
 
-    var box = new Box( Orientation.HORIZONTAL, 0 );
+    box = new Box( Orientation.HORIZONTAL, 0 );
     box.pack_start( find,           true,  true,  5 );
     box.pack_start( case_sensitive, false, false, 5 );
-
-    return( box );
 
   }
 
   public override Box? get_widget( Editor editor ) {
-    return( create_widget( editor ) );
+    Box   box;
+    Entry entry;
+    create_widget( editor, out box, out entry );
+    return( box );
   }
 
   private void add_insert( Gtk.Menu mnu, Entry entry, string lbl, string str ) {
@@ -185,7 +188,10 @@ public class Find : TextFunction {
     if( custom ) {
       do_find( editor, null );
     } else {
-      _win.add_widget( create_widget( editor ) );
+      Box   box;
+      Entry entry;
+      create_widget( editor, out box, out entry );
+      _win.add_widget( box, entry );
     }
   }
 
