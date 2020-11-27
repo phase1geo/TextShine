@@ -66,6 +66,8 @@ sources += files(
     'TextFunction.vala',
     'TextFunctions.vala',
     'UndoBuffer.vala',
+    'UndoCustomBuffer.vala',
+    'UndoCustomItem.vala',
     'UndoItem.vala',
     'Utils.vala'
 

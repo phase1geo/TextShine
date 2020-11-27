@@ -37,9 +37,12 @@ public class SidebarCustom : SidebarBox {
   private Grid             _pbox;
   private int              _insert_index;
   private Box?             _drag_box;
-  private Revealer         _play_reveal;
+  private Button           _play;
   private UndoItem?        _test_undo = null;
   private Revealer?        _break_reveal = null;
+  private UndoCustomBuffer _undo_buffer;
+  private Button           _undo;
+  private Button           _redo;
 
   static TargetEntry[] entries = {
     { "TEXTSHINE_CUSTOM_ROW", TargetFlags.SAME_APP, 0 }
@@ -50,28 +53,43 @@ public class SidebarCustom : SidebarBox {
 
     base( win, editor );
 
-    _functions = new Array<Functions>();
+    _functions   = new Array<Functions>();
+    _undo_buffer = new UndoCustomBuffer( this );
+    _undo_buffer.buffer_changed.connect( do_buffer_changed );
 
     var nlbl = new Label( Utils.make_title( _( "Name:" ) ) );
     nlbl.use_markup = true;
 
     _name = new Entry();
 
-    var play = new Button.from_icon_name( "media-playback-start-symbolic", IconSize.SMALL_TOOLBAR );
-    play.tooltip_text = _( "Test run custom actions" );
-    play.clicked.connect(() => {
-      play_refresh( play );
-    });
-
-    _play_reveal = new Revealer();
-    _play_reveal.add( play );
-    _play_reveal.reveal_child = false;
-    _play_reveal.transition_duration = 0;
-
     var nbox = new Box( Orientation.HORIZONTAL, 0 );
     nbox.pack_start( nlbl,            false, false, 5 );
     nbox.pack_start( _name,           true,  true,  5 );
-    nbox.pack_end(   _play_reveal,    false, false, 5 );
+
+    _undo = new Button.from_icon_name( "edit-undo", IconSize.SMALL_TOOLBAR );
+    _undo.set_relief( ReliefStyle.NONE );
+    _undo.set_sensitive( false );
+    _undo.clicked.connect(() => {
+      _undo_buffer.undo();
+    });
+
+    _redo = new Button.from_icon_name( "edit-redo", IconSize.SMALL_TOOLBAR );
+    _redo.set_relief( ReliefStyle.NONE );
+    _redo.set_sensitive( false );
+    _redo.clicked.connect(() => {
+      _undo_buffer.redo();
+    });
+
+    _play = new Button.from_icon_name( "media-playback-start-symbolic", IconSize.SMALL_TOOLBAR );
+    _play.set_relief( ReliefStyle.NONE );
+    _play.set_sensitive( false );
+    _play.tooltip_text = _( "Test run custom actions" );
+    _play.clicked.connect( play_refresh );
+
+    var abox = new Box( Orientation.HORIZONTAL, 0 );
+    abox.pack_start( _undo, false, false, 5 );
+    abox.pack_start( _redo, false, false, 5 );
+    abox.pack_end(   _play, false, false, 5 );
 
     /* Create scrolled box */
     _lb = new ListBox();
@@ -115,6 +133,7 @@ public class SidebarCustom : SidebarBox {
     bbox.pack_start( _delete_reveal, false, false, 5 );
     bbox.pack_end( done, false, false, 5 );
 
+    pack_start( abox,          false, true, 5 );
     pack_start( nbox,          false, true, 5 );
     pack_start( _add_revealer, false, true, 5 );
     pack_start( sw,            true,  true, 5 );
@@ -125,17 +144,17 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  private void play_refresh( Button play ) {
+  private void play_refresh() {
     var play_img    = "media-playback-start-symbolic";
     var refresh_img = "view-refresh-symbolic";
-    var img         = (Gtk.Image)play.image;
+    var img         = (Gtk.Image)_play.image;
     if( img.icon_name == play_img ) {
-      play.image = new Image.from_icon_name( refresh_img, IconSize.SMALL_TOOLBAR );
-      play.tooltip_text = _( "Refresh text" );
+      _play.image = new Image.from_icon_name( refresh_img, IconSize.SMALL_TOOLBAR );
+      _play.tooltip_text = _( "Refresh text" );
       play_action();
     } else {
-      play.image = new Image.from_icon_name( play_img, IconSize.SMALL_TOOLBAR );
-      play.tooltip_text = _( "Test run custom actions" );
+      _play.image = new Image.from_icon_name( play_img, IconSize.SMALL_TOOLBAR );
+      _play.tooltip_text = _( "Test run custom actions" );
       refresh_text();
     }
   }
@@ -154,6 +173,7 @@ public class SidebarCustom : SidebarBox {
   public override void displayed( SwitchStackReason reason, TextFunction? function ) {
 
     clear_actions();
+    _undo_buffer.clear();
 
     switch( reason ) {
 
@@ -275,13 +295,8 @@ public class SidebarCustom : SidebarBox {
       if( box == _drag_box ) return( false );
       var box_index  = get_action_index( box );
       var drag_index = get_action_index( _drag_box );
-      var db_row     = _drag_box.get_parent();
-      db_row.ref();
-      _lb.remove( db_row );
-      _lb.insert( db_row, box_index );
-      db_row.unref();
-      var fn = _custom.functions.remove_index( drag_index );
-      _custom.functions.insert_val( box_index, fn );
+      _undo_buffer.add_item( new UndoCustomMoveItem( drag_index, box_index ) );
+      move_function( drag_index, box_index );
       return( true );
     });
 
@@ -299,7 +314,7 @@ public class SidebarCustom : SidebarBox {
     box.show_all();
 
     _lb.insert( box, index );
-    _play_reveal.reveal_child = true;
+    _play.set_sensitive( true );
 
     function.update_button_label.connect(() => {
       label.label = function.label;
@@ -328,7 +343,10 @@ public class SidebarCustom : SidebarBox {
 
     var del = new Gtk.MenuItem.with_label( _( "Remove Action" ) );
     del.activate.connect(() => {
-      delete_function( box );
+      var idx = get_action_index( box );
+      var fn  = _custom.functions.index( idx );
+      _undo_buffer.add_item( new UndoCustomDeleteItem( fn, idx ) );
+      delete_function( idx );
     });
 
     var breakpoint = new Gtk.MenuItem.with_label( bpoint ? _( "Remove Breakpoint" ) : _( "Set Breakpoint" ) );
@@ -396,22 +414,21 @@ public class SidebarCustom : SidebarBox {
    Inserts the given text function into the custom function at the previously
    calculated insert index.  Updates the internal custom function contents.
   */
-  private void insert_function( TextFunction function ) {
+  public void insert_function( TextFunction function, int index ) {
 
-    get_revealer( _insert_index ).reveal_child = false;
+    get_revealer( index ).reveal_child = false;
 
     var fn  = function.copy( true );
-    var box = add_function( fn, _insert_index );
+    var box = add_function( fn, index );
 
-    _custom.functions.insert_val( _insert_index, fn );
+    _custom.functions.insert_val( index, fn );
 
   }
 
   /* Removes the action at the given index */
-  private void delete_function( Box box ) {
+  public void delete_function( int index ) {
 
-    var index = get_action_index( box );
-    var fn    = _custom.functions.index( index );
+    var fn = _custom.functions.index( index );
 
     _lb.remove( _lb.get_children().nth_data( index ) );
     _custom.functions.remove_index( index );
@@ -419,6 +436,21 @@ public class SidebarCustom : SidebarBox {
     if( _custom.functions.length == 0 ) {
       _add_revealer.reveal_child = true;
     }
+
+  }
+
+  /* Movew a function from one index to another */
+  public void move_function( int old_index, int new_index ) {
+
+    var db_row = _lb.get_row_at_index( old_index );
+
+    db_row.ref();
+    _lb.remove( db_row );
+    _lb.insert( db_row, new_index );
+    db_row.unref();
+
+    var fn = _custom.functions.remove_index( old_index );
+    _custom.functions.insert_val( new_index, fn );
 
   }
 
@@ -546,7 +578,8 @@ public class SidebarCustom : SidebarBox {
     button.halign = Align.START;
     button.set_relief( ReliefStyle.NONE );
     button.clicked.connect(() => {
-      insert_function( function );
+      _undo_buffer.add_item( new UndoCustomAddItem( function, _insert_index ) );
+      insert_function( function, _insert_index );
       _popover.popdown();
     });
 
@@ -697,6 +730,14 @@ public class SidebarCustom : SidebarBox {
 
     dialog.close();
 
+  }
+
+  /* Called whenever the editor buffer changes */
+  private void do_buffer_changed( UndoCustomBuffer buffer ) {
+    _undo.set_sensitive( buffer.undoable() );
+    _redo.set_sensitive( buffer.redoable() );
+    _undo.tooltip_text = buffer.undo_tooltip();
+    _redo.tooltip_text = buffer.redo_tooltip();
   }
 
 }
