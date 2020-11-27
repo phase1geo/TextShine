@@ -115,6 +115,7 @@ public class TextFunctions {
     add_function( "indent", new IndentXML() );
 
     /* Category - convert */
+    add_function( "convert", new ConvertHardWrap() );
     add_function( "convert", new ConvertMarkdownHTML() );
     add_function( "convert", new ConvertURLEncode() );
     add_function( "convert", new ConvertROT13() );

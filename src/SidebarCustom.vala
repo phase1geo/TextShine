@@ -317,7 +317,7 @@ public class SidebarCustom : SidebarBox {
     _play.set_sensitive( true );
 
     function.update_button_label.connect(() => {
-      label.label = function.label;
+      label.label = Utils.make_title( function.label );
     });
 
     return( box );
