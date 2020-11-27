@@ -123,11 +123,14 @@ public class InsertText : TextFunction {
     if( custom ) {
       do_insert( editor, null );
     } else {
-      _win.add_widget( create_widget( editor ) );
+      Box   box;
+      Entry entry;
+      create_widget( editor, out box, out entry );
+      _win.add_widget( box, entry );
     }
   }
 
-  private Box create_widget( Editor editor ) {
+  private void create_widget( Editor editor, out Box box, out Entry focus ) {
 
     var insert = new Entry();
     insert.placeholder_text = _( "Inserted Text" );
@@ -151,19 +154,23 @@ public class InsertText : TextFunction {
         do_insert( editor, undo_item );
         editor.undo_buffer.add_item( undo_item );
       });
-      insert.grab_focus();
+
+      handle_widget_escape( insert, _win );
+
+      focus = insert;
 
     }
 
-    var box = new Box( Orientation.HORIZONTAL, 5 );
+    box = new Box( Orientation.HORIZONTAL, 5 );
     box.pack_start( insert, true,  true, 0 );
-
-    return( box );
 
   }
 
   public override Box? get_widget( Editor editor ) {
-    return( create_widget( editor ) );
+    Box   box;
+    Entry entry;
+    create_widget( editor, out box, out entry );
+    return( box );
   }
 
   /* Specify that we have settings to display */

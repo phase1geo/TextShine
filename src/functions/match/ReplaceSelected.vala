@@ -53,7 +53,7 @@ public class ReplaceSelected : TextFunction {
   }
 
   /* Creates the search UI */
-  private Box create_widget( Editor editor ) {
+  private void create_widget( Editor editor, out Box box, out Entry entry ) {
 
     var replace = new Entry();
     replace.placeholder_text = _( "Replace With" );
@@ -77,19 +77,23 @@ public class ReplaceSelected : TextFunction {
         do_replace( editor, undo_item );
         editor.undo_buffer.add_item( undo_item );
       });
-      replace.grab_focus();
+
+      handle_widget_escape( replace, _win );
+
+      entry = replace;
 
     }
 
-    var box = new Box( Orientation.HORIZONTAL, 0 );
+    box = new Box( Orientation.HORIZONTAL, 0 );
     box.pack_start( replace, true, true, 5 );
-
-    return( box );
 
   }
 
   public override Box? get_widget( Editor editor ) {
-    return( create_widget( editor ) );
+    Box   box;
+    Entry entry;
+    create_widget( editor, out box, out entry );
+    return( box );
   }
 
   /* Replace all matches with the replacement text */
@@ -120,7 +124,10 @@ public class ReplaceSelected : TextFunction {
     if( custom ) {
       do_replace( editor, null );
     } else {
-      _win.add_widget( create_widget( editor ) );
+      Box   box;
+      Entry entry;
+      create_widget( editor, out box, out entry );
+      _win.add_widget( box, entry );
     }
   }
 

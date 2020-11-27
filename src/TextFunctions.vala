@@ -95,7 +95,6 @@ public class TextFunctions {
     add_function( "replace", new ReplacePeriodsEllipsis() );
     add_function( "replace", new ReplaceReturnSpace() );
     add_function( "replace", new ReplaceReturns() );
-    add_function( "replace", new ReplaceSelected( win ) );
 
     /* Category - quotations */
     add_function( "quotes", new QuotesCurved() );
@@ -123,6 +122,7 @@ public class TextFunctions {
     /* Category - search-replace */
     add_function( "search-replace", new Find( win ) );
     add_function( "search-replace", new RegExpr( win ) );
+    add_function( "search-replace", new ReplaceSelected( win ) );
     add_function( "search-replace", new InvertSelected() );
     add_function( "search-replace", new ClearSelected() );
 

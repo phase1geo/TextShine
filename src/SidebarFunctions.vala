@@ -355,10 +355,10 @@ public class SidebarFunctions : SidebarBox {
       _custom_box.remove( w );
     });
     var functions = win.functions.get_category_functions( "custom" );
+    add_create_custom();
     for( int i=0; i<functions.length; i++ ) {
       add_custom_function( (CustomFunction)functions.index( i ) );
     }
-    add_create_custom();
     _custom_box.show_all();
   }
 

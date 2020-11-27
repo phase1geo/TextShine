@@ -60,7 +60,7 @@ public class RegExpr : TextFunction {
   }
 
   /* Creates the search UI */
-  private Box create_widget( Editor editor ) {
+  private void create_widget( Editor editor, out Box box, out Entry entry ) {
 
     var pattern = new SearchEntry();
     pattern.placeholder_text = _( "Regular Expression" );
@@ -98,25 +98,30 @@ public class RegExpr : TextFunction {
       pattern.activate.connect(() => {
         end_search( editor );
       });
-      pattern.grab_focus();
 
       replace.activate.connect(() => {
         _replace_text = replace.text;
         do_replace( editor, _undo_item );
       });
 
+      handle_widget_escape( pattern, _win );
+      handle_widget_escape( replace, _win );
+
+      entry = pattern;
+
     }
 
-    var box = new Box( Orientation.VERTICAL, 0 );
+    box = new Box( Orientation.VERTICAL, 0 );
     box.pack_start( pattern, false, true, 5 );
     box.pack_start( replace, false, true, 5 );
-
-    return( box );
 
   }
 
   public override Box? get_widget( Editor editor ) {
-    return( create_widget( editor ) );
+    Box   box;
+    Entry entry;
+    create_widget( editor, out box, out entry );
+    return( box );
   }
 
   private void populate_pattern_popup( Gtk.Menu menu, Entry entry ) {
@@ -307,6 +312,7 @@ public class RegExpr : TextFunction {
         var range    = ranges.index( i );
         var text     = editor.get_text( range.start, range.end );
         var new_text = re.replace( text, text.length, 0, Utils.replace_index( replace_text, ref int_value ) );
+        stdout.printf( "new_text: %s\n", new_text );
         editor.replace_text( range.start, range.end, new_text, undo_item );
       }
 
@@ -338,7 +344,10 @@ public class RegExpr : TextFunction {
         do_replace( editor, null );
       }
     } else {
-      _win.add_widget( create_widget( editor ) );
+      Box   box;
+      Entry entry;
+      create_widget( editor, out box, out entry );
+      _win.add_widget( box, entry );
     }
   }
 

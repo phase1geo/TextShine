@@ -239,6 +239,7 @@ public class MainWindow : ApplicationWindow {
     _header.pack_end( add_stats_button() );
 
     set_titlebar( _header );
+    set_title( _( "TextShine" ) );
 
   }
 
@@ -483,7 +484,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Adds the given widget to the widgets box */
-  public void add_widget( Widget w ) {
+  public void add_widget( Widget w, Widget? focus_widget = null ) {
 
     var revealer = new Revealer();
     revealer.add( w );
@@ -495,12 +496,18 @@ public class MainWindow : ApplicationWindow {
 
     revealer.reveal_child = true;
 
+    if( focus_widget != null ) {
+      focus_widget.grab_focus();
+    }
+
   }
 
+  /* Removes the given widget from the widget box */
   public void remove_widget() {
     if( _widget_box.get_children().length() > 0 ) {
       _widget_box.remove( _widget_box.get_children().nth_data( 0 ) );
     }
+    _editor.grab_focus();
   }
 
   /* Displays the given error message */
