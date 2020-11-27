@@ -678,11 +678,24 @@ public class SidebarCustom : SidebarBox {
   /* Deletes the current custom function */
   private void delete_custom() {
 
-    cleanup();
+    var flags  = DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT;
+    var dialog = new MessageDialog( win, flags, MessageType.WARNING, ButtonsType.NONE, null );
+    dialog.set_markup( Utils.make_title( _( "Delete Custom Action?") ) );
+    dialog.format_secondary_text( _( "Deleting a custom action cannot be undone." ) );
+    var del = dialog.add_button( _( "Delete Action" ), ResponseType.ACCEPT );
+    var can = dialog.add_button( _( "Cancel" ),        ResponseType.REJECT );
 
-    win.functions.remove_function( _custom );
-    win.functions.save_custom();
-    switch_stack( SwitchStackReason.DELETE, _custom );
+    del.get_style_context().add_class( "destructive-action" );
+    can.grab_focus();
+
+    if( dialog.run() == ResponseType.ACCEPT ) {
+      cleanup();
+      win.functions.remove_function( _custom );
+      win.functions.save_custom();
+      switch_stack( SwitchStackReason.DELETE, _custom );
+    }
+
+    dialog.close();
 
   }
 
