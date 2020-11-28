@@ -275,6 +275,7 @@ public class SidebarCustom : SidebarBox {
 
     var frame = new Frame( null );
     frame.shadow_type = ShadowType.ETCHED_OUT;
+    frame.margin = 4;
     frame.add( fbox );
 
     ebox.drag_begin.connect((ctx) => {

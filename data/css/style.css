@@ -15,10 +15,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@define-color colorPrimary           #485a6c;
-/* @define-color textColorPrimary       @BLACK_500; */
-@define-color textColorPrimary       @WHITE_500;
-@define-color textColorPrimaryShadow #485a6c;
+@define-color colorPrimary           #ffe16b;
+@define-color textColorPrimary       @BLACK_500;
+@define-color textColorPrimaryShadow #ffe16b;
 
 .color-button radio,
 .color-button radio.checked {
