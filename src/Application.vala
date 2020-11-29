@@ -25,17 +25,19 @@ using GLib;
 
 public class TextShine : Granite.Application {
 
-  private static bool       show_version = false;
+  private static bool       show_version  = false;
   private        MainWindow appwin;
 
   public  static GLib.Settings settings;
-  public  static string        version = "1.0.0";
+  public  static bool          use_clipboard = false;
+  public  static string        version       = "1.0.0";
 
   public TextShine () {
 
-    Object( application_id: "com.github.phase1geo.textshine", flags: ApplicationFlags.FLAGS_NONE );
+    Object( application_id: "com.github.phase1geo.textshine", flags: ApplicationFlags.HANDLES_OPEN );
 
     startup.connect( start_application );
+    open.connect( open_files );
 
   }
 
@@ -52,6 +54,12 @@ public class TextShine : Granite.Application {
     /* Create the main window */
     appwin = new MainWindow( this );
 
+    /* Initialize the editor with the clipboard contents */
+    if( use_clipboard ) {
+      appwin.do_new();
+      appwin.do_paste();
+    }
+
     /* Handle any changes to the position of the window */
     appwin.configure_event.connect(() => {
       int root_x, root_y;
@@ -67,6 +75,20 @@ public class TextShine : Granite.Application {
 
   }
 
+  /* Called whenever files need to be opened */
+  private void open_files( File[] files, string hint ) {
+    hold();
+    foreach( File open_file in files ) {
+      var file = open_file.get_path();
+      appwin.notification( _( "Opening file" ), file );
+      if( !appwin.open_file( file ) ) {
+        stdout.printf( "ERROR:  Unable to open file '%s'\n", file );
+      }
+    }
+    Gtk.main();
+    release();
+  }
+
   /* Called if we have no files to open */
   protected override void activate() {
     hold();
@@ -78,11 +100,12 @@ public class TextShine : Granite.Application {
   private void parse_arguments( ref unowned string[] args ) {
 
     var context = new OptionContext( "- TextShine Options" );
-    var options = new OptionEntry[2];
+    var options = new OptionEntry[3];
 
     /* Create the command-line options */
-    options[0] = {"version", 0, 0, OptionArg.NONE, ref show_version, "Display version number", null};
-    options[1] = {null};
+    options[0] = {"version",       0, 0, OptionArg.NONE, ref show_version, _( "Display version number" ), null};
+    options[1] = {"use-clipboard", 0, 0, OptionArg.NONE, ref use_clipboard, _( "Transform clipboard text" ), null};
+    options[2] = {null};
 
     /* Parse the arguments */
     try {

@@ -394,7 +394,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Clears the buffer for reuse */
-  private void do_new() {
+  public void do_new() {
     _current_file = null;
     _editor.clear();
     _custom.clear();
@@ -406,7 +406,13 @@ public class MainWindow : ApplicationWindow {
     var dialog = new FileChooserNative( _( "Open File" ), this, FileChooserAction.OPEN, _( "Open" ), _( "Cancel" ) );
     if( dialog.run() != ResponseType.ACCEPT ) return;
 
-    _current_file = dialog.get_filename();
+    open_file( dialog.get_filename() );
+
+  }
+
+  public bool open_file( string filepath ) {
+
+    _current_file = filepath;
 
     var file = File.new_for_path( _current_file );
 
@@ -417,9 +423,12 @@ public class MainWindow : ApplicationWindow {
     		_editor.buffer.text = (string)contents;
     } catch( Error e ) {
       show_error( e.message );
+      return( false );
     }
 
     _editor.grab_focus();
+
+    return( true );
 
   }
 
@@ -451,7 +460,7 @@ public class MainWindow : ApplicationWindow {
   }
 
   /* Pastes the contents of the clipboard to the editor */
-  private void do_paste() {
+  public void do_paste() {
     var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
     _editor.buffer.paste_clipboard( clipboard, null, true );
     _editor.grab_focus();
@@ -528,6 +537,18 @@ public class MainWindow : ApplicationWindow {
   private void do_buffer_changed( UndoBuffer buffer ) {
     _undo_btn.set_sensitive( buffer.undoable() );
     _redo_btn.set_sensitive( buffer.redoable() );
+  }
+
+  /* Generate a notification */
+  public void notification( string title, string msg, NotificationPriority priority = NotificationPriority.NORMAL ) {
+    GLib.Application? app = null;
+    @get( "application", ref app );
+    if( app != null ) {
+      var notification = new Notification( title );
+      notification.set_body( msg );
+      notification.set_priority( priority );
+      app.send_notification( "com.github.phase1geo.minder", notification );
+    }
   }
 
 }

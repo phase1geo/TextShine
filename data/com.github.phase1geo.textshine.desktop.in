@@ -11,3 +11,8 @@ MimeType=text/plain;
 X-GNOME-Gettext-Domain=TextShine
 X-GNOME-UsesNotifications=true
 Keywords=textshine;text;conversion;convert;
+Actions=EditClipboard;
+
+[Desktop Action EditClipboard]
+Name=Edit Clipboard Text
+Exec=com.github.phase1geo.textshine --use-clipboard
