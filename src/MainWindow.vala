@@ -50,14 +50,16 @@ public class MainWindow : ApplicationWindow {
   private Label                    _stats_matches;
 
   private const GLib.ActionEntry[] action_entries = {
-    { "action_new",   do_new },
-    { "action_open",  do_open },
-    { "action_save",  do_save },
-    { "action_quit",  do_quit },
-    { "action_paste", do_paste },
-    { "action_copy",  do_copy },
-    { "action_undo",  do_undo },
-    { "action_redo",  do_redo }
+    { "action_new",        do_new },
+    { "action_open",       do_open },
+    { "action_save",       do_save },
+    { "action_quit",       do_quit },
+    { "action_paste_over", do_paste_over },
+    { "action_copy_all",   do_copy_all },
+    { "action_paste",      do_paste },
+    { "action_copy",       do_copy },
+    { "action_undo",       do_undo },
+    { "action_redo",       do_redo }
   };
 
   public TextFunctions functions {
@@ -139,14 +141,16 @@ public class MainWindow : ApplicationWindow {
 
   /* Adds keyboard shortcuts for the menu actions */
   private void add_keyboard_shortcuts( Gtk.Application app ) {
-    app.set_accels_for_action( "win.action_new",   { "<Control>n" } );
-    app.set_accels_for_action( "win.action_open",  { "<Control>o" } );
-    app.set_accels_for_action( "win.action_save",  { "<Control>s" } );
-    app.set_accels_for_action( "win.action_quit",  { "<Control>q" } );
-    app.set_accels_for_action( "win.action_paste", { "<Control>v" } );
-    app.set_accels_for_action( "win.action_copy",  { "<Control>c" } );
-    app.set_accels_for_action( "win.action_undo",  { "<Control>z" } );
-    app.set_accels_for_action( "win.action_redo",  { "<Control><Shift>z" } );
+    app.set_accels_for_action( "win.action_new",        { "<Control>n" } );
+    app.set_accels_for_action( "win.action_open",       { "<Control>o" } );
+    app.set_accels_for_action( "win.action_save",       { "<Control>s" } );
+    app.set_accels_for_action( "win.action_quit",       { "<Control>q" } );
+    app.set_accels_for_action( "win.action_paste_over", { "<Shift><Control>v" } );
+    app.set_accels_for_action( "win.action_copy_all",   { "<Shift><Control>c" } );
+    app.set_accels_for_action( "win.action_paste",      { "<Control>v" } );
+    app.set_accels_for_action( "win.action_copy",       { "<Control>c" } );
+    app.set_accels_for_action( "win.action_undo",       { "<Control>z" } );
+    app.set_accels_for_action( "win.action_redo",       { "<Control><Shift>z" } );
   }
 
   private void action_applied( TextFunction function ) {
@@ -214,13 +218,13 @@ public class MainWindow : ApplicationWindow {
     _header.pack_start( _save_btn );
 
     _paste_btn = new Button.from_icon_name( "edit-paste", IconSize.LARGE_TOOLBAR );
-    _paste_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Paste Text" ), "<Control>v" ) );
-    _paste_btn.clicked.connect( do_paste );
+    _paste_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Paste Over" ), "<Shift><Control>v" ) );
+    _paste_btn.clicked.connect( do_paste_over );
     _header.pack_start( _paste_btn );
 
     _copy_btn = new Button.from_icon_name( "edit-copy", IconSize.LARGE_TOOLBAR );
-    _copy_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Copy Text" ), "<Control>c" ) );
-    _copy_btn.clicked.connect( do_copy );
+    _copy_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Copy All" ), "<Shift><Control>c" ) );
+    _copy_btn.clicked.connect( do_copy_all );
     _header.pack_start( _copy_btn );
 
     _undo_btn = new Button.from_icon_name( "edit-undo", IconSize.LARGE_TOOLBAR );
@@ -459,10 +463,22 @@ public class MainWindow : ApplicationWindow {
     destroy();
   }
 
+  public void do_paste_over() {
+    do_new();
+    do_paste();
+  }
+
   /* Pastes the contents of the clipboard to the editor */
-  public void do_paste() {
+  private void do_paste() {
     var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
     _editor.buffer.paste_clipboard( clipboard, null, true );
+    _editor.grab_focus();
+  }
+
+  /* Copies the entire contents of the editor to the clipboard */
+  public void do_copy_all() {
+    var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
+    _editor.copy_all_to_clipboard( clipboard );
     _editor.grab_focus();
   }
 

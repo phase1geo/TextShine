@@ -207,6 +207,12 @@ public class Editor : SourceView {
     insert_text( ref start, text );
   }
 
+  /* Copies the entire buffer contents, regardless of selection */
+  public void copy_all_to_clipboard( Clipboard clipboard ) {
+    clipboard.clear();
+    clipboard.set_text( buffer.text, buffer.text.length );
+  }
+
   /* Copies the selected text (if selected) or the entire buffer contents */
   public void copy_to_clipboard( Clipboard clipboard ) {
     TextIter start, end;

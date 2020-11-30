@@ -56,8 +56,7 @@ public class TextShine : Granite.Application {
 
     /* Initialize the editor with the clipboard contents */
     if( use_clipboard ) {
-      appwin.do_new();
-      appwin.do_paste();
+      appwin.do_paste_over();
     }
 
     /* Handle any changes to the position of the window */

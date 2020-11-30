@@ -66,14 +66,14 @@ public class SidebarCustom : SidebarBox {
     nbox.pack_start( nlbl,            false, false, 5 );
     nbox.pack_start( _name,           true,  true,  5 );
 
-    _undo = new Button.from_icon_name( "edit-undo", IconSize.SMALL_TOOLBAR );
+    _undo = new Button.from_icon_name( "edit-undo-symbolic", IconSize.SMALL_TOOLBAR );
     _undo.set_relief( ReliefStyle.NONE );
     _undo.set_sensitive( false );
     _undo.clicked.connect(() => {
       _undo_buffer.undo();
     });
 
-    _redo = new Button.from_icon_name( "edit-redo", IconSize.SMALL_TOOLBAR );
+    _redo = new Button.from_icon_name( "edit-redo-symbolic", IconSize.SMALL_TOOLBAR );
     _redo.set_relief( ReliefStyle.NONE );
     _redo.set_sensitive( false );
     _redo.clicked.connect(() => {
