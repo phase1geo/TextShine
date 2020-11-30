@@ -3,11 +3,16 @@ Name=TextShine
 GenericName=TextShine
 Comment=Powerfully transform text
 Categories=Utility;Development;
-Exec=com.github.phase1geo.textshine
+Exec=com.github.phase1geo.textshine %f
 Icon=com.github.phase1geo.textshine
 Terminal=false
 Type=Application
-MimeType=application/com.github.phase1geo.textshine;
+MimeType=text/plain;
 X-GNOME-Gettext-Domain=TextShine
 X-GNOME-UsesNotifications=true
 Keywords=textshine;text;conversion;convert;
+Actions=EditClipboard;
+
+[Desktop Action EditClipboard]
+Name=Edit Clipboard Text
+Exec=com.github.phase1geo.textshine --use-clipboard

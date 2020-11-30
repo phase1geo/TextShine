@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-24 22:42-0600\n"
+"POT-Creation-Date: 2020-11-29 20:50-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,6 +34,10 @@ msgstr ""
 
 #: data/com.github.phase1geo.textshine.desktop.in:14
 msgid "textshine;text;conversion;convert;"
+msgstr ""
+
+#: data/com.github.phase1geo.textshine.desktop.in:18
+msgid "Edit Clipboard Text"
 msgstr ""
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:9
