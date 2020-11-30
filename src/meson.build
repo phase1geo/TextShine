@@ -8,7 +8,7 @@ sources += files(
     'functions/case/CaseTitle.vala',
     'functions/case/CaseUpper.vala',
 
-    'functions/convert/ConvertMarkdownHTML.vala',
+    'functions/convert/ConvertHardWrap.vala',
     'functions/convert/ConvertROT13.vala',
     'functions/convert/ConvertURLEncode.vala',
 
@@ -21,6 +21,7 @@ sources += files(
     'functions/insert/InsertLoremIpsum.vala',
     'functions/insert/InsertText.vala',
 
+    'functions/markdown/ConvertMarkdownHTML.vala',
     'functions/markdown/MarkdownReferences.vala',
     'functions/markdown/MarkdownTableBeauty.vala',
 
@@ -40,6 +41,7 @@ sources += files(
     'functions/remove/RemoveBlankLines.vala',
     'functions/remove/RemoveDuplicateLines.vala',
     'functions/remove/RemoveLeadingWhitespace.vala',
+    'functions/remove/RemoveLineBreaks.vala',
     'functions/remove/RemoveLineNumbers.vala',
     'functions/remove/RemoveSelected.vala',
     'functions/remove/RemoveTrailingWhitespace.vala',
@@ -66,6 +68,8 @@ sources += files(
     'TextFunction.vala',
     'TextFunctions.vala',
     'UndoBuffer.vala',
+    'UndoCustomBuffer.vala',
+    'UndoCustomItem.vala',
     'UndoItem.vala',
     'Utils.vala'
 
