@@ -8,7 +8,7 @@ A powerful, graphical text conversion utility.
   </a>
 </p>
 
-![<center><b>Main Window</b></center>](https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot.png "Text Conversion application for Elementary OS")
+![<center><b>Main Window</b></center>](https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot-actions.png "Text Conversion application for Elementary OS")
 
 ## Overview
 
