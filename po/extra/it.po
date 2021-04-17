@@ -1,0 +1,156 @@
+# ITALIAN TRANSLATION FOR TEXTSHINE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the extra package.
+# ALBANO BATTISTELLA <ALBANO_BATTISTELLA@HOTMAIL.COM>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: extra\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-04-11 10:45-0500\n"
+"PO-Revision-Date: 2021-04-17 17:05+0100\n"
+"Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
+"Language-Team: ITALIAN <LL@li.org>\n"
+"Language: It\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/com.github.phase1geo.textshine.desktop.in:3
+#: data/com.github.phase1geo.textshine.desktop.in:4
+#: data/com.github.phase1geo.textshine.appdata.xml.in:7
+msgid "TextShine"
+msgstr "TextShine"
+
+#: data/com.github.phase1geo.textshine.desktop.in:5
+#: data/com.github.phase1geo.textshine.appdata.xml.in:8
+msgid "Powerfully transform text"
+msgstr "Trasforma il testo in modo potente"
+
+#: data/com.github.phase1geo.textshine.desktop.in:8
+msgid "com.github.phase1geo.textshine"
+msgstr "com.github.phase1geo.textshine"
+
+#: data/com.github.phase1geo.textshine.desktop.in:14
+msgid "textshine;text;conversion;convert;"
+msgstr "textshine;testo;conversione;converte;"
+
+#: data/com.github.phase1geo.textshine.desktop.in:18
+msgid "Edit Clipboard Text"
+msgstr "Modifica il testo degli Appunti"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:9
+msgid "Trevor Williams"
+msgstr "Trevor Williams"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:22
+msgid ""
+"Easily paste text from the clipboard or load text from a file, modify the "
+"text with loads of built-in text actions and user-created custom text "
+"workflows, and save the changes to the clipboard or to a file."
+msgstr ""
+"Incolla facilmente il testo dagli appunti o carica il testo da un file, modifica il "
+"testo con un sacco di azioni di testo integrate e testo personalizzato creato dall'utente con"
+"flussi di lavoro e salva le modifiche negli appunti o in un file."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:27
+msgid ""
+"In addition to the built-in actions, TextShine allows you to create and test "
+"custom text conversion workflows. These custom workflows can then be used in "
+"the same way that built-in actions are used within the application."
+msgstr ""
+"Oltre alle azioni integrate, TextShine ti consente di creare e testare "
+"flussi di lavoro e conversioni del testo personalizzato. Questi flussi di lavoro personalizzati possono quindi essere utilizzati "
+"nello stesso modo in cui vengono utilizzate le azioni integrate all'interno dell'applicazione."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:32
+msgid "Key features include the following:"
+msgstr "Le caratteristiche principali includono quanto segue:"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:36
+msgid "Load text from clipboard or from a file."
+msgstr "Carica il testo dagli appunti o da un file."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:37
+msgid "Save text back to clipboard, to the same file or to a new file."
+msgstr "Salva il testo negli appunti, nello stesso file o in un nuovo file."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:38
+msgid "Unlimited undo/redo of text changes."
+msgstr "Annulla/ripristina illimitate modifiche al testo."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:39
+msgid "Apply a text action in a single click."
+msgstr "Applica un'azione al testo con un solo clic."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:40
+msgid "Support for action favoriting."
+msgstr "Supporto per favorire l'azione."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:41
+msgid "Support for creating and testing custom actions."
+msgstr "Supporto per la creazione e il test di azioni personalizzate."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:42
+msgid "Quickly search available text actions."
+msgstr "Cerca rapidamente le azioni di testo disponibili."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:43
+msgid "Character, word, line and match statistics."
+msgstr "Carattere,parola,linea e Statistiche abbinate."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:44
+msgid "Support for font size changes."
+msgstr "Supporto per le modifiche alla dimensione del font."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:45
+msgid "Categorized text actions which include:"
+msgstr "Categorizzate azioni di testo che includono:"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:46
+msgid "Action: Changing case"
+msgstr "Azione: Cambio di maiuscolo/minuscolo"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:47
+msgid "Action: Inserting text, line numbers, lorem ipsum and file contents"
+msgstr "Azione: Inserimento di testo, numeri di riga, lorem ipsum e contenuto di file"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:48
+msgid "Action: Removing line numbers, blank lines/spaces and matched text"
+msgstr "Azione: Rimozione di numeri di riga, righe/spazi vuoti e testo abbinato"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:49
+msgid "Action: Replacement of text"
+msgstr "Azione: Sostituzione del testo"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:50
+msgid "Action: Quotation conversion"
+msgstr "Azione: Conversione del preventivo"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:51
+msgid "Action: Line sorting"
+msgstr ""Azione: Ordinamento riga"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:52
+msgid "Action: Indentation handling"
+msgstr "Azione: Gestione dell'indentazione"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:53
+msgid "Action: Search and replace (includes regular expression support)"
+msgstr "Azione: Cerca e sostituisci (include il supporto delle espressioni regolari)"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:54
+msgid "Action: Automatic text repair"
+msgstr "Azione: Riparazione automatica del testo"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:55
+msgid "Action: Text conversion"
+msgstr "Azione: Conversione del testo"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:56
+msgid "Action: Markdown utilities"
+msgstr "Azione: Utilità di Markdown"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:103
+msgid "Initial release"
+msgstr "Versione iniziale"
