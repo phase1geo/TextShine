@@ -125,7 +125,7 @@ public class CustomFunction : TextFunction {
   public override void load( Xml.Node* node, TextFunctions functions ) {
     _label = node->get_prop( "label" );
     for( Xml.Node* it=node->children; it!=null; it=it->next ) {
-      if( (it->type == Xml.Node.ELEMENT_NODE) && (it->name == "function") ) {
+      if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "function") ) {
         var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy( true );
         function.load( it, functions );
         _functions.append_val( function );
