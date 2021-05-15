@@ -22,32 +22,32 @@
 using Gtk;
 using Gee;
 
-public class MainWindow : ApplicationWindow {
+public class MainWindow : Hdy.ApplicationWindow {
 
   private const string DESKTOP_SCHEMA = "io.elementary.desktop";
   private const string DARK_KEY       = "prefer-dark";
 
-  private HeaderBar                _header;
-  private Editor                   _editor;
-  private Button                   _clear_btn;
-  private Button                   _open_btn;
-  private Button                   _save_btn;
-  private Button                   _paste_btn;
-  private Button                   _copy_btn;
-  private Button                   _undo_btn;
-  private Button                   _redo_btn;
-  private MenuButton               _prop_btn;
-  private FontButton               _font;
-  private Sidebar                  _sidebar;
-  private Box                      _widget_box;
-  private InfoBar                  _info;
-  private TextFunctions            _functions;
-  private CustomFunction           _custom;
-  private string?                  _current_file = null;
-  private Label                    _stats_chars;
-  private Label                    _stats_words;
-  private Label                    _stats_lines;
-  private Label                    _stats_matches;
+  private Hdy.HeaderBar  _header;
+  private Editor         _editor;
+  private Button         _clear_btn;
+  private Button         _open_btn;
+  private Button         _save_btn;
+  private Button         _paste_btn;
+  private Button         _copy_btn;
+  private Button         _undo_btn;
+  private Button         _redo_btn;
+  private MenuButton     _prop_btn;
+  private FontButton     _font;
+  private Sidebar        _sidebar;
+  private Box            _widget_box;
+  private InfoBar        _info;
+  private TextFunctions  _functions;
+  private CustomFunction _custom;
+  private string?        _current_file = null;
+  private Label          _stats_chars;
+  private Label          _stats_words;
+  private Label          _stats_lines;
+  private Label          _stats_matches;
 
   private const GLib.ActionEntry[] action_entries = {
     { "action_new",        do_new },
@@ -123,7 +123,11 @@ public class MainWindow : ApplicationWindow {
     box.pack_start( ebox,    true,  true,  5 );
     box.pack_start( sidebar, false, false, 5 );
 
-    add( box );
+    var top_box = new Box( Orientation.VERTICAL, 0 );
+    top_box.pack_start( _header, false, true, 0 );
+    top_box.pack_start( box, true, true, 0 );
+
+    add( top_box );
     show_all();
 
     /* Set the stage for menu actions */
@@ -137,6 +141,10 @@ public class MainWindow : ApplicationWindow {
     /* Handle the application closing */
     destroy.connect( Gtk.main_quit );
 
+  }
+
+  static construct {
+    Hdy.init();
   }
 
   /* Adds keyboard shortcuts for the menu actions */
@@ -182,14 +190,13 @@ public class MainWindow : ApplicationWindow {
       move( window_x, window_y );
     }
     set_default_size( window_w, window_h );
-    set_border_width( 2 );
 
   }
 
   /* Create the header bar */
   private void create_header() {
 
-    _header = new HeaderBar();
+    _header = new Hdy.HeaderBar();
     _header.set_show_close_button( true );
 
     _clear_btn = new Button.from_icon_name( "document-new", IconSize.LARGE_TOOLBAR );
@@ -232,7 +239,6 @@ public class MainWindow : ApplicationWindow {
     _header.pack_end( add_properties_button() );
     _header.pack_end( add_stats_button() );
 
-    set_titlebar( _header );
     set_title( _( "TextShine" ) );
 
   }
