@@ -65,7 +65,7 @@ dependencies = [
     dependency('granite'),
     dependency('gtk+-3.0'),
     dependency('libxml-2.0'),
-    dependency('gtksourceview-3.0'),
+    dependency('gtksourceview-4'),
     dependency('camel-1.2'),
     dependency('libhandy-1'),
     libmarkdown,
