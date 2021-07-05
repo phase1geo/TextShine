@@ -21,15 +21,13 @@
 
 public class CaseCamel : TextFunction {
 
-  private Regex        _re;
-  private static Regex _is;
+  private Regex _re;
 
   /* Constructor */
   public CaseCamel( bool custom = false ) {
     base( "case-camel", custom );
     try {
       _re = new Regex( "[a-zA-Z]( )([a-z])" );
-      _is = new Regex( "(^|[A-Z])[a-z]*" );
     } catch( RegexError e ) {}
   }
 
@@ -64,26 +62,22 @@ public class CaseCamel : TextFunction {
    for further processing.
   */
   public static bool is_camel_case( string text, out string[] parts ) {
-    MatchInfo matches;
-    parts = {};
-    try {
-      if( Regex.match_simple( "[a-z][A-Z]", text ) ) {
-        var arr = new Array<string>();
-        int start, end = 0;
-        _is.match( text, 0, out matches );
-        while( matches.matches() ) {
-          var str = matches.fetch( 0 ).ascii_down();
-          matches.fetch_pos( 0, out start, out end );
-          arr.append_val( str );
-          matches.next();
-        }
-        if( end == text.length ) {
-          parts = arr.data;
-          return( true );
-        }
+    var str = "";
+    var arr = new Array<string>();
+    var last_lower = false;
+    for( int i=0; i<text.char_count(); i++ ) {
+      var c     = text.get( text.index_of_nth_char( i ) );
+      var alnum = c.isalnum();
+      if( alnum && last_lower && c.isupper() ) {
+        arr.append_val( str );
+        str = "";
       }
-    } catch( RegexError e ) {}
-    return( false );
+      last_lower = alnum & c.islower();
+      str = str.concat( c.to_string() );
+    }
+    arr.append_val( str );
+    parts = arr.data;
+    return( arr.length > 1 );
   }
 
 }

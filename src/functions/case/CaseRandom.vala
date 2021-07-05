@@ -37,18 +37,10 @@ public class CaseRandom : TextFunction {
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
     string[] parts;
-    string   orig;
-    if( CaseCamel.is_camel_case( original, out parts ) ) {
-      orig = string.joinv( " ", parts );
-    } else if( CaseSnake.is_snake_case( original, out parts ) ) {
-      orig = string.joinv( " ", parts );
-    } else {
-      orig = original;
-    }
     var str  = "";
     var rand = new Rand();
-    for( int i=0; i<orig.char_count(); i++ ) {
-      var ch = orig.get_char( orig.index_of_nth_char( i ) );
+    for( int i=0; i<original.char_count(); i++ ) {
+      var ch = original.get_char( original.index_of_nth_char( i ) );
       str += (rand.int_range( 0, 2 ) == 0) ? ch.tolower().to_string() : ch.toupper().to_string();
     }
     return( str );
