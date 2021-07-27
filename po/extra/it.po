@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-11 10:45-0500\n"
+"POT-Creation-Date: 2021-07-26 22:48-0500\n"
 "PO-Revision-Date: 2021-04-17 17:05+0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -49,9 +49,10 @@ msgid ""
 "text with loads of built-in text actions and user-created custom text "
 "workflows, and save the changes to the clipboard or to a file."
 msgstr ""
-"Incolla facilmente il testo dagli appunti o carica il testo da un file, modifica il "
-"testo con un sacco di azioni di testo integrate e testo personalizzato creato dall'utente con"
-"flussi di lavoro e salva le modifiche negli appunti o in un file."
+"Incolla facilmente il testo dagli appunti o carica il testo da un file, "
+"modifica il testo con un sacco di azioni di testo integrate e testo "
+"personalizzato creato dall'utente conflussi di lavoro e salva le modifiche "
+"negli appunti o in un file."
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:27
 msgid ""
@@ -60,8 +61,9 @@ msgid ""
 "the same way that built-in actions are used within the application."
 msgstr ""
 "Oltre alle azioni integrate, TextShine ti consente di creare e testare "
-"flussi di lavoro e conversioni del testo personalizzato. Questi flussi di lavoro personalizzati possono quindi essere utilizzati "
-"nello stesso modo in cui vengono utilizzate le azioni integrate all'interno dell'applicazione."
+"flussi di lavoro e conversioni del testo personalizzato. Questi flussi di "
+"lavoro personalizzati possono quindi essere utilizzati nello stesso modo in "
+"cui vengono utilizzate le azioni integrate all'interno dell'applicazione."
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:32
 msgid "Key features include the following:"
@@ -113,11 +115,13 @@ msgstr "Azione: Cambio di maiuscolo/minuscolo"
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:47
 msgid "Action: Inserting text, line numbers, lorem ipsum and file contents"
-msgstr "Azione: Inserimento di testo, numeri di riga, lorem ipsum e contenuto di file"
+msgstr ""
+"Azione: Inserimento di testo, numeri di riga, lorem ipsum e contenuto di file"
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:48
 msgid "Action: Removing line numbers, blank lines/spaces and matched text"
-msgstr "Azione: Rimozione di numeri di riga, righe/spazi vuoti e testo abbinato"
+msgstr ""
+"Azione: Rimozione di numeri di riga, righe/spazi vuoti e testo abbinato"
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:49
 msgid "Action: Replacement of text"
@@ -137,7 +141,8 @@ msgstr "Azione: Gestione dell'indentazione"
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:53
 msgid "Action: Search and replace (includes regular expression support)"
-msgstr "Azione: Cerca e sostituisci (include il supporto delle espressioni regolari)"
+msgstr ""
+"Azione: Cerca e sostituisci (include il supporto delle espressioni regolari)"
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:54
 msgid "Action: Automatic text repair"
