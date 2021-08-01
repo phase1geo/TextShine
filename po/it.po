@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-11 10:45-0500\n"
+"POT-Creation-Date: 2021-07-26 22:48-0500\n"
 "PO-Revision-Date: 2021-04-17 16:50-0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -28,78 +28,78 @@ msgstr "Visualizza il numero di versione"
 msgid "Transform clipboard text"
 msgstr "Trasforma testo degli appunti"
 
-#: src/MainWindow.vala:206
+#: src/MainWindow.vala:196
 msgid "New Workspace"
 msgstr "Nuovo spazio di lavoro"
 
-#: src/MainWindow.vala:211 src/MainWindow.vala:410
+#: src/MainWindow.vala:201 src/MainWindow.vala:400
 msgid "Open File"
 msgstr "Apri File"
 
-#: src/MainWindow.vala:216 src/MainWindow.vala:442
+#: src/MainWindow.vala:206 src/MainWindow.vala:432
 msgid "Save File"
 msgstr "Salva File"
 
-#: src/MainWindow.vala:221
+#: src/MainWindow.vala:211
 msgid "Paste Over"
 msgstr "Incolla Sopra"
 
-#: src/MainWindow.vala:226
+#: src/MainWindow.vala:216
 msgid "Copy All"
 msgstr "Copia Tutto"
 
-#: src/MainWindow.vala:231
+#: src/MainWindow.vala:221
 msgid "Undo"
 msgstr "Annulla"
 
-#: src/MainWindow.vala:237
+#: src/MainWindow.vala:227
 msgid "Redo"
 msgstr "Rifai"
 
-#: src/MainWindow.vala:246
+#: src/MainWindow.vala:236
 msgid "TextShine"
 msgstr "TextShine"
 
-#: src/MainWindow.vala:255
+#: src/MainWindow.vala:245
 msgid "Statistics"
 msgstr "Statistiche"
 
-#: src/MainWindow.vala:265
+#: src/MainWindow.vala:255
 msgid "<b>Text Statistics</b>"
 msgstr "<b>Statistiche di Testo</b>"
 
-#: src/MainWindow.vala:269
+#: src/MainWindow.vala:259
 msgid "Characters:"
 msgstr "Caratteri:"
 
-#: src/MainWindow.vala:274
+#: src/MainWindow.vala:264
 msgid "Words:"
 msgstr "Parole:"
 
-#: src/MainWindow.vala:279
+#: src/MainWindow.vala:269
 msgid "Lines:"
 msgstr "Linee:"
 
-#: src/MainWindow.vala:284
+#: src/MainWindow.vala:274
 msgid "Matches:"
 msgstr "Corrispondenze:"
 
-#: src/MainWindow.vala:329
+#: src/MainWindow.vala:319
 msgid "Properties"
 msgstr "Proprietà"
 
-#: src/MainWindow.vala:352
+#: src/MainWindow.vala:342
 msgid "Font:"
 msgstr "Font:"
 
-#: src/MainWindow.vala:410
+#: src/MainWindow.vala:400
 msgid "Open"
 msgstr "aPRI"
 
-#: src/MainWindow.vala:410 src/MainWindow.vala:442
+#: src/MainWindow.vala:400 src/MainWindow.vala:432
 msgid "Cancel"
 msgstr "Cancella"
 
-#: src/MainWindow.vala:442
+#: src/MainWindow.vala:432
 msgid "Save"
 msgstr "Salva"
