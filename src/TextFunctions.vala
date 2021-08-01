@@ -302,6 +302,10 @@ public class TextFunctions {
   /* Load the favorites to the XML file */
   private void load_favorites() {
 
+    if( !FileUtils.test( _favorites_file, FileTest.EXISTS ) ) {
+      return;
+    }
+
     Xml.Doc* doc = Xml.Parser.read_file( _favorites_file, null, Xml.ParserOption.HUGE );
     if( doc == null ) {
       return;
@@ -346,7 +350,12 @@ public class TextFunctions {
 
   }
 
+  /* Load the user-created custom functions */
   public void load_functions() {
+
+    if( !FileUtils.test( _custom_file, FileTest.EXISTS ) ) {
+      return;
+    }
 
     Xml.Doc* doc = Xml.Parser.read_file( _custom_file, null, Xml.ParserOption.HUGE );
     if( doc == null ) {
@@ -387,6 +396,10 @@ public class TextFunctions {
 
   /* Load the custom functions from the XML file */
   private void load_custom() {
+
+    if( !FileUtils.test( _custom_file, FileTest.EXISTS ) ) {
+      return;
+    }
 
     Xml.Doc* doc = Xml.Parser.read_file( _custom_file, null, Xml.ParserOption.HUGE );
     if( doc == null ) {
