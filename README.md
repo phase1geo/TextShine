@@ -57,7 +57,7 @@ You will need the following dependencies to build TextShine:
 * libgtk-3-dev
 * libxml2-dev
 * libgee-0.8-dev
-* libgtksourceview-3.0-dev
+* libgtksourceview-4-dev
 * libmarkdown2-dev
 * libcamel1.2-dev
 * libgranite-dev
