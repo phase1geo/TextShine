@@ -96,6 +96,25 @@
       <value key="x-appcenter-stripe">pk_live_wsAhF3dNEsmhB6oQIQknujgL00dBOT1gsG</value>
     </custom>
     <releases>
+      <release version="1.1.0" date="2021-08-08">
+        <p>New</p>
+        <ul>
+          <li>Added Italian translation (thanks to @albanobattistella).</li>
+          <li>Added Flatpak manifest for releasing for elementary OS 6.</li>
+          <li>Added dark mode system support.</li>
+        </ul>
+        <p>Changes</p>
+        <ul>
+          <li>Updated application to use libhandy-1 to comply with elementary OS HIG recommendations.</li>
+          <li>Updated gtksourceview from 3 to 4.</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed random case transform functionality.</li>
+          <li>Fixed determination of camel case in text string.</li>
+          <li>Fixed warning messages when non-existent files are attempted to be opened.</li>
+        </ul>
+      </release>
       <release version="1.0.1" date="2021-04-11">
         <p>Fixing application icon in AppCenter</p>
       </release>
