@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-26 22:48-0500\n"
+"POT-Creation-Date: 2021-08-07 20:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,78 +29,78 @@ msgstr ""
 msgid "Transform clipboard text"
 msgstr ""
 
-#: src/MainWindow.vala:196
+#: src/MainWindow.vala:203
 msgid "New Workspace"
 msgstr ""
 
-#: src/MainWindow.vala:201 src/MainWindow.vala:400
+#: src/MainWindow.vala:208 src/MainWindow.vala:406
 msgid "Open File"
 msgstr ""
 
-#: src/MainWindow.vala:206 src/MainWindow.vala:432
+#: src/MainWindow.vala:213 src/MainWindow.vala:438
 msgid "Save File"
 msgstr ""
 
-#: src/MainWindow.vala:211
+#: src/MainWindow.vala:218
 msgid "Paste Over"
 msgstr ""
 
-#: src/MainWindow.vala:216
+#: src/MainWindow.vala:223
 msgid "Copy All"
 msgstr ""
 
-#: src/MainWindow.vala:221
+#: src/MainWindow.vala:228
 msgid "Undo"
 msgstr ""
 
-#: src/MainWindow.vala:227
+#: src/MainWindow.vala:234
 msgid "Redo"
 msgstr ""
 
-#: src/MainWindow.vala:236
+#: src/MainWindow.vala:242
 msgid "TextShine"
 msgstr ""
 
-#: src/MainWindow.vala:245
+#: src/MainWindow.vala:251
 msgid "Statistics"
 msgstr ""
 
-#: src/MainWindow.vala:255
+#: src/MainWindow.vala:261
 msgid "<b>Text Statistics</b>"
 msgstr ""
 
-#: src/MainWindow.vala:259
+#: src/MainWindow.vala:265
 msgid "Characters:"
 msgstr ""
 
-#: src/MainWindow.vala:264
+#: src/MainWindow.vala:270
 msgid "Words:"
 msgstr ""
 
-#: src/MainWindow.vala:269
+#: src/MainWindow.vala:275
 msgid "Lines:"
 msgstr ""
 
-#: src/MainWindow.vala:274
+#: src/MainWindow.vala:280
 msgid "Matches:"
 msgstr ""
 
-#: src/MainWindow.vala:319
+#: src/MainWindow.vala:325
 msgid "Properties"
 msgstr ""
 
-#: src/MainWindow.vala:342
+#: src/MainWindow.vala:348
 msgid "Font:"
 msgstr ""
 
-#: src/MainWindow.vala:400
+#: src/MainWindow.vala:406
 msgid "Open"
 msgstr ""
 
-#: src/MainWindow.vala:400 src/MainWindow.vala:432
+#: src/MainWindow.vala:406 src/MainWindow.vala:438
 msgid "Cancel"
 msgstr ""
 
-#: src/MainWindow.vala:432
+#: src/MainWindow.vala:438
 msgid "Save"
 msgstr ""

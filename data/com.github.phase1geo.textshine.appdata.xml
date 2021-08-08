@@ -5,8 +5,11 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>TextShine</name>
+  <name xml:lang="it">TextShine</name>
   <summary>Powerfully transform text</summary>
+  <summary xml:lang="it">Trasforma il testo in modo potente</summary>
   <developer_name>Trevor Williams</developer_name>
+  <developer_name xml:lang="it">Trevor Williams</developer_name>
   <provides>
     <binary>com.github.phase1geo.textshine</binary>
   </provides>
@@ -24,36 +27,60 @@
         with loads of built-in text actions and user-created custom text workflows, and
         save the changes to the clipboard or to a file.
       </p>
+    <p xml:lang="it">Incolla facilmente il testo dagli appunti o carica il testo da un file, modifica il testo con un sacco di azioni di testo integrate e testo personalizzato creato dall'utente conflussi di lavoro e salva le modifiche negli appunti o in un file.</p>
     <p>
         In addition to the built-in actions, TextShine allows you to create and test
         custom text conversion workflows. These custom workflows can then be used in the
         same way that built-in actions are used within the application.
       </p>
+    <p xml:lang="it">Oltre alle azioni integrate, TextShine ti consente di creare e testare flussi di lavoro e conversioni del testo personalizzato. Questi flussi di lavoro personalizzati possono quindi essere utilizzati nello stesso modo in cui vengono utilizzate le azioni integrate all'interno dell'applicazione.</p>
     <p>
         Key features include the following:
       </p>
+    <p xml:lang="it">Le caratteristiche principali includono quanto segue:</p>
     <ul>
       <li>Load text from clipboard or from a file.</li>
+      <li xml:lang="it">Carica il testo dagli appunti o da un file.</li>
       <li>Save text back to clipboard, to the same file or to a new file.</li>
+      <li xml:lang="it">Salva il testo negli appunti, nello stesso file o in un nuovo file.</li>
       <li>Unlimited undo/redo of text changes.</li>
+      <li xml:lang="it">Annulla/ripristina illimitate modifiche al testo.</li>
       <li>Apply a text action in a single click.</li>
+      <li xml:lang="it">Applica un'azione al testo con un solo clic.</li>
       <li>Support for action favoriting.</li>
+      <li xml:lang="it">Supporto per favorire l'azione.</li>
       <li>Support for creating and testing custom actions.</li>
+      <li xml:lang="it">Supporto per la creazione e il test di azioni personalizzate.</li>
       <li>Quickly search available text actions.</li>
+      <li xml:lang="it">Cerca rapidamente le azioni di testo disponibili.</li>
       <li>Character, word, line and match statistics.</li>
+      <li xml:lang="it">Carattere,parola,linea e Statistiche abbinate.</li>
       <li>Support for font size changes.</li>
+      <li xml:lang="it">Supporto per le modifiche alla dimensione del font.</li>
       <li>Categorized text actions which include:</li>
+      <li xml:lang="it">Categorizzate azioni di testo che includono:</li>
       <li>Action: Changing case</li>
+      <li xml:lang="it">Azione: Cambio di maiuscolo/minuscolo</li>
       <li>Action: Inserting text, line numbers, lorem ipsum and file contents</li>
+      <li xml:lang="it">Azione: Inserimento di testo, numeri di riga, lorem ipsum e contenuto di file</li>
       <li>Action: Removing line numbers, blank lines/spaces and matched text</li>
+      <li xml:lang="it">Azione: Rimozione di numeri di riga, righe/spazi vuoti e testo abbinato</li>
       <li>Action: Replacement of text</li>
+      <li xml:lang="it">Azione: Sostituzione del testo</li>
       <li>Action: Quotation conversion</li>
+      <li xml:lang="it">Azione: Conversione del preventivo</li>
       <li>Action: Line sorting</li>
+      <li xml:lang="it">Azione: Ordinamento riga</li>
       <li>Action: Indentation handling</li>
+      <li xml:lang="it">Azione: Gestione dell'indentazione</li>
       <li>Action: Search and replace (includes regular expression support)</li>
+      <li xml:lang="it">Azione: Cerca e sostituisci (include il supporto delle espressioni regolari)</li>
       <li>Action: Automatic text repair</li>
+      <li xml:lang="it">Azione: Riparazione automatica del testo</li>
       <li>Action: Text conversion</li>
+      <li xml:lang="it">Azione: Conversione del testo</li>
       <li>Action: Markdown utilities</li>
+      <li xml:lang="it">Azione: Utilità di Markdown</li>
     </ul>
   </description>
   <content_rating type="oars-1.1">
@@ -93,14 +120,35 @@
     <value key="x-appcenter-color-primary">#fff394</value>
     <value key="x-appcenter-color-primary-text">#000000</value>
     <value key="x-appcenter-suggested-price">5</value>
+    <value key="x-appcenter-stripe">pk_live_wsAhF3dNEsmhB6oQIQknujgL00dBOT1gsG</value>
   </custom>
   <releases>
+    <release version="1.1.0" date="2021-08-08">
+      <p>New</p>
+      <ul>
+        <li>Added Italian translation (thanks to @albanobattistella).</li>
+        <li>Added Flatpak manifest for releasing for elementary OS 6.</li>
+        <li>Added dark mode system support.</li>
+      </ul>
+      <p>Changes</p>
+      <ul>
+        <li>Updated application to use libhandy-1 to comply with elementary OS HIG recommendations.</li>
+        <li>Updated gtksourceview from 3 to 4.</li>
+      </ul>
+      <p>Bug Fixes</p>
+      <ul>
+        <li>Fixed random case transform functionality.</li>
+        <li>Fixed determination of camel case in text string.</li>
+        <li>Fixed warning messages when non-existent files are attempted to be opened.</li>
+      </ul>
+    </release>
     <release version="1.0.1" date="2021-04-11">
       <p>Fixing application icon in AppCenter</p>
     </release>
     <release version="1.0.0" date="2020-11-29">
       <description>
         <p>Initial release</p>
+        <p xml:lang="it">Versione iniziale</p>
       </description>
     </release>
   </releases>
