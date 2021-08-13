@@ -171,7 +171,10 @@
        aria-label="T"
        transform="matrix(1.0573558,0.28331764,-0.23643885,0.88240182,0,0)"
        id="text6181"
-       style="font-size:23.5476px;line-height:1.25;font-family:Tinos;-inkscape-font-specification:'Tinos, Normal';letter-spacing:0px;word-spacing:0px;stroke-width:0.588694">
+       style="font-size:23.5476px;line-height:1.25;font-family:Tinos;-inkscape-font-specification:'Tinos, Normal';letter-spacing:0px;word-spacing:0px;stroke-width:0.588694"
+       inkscape:export-filename="/home/trevorw/projects/TextShine/data/images/com.github.phase1geo.textshine.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <path
          d="M 15.657012,21.035089 V 20.425703 L 18.106057,20.11526 V 6.6052707 h -0.586391 q -2.90896,0 -3.978261,0.2299573 L 13.230963,9.2382815 H 12.460606 V 5.6164544 H 26.028085 V 9.2382815 H 25.24623 L 24.935788,6.835228 Q 24.590852,6.7547429 23.429568,6.6972536 22.268283,6.6282664 20.88854,6.6282664 H 20.325144 V 20.11526 l 2.449045,0.310443 v 0.609386 z"
          style="font-size:23.5476px;stroke-width:0.588694"
