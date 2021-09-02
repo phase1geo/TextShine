@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2020 Trevor Williams <phase1geo@gmail.com> -->
 <component type="desktop-application">
   <id>com.github.phase1geo.textshine</id>
@@ -120,7 +120,6 @@
     <value key="x-appcenter-color-primary">#fff394</value>
     <value key="x-appcenter-color-primary-text">#000000</value>
     <value key="x-appcenter-suggested-price">5</value>
-    <value key="x-appcenter-stripe">pk_live_wsAhF3dNEsmhB6oQIQknujgL00dBOT1gsG</value>
   </custom>
   <releases>
     <release version="1.1.0" date="2021-08-08">
