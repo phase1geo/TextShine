@@ -312,7 +312,6 @@ public class RegExpr : TextFunction {
         var range    = ranges.index( i );
         var text     = editor.get_text( range.start, range.end );
         var new_text = re.replace( text, text.length, 0, Utils.replace_index( replace_text, ref int_value ) );
-        stdout.printf( "new_text: %s\n", new_text );
         editor.replace_text( range.start, range.end, new_text, undo_item );
       }
 
