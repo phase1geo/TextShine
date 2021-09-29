@@ -30,8 +30,8 @@ public class ConvertHardWrap : TextFunction {
 
     public string label() {
       switch( this ) {
-        case CHAR :  return( _( "Character" ) );
-        case WORD :  return( _( "Word" ) );
+        case CHAR :  return( _( "Characters" ) );
+        case WORD :  return( _( "Words" ) );
         default   :  assert_not_reached();
       }
     }
@@ -62,7 +62,7 @@ public class ConvertHardWrap : TextFunction {
   }
 
   protected override string get_label0() {
-    return( _( "Hard Wrap At %d Characters" ).printf( _col_width ) );
+    return( _( "Hard Wrap At %d %s" ).printf( _col_width, _wrap_type.label() ) );
   }
 
   public override TextFunction copy( bool custom ) {
@@ -100,6 +100,7 @@ public class ConvertHardWrap : TextFunction {
       return( type.label() );
     }, (value) => {
       _wrap_type = (HardWrapType)value;
+      update_button_label();
     });
 
   }
