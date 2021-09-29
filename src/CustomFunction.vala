@@ -62,14 +62,19 @@ public class CustomFunction : TextFunction {
     _breakpoint = -1;
   }
 
+  /* Copy constructor */
+  public CustomFunction.copy_function( CustomFunction func ) {
+    base( func.name, true );
+    _label = func.label;
+    _functions = new Array<TextFunction>();
+    for( int i=0; i<func.functions.length; i++ ) {
+      _functions.append_val( func.functions.index( i ).copy( true ) );
+    }
+  }
+
   /* Creates a copy of this custom function and returns it to the caller */
   public override TextFunction copy( bool custom ) {
-    var fn = new CustomFunction( custom );
-    fn._label = _label;
-    for( int i=0; i<_functions.length; i++ ) {
-      fn._functions.append_val( _functions.index( i ).copy( true ) );
-    }
-    return( fn );
+    return( new CustomFunction.copy_function( this ) );
   }
 
   protected override string get_label0() {
