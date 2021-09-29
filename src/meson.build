@@ -8,6 +8,7 @@ sources += files(
     'functions/case/CaseTitle.vala',
     'functions/case/CaseUpper.vala',
 
+    'functions/convert/ConvertBase64.vala',
     'functions/convert/ConvertChecksum.vala',
     'functions/convert/ConvertHardWrap.vala',
     'functions/convert/ConvertROT13.vala',

@@ -118,8 +118,9 @@ public class TextFunctions {
     /* Category - convert */
     add_function( "convert", new ConvertHardWrap() );
     add_function( "convert", new ConvertURLEncode() );
-    add_function( "convert", new ConvertROT13() );
+    add_function( "convert", new ConvertBase64() );
     add_function( "convert", new ConvertChecksum() );
+    add_function( "convert", new ConvertROT13() );
 
     /* Category - search-replace */
     add_function( "search-replace", new Find( win ) );
