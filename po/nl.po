@@ -20,7 +20,7 @@ msgstr ""
 
 #: src/Application.vala:82
 msgid "Opening file"
-msgstr "Bezig met openen van bestand"
+msgstr "Bestand openen"
 
 #: src/Application.vala:105
 msgid "Display version number"
