@@ -136,6 +136,9 @@ public class TextFunctions {
     add_function( "markdown", new ConvertMarkdownHTML() );
     add_function( "markdown", new MarkdownReferences() );
     add_function( "markdown", new MarkdownTableBeauty() );
+    add_function( "markdown", new MarkdownCheckbox() );
+    add_function( "markdown", new MarkdownTask() );
+    add_function( "markdown", new MarkdownComplete() );
 
     /* Load the custom functions */
     load_functions();
