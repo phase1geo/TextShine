@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.phase1geo.textshine package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.phase1geo.textshine\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-01 21:04-0500\n"
+"PO-Revision-Date: 2021-09-30 14:30+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl\n"
+
+#: src/Application.vala:82
+msgid "Opening file"
+msgstr "Bezig met openen van bestand"
+
+#: src/Application.vala:105
+msgid "Display version number"
+msgstr "Toon het versienummer"
+
+#: src/Application.vala:106
+msgid "Transform clipboard text"
+msgstr "Zet klembordtekst om"
+
+#: src/MainWindow.vala:203
+msgid "New Workspace"
+msgstr "Nieuw werkblad"
+
+#: src/MainWindow.vala:208 src/MainWindow.vala:406
+msgid "Open File"
+msgstr "Bestand openen"
+
+#: src/MainWindow.vala:213 src/MainWindow.vala:438
+msgid "Save File"
+msgstr "Bestand opslaan"
+
+#: src/MainWindow.vala:218
+msgid "Paste Over"
+msgstr "Plakken over"
+
+#: src/MainWindow.vala:223
+msgid "Copy All"
+msgstr "Alles kopiëren"
+
+#: src/MainWindow.vala:228
+msgid "Undo"
+msgstr "Ongedaan maken"
+
+#: src/MainWindow.vala:234
+msgid "Redo"
+msgstr "Opnieuw uitvoeren"
+
+#: src/MainWindow.vala:242
+msgid "TextShine"
+msgstr "TextShine"
+
+#: src/MainWindow.vala:251
+msgid "Statistics"
+msgstr "Statistieken"
+
+#: src/MainWindow.vala:261
+msgid "<b>Text Statistics</b>"
+msgstr "<b>Tekststatistieken</b>"
+
+#: src/MainWindow.vala:265
+msgid "Characters:"
+msgstr "Aantal tekens:"
+
+#: src/MainWindow.vala:270
+msgid "Words:"
+msgstr "Aantal woorden:"
+
+#: src/MainWindow.vala:275
+msgid "Lines:"
+msgstr "Aantal regels:"
+
+#: src/MainWindow.vala:280
+msgid "Matches:"
+msgstr "Aantal overeenkomsten:"
+
+#: src/MainWindow.vala:325
+msgid "Properties"
+msgstr "Eigenschappen"
+
+#: src/MainWindow.vala:348
+msgid "Font:"
+msgstr "Lettertype:"
+
+#: src/MainWindow.vala:406
+msgid "Open"
+msgstr "Openen"
+
+#: src/MainWindow.vala:406 src/MainWindow.vala:438
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: src/MainWindow.vala:438
+msgid "Save"
+msgstr "Opslaan"

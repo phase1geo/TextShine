@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the extra package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: extra\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-01 21:04-0500\n"
+"PO-Revision-Date: 2021-09-30 14:37+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl\n"
+
+#: data/com.github.phase1geo.textshine.desktop.in:3
+#: data/com.github.phase1geo.textshine.desktop.in:4
+#: data/com.github.phase1geo.textshine.appdata.xml.in:7
+msgid "TextShine"
+msgstr "TextShine"
+
+#: data/com.github.phase1geo.textshine.desktop.in:5
+#: data/com.github.phase1geo.textshine.appdata.xml.in:8
+msgid "Powerfully transform text"
+msgstr "Zet tekst om met dit krachtige hulpmiddel"
+
+#: data/com.github.phase1geo.textshine.desktop.in:8
+msgid "com.github.phase1geo.textshine"
+msgstr "com.github.phase1geo.textshine"
+
+#: data/com.github.phase1geo.textshine.desktop.in:14
+msgid "textshine;text;conversion;convert;"
+msgstr "textshine;tekst;conversie;converteren;omzetten;"
+
+#: data/com.github.phase1geo.textshine.desktop.in:18
+msgid "Edit Clipboard Text"
+msgstr "Pas klembordtekst aan"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:9
+msgid "Trevor Williams"
+msgstr "Trevor Williams"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:22
+msgid ""
+"Easily paste text from the clipboard or load text from a file, modify the "
+"text with loads of built-in text actions and user-created custom text "
+"workflows, and save the changes to the clipboard or to a file."
+msgstr ""
+"Plak tekst van het klembord of laad tekst uit een bestand. De tekst kan "
+"worden aangepast met behulp van vele ingebouwde tekstacties en eigengemaakte "
+"werkmethoden. Nadien kunnen de aanpassingen worden opgeslagen op het "
+"klembord of in een bestand."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:27
+msgid ""
+"In addition to the built-in actions, TextShine allows you to create and test "
+"custom text conversion workflows. These custom workflows can then be used in "
+"the same way that built-in actions are used within the application."
+msgstr ""
+"Naast de ingebouwde acties kan TextShine eigengemaakte werkmethoden "
+"gebruiken. Deze werkmethoden kunnen vervolgens worden gebruikt op dezelfde "
+"manier als de ingebouwde acties."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:32
+msgid "Key features include the following:"
+msgstr "TextShine's kenmerken op een rijtje:"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:36
+msgid "Load text from clipboard or from a file."
+msgstr "Laad tekst van het klembord of uit een bestand;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:37
+msgid "Save text back to clipboard, to the same file or to a new file."
+msgstr "Sla tekst op op het klembord of in hetzelfde of een nieuw bestand;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:38
+msgid "Unlimited undo/redo of text changes."
+msgstr "Ongelimiteerd ongedaan maken/opnieuw uitvoeren van aanpassingen;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:39
+msgid "Apply a text action in a single click."
+msgstr "Pas met één muisklik een actie toe;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:40
+msgid "Support for action favoriting."
+msgstr "Ondersteuning voor het kiezen van favoriete acties;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:41
+msgid "Support for creating and testing custom actions."
+msgstr "Ondersteuning voor het maken en uitvoeren van eigen acties;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:42
+msgid "Quickly search available text actions."
+msgstr "Snel zoeken door beschikbare acties;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:43
+msgid "Character, word, line and match statistics."
+msgstr "Teken-, woord-, regel- en overeenkomststatistieken;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:44
+msgid "Support for font size changes."
+msgstr "Ondersteuning voor tekstgrootte-aanpassingen;"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:45
+msgid "Categorized text actions which include:"
+msgstr "Gecategoriseerde acties, waaronder:"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:46
+msgid "Action: Changing case"
+msgstr "Actie: hoofdlettergebruik aanpassen"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:47
+msgid "Action: Inserting text, line numbers, lorem ipsum and file contents"
+msgstr "Actie: tekst invoegen, regelnummers, lorem ipsum en bestandsinhoud"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:48
+msgid "Action: Removing line numbers, blank lines/spaces and matched text"
+msgstr ""
+"Actie: regelnummers, blanco regels/spaties en overeengekomen tekst wissen"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:49
+msgid "Action: Replacement of text"
+msgstr "Actie: tekst vervangen"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:50
+msgid "Action: Quotation conversion"
+msgstr "Actie: citaten omzetten"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:51
+msgid "Action: Line sorting"
+msgstr "Actie: regels rangschikken"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:52
+msgid "Action: Indentation handling"
+msgstr "Actie: inspringacties"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:53
+msgid "Action: Search and replace (includes regular expression support)"
+msgstr "Actie: zoeken en vervangen (ondersteunt reguliere uitdrukkingen)"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:54
+msgid "Action: Automatic text repair"
+msgstr "Actie: automatisch tekst repareren"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:55
+msgid "Action: Text conversion"
+msgstr "Actie: tekst omzetten"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:56
+msgid "Action: Markdown utilities"
+msgstr "Actie: Markdown-hulpmiddelen"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:122
+msgid "Initial release"
+msgstr "Eerste uitgave"
