@@ -95,7 +95,9 @@ public class CustomFunction : TextFunction {
   public override void launch( Editor editor ) {
     var undo_item = new UndoItem( _label );
     for( int i=0; i<_functions.length; i++ ) {
-      _functions.index( i ).run( editor, undo_item );
+      if( _functions.index( i ).launchable( editor ) ) {
+        _functions.index( i ).run( editor, undo_item );
+      }
     }
     editor.undo_buffer.add_item( undo_item );
   }
@@ -106,7 +108,9 @@ public class CustomFunction : TextFunction {
   public void test( Editor editor, UndoItem undo_item ) {
     var func_len = (_breakpoint == -1) ? _functions.length : (_breakpoint + 1);
     for( int i=0; i<func_len; i++ ) {
-      _functions.index( i ).run( editor, undo_item );
+      if( _functions.index( i ).launchable( editor ) ) {
+        _functions.index( i ).run( editor, undo_item );
+      }
     }
   }
 
