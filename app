@@ -46,6 +46,7 @@ case $1 in
     sudo rm -rf ./build
     ;;
 "generate-i18n")
+    grep -rc _\( * | grep ^src | grep -v :0 | cut -d : -f 1 | sort -o po/POTFILES
     initialize 0
     ninja com.github.phase1geo.textshine-pot
     ninja com.github.phase1geo.textshine-update-po

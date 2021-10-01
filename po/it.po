@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-01 21:04-0500\n"
+"POT-Creation-Date: 2021-09-30 22:47-0500\n"
 "PO-Revision-Date: 2021-04-17 16:50-0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -27,6 +27,552 @@ msgstr "Visualizza il numero di versione"
 #: src/Application.vala:106
 msgid "Transform clipboard text"
 msgstr "Trasforma testo degli appunti"
+
+#: src/functions/case/CaseCamel.vala:35
+msgid "Camel Case"
+msgstr ""
+
+#: src/functions/case/CaseLower.vala:30
+msgid "Lower Case"
+msgstr ""
+
+#: src/functions/case/CaseRandom.vala:30
+msgid "Random Case"
+msgstr ""
+
+#: src/functions/case/CaseSentence.vala:35
+msgid "Sentence Case"
+msgstr ""
+
+#: src/functions/case/CaseSnake.vala:35
+msgid "Snake Case"
+msgstr ""
+
+#: src/functions/case/CaseTitle.vala:35
+msgid "Title Case"
+msgstr ""
+
+#: src/functions/case/CaseUpper.vala:30
+msgid "Upper Case"
+msgstr ""
+
+#: src/functions/convert/ConvertBase64.vala:32
+msgid "Encode To Base64"
+msgstr ""
+
+#: src/functions/convert/ConvertBase64.vala:36
+msgid "Decode From Base64"
+msgstr ""
+
+#: src/functions/convert/ConvertChecksum.vala:87
+#, c-format
+msgid "Encode as %s checksum"
+msgstr ""
+
+#: src/functions/convert/ConvertChecksum.vala:109
+msgid "Checksum Type"
+msgstr ""
+
+#: src/functions/convert/ConvertHardWrap.vala:33
+#, fuzzy
+msgid "Characters"
+msgstr "Caratteri:"
+
+#: src/functions/convert/ConvertHardWrap.vala:34
+#, fuzzy
+msgid "Words"
+msgstr "Parole:"
+
+#: src/functions/convert/ConvertHardWrap.vala:65
+#, c-format
+msgid "Hard Wrap At %d %s"
+msgstr ""
+
+#: src/functions/convert/ConvertHardWrap.vala:93
+msgid "Column Width"
+msgstr ""
+
+#: src/functions/convert/ConvertHardWrap.vala:98
+msgid "Wrap Type"
+msgstr ""
+
+#: src/functions/convert/ConvertROT13.vala:32
+msgid "ROT 13"
+msgstr ""
+
+#: src/functions/convert/ConvertURLEncode.vala:32
+msgid "Encode URL"
+msgstr ""
+
+#: src/functions/indent/Indent.vala:32
+msgid "Indent One Level"
+msgstr ""
+
+#: src/functions/indent/IndentXML.vala:32
+msgid "Indent XML"
+msgstr ""
+
+#: src/functions/indent/Unindent.vala:32
+msgid "Unindent One Level"
+msgstr ""
+
+#: src/functions/insert/InsertFile.vala:36
+msgid "Insert File Text"
+msgstr ""
+
+#: src/functions/insert/InsertFile.vala:44
+#: src/functions/insert/InsertFile.vala:92
+#, fuzzy
+msgid "Insert File"
+msgstr "Apri File"
+
+#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:406
+msgid "Open"
+msgstr "aPRI"
+
+#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:406
+#: src/MainWindow.vala:438 src/SidebarCustom.vala:720
+msgid "Cancel"
+msgstr "Cancella"
+
+#: src/functions/insert/InsertLineNumbers.vala:39
+msgid "Insert Line Numbers"
+msgstr ""
+
+#: src/functions/insert/InsertLineNumbers.vala:88
+msgid "Separator"
+msgstr ""
+
+#: src/functions/insert/InsertLineNumbers.vala:92
+msgid "Add Padding"
+msgstr ""
+
+#: src/functions/insert/InsertLineNumbers.vala:96
+msgid "Skip Blank Lines"
+msgstr ""
+
+#: src/functions/insert/InsertLoremIpsum.vala:60
+msgid "Insert Lorem Ipsum"
+msgstr ""
+
+#: src/functions/insert/InsertLoremIpsum.vala:98
+msgid "Paragraphs"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:39
+msgid "Start of Line"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:40
+msgid "End of Line"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:41
+msgid "Start of Document"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:42
+msgid "End of Document"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:43
+msgid "Start of Paragraph"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:44
+msgid "End of Paragraphs"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:45
+msgid "Before First Line Character"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:99
+#, c-format
+msgid "Insert Text (%s)"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:136
+msgid "Inserted Text"
+msgstr ""
+
+#: src/functions/insert/InsertText.vala:184
+msgid "Insert At"
+msgstr ""
+
+#: src/functions/markdown/ConvertMarkdownHTML.vala:35
+msgid "Convert Markdown to HTML"
+msgstr ""
+
+#: src/functions/markdown/ConvertMarkdownHTML.vala:39
+msgid "Convert HTML to Markdown"
+msgstr ""
+
+#: src/functions/markdown/MarkdownCheckbox.vala:35
+msgid "Add Tasks"
+msgstr ""
+
+#: src/functions/markdown/MarkdownCheckbox.vala:39
+msgid "Remove Tasks"
+msgstr ""
+
+#: src/functions/markdown/MarkdownComplete.vala:35
+msgid "Remove Completed Tasks"
+msgstr ""
+
+#: src/functions/markdown/MarkdownReferences.vala:44
+msgid "Generate References"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTableBeauty.vala:226
+msgid "Beautify Tables"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTask.vala:37
+msgid "Mark Tasks Complete"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTask.vala:41
+msgid "Mark Tasks Incomplete"
+msgstr ""
+
+#: src/functions/match/ClearSelected.vala:32
+msgid "Clear Match Highlight"
+msgstr ""
+
+#: src/functions/match/Find.vala:41
+msgid "Find"
+msgstr ""
+
+#: src/functions/match/Find.vala:63
+msgid "Search Text"
+msgstr ""
+
+#: src/functions/match/Find.vala:131 src/Utils.vala:184
+msgid "Insert New-line"
+msgstr ""
+
+#: src/functions/match/Find.vala:132 src/Utils.vala:186
+msgid "Insert Page Break"
+msgstr ""
+
+#: src/functions/match/InvertSelected.vala:32
+msgid "Invert Matched Text"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:44 src/functions/match/RegExpr.vala:66
+msgid "Regular Expression"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:72
+#: src/functions/match/ReplaceSelected.vala:59
+msgid "Replace With"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:165
+#, fuzzy
+msgid "Character Patterns"
+msgstr "Caratteri:"
+
+#: src/functions/match/RegExpr.vala:166
+msgid "Digit"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:167
+msgid "Non-Digit"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:168
+msgid "New-line"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:169
+msgid "Non-New-line"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:170
+msgid "Tab"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:171
+msgid "Page Break"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:172
+msgid "Whitespace"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:173
+msgid "Non-Whitespace"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:174 src/functions/match/RegExpr.vala:199
+#, fuzzy
+msgid "Word"
+msgstr "Parole:"
+
+#: src/functions/match/RegExpr.vala:175
+msgid "Non-Word"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:176
+#, fuzzy
+msgid "Any character"
+msgstr "Caratteri:"
+
+#: src/functions/match/RegExpr.vala:181
+msgid "Location Patterns"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:182
+msgid "Word Boundary"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:183
+msgid "Non-Word Boundary"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:184
+msgid "Start Of Line"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:185
+msgid "End Of Line"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:190
+msgid "Iteration Patterns"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:191
+msgid "0 or 1 Times"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:192
+msgid "0 or More Times"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:193
+msgid "1 or More Times"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:198
+msgid "Advanced Patterns"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:200
+msgid "Number"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:201
+msgid "URL"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:202
+msgid "E-mail"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:203
+msgid "Date"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:204
+msgid "Phone Number"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:205
+msgid "HTML Tag"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:220
+msgid "Case Patterns"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:221
+msgid "Uppercase Next Character"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:222
+msgid "Lowercase Next Character"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:223
+msgid "Start Uppercase Change"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:224
+msgid "Start Lowercase Change"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:225
+msgid "End Case Change"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:232
+msgid "Positional Patterns"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:233
+msgid "Matched Pattern"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:235
+#, c-format
+msgid "Subpattern %d"
+msgstr ""
+
+#: src/functions/match/ReplaceSelected.vala:39
+msgid "Replace Matched Text"
+msgstr ""
+
+#: src/functions/quotes/QuotesAngled.vala:30
+msgid "Change to Angled Quotes"
+msgstr ""
+
+#: src/functions/quotes/QuotesCJK.vala:30
+msgid "Change to CJK Quotes"
+msgstr ""
+
+#: src/functions/quotes/QuotesCurved.vala:30
+msgid "Change to Curved Quotes"
+msgstr ""
+
+#: src/functions/quotes/QuotesDoubleSingle.vala:30
+msgid "Double to Single Quotes"
+msgstr ""
+
+#: src/functions/quotes/QuotesDoubleSingle.vala:34
+msgid "Single to Double Quotes"
+msgstr ""
+
+#: src/functions/quotes/QuotesGerman.vala:30
+msgid "Change to German Quotes"
+msgstr ""
+
+#: src/functions/quotes/QuotesStraight.vala:30
+msgid "Change to Straight Quotes"
+msgstr ""
+
+#: src/functions/remove/RemoveBlankLines.vala:29
+msgid "Remove Blank Lines"
+msgstr ""
+
+#: src/functions/remove/RemoveDuplicateLines.vala:31
+msgid "Remove Duplicate Lines"
+msgstr ""
+
+#: src/functions/remove/RemoveLeadingWhitespace.vala:31
+msgid "Remove Leading Whitespace"
+msgstr ""
+
+#: src/functions/remove/RemoveLineBreaks.vala:29
+msgid "Remove Line Breaks"
+msgstr ""
+
+#: src/functions/remove/RemoveLineNumbers.vala:34
+msgid "Remove Line Numbers"
+msgstr ""
+
+#: src/functions/remove/RemoveSelected.vala:29
+msgid "Remove Matched Text"
+msgstr ""
+
+#: src/functions/remove/RemoveTrailingWhitespace.vala:31
+msgid "Remove Trailing Whitespace"
+msgstr ""
+
+#: src/functions/repair/FixSpaces.vala:45
+msgid "Fix Spaces"
+msgstr ""
+
+#: src/functions/replace/ReplacePeriodsEllipsis.vala:30
+msgid "Three Periods With Ellipsis"
+msgstr ""
+
+#: src/functions/replace/ReplacePeriodsEllipsis.vala:34
+msgid "Ellipsis With Three Periods"
+msgstr ""
+
+#: src/functions/replace/ReplaceReturnSpace.vala:32
+msgid "Return With Space"
+msgstr ""
+
+#: src/functions/replace/ReplaceReturnSpace.vala:36
+msgid "Space With Return"
+msgstr ""
+
+#: src/functions/replace/ReplaceReturns.vala:34
+#, c-format
+msgid "Single Return With %d Returns"
+msgstr ""
+
+#: src/functions/replace/ReplaceReturns.vala:38
+#, c-format
+msgid "%d Returns With Single Return"
+msgstr ""
+
+#: src/functions/replace/ReplaceReturns.vala:70
+msgid "Returns"
+msgstr ""
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:35
+msgid "Tabs With 1 Space"
+msgstr ""
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:37
+#, c-format
+msgid "Tabs With %d Spaces"
+msgstr ""
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:43
+msgid "1 Space With Tabs"
+msgstr ""
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:45
+#, c-format
+msgid "%d Spaces With Tabs"
+msgstr ""
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:78
+msgid "Spaces"
+msgstr ""
+
+#: src/functions/sort/SortLines.vala:30
+#, fuzzy
+msgid "Sort Lines"
+msgstr "Linee:"
+
+#: src/functions/sort/SortLines.vala:34
+msgid "Sort Lines Reversed"
+msgstr ""
+
+#: src/functions/sort/SortMoveLines.vala:36
+msgid "Move 1 Line Down"
+msgstr ""
+
+#: src/functions/sort/SortMoveLines.vala:38
+#, c-format
+msgid "Move %d Lines Down"
+msgstr ""
+
+#: src/functions/sort/SortMoveLines.vala:44
+msgid "Move 1 Line Up"
+msgstr ""
+
+#: src/functions/sort/SortMoveLines.vala:46
+#, c-format
+msgid "Move %d Lines Up"
+msgstr ""
+
+#: src/functions/sort/SortMoveLines.vala:129
+#, fuzzy
+msgid "Lines"
+msgstr "Linee:"
+
+#: src/functions/sort/SortReverseChars.vala:30
+#, fuzzy
+msgid "Reverse Characters"
+msgstr "Caratteri:"
 
 #: src/MainWindow.vala:203
 msgid "New Workspace"
@@ -48,11 +594,11 @@ msgstr "Incolla Sopra"
 msgid "Copy All"
 msgstr "Copia Tutto"
 
-#: src/MainWindow.vala:228
+#: src/MainWindow.vala:228 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
 msgid "Undo"
 msgstr "Annulla"
 
-#: src/MainWindow.vala:234
+#: src/MainWindow.vala:234 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
 msgid "Redo"
 msgstr "Rifai"
 
@@ -92,14 +638,265 @@ msgstr "Proprietà"
 msgid "Font:"
 msgstr "Font:"
 
-#: src/MainWindow.vala:406
-msgid "Open"
-msgstr "aPRI"
-
-#: src/MainWindow.vala:406 src/MainWindow.vala:438
-msgid "Cancel"
-msgstr "Cancella"
-
 #: src/MainWindow.vala:438
 msgid "Save"
 msgstr "Salva"
+
+#: src/SidebarCustom.vala:60
+msgid "Name:"
+msgstr ""
+
+#: src/SidebarCustom.vala:86 src/SidebarCustom.vala:157
+msgid "Test run custom actions"
+msgstr ""
+
+#: src/SidebarCustom.vala:104 src/SidebarCustom.vala:304
+msgid "Add New Action"
+msgstr ""
+
+#: src/SidebarCustom.vala:119
+msgid "Delete"
+msgstr ""
+
+#: src/SidebarCustom.vala:123
+msgid "Done"
+msgstr ""
+
+#: src/SidebarCustom.vala:153
+msgid "Refresh text"
+msgstr ""
+
+#: src/SidebarCustom.vala:229
+msgid "Test run stops after this action"
+msgstr ""
+
+#: src/SidebarCustom.vala:335
+msgid "Add Action Above"
+msgstr ""
+
+#: src/SidebarCustom.vala:340
+msgid "Add Action Below"
+msgstr ""
+
+#: src/SidebarCustom.vala:345
+msgid "Remove Action"
+msgstr ""
+
+#: src/SidebarCustom.vala:353
+msgid "Remove Breakpoint"
+msgstr ""
+
+#: src/SidebarCustom.vala:353 src/SidebarCustom.vala:459
+msgid "Set Breakpoint"
+msgstr ""
+
+#: src/SidebarCustom.vala:491
+msgid "Select Action..."
+msgstr ""
+
+#: src/SidebarCustom.vala:496 src/SidebarFunctions.vala:63
+msgid "Search Actions"
+msgstr ""
+
+#: src/SidebarCustom.vala:605 src/SidebarFunctions.vala:235
+msgid "Switch Direction"
+msgstr ""
+
+#: src/SidebarCustom.vala:605 src/SidebarFunctions.vala:235
+msgid "Swap Order"
+msgstr ""
+
+#: src/SidebarCustom.vala:646 src/SidebarFunctions.vala:374
+msgid "Settings"
+msgstr ""
+
+#: src/SidebarCustom.vala:717
+msgid "Delete Custom Action?"
+msgstr ""
+
+#: src/SidebarCustom.vala:718
+msgid "Deleting a custom action cannot be undone."
+msgstr ""
+
+#: src/SidebarCustom.vala:719
+msgid "Delete Action"
+msgstr ""
+
+#: src/SidebarFunctions.vala:281 src/SidebarFunctions.vala:306
+msgid "Unfavorite"
+msgstr ""
+
+#: src/SidebarFunctions.vala:281 src/SidebarFunctions.vala:302
+msgid "Favorite"
+msgstr ""
+
+#: src/SidebarFunctions.vala:409
+msgid "Edit Action"
+msgstr ""
+
+#: src/TextFunctions.vala:56
+msgid "Favorites"
+msgstr ""
+
+#: src/TextFunctions.vala:57
+msgid "Change Case"
+msgstr ""
+
+#: src/TextFunctions.vala:58
+msgid "Convert"
+msgstr ""
+
+#: src/TextFunctions.vala:59
+msgid "Indentation"
+msgstr ""
+
+#: src/TextFunctions.vala:60
+msgid "Insert"
+msgstr ""
+
+#: src/TextFunctions.vala:61
+msgid "Markdown"
+msgstr ""
+
+#: src/TextFunctions.vala:62
+msgid "Quotes"
+msgstr ""
+
+#: src/TextFunctions.vala:63
+msgid "Remove"
+msgstr ""
+
+#: src/TextFunctions.vala:64
+msgid "Repair"
+msgstr ""
+
+#: src/TextFunctions.vala:65
+msgid "Replace"
+msgstr ""
+
+#: src/TextFunctions.vala:66
+msgid "Search and Replace"
+msgstr ""
+
+#: src/TextFunctions.vala:67
+msgid "Sort"
+msgstr ""
+
+#: src/TextFunctions.vala:68
+msgid "Custom"
+msgstr ""
+
+#: src/UndoBuffer.vala:85 src/UndoCustomBuffer.vala:81
+#, fuzzy
+msgid "Undo "
+msgstr "Annulla"
+
+#: src/UndoBuffer.vala:91 src/UndoCustomBuffer.vala:87
+#, fuzzy
+msgid "Redo "
+msgstr "Rifai"
+
+#: src/UndoCustomItem.vala:43
+msgid "Action Add"
+msgstr ""
+
+#: src/UndoCustomItem.vala:59
+msgid "Action Remove"
+msgstr ""
+
+#: src/UndoCustomItem.vala:75
+msgid "Action Move"
+msgstr ""
+
+#: src/Utils.vala:180
+#, fuzzy
+msgid "Insert Characters"
+msgstr "Caratteri:"
+
+#: src/Utils.vala:181
+msgid "Insert Date"
+msgstr ""
+
+#: src/Utils.vala:182
+msgid "Insert Time"
+msgstr ""
+
+#: src/Utils.vala:185
+msgid "Insert Tab"
+msgstr ""
+
+#: src/Utils.vala:187
+msgid "Insert Incrementing Decimal"
+msgstr ""
+
+#: src/Utils.vala:188
+msgid "Insert Percent Sign"
+msgstr ""
+
+#: src/Utils.vala:190
+msgid "Standard Date"
+msgstr ""
+
+#: src/Utils.vala:192
+msgid "Day of Month (1-31)"
+msgstr ""
+
+#: src/Utils.vala:193
+msgid "Day of Month (01-31)"
+msgstr ""
+
+#: src/Utils.vala:194
+msgid "Month (01-12)"
+msgstr ""
+
+#: src/Utils.vala:195
+msgid "Year (YYYY)"
+msgstr ""
+
+#: src/Utils.vala:196
+msgid "Year (YY)"
+msgstr ""
+
+#: src/Utils.vala:197
+msgid "Day of Week"
+msgstr ""
+
+#: src/Utils.vala:198
+msgid "Day of Week (Abbreviated)"
+msgstr ""
+
+#: src/Utils.vala:199
+msgid "Name of Month"
+msgstr ""
+
+#: src/Utils.vala:200
+msgid "Name of Month (Abbreviated)"
+msgstr ""
+
+#: src/Utils.vala:202
+msgid "Standard Time"
+msgstr ""
+
+#: src/Utils.vala:204
+msgid "Seconds (00-59)"
+msgstr ""
+
+#: src/Utils.vala:205
+msgid "Minutes (00-59)"
+msgstr ""
+
+#: src/Utils.vala:206
+msgid "Hours (00-12)"
+msgstr ""
+
+#: src/Utils.vala:207
+msgid "Hours (00-23)"
+msgstr ""
+
+#: src/Utils.vala:208
+msgid "AM/PM"
+msgstr ""
+
+#: src/Utils.vala:209
+msgid "Timezone"
+msgstr ""
