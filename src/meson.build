@@ -24,8 +24,6 @@ sources += files(
     'functions/insert/InsertText.vala',
 
     'functions/markdown/ConvertMarkdownHTML.vala',
-    'functions/markdown/MarkdownCheckbox.vala',
-    'functions/markdown/MarkdownComplete.vala',
     'functions/markdown/MarkdownReferences.vala',
     'functions/markdown/MarkdownTableBeauty.vala',
     'functions/markdown/MarkdownTask.vala',
