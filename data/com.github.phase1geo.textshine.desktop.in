@@ -2,7 +2,7 @@
 Name=TextShine
 GenericName=TextShine
 Comment=Powerfully transform text
-Categories=Utility;Development;
+Categories=Utility;Development;WordProcessor;
 Exec=com.github.phase1geo.textshine %f
 Icon=com.github.phase1geo.textshine
 Terminal=false

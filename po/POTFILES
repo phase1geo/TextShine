@@ -19,8 +19,6 @@ src/functions/insert/InsertLineNumbers.vala
 src/functions/insert/InsertLoremIpsum.vala
 src/functions/insert/InsertText.vala
 src/functions/markdown/ConvertMarkdownHTML.vala
-src/functions/markdown/MarkdownCheckbox.vala
-src/functions/markdown/MarkdownComplete.vala
 src/functions/markdown/MarkdownReferences.vala
 src/functions/markdown/MarkdownTableBeauty.vala
 src/functions/markdown/MarkdownTask.vala
