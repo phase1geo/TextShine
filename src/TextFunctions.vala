@@ -28,6 +28,7 @@ public class TextFunctions {
   private Array<string>       _category_labels;
   private Array<int>          _map;
   private string              _favorites_file;
+  private string              _functions_file;
   private string              _custom_file;
 
   public Array<TextFunction> functions {
@@ -46,6 +47,7 @@ public class TextFunctions {
   public TextFunctions( MainWindow win ) {
 
     _favorites_file = GLib.Path.build_filename( TextShine.get_home_dir(), "favorites.xml" );
+    _functions_file = GLib.Path.build_filename( TextShine.get_home_dir(), "functions.xml" );
     _custom_file    = GLib.Path.build_filename( TextShine.get_home_dir(), "custom.xml" );
 
     _functions       = new Array<TextFunction>();
@@ -347,7 +349,7 @@ public class TextFunctions {
     }
 
     doc->set_root_element( root );
-    doc->save_format_file( _custom_file, 1 );
+    doc->save_format_file( _functions_file, 1 );
 
     delete doc;
 
@@ -356,11 +358,11 @@ public class TextFunctions {
   /* Load the user-created custom functions */
   public void load_functions() {
 
-    if( !FileUtils.test( _custom_file, FileTest.EXISTS ) ) {
+    if( !FileUtils.test( _functions_file, FileTest.EXISTS ) ) {
       return;
     }
 
-    Xml.Doc* doc = Xml.Parser.read_file( _custom_file, null, Xml.ParserOption.HUGE );
+    Xml.Doc* doc = Xml.Parser.read_file( _functions_file, null, Xml.ParserOption.HUGE );
     if( doc == null ) {
       return;
     }
