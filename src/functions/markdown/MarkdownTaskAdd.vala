@@ -21,9 +21,41 @@
 
 using Gtk;
 
+public enum MarkdownTaskApplyType {
+  LINE,
+  PARAGRAPH,
+  LENGTH;
+
+  public string label() {
+    switch( this ) {
+      case LINE      :  return( _( "Line" ) );
+      case PARAGRAPH :  return( _( "Paragraph" ) );
+      default        :  assert_not_reached();
+    }
+  }
+
+  public string to_string() {
+    switch( this ) {
+      case LINE      :  return( "line" );
+      case PARAGRAPH :  return( "paragraph" );
+      default        :  assert_not_reached();
+    }
+  }
+
+  public static MarkdownTaskApplyType parse( string val ) {
+    switch( val ) {
+      case "line"      :  return( LINE );
+      case "paragraph" :  return( PARAGRAPH );
+      default          :  assert_not_reached();
+    }
+  }
+}
+
 public class MarkdownTaskAdd : TextFunction {
 
-  Regex _re;
+
+  private Regex                 _re;
+  private MarkdownTaskApplyType _apply = MarkdownTaskApplyType.LINE;
 
   /* Constructor */
   public MarkdownTaskAdd( bool custom = false ) {
@@ -38,12 +70,47 @@ public class MarkdownTaskAdd : TextFunction {
   }
 
   public override TextFunction copy( bool custom ) {
-    return( new MarkdownTaskAdd( custom ) );
+    var tf = new MarkdownTaskAdd( custom );
+    tf._apply = _apply;
+    return( tf );
+  }
+
+  public override bool matches( TextFunction function ) {
+    return( base.matches( function ) && (_apply == ((MarkdownTaskAdd)function)._apply) );
+  }
+
+  public override bool settings_available() {
+    return( true );
+  }
+
+  /* Populates the given popover with the settings */
+  public override void add_settings( Grid grid ) {
+    add_menubutton_setting( grid, 0, _( "Apply To" ), _apply.label(), MarkdownTaskApplyType.LENGTH, (value) => {
+      var apply = (MarkdownTaskApplyType)value;
+      return( apply.label() );
+    }, (value) => {
+      _apply = (MarkdownTaskApplyType)value;
+    });
+  }
+
+  public override Xml.Node* save() {
+    Xml.Node* node = base.save();
+    node->set_prop( "apply", _apply.to_string() );
+    return( node );
+  }
+
+  public override void load( Xml.Node* node, TextFunctions functions ) {
+    base.load( node, functions );
+    var a = node->get_prop( "apply" );
+    if( a != null ) {
+      _apply = MarkdownTaskApplyType.parse( a );
+    }
   }
 
   public override string transform_text( string original, int cursor_pos ) {
     var str   = "";
     var first = true;
+    var add   = false;
     MatchInfo match;
     foreach( string line in original.split( "\n" ) ) {
       if( first ) {
@@ -51,11 +118,17 @@ public class MarkdownTaskAdd : TextFunction {
       } else {
         str += "\n";
       }
-      if( (line.strip() != "") && !_re.match( line, 0, out match ) ) {
-        str += "[ ] " + line;
-      } else {
-        str += line;
+      if( line.strip() == "" ) {
+        add = false;
+      } else if( !_re.match( line, 0, out match ) ) {
+        if( !add ) {
+          str += "[ ] ";
+        } else if( add ) {
+          str += "    ";
+        }
+        add = (_apply == MarkdownTaskApplyType.PARAGRAPH);
       }
+      str += line;
     }
     return( str );
   }

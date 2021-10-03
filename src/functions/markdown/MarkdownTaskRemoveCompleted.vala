@@ -23,13 +23,16 @@ using Gtk;
 
 public class MarkdownTaskRemoveCompleted : TextFunction {
 
-  Regex _re;
+  Regex _completed_re;
+  Regex _incompleted_re;
+  MarkdownTaskApplyType _apply = MarkdownTaskApplyType.LINE;
 
   /* Constructor */
   public MarkdownTaskRemoveCompleted( bool custom = false ) {
     base( "markdown-task-remove-completed", custom );
     try {
-      _re = new Regex( """^(\s*)\[[xX]\] (.*)$""" );
+      _completed_re   = new Regex( """^(\s*)\[[xX]\] (.*)$""" );
+      _incompleted_re = new Regex( """^(\s*)\[[ ]\] (.*)$""" );
     } catch( RegexError e ) {}
   }
 
@@ -38,20 +41,67 @@ public class MarkdownTaskRemoveCompleted : TextFunction {
   }
 
   public override TextFunction copy( bool custom ) {
-    return( new MarkdownTaskRemoveCompleted( custom ) );
+    var tf = new MarkdownTaskRemoveCompleted( custom );
+    tf._apply = _apply;
+    return( tf );
+  }
+
+  public override bool matches( TextFunction function ) {
+    return( base.matches( function ) && (_apply == ((MarkdownTaskRemoveCompleted)function)._apply) );
+  }
+
+  public override bool settings_available() {
+    return( true );
+  }
+
+  /* Populates the given popover with the settings */
+  public override void add_settings( Grid grid ) {
+    add_menubutton_setting( grid, 0, _( "Apply To" ), _apply.label(), MarkdownTaskApplyType.LENGTH, (value) => {
+      var apply = (MarkdownTaskApplyType)value;
+      return( apply.label() );
+    }, (value) => {
+      _apply = (MarkdownTaskApplyType)value;
+    });
+  }
+
+  public override Xml.Node* save() {
+    Xml.Node* node = base.save();
+    node->set_prop( "apply", _apply.to_string() );
+    return( node );
+  }
+
+  public override void load( Xml.Node* node, TextFunctions functions ) {
+    base.load( node, functions );
+    var a = node->get_prop( "apply" );
+    if( a != null ) {
+      _apply = MarkdownTaskApplyType.parse( a );
+    }
+  }
+
+  private string add_line( string line, ref bool first ) {
+    if( first ) {
+      first = false;
+      return( line );
+    }
+    return( "\n" + line );
   }
 
   public override string transform_text( string original, int cursor_pos ) {
     var str = "";
-    var found = false;
+    var first = true;
+    var last_deleted = false;
     MatchInfo match;
     foreach( string line in original.split( "\n" ) ) {
-      if( _re.match( line, 0, out match ) ) {
-        found = true;
-      } else if( found ) {
-
+      if( _incompleted_re.match( line, 0, out match ) ) {
+        str += add_line( line, ref first );
+        last_deleted = false;
+      } else if( _completed_re.match( line, 0, out match ) ||
+                 ((line.strip() == "") && last_deleted) ||
+                 ((_apply == MarkdownTaskApplyType.PARAGRAPH) && last_deleted) ) {
+        last_deleted = true;
       } else {
-        str += line + "\n";
+        str += add_line( line, ref first );
+        last_deleted = false;
       }
     }
     return( str );
