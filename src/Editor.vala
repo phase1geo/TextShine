@@ -329,7 +329,6 @@ public class Editor : SourceView {
         _lang_dict = lang_list.first().data;
         _spell.set_language( _lang_dict );
       }
-      _spell.attach( this );
     } catch( Error e ) {
       warning( e.message );
     }
@@ -338,6 +337,20 @@ public class Editor : SourceView {
       _lang_dict = lang_dict;
     });
 
+    if( TextShine.settings.get_boolean( "enable-spell-checking" ) ) {
+      activate_spell_checking();
+    }
+
+  }
+
+  /* Enables the spell checker */
+  public void activate_spell_checking() {
+    _spell.attach( this );
+  }
+
+  /* Disables the spell checker */
+  public void deactivate_spell_checking() {
+    _spell.detach();
   }
 
 }

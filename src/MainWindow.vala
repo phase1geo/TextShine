@@ -329,6 +329,7 @@ public class MainWindow : Hdy.ApplicationWindow {
 
     /* Add the properties items */
     box.pack_start( create_font_selection(), false, false, 10 );
+    box.pack_start( create_spell_checker(),  false, false, 10 );
 
     box.show_all();
 
@@ -371,6 +372,30 @@ public class MainWindow : Hdy.ApplicationWindow {
 
     box.pack_start( lbl,   false, false, 10 );
     box.pack_end(   _font, false, false, 10 );
+
+    return( box );
+
+  }
+
+  private Box create_spell_checker() {
+
+    var box = new Box( Orientation.HORIZONTAL, 0 );
+    var lbl = new Label( _( "Enable Spell Checker" ) );
+
+    var sw = new Switch();
+    sw.active = TextShine.settings.get_boolean( "enable-spell-checking" );
+    sw.state_set.connect((state) => {
+      if( state ) {
+        _editor.activate_spell_checking();
+      } else {
+        _editor.deactivate_spell_checking();
+      }
+      TextShine.settings.set_boolean( "enable-spell-checking", state );
+      return( true );
+    });
+
+    box.pack_start( lbl, false, false, 10 );
+    box.pack_end(   sw,  false, false, 10 );
 
     return( box );
 

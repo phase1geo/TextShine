@@ -101,6 +101,11 @@
       <summary>Specifies if the editor should be cleared on startup or display the last content.</summary>
       <description>Specifies if the editor should be cleared on startup or display the last content.</description>
     </key>
+    <key name="enable-spell-checking" type="b">
+      <default>false</default>
+      <summary>Enables spell checking</summary>
+      <description>Enables or disables spell checking in the editor</description>
+    </key>
     <key name="spell-language" type="s">
       <default>"en_US"</default>
       <summary>Current spell-checker language</summary>
