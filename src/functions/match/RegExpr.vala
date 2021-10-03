@@ -194,7 +194,7 @@ public class RegExpr : TextFunction {
   }
 
   private void add_advanced_patterns( Gtk.Menu menu, Entry entry ) {
-    Gtk.Menu submenu;
+    Gtk.Menu submenu, tags;
     add_submenu( menu, _( "Advanced Patterns" ), out submenu );
     add_pattern( submenu, entry, _( "Word" ),         """\w+""" );
     add_pattern( submenu, entry, _( "Number" ),       """\d+""" );
@@ -202,7 +202,13 @@ public class RegExpr : TextFunction {
     add_pattern( submenu, entry, _( "E-mail" ),       """([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})""" );
     add_pattern( submenu, entry, _( "Date" ),         """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
     add_pattern( submenu, entry, _( "Phone Number" ), """\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}""" );
-    add_pattern( submenu, entry, _( "HTML Tag" ),     """<("[^"]*"|'[^']*'|[^'">])*>""" );
+    add_submenu( submenu, _( "HTML/XML Tags" ), out tags );
+    add_pattern( tags, entry, _( "Specific Start Tag" ), """<TAG(\s+\w+=("[^"]*"|'[^']*'))*\s*>""" );
+    add_pattern( tags, entry, _( "Specific End Tag" ),   """</TAG\s*>""" );
+    add_pattern( tags, entry, _( "Specific Tag" ),       """</?TAG(\s+\w+=("[^"]*"|'[^']*'))*\s*>""" );
+    add_pattern( tags, entry, _( "Any Start Tag" ),      """<(\w+)(\s+\w+=("[^"]*"|'[^']*'))*\s*>""" );
+    add_pattern( tags, entry, _( "Any End Tag" ),        """</(\w+)\s*>""" );
+    add_pattern( tags, entry, _( "Any Tag" ),            """<("[^"]*"|'[^']*'|[^'">])*>""" );
   }
 
   private void add_replace( Gtk.Menu mnu, Entry entry, string lbl, string pattern ) {
