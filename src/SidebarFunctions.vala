@@ -194,7 +194,9 @@ public class SidebarFunctions : SidebarBox {
     });
 
     var grid = new Grid();
-    var fav  = add_favorite_button(  grid, function );
+    grid.column_homogeneous = true;
+
+    var fav = add_favorite_button(  grid, function );
 
     switch( category ) {
       case "favorites" :  break;
@@ -224,6 +226,11 @@ public class SidebarFunctions : SidebarBox {
       });
     }
 
+  }
+
+  private void add_blank( Grid grid, int column ) {
+    var lbl = new Label( "" );
+    grid.attach( lbl, column, 0 );
   }
 
   /* Creates the direction button (if necessary) and adds it to the given box */
@@ -260,7 +267,7 @@ public class SidebarFunctions : SidebarBox {
       btn.label = function.label;
     });
 
-    grid.attach( direction, 1, 0 );
+    grid.attach( direction, 0, 0 );
 
   }
 
@@ -365,7 +372,10 @@ public class SidebarFunctions : SidebarBox {
   /* Adds the settings button to the text function */
   private void add_settings_button( Grid grid, TextFunction function ) {
 
-    if( !function.settings_available() ) return;
+    if( !function.settings_available() ) {
+      add_blank( grid, 1 );
+      return;
+    }
 
     var settings = new MenuButton();
     settings.image   = new Image.from_icon_name( "open-menu-symbolic", IconSize.SMALL_TOOLBAR );
@@ -377,7 +387,7 @@ public class SidebarFunctions : SidebarBox {
       on_settings_show( settings.popover, function );
     });
 
-    grid.attach( settings, 0, 0 );
+    grid.attach( settings, 1, 0 );
 
   }
 
