@@ -61,6 +61,7 @@ You will need the following dependencies to build TextShine:
 * libmarkdown2-dev
 * libcamel1.2-dev
 * libgranite-dev
+* libgtkspell3-3-dev
 
 From the command-line within the top TextShine directory, run `./app run` to build
 and run the application.

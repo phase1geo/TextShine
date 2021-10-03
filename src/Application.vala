@@ -1,4 +1,4 @@
-/*
+ /*
 * Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ public class TextShine : Granite.Application {
 
   public  static GLib.Settings settings;
   public  static bool          use_clipboard = false;
-  public  static string        version       = "1.1.0";
+  public  static string        version       = "1.2.0";
 
   public TextShine () {
 

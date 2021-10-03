@@ -55,8 +55,10 @@ public class Editor : SourceView {
 
   }
 
-  private UndoBuffer _undo_buffer;
-  private bool       _ignore_edit = false;
+  private UndoBuffer       _undo_buffer;
+  private bool             _ignore_edit = false;
+  private string           _lang_dict;
+  private GtkSpell.Checker _spell = null;
 
   public UndoBuffer undo_buffer {
     get {
@@ -112,6 +114,9 @@ public class Editor : SourceView {
       }
       undo_item.add_edit( false, start.get_offset(), start.get_text( end ) );
     });
+
+    /* Connect spell checker */
+    connect_spell_checker();
 
   }
 
@@ -301,6 +306,38 @@ public class Editor : SourceView {
     TextIter start, end;
     buffer.get_bounds( out start, out end );
     buffer.remove_tag_by_name( "selected", start, end );
+  }
+
+  private void connect_spell_checker() {
+
+    _lang_dict = TextShine.settings.get_string( "spell-language" );
+    _spell     = new GtkSpell.Checker();
+
+    try {
+      var lang_exists = false;
+      var lang_list   = GtkSpell.Checker.get_language_list();
+      foreach( var elem in lang_list ) {
+        if( _lang_dict == elem ) {
+          lang_exists = true;
+          _spell.set_language( _lang_dict );
+          break;
+        }
+      }
+      if( lang_list.length() == 0 ) {
+        _spell.set_language( null );
+      } else if( !lang_exists ) {
+        _lang_dict = lang_list.first().data;
+        _spell.set_language( _lang_dict );
+      }
+      _spell.attach( this );
+    } catch( Error e ) {
+      warning( e.message );
+    }
+
+    _spell.language_changed.connect((lang_dict) => {
+      _lang_dict = lang_dict;
+    });
+
   }
 
 }

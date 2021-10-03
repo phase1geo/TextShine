@@ -1,5 +1,5 @@
-project('com.github.phase1geo.textshine', ['vala', 'c'],
-    version : '1.1.0',
+ project('com.github.phase1geo.textshine', ['vala', 'c'],
+    version : '1.2.0',
     license: 'GPL-3.0'
 )
 
@@ -68,6 +68,7 @@ dependencies = [
     dependency('gtksourceview-4'),
     dependency('camel-1.2'),
     dependency('libhandy-1'),
+    dependency('gtkspell3-3.0'),
     libmarkdown,
     math_dep
 ]
