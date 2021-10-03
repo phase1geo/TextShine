@@ -26,7 +26,11 @@ sources += files(
     'functions/markdown/ConvertMarkdownHTML.vala',
     'functions/markdown/MarkdownReferences.vala',
     'functions/markdown/MarkdownTableBeauty.vala',
-    'functions/markdown/MarkdownTask.vala',
+    'functions/markdown/MarkdownTaskAdd.vala',
+    'functions/markdown/MarkdownTaskDelete.vala',
+    'functions/markdown/MarkdownTaskComplete.vala',
+    'functions/markdown/MarkdownTaskIncomplete.vala',
+    'functions/markdown/MarkdownTaskRemoveCompleted.vala',
 
     'functions/match/ClearSelected.vala',
     'functions/match/Find.vala',

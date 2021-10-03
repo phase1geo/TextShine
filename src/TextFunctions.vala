@@ -138,7 +138,11 @@ public class TextFunctions {
     add_function( "markdown", new ConvertMarkdownHTML() );
     add_function( "markdown", new MarkdownReferences() );
     add_function( "markdown", new MarkdownTableBeauty() );
-    add_function( "markdown", new MarkdownTask() );
+    add_function( "markdown", new MarkdownTaskAdd() );
+    add_function( "markdown", new MarkdownTaskDelete() );
+    add_function( "markdown", new MarkdownTaskComplete() );
+    add_function( "markdown", new MarkdownTaskIncomplete() );
+    add_function( "markdown", new MarkdownTaskRemoveCompleted() );
 
     /* Load the custom functions */
     load_functions();
