@@ -48,6 +48,7 @@ public class MainWindow : Hdy.ApplicationWindow {
   private Label          _stats_words;
   private Label          _stats_lines;
   private Label          _stats_matches;
+  private Label          _stats_spell;
 
   private const GLib.ActionEntry[] action_entries = {
     { "action_new",        do_new },
@@ -282,6 +283,11 @@ public class MainWindow : Hdy.ApplicationWindow {
     _stats_matches = new Label( "0" );
     _stats_matches.xalign = 0;
 
+    var lbl_spell = new Label( lmargin + _( "Spelling Errors:" ) );
+    lbl_spell.xalign = 0;
+    _stats_spell = new Label( "0" );
+    _stats_spell.xalign = 0;
+
     grid.attach( group_text,     0, 0, 2 );
     grid.attach( lbl_chars,      0, 1 );
     grid.attach( _stats_chars,   1, 1 );
@@ -291,6 +297,8 @@ public class MainWindow : Hdy.ApplicationWindow {
     grid.attach( _stats_lines,   1, 3 );
     grid.attach( lbl_matches,    0, 4 );
     grid.attach( _stats_matches, 1, 4 );
+    grid.attach( lbl_spell,      0, 5 );
+    grid.attach( _stats_spell,   1, 5 );
     grid.show_all();
 
     /* Create the popover and associate it with the menu button */
@@ -309,11 +317,13 @@ public class MainWindow : Hdy.ApplicationWindow {
     var word_count  = text.strip().split_set( " \t\r\n" ).length;
     var line_count  = text.strip().split_set( "\n" ).length;
     var match_count = _editor.num_selected();
+    var spell_count = _editor.num_spelling_errors();
 
     _stats_chars.label   = char_count.to_string();
     _stats_words.label   = word_count.to_string();
     _stats_lines.label   = line_count.to_string();
     _stats_matches.label = match_count.to_string();
+    _stats_spell.label   = spell_count.to_string();
 
   }
 

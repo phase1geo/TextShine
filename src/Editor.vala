@@ -260,11 +260,10 @@ public class Editor : SourceView {
     return( (tag != null) && iter.forward_to_tag_toggle( tag ) );
   }
 
-  /* Returns the number of matches currenly highlighted in the text */
-  public int num_selected() {
+  private int num_tagged( string tag_name ) {
 
     var count = 0;
-    var tag   = buffer.tag_table.lookup( "selected" );
+    var tag   = buffer.tag_table.lookup( tag_name );
 
     if( tag != null ) {
       TextIter end;
@@ -278,6 +277,16 @@ public class Editor : SourceView {
 
     return( count );
 
+  }
+
+  /* Returns the number of matches currenly highlighted in the text */
+  public int num_selected() {
+    return( num_tagged( "selected" ) );
+  }
+
+  /* Returns the number of spelling errors in the highlighted text */
+  public int num_spelling_errors() {
+    return( num_tagged( "gtkspell-misspelled" ) );
   }
 
   /* Adds a new tag by the given name */
