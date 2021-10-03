@@ -371,6 +371,11 @@ public class TextFunction {
       item.activate.connect(() => {
         mb.label = item_lbl;
         changed_func( item_val );
+        if( custom ) {
+          custom_changed();
+        } else {
+          settings_changed();
+        }
       });
       menu.add( item );
     }
