@@ -222,6 +222,7 @@ public class SidebarCustom : SidebarBox {
     label.use_markup = true;
 
     var grid = new Grid();
+    grid.column_homogeneous = true;
     add_direction_button( grid, label, function );
     add_settings_button(  grid, function );
 
@@ -529,6 +530,9 @@ public class SidebarCustom : SidebarBox {
   */
   private void popover_opened() {
 
+    /* Clear the search field */
+    _search.text = "";
+
     /* Clear the contents */
     _pbox.get_children().foreach((w) => {
       _pbox.remove( w );
@@ -596,6 +600,11 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  private void add_blank( Grid grid, int column ) {
+    var lbl = new Label( "" );
+    grid.attach( lbl, column, 0 );
+  }
+
   /* Creates the direction button (if necessary) and adds it to the given box */
   private void add_direction_button( Grid grid, Label lbl, TextFunction function ) {
 
@@ -630,14 +639,17 @@ public class SidebarCustom : SidebarBox {
       lbl.label = function.label;
     });
 
-    grid.attach( direction, 1, 0 );
+    grid.attach( direction, 0, 0 );
 
   }
 
   /* Adds the settings button to the text function */
   private void add_settings_button( Grid grid, TextFunction function ) {
 
-    if( !function.settings_available() ) return;
+    if( !function.settings_available() ) {
+      add_blank( grid, 1 );
+      return;
+    }
 
     var settings = new MenuButton();
     settings.image   = new Image.from_icon_name( "open-menu-symbolic", IconSize.SMALL_TOOLBAR );
@@ -649,7 +661,7 @@ public class SidebarCustom : SidebarBox {
       on_settings_show( settings.popover, function );
     });
 
-    grid.attach( settings, 0, 0 );
+    grid.attach( settings, 1, 0 );
 
   }
 
