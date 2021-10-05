@@ -321,7 +321,7 @@ public class TextFunctions {
     }
 
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
-      if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "function") ) {
+      if( (it->type == Xml.ElementType.ELEMENT_NODE) && ((it->name == "function") || (it->name == "custom")) ) {
         var name = it->get_prop( "name" );
         for( int i=0; i<_functions.length; i++ ) {
           if( _functions.index( i ).name == name ) {

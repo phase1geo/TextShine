@@ -83,8 +83,9 @@ public class TextFunction {
   protected const string left_german_squote  = "\u201a";
   protected const string right_german_squote = "\u2018";
 
-  private string _name;
-  private bool   _custom = false;
+  private string            _name;
+  private bool              _custom    = false;
+  private FunctionDirection _direction = FunctionDirection.NONE;
 
   public string name {
     get {
@@ -100,7 +101,18 @@ public class TextFunction {
       }
     }
   }
-  public FunctionDirection direction { get; set; default = FunctionDirection.NONE; }
+  public FunctionDirection direction {
+    get {
+      return( _direction );
+    }
+    set {
+      if( _direction != value ) {
+        _direction = value;
+        direction_changed();
+      }
+    }
+  }
+
   public bool custom {
     get {
       return( _custom );
@@ -108,14 +120,15 @@ public class TextFunction {
   }
 
   public signal void update_button_label();
+  public signal void direction_changed();
   public signal void settings_changed();
   public signal void custom_changed();
 
   /* Constructor */
   public TextFunction( string name, bool custom, FunctionDirection dir = FunctionDirection.NONE ) {
-    _name     = name;
-    _custom   = custom;
-    direction = dir;
+    _name      = name;
+    _custom    = custom;
+    _direction = dir;
   }
 
   protected virtual string get_label0() {

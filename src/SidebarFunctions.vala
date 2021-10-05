@@ -47,6 +47,7 @@ public class SidebarFunctions : SidebarBox {
   private SearchEntry      _search;
   private Box              _favorite_box;
   private Box              _custom_box;
+  private Expander         _custom_exp;
   private Revealer         _custom_revealer;
   private Box              _edit_fbox;
 
@@ -58,13 +59,21 @@ public class SidebarFunctions : SidebarBox {
     _functions  = new Array<Functions>();
     _categories = new Array<Category>();
 
-    /* Create search box */
+    /* Create search entry */
     _search = new SearchEntry();
     _search.placeholder_text = _( "Search Actions" );
     _search.search_changed.connect( search_functions );
 
-    var sbox = new Box( Orientation.HORIZONTAL, 5 );
-    sbox.pack_start( _search, true,  true,  0 );
+    /* Create new custom function button */
+    var custom = new Button.from_icon_name( "list-add-symbolic", IconSize.SMALL_TOOLBAR );
+    custom.set_tooltip_text( _( "Add Custom Action" ) );
+    custom.clicked.connect(() => {
+      switch_stack( SwitchStackReason.NEW, null );
+    });
+
+    var tbox = new Box( Orientation.HORIZONTAL, 5 );
+    tbox.pack_start( _search, true,  true,  0 );
+    tbox.pack_end(   custom,  false, false, 0 );
 
     /* Create scrolled box */
     var cbox = new Box( Orientation.VERTICAL, 0 );
@@ -81,7 +90,7 @@ public class SidebarFunctions : SidebarBox {
       cbox.pack_start( create_category( category, functions.get_category_label( category ) ), false, false, 0 );
     }
 
-    pack_start( sbox, false, true, 10 );
+    pack_start( tbox, false, true, 10 );
     pack_start( sw,   true,  true, 10 );
 
   }
@@ -95,8 +104,6 @@ public class SidebarFunctions : SidebarBox {
     for( int i=0; i<_categories.length; i++ ) {
       _categories.index( i ).show( empty );
     }
-
-    _custom_revealer.reveal_child = empty;
 
     for( int i=0; i<_functions.length; i++ ) {
       _functions.index( i ).reveal( value );
@@ -139,7 +146,7 @@ public class SidebarFunctions : SidebarBox {
         break;
       case "custom" :
         _custom_box = ibox;
-        add_create_custom();
+        _custom_exp = exp;
         break;
     }
 
@@ -150,29 +157,6 @@ public class SidebarFunctions : SidebarBox {
     }
 
     return( rev );
-
-  }
-
-  /* Adds the create custom button */
-  private void add_create_custom() {
-
-    var fbox = new Box( Orientation.HORIZONTAL, 5 );
-
-    var button = new Button.with_label( "Create Custom Action..." );
-    button.halign = Align.START;
-    button.set_relief( ReliefStyle.NONE );
-    button.clicked.connect(() => {
-      switch_stack( SwitchStackReason.NEW, null );
-    });
-
-    fbox.pack_start( button, false, true, 0 );
-
-    _custom_revealer = new Revealer();
-    _custom_revealer.add( fbox );
-    _custom_revealer.border_width = 5;
-    _custom_revealer.reveal_child = true;
-
-    _custom_box.pack_start( _custom_revealer, false, false, 0 );
 
   }
 
@@ -196,16 +180,21 @@ public class SidebarFunctions : SidebarBox {
     var grid = new Grid();
     grid.column_homogeneous = true;
 
-    var fav = add_favorite_button(  grid, function );
+    Button fav;
 
     switch( category ) {
-      case "favorites" :  break;
+      case "favorites" :
+        fav = add_unfavorite_button( grid, function );
+        break;
       case "custom"    :
+        add_blank( grid, 0 );
         add_edit_button( fbox, grid, function );
+        fav = add_favorite_button( grid, function );
         break;
       default          :
         add_direction_button( grid, button, function );
         add_settings_button(  grid, function );
+        fav = add_favorite_button( grid, function );
         break;
     }
 
@@ -224,8 +213,22 @@ public class SidebarFunctions : SidebarBox {
       function.update_button_label.connect(() => {
         button.label = function.label;
       });
+      function.direction_changed.connect(() => {
+        update_favorite_state( function, fav );
+      });
+      function.settings_changed.connect(() => {
+        update_favorite_state( function, fav );
+      });
     }
 
+  }
+
+  private void update_favorite_state( TextFunction function, Button fav ) {
+    if( get_favorite( function ) != null ) {
+      favorite_button_state( fav );
+    } else {
+      unfavorite_button_state( fav );
+    }
   }
 
   private void add_blank( Grid grid, int column ) {
@@ -271,72 +274,49 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  private bool is_favorite( TextFunction function ) {
+  private TextFunction? get_favorite( TextFunction function ) {
     var functions = win.functions.get_category_functions( "favorites" );
     for( int i=0; i<functions.length; i++ ) {
-      if( functions.index( i ) == function ) {
-        return( true );
+      if( functions.index( i ).matches( function ) ) {
+        return( functions.index( i ) );
       }
     }
-    return( false );
+    return( null );
   }
 
   private Button add_favorite_button( Grid grid, TextFunction function ) {
 
-    var favorited = is_favorite( function );
-    var icon_name = favorited ? "starred-symbolic" : "non-starred-symbolic";
-    var tooltip   = favorited ? _( "Unfavorite" )  : _( "Favorite" );
-
-    var favorite = new Button.from_icon_name( icon_name, IconSize.SMALL_TOOLBAR );
-    favorite.relief = ReliefStyle.NONE;
-    favorite.set_tooltip_text( tooltip );
-    favorite.clicked.connect(() => {
-      toggle_favorite( favorite, function );
+    var button = new Button();
+    button.relief = ReliefStyle.NONE;
+    button.clicked.connect(() => {
+      favorite_function( button, function );
     });
 
-    grid.attach( favorite, 2, 0 );
+    update_favorite_state( function, button );
 
-    return( favorite );
+    grid.attach( button, 2, 0 );
 
-  }
-
-  /* Toggles the favorite status */
-  private void toggle_favorite( Button button, TextFunction function ) {
-
-    if( is_favorite( function ) ) {
-      unfavorite_function( function );
-      button.image = new Image.from_icon_name( "non-starred-symbolic", IconSize.SMALL_TOOLBAR );
-      button.set_tooltip_text( _( "Favorite" ) );
-    } else {
-      favorite_function( function.copy( false ) );
-      button.image = new Image.from_icon_name( "starred-symbolic", IconSize.SMALL_TOOLBAR );
-      button.set_tooltip_text( _( "Unfavorite" ) );
-    }
+    return( button );
 
   }
 
-  /* Add the given function to the favorite list */
-  private void favorite_function( TextFunction function ) {
+  private Button add_unfavorite_button( Grid grid, TextFunction function ) {
 
-    var fn = function.copy( false );
+    var button = new Button.from_icon_name( "starred-symbolic", IconSize.SMALL_TOOLBAR );
+    button.relief = ReliefStyle.NONE;
+    button.set_tooltip_text( _( "Unfavorite" ) );
+    button.clicked.connect(() => {
+      unfavorite_function( button, function );
+    });
 
-    /* Mark the function as a favorite */
-    win.functions.favorite_function( fn );
+    grid.attach( button, 2, 0 );
 
-    add_function( "favorites", _favorite_box, null, fn );
-    _favorite_box.show_all();
+    return( button );
 
   }
 
-  /* Removes the given function from the favorite list */
-  private void unfavorite_function( TextFunction function ) {
-
-    /* Clear the function indicator in the sidebar */
-    for( int i=0; i<_functions.length; i++ ) {
-      if( _functions.index( i ).unfavorite( function ) ) {
-        break;
-      }
-    }
+  /* Removes the given favorite function from the list of available functions */
+  private void remove_favorite( TextFunction function ) {
 
     /* Remove the function as a favorite */
     var index  = win.functions.unfavorite_function( function );
@@ -350,9 +330,74 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
+  /* Sets the state of the specified favorite button to indicate that it is currently favorited */
+  public void favorite_button_state( Button button ) {
+    button.image = new Image.from_icon_name( "starred-symbolic", IconSize.SMALL_TOOLBAR );
+    button.set_tooltip_text( _( "Unfavorite" ) );
+  }
+
+  /* Sets the state of the specified favorite button to indicate that it is currently unfavorited */
+  public void unfavorite_button_state( Button button ) {
+    button.image = new Image.from_icon_name( "non-starred-symbolic", IconSize.SMALL_TOOLBAR );
+    button.set_tooltip_text( _( "Favorite" ) );
+  }
+
+  /*
+   Add the given function to the favorite list.  Called when the user
+   clicks on the favorite button for an origianl function.
+  */
+  private void favorite_function( Button button, TextFunction function ) {
+
+    var favorited = get_favorite( function );
+
+    /* If there is a favorited button for our function, remove it and update ourselves */
+    if( favorited != null ) {
+
+      /* Remove the favorited item */
+      remove_favorite( favorited );
+
+      /* Mark our button as unfavorited */
+      unfavorite_button_state( button );
+
+    /* Otherwise, add the favorited function */
+    } else {
+
+      var fn = function.copy( false );
+
+      /* Mark the function as a favorite */
+      win.functions.favorite_function( fn );
+
+      add_function( "favorites", _favorite_box, null, fn );
+
+      _favorite_box.show_all();
+
+      favorite_button_state( button );
+
+    }
+
+  }
+
+  /*
+   Removes the given favorited function from the favorite list.  Called when
+   the user clicks on the favorite button for a favorited item.
+  */
+  private void unfavorite_function( Button button, TextFunction function ) {
+
+    /* Set the original function button to unstarred if it currently matches */
+    for( int i=0; i<_functions.length; i++ ) {
+      if( _functions.index( i ).unfavorite( function, unfavorite_button_state ) ) {
+        break;
+      }
+    }
+
+    /* Remove the favorited function */
+    remove_favorite( function );
+
+  }
+
   /* Adds a new custom function to the sidebar */
   public void add_custom_function( CustomFunction function ) {
-    add_function( "custom", _custom_box, null, function );
+    add_function( "custom", _custom_box, _custom_exp, function );
     _custom_box.show_all();
   }
 
@@ -362,7 +407,6 @@ public class SidebarFunctions : SidebarBox {
       _custom_box.remove( w );
     });
     var functions = win.functions.get_category_functions( "custom" );
-    add_create_custom();
     for( int i=0; i<functions.length; i++ ) {
       add_custom_function( (CustomFunction)functions.index( i ) );
     }
@@ -422,7 +466,7 @@ public class SidebarFunctions : SidebarBox {
       switch_stack( SwitchStackReason.EDIT, function );
     });
 
-    grid.attach( edit, 0, 0 );
+    grid.attach( edit, 1, 0 );
 
   }
 

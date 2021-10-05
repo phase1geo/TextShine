@@ -34,6 +34,7 @@ public class Functions {
       return( _func );
     }
   }
+  public delegate void UpdateButtonStateFunc( Button btn );
   public Functions( TextFunction func, Button? favorite, Revealer revealer1, Revealer? revealer2 = null, Expander? exp = null ) {
     _func      = func;
     _favorite  = favorite;
@@ -51,9 +52,9 @@ public class Functions {
       _exp.expanded = true;
     }
   }
-  public bool unfavorite( TextFunction function ) {
+  public bool unfavorite( TextFunction function, UpdateButtonStateFunc func ) {
     if( _func.matches( function ) && (_favorite != null) ) {
-      _favorite.image = new Image.from_icon_name( "non-starred-symbolic", IconSize.SMALL_TOOLBAR );
+      func( _favorite );
       return( true );
     }
     return( false );
