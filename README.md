@@ -29,8 +29,9 @@ same way that built-in actions are used within the application.
 - Support for action favoriting.
 - Support for creating and testing custom actions.
 - Quickly search available text actions.
-- Character, word, line and match statistics.
+- Character, word, line, match and spelling error statistics.
 - Support for font size changes.
+- Built-in spell checking.
 - Categorized text actions which include:
      * Changing case
      * Inserting text, line numbers, lorem ipsum and file contents
@@ -42,6 +43,7 @@ same way that built-in actions are used within the application.
      * Search and replace (includes regular expression support)
      * Automatic text repair
      * Text conversion
+     * MD5, SHA-1/256/384/512 encoding and Base64 encoding/decoding.
      * Markdown utilities
 
 ## Installation
