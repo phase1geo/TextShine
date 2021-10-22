@@ -139,6 +139,9 @@ public class MainWindow : Hdy.ApplicationWindow {
     /* Add keyboard shortcuts */
     add_keyboard_shortcuts( app );
 
+    /* Make sure that the editor has input focus */
+    _editor.grab_focus();
+
     /* Handle the application closing */
     destroy.connect( Gtk.main_quit );
 
