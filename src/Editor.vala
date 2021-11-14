@@ -75,7 +75,7 @@ public class Editor : SourceView {
     wrap_mode    = WrapMode.WORD;
     // show_line_numbers = true;
     // show_line_marks   = true;
-    highlight_current_line = true;
+    // highlight_current_line = true;
     top_margin   = 20;
     left_margin  = 10;
     right_margin = 10;
