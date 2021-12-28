@@ -42,7 +42,7 @@ public class CaseCamel : TextFunction {
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
     string[] parts;
-    string   orig = original.ascii_down();
+    string   orig = original.down();
     if( CaseSnake.is_snake_case( original, out parts ) ) {
       orig = string.joinv( " ", parts );
     }
@@ -51,7 +51,7 @@ public class CaseCamel : TextFunction {
       int start1, end1, start2, end2;
       matches.fetch_pos( 1, out start1, out end1 );
       matches.fetch_pos( 2, out start2, out end2 );
-      orig = orig.splice( start2, end2, orig.slice( start2, end2 ).ascii_up() ).splice( start1, end1 );
+      orig = orig.splice( start2, end2, orig.slice( start2, end2 ).up() ).splice( start1, end1 );
     }
     return( orig );
   }

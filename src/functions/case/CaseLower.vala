@@ -45,7 +45,7 @@ public class CaseLower : TextFunction {
     } else {
       orig = original;
     }
-    return( orig.ascii_down() );
+    return( orig.down() );
   }
 
 }

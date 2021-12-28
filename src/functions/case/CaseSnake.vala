@@ -42,7 +42,7 @@ public class CaseSnake : TextFunction {
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
     string[] parts;
-    string   orig = original.ascii_down();
+    string   orig = original.down();
     if( CaseCamel.is_camel_case( original, out parts ) ) {
       orig = string.joinv( " ", parts );
     }
@@ -57,7 +57,7 @@ public class CaseSnake : TextFunction {
   public static bool is_snake_case( string text, out string[] parts ) {
     parts = {};
     if( _is.match( text ) ) {
-      parts = text.ascii_down().split( "_" );
+      parts = text.down().split( "_" );
       return( true );
     }
     return( false );

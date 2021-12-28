@@ -42,7 +42,7 @@ public class CaseSentence : TextFunction {
   /* Perform the transformation */
   public override string transform_text( string original, int cursor_pos ) {
     string[] parts;
-    string   orig = original.ascii_down();
+    string   orig = original.down();
     if( CaseCamel.is_camel_case( original, out parts ) ) {
       orig = string.joinv( " ", parts );
     } else if( CaseSnake.is_snake_case( original, out parts ) ) {
@@ -52,7 +52,7 @@ public class CaseSentence : TextFunction {
     int       start, end;
     while( _re.match( orig, 0, out matches ) ) {
       matches.fetch_pos( 2, out start, out end );
-      orig = orig.splice( start, end, orig.slice( start, end ).ascii_up() );
+      orig = orig.splice( start, end, orig.slice( start, end ).up() );
     }
     return( orig );
   }
