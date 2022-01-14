@@ -5,10 +5,13 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>TextShine</name>
+  <name xml:lang="nl">TextShine</name>
   <name xml:lang="it">TextShine</name>
   <summary>Powerfully transform text</summary>
+  <summary xml:lang="nl">Zet tekst om met dit krachtige hulpmiddel</summary>
   <summary xml:lang="it">Trasforma il testo in modo potente</summary>
   <developer_name>Trevor Williams</developer_name>
+  <developer_name xml:lang="nl">Trevor Williams</developer_name>
   <developer_name xml:lang="it">Trevor Williams</developer_name>
   <provides>
     <binary>com.github.phase1geo.textshine</binary>
@@ -27,59 +30,83 @@
         with loads of built-in text actions and user-created custom text workflows, and
         save the changes to the clipboard or to a file.
       </p>
+    <p xml:lang="nl">Plak tekst van het klembord of laad tekst uit een bestand. De tekst kan worden aangepast met behulp van vele ingebouwde tekstacties en eigengemaakte werkmethoden. Nadien kunnen de aanpassingen worden opgeslagen op het klembord of in een bestand.</p>
     <p xml:lang="it">Incolla facilmente il testo dagli appunti o carica il testo da un file, modifica il testo con un sacco di azioni di testo integrate e testo personalizzato creato dall'utente conflussi di lavoro e salva le modifiche negli appunti o in un file.</p>
     <p>
         In addition to the built-in actions, TextShine allows you to create and test
         custom text conversion workflows. These custom workflows can then be used in the
         same way that built-in actions are used within the application.
       </p>
+    <p xml:lang="nl">Naast de ingebouwde acties kan TextShine eigengemaakte werkmethoden gebruiken. Deze werkmethoden kunnen vervolgens worden gebruikt op dezelfde manier als de ingebouwde acties.</p>
     <p xml:lang="it">Oltre alle azioni integrate, TextShine ti consente di creare e testare flussi di lavoro e conversioni del testo personalizzato. Questi flussi di lavoro personalizzati possono quindi essere utilizzati nello stesso modo in cui vengono utilizzate le azioni integrate all'interno dell'applicazione.</p>
     <p>
         Key features include the following:
       </p>
+    <p xml:lang="nl">TextShine's kenmerken op een rijtje:</p>
     <p xml:lang="it">Le caratteristiche principali includono quanto segue:</p>
     <ul>
       <li>Load text from clipboard or from a file.</li>
+      <li xml:lang="nl">Laad tekst van het klembord of uit een bestand;</li>
       <li xml:lang="it">Carica il testo dagli appunti o da un file.</li>
       <li>Save text back to clipboard, to the same file or to a new file.</li>
+      <li xml:lang="nl">Sla tekst op op het klembord of in hetzelfde of een nieuw bestand;</li>
       <li xml:lang="it">Salva il testo negli appunti, nello stesso file o in un nuovo file.</li>
       <li>Unlimited undo/redo of text changes.</li>
+      <li xml:lang="nl">Ongelimiteerd ongedaan maken/opnieuw uitvoeren van aanpassingen;</li>
       <li xml:lang="it">Annulla/ripristina illimitate modifiche al testo.</li>
       <li>Apply a text action in a single click.</li>
+      <li xml:lang="nl">Pas met één muisklik een actie toe;</li>
       <li xml:lang="it">Applica un'azione al testo con un solo clic.</li>
       <li>Support for action favoriting.</li>
+      <li xml:lang="nl">Ondersteuning voor het kiezen van favoriete acties;</li>
       <li xml:lang="it">Supporto per favorire l'azione.</li>
       <li>Support for creating and testing custom actions.</li>
+      <li xml:lang="nl">Ondersteuning voor het maken en uitvoeren van eigen acties;</li>
       <li xml:lang="it">Supporto per la creazione e il test di azioni personalizzate.</li>
       <li>Quickly search available text actions.</li>
+      <li xml:lang="nl">Snel zoeken door beschikbare acties;</li>
       <li xml:lang="it">Cerca rapidamente le azioni di testo disponibili.</li>
-      <li>Character, word, line and match statistics.</li>
-      <li xml:lang="it">Carattere,parola,linea e Statistiche abbinate.</li>
+      <li>Character, word, line, match and spelling error statistics.</li>
       <li>Support for font size changes.</li>
+      <li xml:lang="nl">Ondersteuning voor tekstgrootte-aanpassingen;</li>
       <li xml:lang="it">Supporto per le modifiche alla dimensione del font.</li>
+      <li>Built-in spell checker.</li>
       <li>Categorized text actions which include:</li>
+      <li xml:lang="nl">Gecategoriseerde acties, waaronder:</li>
       <li xml:lang="it">Categorizzate azioni di testo che includono:</li>
       <li>Action: Changing case</li>
+      <li xml:lang="nl">Actie: hoofdlettergebruik aanpassen</li>
       <li xml:lang="it">Azione: Cambio di maiuscolo/minuscolo</li>
       <li>Action: Inserting text, line numbers, lorem ipsum and file contents</li>
+      <li xml:lang="nl">Actie: tekst invoegen, regelnummers, lorem ipsum en bestandsinhoud</li>
       <li xml:lang="it">Azione: Inserimento di testo, numeri di riga, lorem ipsum e contenuto di file</li>
       <li>Action: Removing line numbers, blank lines/spaces and matched text</li>
+      <li xml:lang="nl">Actie: regelnummers, blanco regels/spaties en overeengekomen tekst wissen</li>
       <li xml:lang="it">Azione: Rimozione di numeri di riga, righe/spazi vuoti e testo abbinato</li>
       <li>Action: Replacement of text</li>
+      <li xml:lang="nl">Actie: tekst vervangen</li>
       <li xml:lang="it">Azione: Sostituzione del testo</li>
       <li>Action: Quotation conversion</li>
+      <li xml:lang="nl">Actie: citaten omzetten</li>
       <li xml:lang="it">Azione: Conversione del preventivo</li>
       <li>Action: Line sorting</li>
+      <li xml:lang="nl">Actie: regels rangschikken</li>
       <li xml:lang="it">Azione: Ordinamento riga</li>
       <li>Action: Indentation handling</li>
+      <li xml:lang="nl">Actie: inspringacties</li>
       <li xml:lang="it">Azione: Gestione dell'indentazione</li>
       <li>Action: Search and replace (includes regular expression support)</li>
+      <li xml:lang="nl">Actie: zoeken en vervangen (ondersteunt reguliere uitdrukkingen)</li>
       <li xml:lang="it">Azione: Cerca e sostituisci (include il supporto delle espressioni regolari)</li>
       <li>Action: Automatic text repair</li>
+      <li xml:lang="nl">Actie: automatisch tekst repareren</li>
       <li xml:lang="it">Azione: Riparazione automatica del testo</li>
       <li>Action: Text conversion</li>
+      <li xml:lang="nl">Actie: tekst omzetten</li>
       <li xml:lang="it">Azione: Conversione del testo</li>
+      <li>Action: MD5, SHA-1/256/384/512 encoding and Base64 encoding/decoding</li>
       <li>Action: Markdown utilities</li>
+      <li xml:lang="nl">Actie: Markdown-hulpmiddelen</li>
       <li xml:lang="it">Azione: Utilità di Markdown</li>
     </ul>
   </description>
@@ -122,6 +149,37 @@
     <value key="x-appcenter-suggested-price">5</value>
   </custom>
   <releases>
+    <release version="1.2.0" date="2022-01-17">
+      <p>New</p>
+      <ul>
+        <li>Added MD5, SHA-1/256/384/512 checksum conversion functions.</li>
+        <li>Added Base64 encoding/decoding functions.</li>
+        <li>Added functions to support Markdown task manipulation.</li>
+        <li>Added spell checker.</li>
+        <li>Added number of spelling errors to document statistics.</li>
+      </ul>
+      <p>Changes</p>
+      <ul>
+        <li>Changed editor margins for improved readability.</li>
+        <li>Improved accuracy of the list of translatable files.</li>
+        <li>Added application to the open desktop WordProcessor category.</li>
+        <li>Improved layout of function buttons.</li>
+        <li>Enhanced built-in, insertable HTML/XML tag regular expressions.</li>
+        <li>Moved Create Custom Action... button from action list to the right of the search field in the sidebar.</li>
+        <li>Removed Accounts permissions from Flatpak manifest as it is no longer needed.</li>
+      </ul>
+      <p>Bug Fixes</p>
+      <ul>
+        <li>Fixed XML indentation functionality.</li>
+        <li>Removed extraneous debug output when running in terminal.</li>
+        <li>Fixed issue where changing function menu options did not properly save the state.</li>
+        <li>Fixed issues with favoriting/unfavoriting actions.</li>
+        <li>Fixed action search to include custom actions.</li>
+        <li>Fixed issue with loading favorited custom actions.</li>
+        <li>Fixed UI issues with custom sidebar.</li>
+        <li>Fixed issues with converting lower/upper case of Unicode characters.</li>
+      </ul>
+    </release>
     <release version="1.1.0" date="2021-08-08">
       <p>New</p>
       <ul>
@@ -147,6 +205,7 @@
     <release version="1.0.0" date="2020-11-29">
       <description>
         <p>Initial release</p>
+        <p xml:lang="nl">Eerste uitgave</p>
         <p xml:lang="it">Versione iniziale</p>
       </description>
     </release>

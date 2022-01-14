@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-01 00:11-0500\n"
+"POT-Creation-Date: 2022-01-14 13:59-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,12 +124,12 @@ msgstr ""
 msgid "Insert File"
 msgstr ""
 
-#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:406
+#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
 msgid "Open"
 msgstr ""
 
-#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:406
-#: src/MainWindow.vala:438 src/SidebarCustom.vala:720
+#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
+#: src/MainWindow.vala:476 src/SidebarCustom.vala:732
 msgid "Cancel"
 msgstr ""
 
@@ -214,13 +214,38 @@ msgstr ""
 msgid "Beautify Tables"
 msgstr ""
 
-#: src/functions/markdown/MarkdownTask.vala:84
-#, c-format
-msgid "Tasks - %s"
+#: src/functions/markdown/MarkdownTaskAdd.vala:31
+msgid "Line"
 msgstr ""
 
-#: src/functions/markdown/MarkdownTask.vala:109
-msgid "Action"
+#: src/functions/markdown/MarkdownTaskAdd.vala:32
+msgid "Paragraph"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTaskAdd.vala:69
+msgid "Add Markdown Tasks"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTaskAdd.vala:88
+#: src/functions/markdown/MarkdownTaskDelete.vala:57
+#: src/functions/markdown/MarkdownTaskRemoveCompleted.vala:59
+msgid "Apply To"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTaskComplete.vala:37
+msgid "Mark Markdown Tasks As Complete"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTaskDelete.vala:38
+msgid "Remove Markdown Tasks"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTaskIncomplete.vala:37
+msgid "Mark Markdown Tasks As Incomplete"
+msgstr ""
+
+#: src/functions/markdown/MarkdownTaskRemoveCompleted.vala:40
+msgid "Remove Completed Markdown Tasks"
 msgstr ""
 
 #: src/functions/match/ClearSelected.vala:32
@@ -365,42 +390,66 @@ msgid "Phone Number"
 msgstr ""
 
 #: src/functions/match/RegExpr.vala:205
-msgid "HTML Tag"
+msgid "HTML/XML Tags"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:220
+#: src/functions/match/RegExpr.vala:206
+msgid "Specific Start Tag"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:207
+msgid "Specific End Tag"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:208
+msgid "Specific Tag"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:209
+msgid "Any Start Tag"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:210
+msgid "Any End Tag"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:211
+msgid "Any Tag"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:226
 msgid "Case Patterns"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:221
+#: src/functions/match/RegExpr.vala:227
 msgid "Uppercase Next Character"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:222
+#: src/functions/match/RegExpr.vala:228
 msgid "Lowercase Next Character"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:223
+#: src/functions/match/RegExpr.vala:229
 msgid "Start Uppercase Change"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:224
+#: src/functions/match/RegExpr.vala:230
 msgid "Start Lowercase Change"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:225
+#: src/functions/match/RegExpr.vala:231
 msgid "End Case Change"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:232
+#: src/functions/match/RegExpr.vala:238
 msgid "Positional Patterns"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:233
+#: src/functions/match/RegExpr.vala:239
 msgid "Matched Pattern"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:235
+#: src/functions/match/RegExpr.vala:241
 #, c-format
 msgid "Subpattern %d"
 msgstr ""
@@ -555,71 +604,79 @@ msgstr ""
 msgid "Reverse Characters"
 msgstr ""
 
-#: src/MainWindow.vala:203
+#: src/MainWindow.vala:207
 msgid "New Workspace"
 msgstr ""
 
-#: src/MainWindow.vala:208 src/MainWindow.vala:406
+#: src/MainWindow.vala:212 src/MainWindow.vala:444
 msgid "Open File"
 msgstr ""
 
-#: src/MainWindow.vala:213 src/MainWindow.vala:438
+#: src/MainWindow.vala:217 src/MainWindow.vala:476
 msgid "Save File"
 msgstr ""
 
-#: src/MainWindow.vala:218
+#: src/MainWindow.vala:222
 msgid "Paste Over"
 msgstr ""
 
-#: src/MainWindow.vala:223
+#: src/MainWindow.vala:227
 msgid "Copy All"
 msgstr ""
 
-#: src/MainWindow.vala:228 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
+#: src/MainWindow.vala:232 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
 msgid "Undo"
 msgstr ""
 
-#: src/MainWindow.vala:234 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
+#: src/MainWindow.vala:238 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
 msgid "Redo"
 msgstr ""
 
-#: src/MainWindow.vala:242
+#: src/MainWindow.vala:246
 msgid "TextShine"
 msgstr ""
 
-#: src/MainWindow.vala:251
+#: src/MainWindow.vala:255
 msgid "Statistics"
 msgstr ""
 
-#: src/MainWindow.vala:261
+#: src/MainWindow.vala:265
 msgid "<b>Text Statistics</b>"
 msgstr ""
 
-#: src/MainWindow.vala:265
+#: src/MainWindow.vala:269
 msgid "Characters:"
 msgstr ""
 
-#: src/MainWindow.vala:270
+#: src/MainWindow.vala:274
 msgid "Words:"
 msgstr ""
 
-#: src/MainWindow.vala:275
+#: src/MainWindow.vala:279
 msgid "Lines:"
 msgstr ""
 
-#: src/MainWindow.vala:280
+#: src/MainWindow.vala:284
 msgid "Matches:"
 msgstr ""
 
-#: src/MainWindow.vala:325
+#: src/MainWindow.vala:289
+msgid "Spelling Errors:"
+msgstr ""
+
+#: src/MainWindow.vala:338
 msgid "Properties"
 msgstr ""
 
-#: src/MainWindow.vala:348
+#: src/MainWindow.vala:362
 msgid "Font:"
 msgstr ""
 
-#: src/MainWindow.vala:438
+#: src/MainWindow.vala:396
+msgid "Enable Spell Checker"
+msgstr ""
+
+#: src/MainWindow.vala:476
 msgid "Save"
 msgstr ""
 
@@ -631,7 +688,7 @@ msgstr ""
 msgid "Test run custom actions"
 msgstr ""
 
-#: src/SidebarCustom.vala:104 src/SidebarCustom.vala:304
+#: src/SidebarCustom.vala:104 src/SidebarCustom.vala:305
 msgid "Add New Action"
 msgstr ""
 
@@ -647,123 +704,127 @@ msgstr ""
 msgid "Refresh text"
 msgstr ""
 
-#: src/SidebarCustom.vala:229
+#: src/SidebarCustom.vala:230
 msgid "Test run stops after this action"
 msgstr ""
 
-#: src/SidebarCustom.vala:335
+#: src/SidebarCustom.vala:336
 msgid "Add Action Above"
 msgstr ""
 
-#: src/SidebarCustom.vala:340
+#: src/SidebarCustom.vala:341
 msgid "Add Action Below"
 msgstr ""
 
-#: src/SidebarCustom.vala:345
+#: src/SidebarCustom.vala:346
 msgid "Remove Action"
 msgstr ""
 
-#: src/SidebarCustom.vala:353
+#: src/SidebarCustom.vala:354
 msgid "Remove Breakpoint"
 msgstr ""
 
-#: src/SidebarCustom.vala:353 src/SidebarCustom.vala:459
+#: src/SidebarCustom.vala:354 src/SidebarCustom.vala:460
 msgid "Set Breakpoint"
 msgstr ""
 
-#: src/SidebarCustom.vala:491
+#: src/SidebarCustom.vala:492
 msgid "Select Action..."
 msgstr ""
 
-#: src/SidebarCustom.vala:496 src/SidebarFunctions.vala:63
+#: src/SidebarCustom.vala:497 src/SidebarFunctions.vala:64
 msgid "Search Actions"
 msgstr ""
 
-#: src/SidebarCustom.vala:605 src/SidebarFunctions.vala:235
+#: src/SidebarCustom.vala:614 src/SidebarFunctions.vala:245
 msgid "Switch Direction"
 msgstr ""
 
-#: src/SidebarCustom.vala:605 src/SidebarFunctions.vala:235
+#: src/SidebarCustom.vala:614 src/SidebarFunctions.vala:245
 msgid "Swap Order"
 msgstr ""
 
-#: src/SidebarCustom.vala:646 src/SidebarFunctions.vala:374
+#: src/SidebarCustom.vala:658 src/SidebarFunctions.vala:428
 msgid "Settings"
 msgstr ""
 
-#: src/SidebarCustom.vala:717
+#: src/SidebarCustom.vala:729
 msgid "Delete Custom Action?"
 msgstr ""
 
-#: src/SidebarCustom.vala:718
+#: src/SidebarCustom.vala:730
 msgid "Deleting a custom action cannot be undone."
 msgstr ""
 
-#: src/SidebarCustom.vala:719
+#: src/SidebarCustom.vala:731
 msgid "Delete Action"
 msgstr ""
 
-#: src/SidebarFunctions.vala:281 src/SidebarFunctions.vala:306
+#: src/SidebarFunctions.vala:69
+msgid "Add Custom Action"
+msgstr ""
+
+#: src/SidebarFunctions.vala:307 src/SidebarFunctions.vala:336
 msgid "Unfavorite"
 msgstr ""
 
-#: src/SidebarFunctions.vala:281 src/SidebarFunctions.vala:302
+#: src/SidebarFunctions.vala:342
 msgid "Favorite"
 msgstr ""
 
-#: src/SidebarFunctions.vala:409
+#: src/SidebarFunctions.vala:463
 msgid "Edit Action"
 msgstr ""
 
-#: src/TextFunctions.vala:56
+#: src/TextFunctions.vala:58
 msgid "Favorites"
 msgstr ""
 
-#: src/TextFunctions.vala:57
+#: src/TextFunctions.vala:59
 msgid "Change Case"
 msgstr ""
 
-#: src/TextFunctions.vala:58
+#: src/TextFunctions.vala:60
 msgid "Convert"
 msgstr ""
 
-#: src/TextFunctions.vala:59
+#: src/TextFunctions.vala:61
 msgid "Indentation"
 msgstr ""
 
-#: src/TextFunctions.vala:60
+#: src/TextFunctions.vala:62
 msgid "Insert"
 msgstr ""
 
-#: src/TextFunctions.vala:61
+#: src/TextFunctions.vala:63
 msgid "Markdown"
 msgstr ""
 
-#: src/TextFunctions.vala:62
+#: src/TextFunctions.vala:64
 msgid "Quotes"
 msgstr ""
 
-#: src/TextFunctions.vala:63
+#: src/TextFunctions.vala:65
 msgid "Remove"
 msgstr ""
 
-#: src/TextFunctions.vala:64
+#: src/TextFunctions.vala:66
 msgid "Repair"
 msgstr ""
 
-#: src/TextFunctions.vala:65
+#: src/TextFunctions.vala:67
 msgid "Replace"
 msgstr ""
 
-#: src/TextFunctions.vala:66
+#: src/TextFunctions.vala:68
 msgid "Search and Replace"
 msgstr ""
 
-#: src/TextFunctions.vala:67
+#: src/TextFunctions.vala:69
 msgid "Sort"
 msgstr ""
 
-#: src/TextFunctions.vala:68
+#: src/TextFunctions.vala:70
 msgid "Custom"
 msgstr ""
 

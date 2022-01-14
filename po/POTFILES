@@ -21,7 +21,11 @@ src/functions/insert/InsertText.vala
 src/functions/markdown/ConvertMarkdownHTML.vala
 src/functions/markdown/MarkdownReferences.vala
 src/functions/markdown/MarkdownTableBeauty.vala
-src/functions/markdown/MarkdownTask.vala
+src/functions/markdown/MarkdownTaskAdd.vala
+src/functions/markdown/MarkdownTaskComplete.vala
+src/functions/markdown/MarkdownTaskDelete.vala
+src/functions/markdown/MarkdownTaskIncomplete.vala
+src/functions/markdown/MarkdownTaskRemoveCompleted.vala
 src/functions/match/ClearSelected.vala
 src/functions/match/Find.vala
 src/functions/match/InvertSelected.vala

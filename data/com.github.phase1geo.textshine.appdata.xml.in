@@ -97,6 +97,37 @@
       <value key="x-appcenter-suggested-price">5</value>
     </custom>
     <releases>
+      <release version="1.2.0" date="2022-01-17">
+        <p>New</p>
+        <ul>
+          <li>Added MD5, SHA-1/256/384/512 checksum conversion functions.</li>
+          <li>Added Base64 encoding/decoding functions.</li>
+          <li>Added functions to support Markdown task manipulation.</li>
+          <li>Added spell checker.</li>
+          <li>Added number of spelling errors to document statistics.</li>
+        </ul>
+        <p>Changes</p>
+        <ul>
+          <li>Changed editor margins for improved readability.</li>
+          <li>Improved accuracy of the list of translatable files.</li>
+          <li>Added application to the open desktop WordProcessor category.</li>
+          <li>Improved layout of function buttons.</li>
+          <li>Enhanced built-in, insertable HTML/XML tag regular expressions.</li>
+          <li>Moved Create Custom Action... button from action list to the right of the search field in the sidebar.</li>
+          <li>Removed Accounts permissions from Flatpak manifest as it is no longer needed.</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed XML indentation functionality.</li>
+          <li>Removed extraneous debug output when running in terminal.</li>
+          <li>Fixed issue where changing function menu options did not properly save the state.</li>
+          <li>Fixed issues with favoriting/unfavoriting actions.</li>
+          <li>Fixed action search to include custom actions.</li>
+          <li>Fixed issue with loading favorited custom actions.</li>
+          <li>Fixed UI issues with custom sidebar.</li>
+          <li>Fixed issues with converting lower/upper case of Unicode characters.</li>
+        </ul>
+      </release>
       <release version="1.1.0" date="2021-08-08">
         <p>New</p>
         <ul>
