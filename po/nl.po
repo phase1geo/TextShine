@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-16 19:56-0600\n"
-"PO-Revision-Date: 2021-09-30 14:30+0200\n"
+"PO-Revision-Date: 2022-01-17 14:10+0100\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -32,101 +32,98 @@ msgstr "Zet klembordtekst om"
 
 #: src/functions/case/CaseCamel.vala:35
 msgid "Camel Case"
-msgstr ""
+msgstr "KameelSchrijfwijze"
 
 #: src/functions/case/CaseLower.vala:30
 msgid "Lower Case"
-msgstr ""
+msgstr "Kleine letters"
 
 #: src/functions/case/CaseRandom.vala:30
 msgid "Random Case"
-msgstr ""
+msgstr "Willekeurige schrijfwijze"
 
 #: src/functions/case/CaseSentence.vala:35
 msgid "Sentence Case"
-msgstr ""
+msgstr "Zinsschrijfwijze"
 
 #: src/functions/case/CaseSnake.vala:35
 msgid "Snake Case"
-msgstr ""
+msgstr "Slangschrijfwijze"
 
 #: src/functions/case/CaseTitle.vala:35
 msgid "Title Case"
-msgstr ""
+msgstr "Titelschrijfwijze"
 
 #: src/functions/case/CaseUpper.vala:30
 msgid "Upper Case"
-msgstr ""
+msgstr "Hoofdletters"
 
 #: src/functions/convert/ConvertBase64.vala:32
 msgid "Encode To Base64"
-msgstr ""
+msgstr "Versleutelen met Base64"
 
 #: src/functions/convert/ConvertBase64.vala:36
 msgid "Decode From Base64"
-msgstr ""
+msgstr "Ontsleutelen met Base64"
 
 #: src/functions/convert/ConvertChecksum.vala:87
 #, c-format
 msgid "Encode as %s checksum"
-msgstr ""
+msgstr "Versleutelen met %s-controlesom"
 
 #: src/functions/convert/ConvertChecksum.vala:109
 msgid "Checksum Type"
-msgstr ""
+msgstr "Soort controlesom"
 
 #: src/functions/convert/ConvertHardWrap.vala:33
-#, fuzzy
 msgid "Characters"
-msgstr "Aantal tekens:"
+msgstr "Aantal tekens"
 
 #: src/functions/convert/ConvertHardWrap.vala:34
-#, fuzzy
 msgid "Words"
-msgstr "Aantal woorden:"
+msgstr "Aantal woorden"
 
 #: src/functions/convert/ConvertHardWrap.vala:65
 #, c-format
 msgid "Hard Wrap At %d %s"
-msgstr ""
+msgstr "Hard afbreken bij %d %s"
 
 #: src/functions/convert/ConvertHardWrap.vala:93
 msgid "Column Width"
-msgstr ""
+msgstr "Kolombreedte"
 
 #: src/functions/convert/ConvertHardWrap.vala:98
 msgid "Wrap Type"
-msgstr ""
+msgstr "Soort afbreking"
 
 #: src/functions/convert/ConvertROT13.vala:32
 msgid "ROT 13"
-msgstr ""
+msgstr "ROT 13"
 
 #: src/functions/convert/ConvertURLEncode.vala:32
 msgid "Encode URL"
-msgstr ""
+msgstr "URL versleutelen"
 
 #: src/functions/indent/Indent.vala:32
 msgid "Indent One Level"
-msgstr ""
+msgstr "Eén niveau inspringen"
 
 #: src/functions/indent/IndentXML.vala:32
 msgid "Indent XML"
-msgstr ""
+msgstr "XML inspringen"
 
 #: src/functions/indent/Unindent.vala:32
 msgid "Unindent One Level"
-msgstr ""
+msgstr "Eén niveau uitspringen"
 
 #: src/functions/insert/InsertFile.vala:36
 msgid "Insert File Text"
-msgstr ""
+msgstr "Bestandstekst invoegen"
 
 #: src/functions/insert/InsertFile.vala:44
 #: src/functions/insert/InsertFile.vala:92
-#, fuzzy
 msgid "Insert File"
-msgstr "Bestand openen"
+msgstr "Bestand invoegen"
 
 #: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
 msgid "Open"
@@ -139,481 +136,474 @@ msgstr "Annuleren"
 
 #: src/functions/insert/InsertLineNumbers.vala:39
 msgid "Insert Line Numbers"
-msgstr ""
+msgstr "Regelnummers invoegen"
 
 #: src/functions/insert/InsertLineNumbers.vala:88
 msgid "Separator"
-msgstr ""
+msgstr "Scheidingsteken"
 
 #: src/functions/insert/InsertLineNumbers.vala:92
 msgid "Add Padding"
-msgstr ""
+msgstr "Opvulling toevoegen"
 
 #: src/functions/insert/InsertLineNumbers.vala:96
 msgid "Skip Blank Lines"
-msgstr ""
+msgstr "Witregels overslaan"
 
 #: src/functions/insert/InsertLoremIpsum.vala:60
 msgid "Insert Lorem Ipsum"
-msgstr ""
+msgstr "Lorem Ipsum invoegen"
 
 #: src/functions/insert/InsertLoremIpsum.vala:98
 msgid "Paragraphs"
-msgstr ""
+msgstr "Paragrafen"
 
 #: src/functions/insert/InsertText.vala:39
 msgid "Start of Line"
-msgstr ""
+msgstr "Regelbegin"
 
 #: src/functions/insert/InsertText.vala:40
 msgid "End of Line"
-msgstr ""
+msgstr "Regeleinde"
 
 #: src/functions/insert/InsertText.vala:41
 msgid "Start of Document"
-msgstr ""
+msgstr "Begin van document"
 
 #: src/functions/insert/InsertText.vala:42
 msgid "End of Document"
-msgstr ""
+msgstr "Einde van document"
 
 #: src/functions/insert/InsertText.vala:43
 msgid "Start of Paragraph"
-msgstr ""
+msgstr "Begin van paragraaf"
 
 #: src/functions/insert/InsertText.vala:44
 msgid "End of Paragraphs"
-msgstr ""
+msgstr "Einde van paragrafen"
 
 #: src/functions/insert/InsertText.vala:45
 msgid "Before First Line Character"
-msgstr ""
+msgstr "Vóór eerste regelteken"
 
 #: src/functions/insert/InsertText.vala:99
 #, c-format
 msgid "Insert Text (%s)"
-msgstr ""
+msgstr "Tekst invoegen (%s)"
 
 #: src/functions/insert/InsertText.vala:136
 msgid "Inserted Text"
-msgstr ""
+msgstr "Ingevoegde tekst"
 
 #: src/functions/insert/InsertText.vala:184
 msgid "Insert At"
-msgstr ""
+msgstr "Invoegen op"
 
 #: src/functions/markdown/ConvertMarkdownHTML.vala:35
 msgid "Convert Markdown to HTML"
-msgstr ""
+msgstr "Markdown converteren naar html"
 
 #: src/functions/markdown/ConvertMarkdownHTML.vala:39
 msgid "Convert HTML to Markdown"
-msgstr ""
+msgstr "HTML converteren naar Markdown"
 
 #: src/functions/markdown/MarkdownReferences.vala:44
 msgid "Generate References"
-msgstr ""
+msgstr "Referenties samenstellen"
 
 #: src/functions/markdown/MarkdownTableBeauty.vala:226
 msgid "Beautify Tables"
-msgstr ""
+msgstr "Tabellen verfraaien"
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:31
-#, fuzzy
 msgid "Line"
-msgstr "Aantal regels:"
+msgstr "Regel"
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:32
 msgid "Paragraph"
-msgstr ""
+msgstr "Paragraaf"
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:69
 msgid "Add Markdown Tasks"
-msgstr ""
+msgstr "Markdown-taken invoegen"
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:88
 #: src/functions/markdown/MarkdownTaskDelete.vala:57
 #: src/functions/markdown/MarkdownTaskRemoveCompleted.vala:59
 msgid "Apply To"
-msgstr ""
+msgstr "Toepassen op"
 
 #: src/functions/markdown/MarkdownTaskComplete.vala:37
 msgid "Mark Markdown Tasks As Complete"
-msgstr ""
+msgstr "Markdown-taken markeren als afgerond"
 
 #: src/functions/markdown/MarkdownTaskDelete.vala:38
 msgid "Remove Markdown Tasks"
-msgstr ""
+msgstr "Markdown-taken verwijderen"
 
 #: src/functions/markdown/MarkdownTaskIncomplete.vala:37
 msgid "Mark Markdown Tasks As Incomplete"
-msgstr ""
+msgstr "Markdown-taken markeren als onafgerond"
 
 #: src/functions/markdown/MarkdownTaskRemoveCompleted.vala:40
 msgid "Remove Completed Markdown Tasks"
-msgstr ""
+msgstr "Afgeronde Markdown-taken verwijderen"
 
 #: src/functions/match/ClearSelected.vala:32
 msgid "Clear Match Highlight"
-msgstr ""
+msgstr "Markering wissen"
 
 #: src/functions/match/Find.vala:41
 msgid "Find"
-msgstr ""
+msgstr "Zoeken"
 
 #: src/functions/match/Find.vala:63
 msgid "Search Text"
-msgstr ""
+msgstr "Tekst zoeken"
 
 #: src/functions/match/Find.vala:131 src/Utils.vala:184
 msgid "Insert New-line"
-msgstr ""
+msgstr "Nieuwe regel invoegen"
 
 #: src/functions/match/Find.vala:132 src/Utils.vala:186
 msgid "Insert Page Break"
-msgstr ""
+msgstr "Pagina-einde invoegen"
 
 #: src/functions/match/InvertSelected.vala:32
 msgid "Invert Matched Text"
-msgstr ""
+msgstr "Overeenkomstige tekst invoegen"
 
 #: src/functions/match/RegExpr.vala:44 src/functions/match/RegExpr.vala:66
 msgid "Regular Expression"
-msgstr ""
+msgstr "Reguliere uitdrukking"
 
 #: src/functions/match/RegExpr.vala:72
 #: src/functions/match/ReplaceSelected.vala:59
 msgid "Replace With"
-msgstr ""
+msgstr "Vervangen door"
 
 #: src/functions/match/RegExpr.vala:165
-#, fuzzy
 msgid "Character Patterns"
-msgstr "Aantal tekens:"
+msgstr "Tekenpatronen"
 
 #: src/functions/match/RegExpr.vala:166
 msgid "Digit"
-msgstr ""
+msgstr "Getal"
 
 #: src/functions/match/RegExpr.vala:167
 msgid "Non-Digit"
-msgstr ""
+msgstr "Geen getal"
 
 #: src/functions/match/RegExpr.vala:168
 msgid "New-line"
-msgstr ""
+msgstr "Nieuwe regel"
 
 #: src/functions/match/RegExpr.vala:169
 msgid "Non-New-line"
-msgstr ""
+msgstr "Geen nieuwe regel"
 
 #: src/functions/match/RegExpr.vala:170
 msgid "Tab"
-msgstr ""
+msgstr "Tab"
 
 #: src/functions/match/RegExpr.vala:171
 msgid "Page Break"
-msgstr ""
+msgstr "Pagina-einde"
 
 #: src/functions/match/RegExpr.vala:172
 msgid "Whitespace"
-msgstr ""
+msgstr "Witruimte"
 
 #: src/functions/match/RegExpr.vala:173
 msgid "Non-Whitespace"
-msgstr ""
+msgstr "Geen witruimte"
 
 #: src/functions/match/RegExpr.vala:174 src/functions/match/RegExpr.vala:199
-#, fuzzy
 msgid "Word"
-msgstr "Aantal woorden:"
+msgstr "Woord"
 
 #: src/functions/match/RegExpr.vala:175
 msgid "Non-Word"
-msgstr ""
+msgstr "Geen woord"
 
 #: src/functions/match/RegExpr.vala:176
-#, fuzzy
 msgid "Any character"
-msgstr "Aantal tekens:"
+msgstr "Ieder teken"
 
 #: src/functions/match/RegExpr.vala:181
 msgid "Location Patterns"
-msgstr ""
+msgstr "Locatiepatronen"
 
 #: src/functions/match/RegExpr.vala:182
 msgid "Word Boundary"
-msgstr ""
+msgstr "Woordbegrenzing"
 
 #: src/functions/match/RegExpr.vala:183
 msgid "Non-Word Boundary"
-msgstr ""
+msgstr "Geen woordbegrenzing"
 
 #: src/functions/match/RegExpr.vala:184
 msgid "Start Of Line"
-msgstr ""
+msgstr "Regelbegin"
 
 #: src/functions/match/RegExpr.vala:185
 msgid "End Of Line"
-msgstr ""
+msgstr "Regeleinde"
 
 #: src/functions/match/RegExpr.vala:190
 msgid "Iteration Patterns"
-msgstr ""
+msgstr "Opvolgpatronen"
 
 #: src/functions/match/RegExpr.vala:191
 msgid "0 or 1 Times"
-msgstr ""
+msgstr "0 of 1 keer"
 
 #: src/functions/match/RegExpr.vala:192
 msgid "0 or More Times"
-msgstr ""
+msgstr "0 of meerdere keren"
 
 #: src/functions/match/RegExpr.vala:193
 msgid "1 or More Times"
-msgstr ""
+msgstr "1 of meerdere keren"
 
 #: src/functions/match/RegExpr.vala:198
 msgid "Advanced Patterns"
-msgstr ""
+msgstr "Geavanceerde patronen"
 
 #: src/functions/match/RegExpr.vala:200
 msgid "Number"
-msgstr ""
+msgstr "Getal"
 
 #: src/functions/match/RegExpr.vala:201
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/functions/match/RegExpr.vala:202
 msgid "E-mail"
-msgstr ""
+msgstr "E-mailadres"
 
 #: src/functions/match/RegExpr.vala:203
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: src/functions/match/RegExpr.vala:204
 msgid "Phone Number"
-msgstr ""
+msgstr "Telefoonnummer"
 
 #: src/functions/match/RegExpr.vala:205
 msgid "HTML/XML Tags"
-msgstr ""
+msgstr "HTML-/XML-tags"
 
 #: src/functions/match/RegExpr.vala:206
 msgid "Specific Start Tag"
-msgstr ""
+msgstr "Specifieke openingstag"
 
 #: src/functions/match/RegExpr.vala:207
 msgid "Specific End Tag"
-msgstr ""
+msgstr "Specifieke afsluittag"
 
 #: src/functions/match/RegExpr.vala:208
 msgid "Specific Tag"
-msgstr ""
+msgstr "Specifieke tag"
 
 #: src/functions/match/RegExpr.vala:209
 msgid "Any Start Tag"
-msgstr ""
+msgstr "Iedere openingstag"
 
 #: src/functions/match/RegExpr.vala:210
 msgid "Any End Tag"
-msgstr ""
+msgstr "Iedere afsluittag"
 
 #: src/functions/match/RegExpr.vala:211
 msgid "Any Tag"
-msgstr ""
+msgstr "Iedere tag"
 
 #: src/functions/match/RegExpr.vala:226
 msgid "Case Patterns"
-msgstr ""
+msgstr "Schrijfwijzepatronen"
 
 #: src/functions/match/RegExpr.vala:227
 msgid "Uppercase Next Character"
-msgstr ""
+msgstr "Volgend teken hoofdletter"
 
 #: src/functions/match/RegExpr.vala:228
 msgid "Lowercase Next Character"
-msgstr ""
+msgstr "Volgend teken kleine letter"
 
 #: src/functions/match/RegExpr.vala:229
 msgid "Start Uppercase Change"
-msgstr ""
+msgstr "Begin van hoofdletteraanpassing"
 
 #: src/functions/match/RegExpr.vala:230
 msgid "Start Lowercase Change"
-msgstr ""
+msgstr "Begin van kleineletteraanpassing"
 
 #: src/functions/match/RegExpr.vala:231
 msgid "End Case Change"
-msgstr ""
+msgstr "Einde van aanpassing"
 
 #: src/functions/match/RegExpr.vala:238
 msgid "Positional Patterns"
-msgstr ""
+msgstr "Positionele patronen"
 
 #: src/functions/match/RegExpr.vala:239
 msgid "Matched Pattern"
-msgstr ""
+msgstr "Overeenkomstig patron"
 
 #: src/functions/match/RegExpr.vala:241
 #, c-format
 msgid "Subpattern %d"
-msgstr ""
+msgstr "Subpatroon %d"
 
 #: src/functions/match/ReplaceSelected.vala:39
 msgid "Replace Matched Text"
-msgstr ""
+msgstr "Overeenkomstige tekst vervangen"
 
 #: src/functions/quotes/QuotesAngled.vala:30
 msgid "Change to Angled Quotes"
-msgstr ""
+msgstr "Omzetten naar guillemets"
 
 #: src/functions/quotes/QuotesCJK.vala:30
 msgid "Change to CJK Quotes"
-msgstr ""
+msgstr "Omzetten naar Aziatisch citaat"
 
 #: src/functions/quotes/QuotesCurved.vala:30
 msgid "Change to Curved Quotes"
-msgstr ""
+msgstr "Omzetten naar gekruld citaat"
 
 #: src/functions/quotes/QuotesDoubleSingle.vala:30
 msgid "Double to Single Quotes"
-msgstr ""
+msgstr "Dubbele naar enkele aanhalingstekens"
 
 #: src/functions/quotes/QuotesDoubleSingle.vala:34
 msgid "Single to Double Quotes"
-msgstr ""
+msgstr "Enkele naar dubbele aanhalingstekens"
 
 #: src/functions/quotes/QuotesGerman.vala:30
 msgid "Change to German Quotes"
-msgstr ""
+msgstr "Omzetten naar Duits citaat"
 
 #: src/functions/quotes/QuotesStraight.vala:30
 msgid "Change to Straight Quotes"
-msgstr ""
+msgstr "Omzetten naar recht citaat"
 
 #: src/functions/remove/RemoveBlankLines.vala:29
 msgid "Remove Blank Lines"
-msgstr ""
+msgstr "Witregels verwijderen"
 
 #: src/functions/remove/RemoveDuplicateLines.vala:31
 msgid "Remove Duplicate Lines"
-msgstr ""
+msgstr "Dubbele regels verwijderen"
 
 #: src/functions/remove/RemoveLeadingWhitespace.vala:31
 msgid "Remove Leading Whitespace"
-msgstr ""
+msgstr "Witruimte aan begin verwijderen"
 
 #: src/functions/remove/RemoveLineBreaks.vala:29
 msgid "Remove Line Breaks"
-msgstr ""
+msgstr "Regeleindes verwijderen"
 
 #: src/functions/remove/RemoveLineNumbers.vala:34
 msgid "Remove Line Numbers"
-msgstr ""
+msgstr "Regelnummers verwijderen"
 
 #: src/functions/remove/RemoveSelected.vala:29
 msgid "Remove Matched Text"
-msgstr ""
+msgstr "Overeenkomstige tekst verwijderen"
 
 #: src/functions/remove/RemoveTrailingWhitespace.vala:31
 msgid "Remove Trailing Whitespace"
-msgstr ""
+msgstr "Witruimte aan einde verwijderen"
 
 #: src/functions/repair/FixSpaces.vala:45
 msgid "Fix Spaces"
-msgstr ""
+msgstr "Spaties repareren"
 
 #: src/functions/replace/ReplacePeriodsEllipsis.vala:30
 msgid "Three Periods With Ellipsis"
-msgstr ""
+msgstr "Drie puntjes vervangen door ellips"
 
 #: src/functions/replace/ReplacePeriodsEllipsis.vala:34
 msgid "Ellipsis With Three Periods"
-msgstr ""
+msgstr "Ellips vervangen door drie puntjes"
 
 #: src/functions/replace/ReplaceReturnSpace.vala:32
 msgid "Return With Space"
-msgstr ""
+msgstr "Enter vervangen door spatie"
 
 #: src/functions/replace/ReplaceReturnSpace.vala:36
 msgid "Space With Return"
-msgstr ""
+msgstr "Spatie vervangen door enter"
 
 #: src/functions/replace/ReplaceReturns.vala:34
 #, c-format
 msgid "Single Return With %d Returns"
-msgstr ""
+msgstr "Enter vervangen door %d enters"
 
 #: src/functions/replace/ReplaceReturns.vala:38
 #, c-format
 msgid "%d Returns With Single Return"
-msgstr ""
+msgstr "%d enters vervangen door één enter"
 
 #: src/functions/replace/ReplaceReturns.vala:70
 msgid "Returns"
-msgstr ""
+msgstr "Enters"
 
 #: src/functions/replace/ReplaceTabsSpaces.vala:35
 msgid "Tabs With 1 Space"
-msgstr ""
+msgstr "Tabs vervangen door 1 spatie"
 
 #: src/functions/replace/ReplaceTabsSpaces.vala:37
 #, c-format
 msgid "Tabs With %d Spaces"
-msgstr ""
+msgstr "Tabs vervangen door %d spaties"
 
 #: src/functions/replace/ReplaceTabsSpaces.vala:43
 msgid "1 Space With Tabs"
-msgstr ""
+msgstr "1 spatie vervangen door tabs"
 
 #: src/functions/replace/ReplaceTabsSpaces.vala:45
 #, c-format
 msgid "%d Spaces With Tabs"
-msgstr ""
+msgstr "%d spaties vervangen door tabs"
 
 #: src/functions/replace/ReplaceTabsSpaces.vala:78
 msgid "Spaces"
-msgstr ""
+msgstr "Spaties"
 
 #: src/functions/sort/SortLines.vala:30
-#, fuzzy
 msgid "Sort Lines"
-msgstr "Aantal regels:"
+msgstr "Regels sorteren"
 
 #: src/functions/sort/SortLines.vala:34
 msgid "Sort Lines Reversed"
-msgstr ""
+msgstr "Regels omgekeerd sorteren"
 
 #: src/functions/sort/SortMoveLines.vala:36
 msgid "Move 1 Line Down"
-msgstr ""
+msgstr "Eén regel omlaag verplaatsen"
 
 #: src/functions/sort/SortMoveLines.vala:38
 #, c-format
 msgid "Move %d Lines Down"
-msgstr ""
+msgstr "%d regels omlaag verplaatsen"
 
 #: src/functions/sort/SortMoveLines.vala:44
 msgid "Move 1 Line Up"
-msgstr ""
+msgstr "Eén regel omhoog verplaatsen"
 
 #: src/functions/sort/SortMoveLines.vala:46
 #, c-format
 msgid "Move %d Lines Up"
-msgstr ""
+msgstr "%d regels omhoog verplaatsen"
 
 #: src/functions/sort/SortMoveLines.vala:129
-#, fuzzy
 msgid "Lines"
-msgstr "Aantal regels:"
+msgstr "Regels"
 
 #: src/functions/sort/SortReverseChars.vala:30
-#, fuzzy
 msgid "Reverse Characters"
-msgstr "Aantal tekens:"
+msgstr "Tekens omkeren"
 
 #: src/MainWindow.vala:207
 msgid "New Workspace"
@@ -673,7 +663,7 @@ msgstr "Aantal overeenkomsten:"
 
 #: src/MainWindow.vala:289
 msgid "Spelling Errors:"
-msgstr ""
+msgstr "Aantal spellingfouten:"
 
 #: src/MainWindow.vala:338
 msgid "Properties"
@@ -685,7 +675,7 @@ msgstr "Lettertype:"
 
 #: src/MainWindow.vala:396
 msgid "Enable Spell Checker"
-msgstr ""
+msgstr "Spellingcontrole inschakelen"
 
 #: src/MainWindow.vala:476
 msgid "Save"
@@ -693,263 +683,260 @@ msgstr "Opslaan"
 
 #: src/SidebarCustom.vala:60
 msgid "Name:"
-msgstr ""
+msgstr "Naam:"
 
 #: src/SidebarCustom.vala:86 src/SidebarCustom.vala:157
 msgid "Test run custom actions"
-msgstr ""
+msgstr "Aangepaste acties uitproberen"
 
 #: src/SidebarCustom.vala:104 src/SidebarCustom.vala:305
 msgid "Add New Action"
-msgstr ""
+msgstr "Actie toevoegen"
 
 #: src/SidebarCustom.vala:119
 msgid "Delete"
-msgstr ""
+msgstr "Verwijderen"
 
 #: src/SidebarCustom.vala:123
 msgid "Done"
-msgstr ""
+msgstr "Voltooid"
 
 #: src/SidebarCustom.vala:153
 msgid "Refresh text"
-msgstr ""
+msgstr "Tekst herladen"
 
 #: src/SidebarCustom.vala:230
 msgid "Test run stops after this action"
-msgstr ""
+msgstr "Stoppen na deze actie"
 
 #: src/SidebarCustom.vala:336
 msgid "Add Action Above"
-msgstr ""
+msgstr "Actie hierboven toevoegen"
 
 #: src/SidebarCustom.vala:341
 msgid "Add Action Below"
-msgstr ""
+msgstr "Actie hieronder toevoegen"
 
 #: src/SidebarCustom.vala:346
 msgid "Remove Action"
-msgstr ""
+msgstr "Actie verwijderen"
 
 #: src/SidebarCustom.vala:354
 msgid "Remove Breakpoint"
-msgstr ""
+msgstr "Regeleinde verwijderen"
 
 #: src/SidebarCustom.vala:354 src/SidebarCustom.vala:460
 msgid "Set Breakpoint"
-msgstr ""
+msgstr "Regeleinde instellen"
 
 #: src/SidebarCustom.vala:492
 msgid "Select Action..."
-msgstr ""
+msgstr "Kies een actie…"
 
 #: src/SidebarCustom.vala:497 src/SidebarFunctions.vala:64
 msgid "Search Actions"
-msgstr ""
+msgstr "Acties doorzoeken"
 
 #: src/SidebarCustom.vala:614 src/SidebarFunctions.vala:245
 msgid "Switch Direction"
-msgstr ""
+msgstr "Richting omdraaien"
 
 #: src/SidebarCustom.vala:614 src/SidebarFunctions.vala:245
 msgid "Swap Order"
-msgstr ""
+msgstr "Volgorde aanpassen"
 
 #: src/SidebarCustom.vala:658 src/SidebarFunctions.vala:428
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 #: src/SidebarCustom.vala:729
 msgid "Delete Custom Action?"
-msgstr ""
+msgstr "Aangepaste actie verwijderen?"
 
 #: src/SidebarCustom.vala:730
 msgid "Deleting a custom action cannot be undone."
-msgstr ""
+msgstr "Dit kan niet ongedaan worden gemaakt."
 
 #: src/SidebarCustom.vala:731
 msgid "Delete Action"
-msgstr ""
+msgstr "Actie verwijderen"
 
 #: src/SidebarFunctions.vala:69
 msgid "Add Custom Action"
-msgstr ""
+msgstr "Aangepaste actie toevoegen"
 
 #: src/SidebarFunctions.vala:307 src/SidebarFunctions.vala:336
 msgid "Unfavorite"
-msgstr ""
+msgstr "Verw. uit favorieten"
 
 #: src/SidebarFunctions.vala:342
 msgid "Favorite"
-msgstr ""
+msgstr "Toev. aan favorieten"
 
 #: src/SidebarFunctions.vala:463
 msgid "Edit Action"
-msgstr ""
+msgstr "Actie bewerken"
 
 #: src/TextFunctions.vala:58
 msgid "Favorites"
-msgstr ""
+msgstr "Favorieten"
 
 #: src/TextFunctions.vala:59
 msgid "Change Case"
-msgstr ""
+msgstr "Schrijfwijze aanpassen"
 
 #: src/TextFunctions.vala:60
 msgid "Convert"
-msgstr ""
+msgstr "Omzetten"
 
 #: src/TextFunctions.vala:61
 msgid "Indentation"
-msgstr ""
+msgstr "Inspringing"
 
 #: src/TextFunctions.vala:62
 msgid "Insert"
-msgstr ""
+msgstr "Invoegen"
 
 #: src/TextFunctions.vala:63
 msgid "Markdown"
-msgstr ""
+msgstr "Markdown"
 
 #: src/TextFunctions.vala:64
 msgid "Quotes"
-msgstr ""
+msgstr "Citaten"
 
 #: src/TextFunctions.vala:65
 msgid "Remove"
-msgstr ""
+msgstr "Verwijderen"
 
 #: src/TextFunctions.vala:66
 msgid "Repair"
-msgstr ""
+msgstr "Repareren"
 
 #: src/TextFunctions.vala:67
 msgid "Replace"
-msgstr ""
+msgstr "Vervangen"
 
 #: src/TextFunctions.vala:68
 msgid "Search and Replace"
-msgstr ""
+msgstr "Zoeken en vervangen"
 
 #: src/TextFunctions.vala:69
 msgid "Sort"
-msgstr ""
+msgstr "Sorteren"
 
 #: src/TextFunctions.vala:70
 msgid "Custom"
-msgstr ""
+msgstr "Aangepast"
 
 #: src/UndoBuffer.vala:85 src/UndoCustomBuffer.vala:81
-#, fuzzy
 msgid "Undo "
-msgstr "Ongedaan maken"
+msgstr "Ongedaan maken "
 
 #: src/UndoBuffer.vala:91 src/UndoCustomBuffer.vala:87
-#, fuzzy
 msgid "Redo "
-msgstr "Opnieuw uitvoeren"
+msgstr "Opnieuw uitvoeren "
 
 #: src/UndoCustomItem.vala:43
 msgid "Action Add"
-msgstr ""
+msgstr "Actie toevoegen"
 
 #: src/UndoCustomItem.vala:59
 msgid "Action Remove"
-msgstr ""
+msgstr "Actie verwijderen"
 
 #: src/UndoCustomItem.vala:75
 msgid "Action Move"
-msgstr ""
+msgstr "Actie verplaatsen"
 
 #: src/Utils.vala:180
-#, fuzzy
 msgid "Insert Characters"
-msgstr "Aantal tekens:"
+msgstr "Tekens invoegen"
 
 #: src/Utils.vala:181
 msgid "Insert Date"
-msgstr ""
+msgstr "Datum invoegen"
 
 #: src/Utils.vala:182
 msgid "Insert Time"
-msgstr ""
+msgstr "Tijdstip invoegen"
 
 #: src/Utils.vala:185
 msgid "Insert Tab"
-msgstr ""
+msgstr "Tab invoegen"
 
 #: src/Utils.vala:187
 msgid "Insert Incrementing Decimal"
-msgstr ""
+msgstr "Oplopend decimaal invoegen"
 
 #: src/Utils.vala:188
 msgid "Insert Percent Sign"
-msgstr ""
+msgstr "Procentteken invoegen"
 
 #: src/Utils.vala:190
 msgid "Standard Date"
-msgstr ""
+msgstr "Standaarddatum"
 
 #: src/Utils.vala:192
 msgid "Day of Month (1-31)"
-msgstr ""
+msgstr "Dag van de maand (1-31)"
 
 #: src/Utils.vala:193
 msgid "Day of Month (01-31)"
-msgstr ""
+msgstr "Dag van de maand (01-31)"
 
 #: src/Utils.vala:194
 msgid "Month (01-12)"
-msgstr ""
+msgstr "Maand (01-12)"
 
 #: src/Utils.vala:195
 msgid "Year (YYYY)"
-msgstr ""
+msgstr "Jaar (YYYY)"
 
 #: src/Utils.vala:196
 msgid "Year (YY)"
-msgstr ""
+msgstr "Jaar (YY)"
 
 #: src/Utils.vala:197
 msgid "Day of Week"
-msgstr ""
+msgstr "Dag van de week"
 
 #: src/Utils.vala:198
 msgid "Day of Week (Abbreviated)"
-msgstr ""
+msgstr "Dag van de week (afgekort)"
 
 #: src/Utils.vala:199
 msgid "Name of Month"
-msgstr ""
+msgstr "Naam van de maand"
 
 #: src/Utils.vala:200
 msgid "Name of Month (Abbreviated)"
-msgstr ""
+msgstr "Naam van de maand (afgekort)"
 
 #: src/Utils.vala:202
 msgid "Standard Time"
-msgstr ""
+msgstr "Standaardtijdstip"
 
 #: src/Utils.vala:204
 msgid "Seconds (00-59)"
-msgstr ""
+msgstr "Seconden (00-59)"
 
 #: src/Utils.vala:205
 msgid "Minutes (00-59)"
-msgstr ""
+msgstr "Minuten (00-59)"
 
 #: src/Utils.vala:206
 msgid "Hours (00-12)"
-msgstr ""
+msgstr "Uur (00-12)"
 
 #: src/Utils.vala:207
 msgid "Hours (00-23)"
-msgstr ""
+msgstr "Uur (00-23)"
 
 #: src/Utils.vala:208
 msgid "AM/PM"
-msgstr ""
+msgstr "AM/PM"
 
 #: src/Utils.vala:209
 msgid "Timezone"
-msgstr ""
+msgstr "Tijdzone"
