@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-14 13:59-0600\n"
+"POT-Creation-Date: 2022-01-16 19:56-0600\n"
 "PO-Revision-Date: 2021-04-17 17:05+0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -165,6 +165,6 @@ msgstr ""
 msgid "Action: Markdown utilities"
 msgstr "Azione: Utilità di Markdown"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:155
+#: data/com.github.phase1geo.textshine.appdata.xml.in:156
 msgid "Initial release"
 msgstr "Versione iniziale"
