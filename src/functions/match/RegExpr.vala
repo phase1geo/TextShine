@@ -298,7 +298,7 @@ public class RegExpr : TextFunction {
         editor.buffer.get_iter_at_offset( out end_iter,   start_index + end );
         if( _highlight_line ) {
           start_iter.set_line( start_iter.get_line() );
-          end_iter.forward_to_line_end();
+          end_iter.forward_line();
         }
         editor.add_selected( start_iter, end_iter, _undo_item );
         _tags_exist = true;

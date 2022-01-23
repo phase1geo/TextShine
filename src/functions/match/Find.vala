@@ -193,7 +193,7 @@ public class Find : TextFunction {
         editor.buffer.get_iter_at_offset( out end_iter,   start_index + (start_chars + find_len) );
         if( _highlight_line ) {
           start_iter.set_line( start_iter.get_line() );
-          end_iter.forward_to_line_end();
+          end_iter.forward_line();
         }
         editor.add_selected( start_iter, end_iter, undo_item );
         start = text.index_of( find_text, (start + find_text.length) );
