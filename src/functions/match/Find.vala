@@ -25,8 +25,9 @@ public class Find : TextFunction {
 
   private MainWindow  _win;
   private UndoItem    _undo_item;
-  private string      _find_text = "";
+  private string      _find_text      = "";
   private bool        _case_sensitive = false;
+  private bool        _highlight_line = false;
 
   /* Constructor */
   public Find( MainWindow win, bool custom = false ) {
@@ -50,7 +51,8 @@ public class Find : TextFunction {
       var func = (Find)function;
       return(
         (_find_text == func._find_text) &&
-        (_case_sensitive == func._case_sensitive)
+        (_case_sensitive == func._case_sensitive) &&
+        (_highlight_line == func._highlight_line)
       );
     }
     return( false );
@@ -65,7 +67,8 @@ public class Find : TextFunction {
       populate_find_popup( menu, find );
     });
 
-    var case_sensitive = new CheckButton.with_label( "Case-sensitive" );
+    var case_sensitive = new CheckButton.with_label( _( "Case-sensitive" ) );
+    var highlight_line = new CheckButton.with_label( _( "Highlight Line" ) );
 
     if( custom ) {
 
@@ -80,6 +83,21 @@ public class Find : TextFunction {
         _case_sensitive = case_sensitive.get_active();
         custom_changed();
       });
+
+      highlight_line.active = _highlight_line;
+      highlight_line.toggled.connect(() => {
+        _highlight_line = highlight_line.get_active();
+        custom_changed();
+      });
+
+      var cbox = new Box( Orientation.HORIZONTAL, 10 );
+      cbox.pack_start( case_sensitive, false, false, 0 );
+      cbox.pack_start( highlight_line, false, false, 0 );
+
+      box = new Box( Orientation.VERTICAL, 10 );
+      box.margin = 10;
+      box.pack_start( find, true,  true, 0 );
+      box.pack_start( cbox, false, true, 0 );
 
     } else {
 
@@ -98,16 +116,24 @@ public class Find : TextFunction {
         do_find( editor, _undo_item );
       });
 
+      highlight_line.toggled.connect(() => {
+        _highlight_line = highlight_line.active;
+        _undo_item = new UndoItem( label );
+        do_find( editor, _undo_item );
+      });
+
       handle_widget_escape( find, _win );
       handle_widget_escape( case_sensitive, _win );
 
       entry = find;
 
-    }
+      box = new Box( Orientation.HORIZONTAL, 10 );
+      box.margin = 10;
+      box.pack_start( find,           true,  true,  0 );
+      box.pack_start( case_sensitive, false, false, 0 );
+      box.pack_start( highlight_line, false, false, 0 );
 
-    box = new Box( Orientation.HORIZONTAL, 0 );
-    box.pack_start( find,           true,  true,  5 );
-    box.pack_start( case_sensitive, false, false, 5 );
+    }
 
   }
 
@@ -165,6 +191,10 @@ public class Find : TextFunction {
         var start_chars = text.slice( 0, start ).char_count();
         editor.buffer.get_iter_at_offset( out start_iter, start_index + start_chars );
         editor.buffer.get_iter_at_offset( out end_iter,   start_index + (start_chars + find_len) );
+        if( _highlight_line ) {
+          start_iter.set_line( start_iter.get_line() );
+          end_iter.forward_to_line_end();
+        }
         editor.add_selected( start_iter, end_iter, undo_item );
         start = text.index_of( find_text, (start + find_text.length) );
       }
@@ -201,6 +231,7 @@ public class Find : TextFunction {
     Xml.Node* node = base.save();
     node->set_prop( "find", _find_text );
     node->set_prop( "case-sensitive", _case_sensitive.to_string() );
+    node->set_prop( "highlight-line", _highlight_line.to_string() );
     return( node );
   }
 
@@ -213,6 +244,10 @@ public class Find : TextFunction {
     string? c = node->get_prop( "case-sensitive" );
     if( c != null ) {
       _case_sensitive = bool.parse( c );
+    }
+    string? hl = node->get_prop( "highlight-line" );
+    if( hl != null ) {
+      _highlight_line = bool.parse( hl );
     }
   }
 }

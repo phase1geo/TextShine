@@ -25,10 +25,11 @@ public class RegExpr : TextFunction {
 
   private MainWindow  _win;
   private Regex       _re;
-  private bool        _tags_exist = false;
+  private bool        _tags_exist     = false;
   private UndoItem    _undo_item;
-  private string      _find_text = "";
-  private string      _replace_text = "";
+  private string      _find_text      = "";
+  private string      _replace_text   = "";
+  private bool        _highlight_line = false;
 
   /* Constructor */
   public RegExpr( MainWindow win, bool custom = false ) {
@@ -53,7 +54,8 @@ public class RegExpr : TextFunction {
       var func = (RegExpr)function;
       return(
         (_find_text == func._find_text) &&
-        (_replace_text == func._replace_text)
+        (_replace_text == func._replace_text) &&
+        (_highlight_line == func._highlight_line)
       );
     }
     return( false );
@@ -74,6 +76,8 @@ public class RegExpr : TextFunction {
       populate_replace_popup( menu, replace );
     });
 
+    var highlight_line = new CheckButton.with_label( _( "Highlight Line" ) );
+
     if( custom ) {
 
       pattern.text = _find_text;
@@ -85,6 +89,12 @@ public class RegExpr : TextFunction {
       replace.text = _replace_text;
       replace.changed.connect(() => {
         _replace_text = replace.text;
+        custom_changed();
+      });
+
+      highlight_line.active = _highlight_line;
+      highlight_line.toggled.connect(() => {
+        _highlight_line = highlight_line.get_active();
         custom_changed();
       });
 
@@ -104,6 +114,12 @@ public class RegExpr : TextFunction {
         do_replace( editor, _undo_item );
       });
 
+      highlight_line.toggled.connect(() => {
+        _highlight_line = highlight_line.active;
+        _undo_item = new UndoItem( label );
+        do_search( editor, _undo_item );
+      });
+
       handle_widget_escape( pattern, _win );
       handle_widget_escape( replace, _win );
 
@@ -111,9 +127,11 @@ public class RegExpr : TextFunction {
 
     }
 
-    box = new Box( Orientation.VERTICAL, 0 );
-    box.pack_start( pattern, false, true, 5 );
-    box.pack_start( replace, false, true, 5 );
+    box = new Box( Orientation.VERTICAL, 5 );
+    box.margin = 5;
+    box.pack_start( pattern,        false, true,  0 );
+    box.pack_start( replace,        false, true,  0 );
+    box.pack_start( highlight_line, false, false, 0 );
 
   }
 
@@ -278,6 +296,10 @@ public class RegExpr : TextFunction {
         if( start == end ) break;
         editor.buffer.get_iter_at_offset( out start_iter, start_index + start );
         editor.buffer.get_iter_at_offset( out end_iter,   start_index + end );
+        if( _highlight_line ) {
+          start_iter.set_line( start_iter.get_line() );
+          end_iter.forward_to_line_end();
+        }
         editor.add_selected( start_iter, end_iter, _undo_item );
         _tags_exist = true;
         text = text.splice( 0, end );
@@ -361,6 +383,7 @@ public class RegExpr : TextFunction {
     Xml.Node* node = base.save();
     node->set_prop( "pattern", _find_text );
     node->set_prop( "replace", _replace_text );
+    node->set_prop( "highlight-line", _highlight_line.to_string() );
     return( node );
   }
 
@@ -373,6 +396,10 @@ public class RegExpr : TextFunction {
     string? r = node->get_prop( "replace" );
     if( r != null ) {
       _replace_text = r;
+    }
+    string? hl = node->get_prop( "highlight-line" );
+    if( hl != null ) {
+      _highlight_line = bool.parse( hl );
     }
   }
 
