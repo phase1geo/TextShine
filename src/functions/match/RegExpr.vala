@@ -275,6 +275,7 @@ public class RegExpr : TextFunction {
         TextIter start_iter, end_iter;
         int start, end;
         match.fetch_pos( 0, out start, out end );
+        if( start == end ) break;
         editor.buffer.get_iter_at_offset( out start_iter, start_index + start );
         editor.buffer.get_iter_at_offset( out end_iter,   start_index + end );
         editor.add_selected( start_iter, end_iter, _undo_item );
