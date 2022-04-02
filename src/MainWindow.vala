@@ -63,6 +63,8 @@ public class MainWindow : Hdy.ApplicationWindow {
     { "action_redo",       do_redo }
   };
 
+  private bool on_elementary = Gtk.Settings.get_default().gtk_icon_theme_name == "elementary";
+
   public TextFunctions functions {
     get {
       return( _functions );
@@ -197,44 +199,53 @@ public class MainWindow : Hdy.ApplicationWindow {
 
   }
 
+  /* Returns the name of the icon to use based on if we are running elementary */
+  private string get_icon_name( string icon_name ) {
+    return "%s%s".printf( icon_name, (on_elementary ? "" : "-symbolic") );
+  }
+
+  private IconSize get_icon_size() {
+    return( on_elementary ? IconSize.LARGE_TOOLBAR : IconSize.SMALL_TOOLBAR );
+  }
+
   /* Create the header bar */
   private void create_header() {
 
     _header = new Hdy.HeaderBar();
     _header.set_show_close_button( true );
 
-    _clear_btn = new Button.from_icon_name( "document-new", IconSize.LARGE_TOOLBAR );
+    _clear_btn = new Button.from_icon_name( get_icon_name( "document-new" ), get_icon_size() );
     _clear_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "New Workspace" ), "<Control>n" ) );
     _clear_btn.clicked.connect( do_new );
     _header.pack_start( _clear_btn );
 
-    _open_btn = new Button.from_icon_name( "document-open", IconSize.LARGE_TOOLBAR );
+    _open_btn = new Button.from_icon_name( get_icon_name( "document-open" ), get_icon_size() );
     _open_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Open File" ), "<Control>o" ) );
     _open_btn.clicked.connect( do_open );
     _header.pack_start( _open_btn );
 
-    _save_btn = new Button.from_icon_name( "document-save", IconSize.LARGE_TOOLBAR );
+    _save_btn = new Button.from_icon_name( get_icon_name( "document-save" ), get_icon_size() );
     _save_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Save File" ), "<Control>s" ) );
     _save_btn.clicked.connect( do_save );
     _header.pack_start( _save_btn );
 
-    _paste_btn = new Button.from_icon_name( "edit-paste", IconSize.LARGE_TOOLBAR );
+    _paste_btn = new Button.from_icon_name( get_icon_name( "edit-paste" ), get_icon_size() );
     _paste_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Paste Over" ), "<Shift><Control>v" ) );
     _paste_btn.clicked.connect( do_paste_over );
     _header.pack_start( _paste_btn );
 
-    _copy_btn = new Button.from_icon_name( "edit-copy", IconSize.LARGE_TOOLBAR );
+    _copy_btn = new Button.from_icon_name( get_icon_name( "edit-copy" ), get_icon_size() );
     _copy_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Copy All" ), "<Shift><Control>c" ) );
     _copy_btn.clicked.connect( do_copy_all );
     _header.pack_start( _copy_btn );
 
-    _undo_btn = new Button.from_icon_name( "edit-undo", IconSize.LARGE_TOOLBAR );
+    _undo_btn = new Button.from_icon_name( get_icon_name( "edit-undo" ), get_icon_size() );
     _undo_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Undo" ), "<Control>z" ) );
     _undo_btn.set_sensitive( false );
     _undo_btn.clicked.connect( do_undo );
     _header.pack_start( _undo_btn );
 
-    _redo_btn = new Button.from_icon_name( "edit-redo", IconSize.LARGE_TOOLBAR );
+    _redo_btn = new Button.from_icon_name( get_icon_name( "edit-redo" ), get_icon_size() );
     _redo_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Redo" ), "<Control><Shift>z" ) );
     _redo_btn.set_sensitive( false );
     _redo_btn.clicked.connect( do_redo );
@@ -251,7 +262,7 @@ public class MainWindow : Hdy.ApplicationWindow {
   private Button add_stats_button() {
 
     var stats_btn = new MenuButton();
-    stats_btn.set_image( new Image.from_icon_name( "org.gnome.PowerStats", IconSize.LARGE_TOOLBAR ) );
+    stats_btn.set_image( new Image.from_icon_name( "org.gnome.PowerStats", get_icon_size() ) );
     stats_btn.set_tooltip_markup( _( "Statistics" ) );
     stats_btn.clicked.connect( stats_clicked );
 
@@ -334,7 +345,7 @@ public class MainWindow : Hdy.ApplicationWindow {
   private Button add_properties_button() {
 
     _prop_btn = new MenuButton();
-    _prop_btn.set_image( new Image.from_icon_name( "open-menu", IconSize.LARGE_TOOLBAR ) );
+    _prop_btn.set_image( new Image.from_icon_name( get_icon_name( "open-menu" ), get_icon_size() ) );
     _prop_btn.set_tooltip_text( _( "Properties" ) );
     _prop_btn.clicked.connect( properties_clicked );
 
