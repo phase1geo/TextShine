@@ -25,7 +25,7 @@ public class SidebarBox : Box {
 
   protected MainWindow win;
   protected Editor     editor;
-  protected const int  width  = 350;
+  protected const int  width  = 380;
   protected const int  height = 600;
 
   public signal void action_applied( TextFunction function );
