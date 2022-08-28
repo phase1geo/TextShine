@@ -25,7 +25,7 @@ public class SidebarBox : Box {
 
   protected MainWindow win;
   protected Editor     editor;
-  protected const int  width  = 380;
+  protected int        width;
   protected const int  height = 600;
 
   public signal void action_applied( TextFunction function );
@@ -35,6 +35,8 @@ public class SidebarBox : Box {
   public SidebarBox( MainWindow win, Editor editor ) {
 
     Object( orientation: Orientation.VERTICAL, spacing: 0 );
+
+    width = TextShine.settings.get_int( "sidebar-width" );
 
     set_size_request( width, height );
 

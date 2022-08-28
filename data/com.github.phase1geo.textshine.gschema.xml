@@ -21,6 +21,11 @@
       <summary>Most recent height of window</summary>
       <description>Most recent height of window</description>
     </key>
+    <key name="sidebar-width" type="i">
+      <default>350</default>
+      <summary>Width of the sidebar (in pixels)</summary>
+      <description>Width of the sidebar (in pixels)</description>
+    </key>
     <key name="default-font-family" type="s">
       <default>"Sans"</default>
       <summary>Default font family</summary>
