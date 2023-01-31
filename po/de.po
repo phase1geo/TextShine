@@ -1,0 +1,941 @@
+# GERMAN TRANSLATION FOR TEXTSHINE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.phase1geo.textshine package.
+# Benjamin Weis <benjamin.weis@gmx.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.phase1geo.textshine\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-01-16 19:56-0600\n"
+"PO-Revision-Date: 2023-01-30 19:49+0100\n"
+"Last-Translator: Benjamin Weis <benjamin.weis@gmx.com>\n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: src/Application.vala:82
+msgid "Opening file"
+msgstr "Datei öffnen"
+
+#: src/Application.vala:105
+msgid "Display version number"
+msgstr "Versionsnummer anzeigen"
+
+#: src/Application.vala:106
+msgid "Transform clipboard text"
+msgstr "Text in der Zwischenablage umwandeln"
+
+#: src/functions/case/CaseCamel.vala:35
+msgid "Camel Case"
+msgstr "Binnenmajuskel"
+
+#: src/functions/case/CaseLower.vala:30
+msgid "Lower Case"
+msgstr "Kleinbuchstaben"
+
+#: src/functions/case/CaseRandom.vala:30
+msgid "Random Case"
+msgstr "Zufällige Schreibung"
+
+#: src/functions/case/CaseSentence.vala:35
+msgid "Sentence Case"
+msgstr "Satzschreibung"
+
+#: src/functions/case/CaseSnake.vala:35
+msgid "Snake Case"
+msgstr "Schlangenschreibung"
+
+#: src/functions/case/CaseTitle.vala:35
+msgid "Title Case"
+msgstr "Titelschreibung"
+
+#: src/functions/case/CaseUpper.vala:30
+msgid "Upper Case"
+msgstr "Großbuchstaben"
+
+#: src/functions/convert/ConvertBase64.vala:32
+msgid "Encode To Base64"
+msgstr "In Base64 kodieren"
+
+#: src/functions/convert/ConvertBase64.vala:36
+msgid "Decode From Base64"
+msgstr "Von Base64 dekodieren"
+
+#: src/functions/convert/ConvertChecksum.vala:87
+#, c-format
+msgid "Encode as %s checksum"
+msgstr "Als Prüfsumme %s kodieren"
+
+#: src/functions/convert/ConvertChecksum.vala:109
+msgid "Checksum Type"
+msgstr "Prüfsummenart"
+
+#: src/functions/convert/ConvertHardWrap.vala:33
+msgid "Characters"
+msgstr "Zeichen"
+
+#: src/functions/convert/ConvertHardWrap.vala:34
+msgid "Words"
+msgstr "Wörter"
+
+#: src/functions/convert/ConvertHardWrap.vala:65
+#, c-format
+msgid "Hard Wrap At %d %s"
+msgstr "Hartes Umbrechen bei %d %s"
+
+#: src/functions/convert/ConvertHardWrap.vala:93
+msgid "Column Width"
+msgstr "Spaltenbreite"
+
+#: src/functions/convert/ConvertHardWrap.vala:98
+msgid "Wrap Type"
+msgstr "Umbruchart"
+
+#: src/functions/convert/ConvertROT13.vala:32
+msgid "ROT 13"
+msgstr "ROT 13"
+
+#: src/functions/convert/ConvertURLEncode.vala:32
+msgid "Encode URL"
+msgstr "URL kodieren"
+
+#: src/functions/indent/Indent.vala:32
+msgid "Indent One Level"
+msgstr "Eine Ebene einrücken"
+
+#: src/functions/indent/IndentXML.vala:32
+msgid "Indent XML"
+msgstr "XML einrücken"
+
+#: src/functions/indent/Unindent.vala:32
+msgid "Unindent One Level"
+msgstr "Eine Ebene ausrücken"
+
+#: src/functions/insert/InsertFile.vala:36
+msgid "Insert File Text"
+msgstr "Datei-Text einfügen"
+
+#: src/functions/insert/InsertFile.vala:44
+#: src/functions/insert/InsertFile.vala:92
+msgid "Insert File"
+msgstr "Datei einfügen"
+
+#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
+msgid "Open"
+msgstr "Öffnen"
+
+#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
+#: src/MainWindow.vala:476 src/SidebarCustom.vala:732
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/functions/insert/InsertLineNumbers.vala:39
+msgid "Insert Line Numbers"
+msgstr "Zeilennummern einfügen"
+
+#: src/functions/insert/InsertLineNumbers.vala:88
+msgid "Separator"
+msgstr "Trennzeichen"
+
+#: src/functions/insert/InsertLineNumbers.vala:92
+msgid "Add Padding"
+msgstr "Abstand hinzufügen"
+
+#: src/functions/insert/InsertLineNumbers.vala:96
+msgid "Skip Blank Lines"
+msgstr "Leerzeilen überspringen"
+
+#: src/functions/insert/InsertLoremIpsum.vala:60
+msgid "Insert Lorem Ipsum"
+msgstr "Lorem Ipsum einfügen"
+
+#: src/functions/insert/InsertLoremIpsum.vala:98
+msgid "Paragraphs"
+msgstr "Absätze"
+
+#: src/functions/insert/InsertText.vala:39
+msgid "Start of Line"
+msgstr "Zeilenanfang"
+
+#: src/functions/insert/InsertText.vala:40
+msgid "End of Line"
+msgstr "Zeilenende"
+
+#: src/functions/insert/InsertText.vala:41
+msgid "Start of Document"
+msgstr "Dokumentanfang"
+
+#: src/functions/insert/InsertText.vala:42
+msgid "End of Document"
+msgstr "Dokumentende"
+
+#: src/functions/insert/InsertText.vala:43
+msgid "Start of Paragraph"
+msgstr "Absatzanfang"
+
+#: src/functions/insert/InsertText.vala:44
+msgid "End of Paragraphs"
+msgstr "Absatzende"
+
+#: src/functions/insert/InsertText.vala:45
+msgid "Before First Line Character"
+msgstr "Vor dem ersten Zeichen der Zeile"
+
+#: src/functions/insert/InsertText.vala:99
+#, c-format
+msgid "Insert Text (%s)"
+msgstr "Text einfügen (%s)"
+
+#: src/functions/insert/InsertText.vala:136
+msgid "Inserted Text"
+msgstr "Eingefügter Text"
+
+#: src/functions/insert/InsertText.vala:184
+msgid "Insert At"
+msgstr "Einfügen bei"
+
+#: src/functions/markdown/ConvertMarkdownHTML.vala:35
+msgid "Convert Markdown to HTML"
+msgstr "Markdown in HTML konvertieren"
+
+#: src/functions/markdown/ConvertMarkdownHTML.vala:39
+msgid "Convert HTML to Markdown"
+msgstr "HTML in Markdown konvertieren"
+
+#: src/functions/markdown/MarkdownReferences.vala:44
+msgid "Generate References"
+msgstr "Referenzen generieren"
+
+#: src/functions/markdown/MarkdownTableBeauty.vala:226
+msgid "Beautify Tables"
+msgstr "Tabellen verschönern"
+
+#: src/functions/markdown/MarkdownTaskAdd.vala:31
+msgid "Line"
+msgstr "Zeile"
+
+#: src/functions/markdown/MarkdownTaskAdd.vala:32
+msgid "Paragraph"
+msgstr "Absatz"
+
+#: src/functions/markdown/MarkdownTaskAdd.vala:69
+msgid "Add Markdown Tasks"
+msgstr "Markdown-Aufgaben hinzufügen"
+
+#: src/functions/markdown/MarkdownTaskAdd.vala:88
+#: src/functions/markdown/MarkdownTaskDelete.vala:57
+#: src/functions/markdown/MarkdownTaskRemoveCompleted.vala:59
+msgid "Apply To"
+msgstr "Anwenden auf"
+
+#: src/functions/markdown/MarkdownTaskComplete.vala:37
+msgid "Mark Markdown Tasks As Complete"
+msgstr "Markdown-Aufgaben als abgeschlossen markieren"
+
+#: src/functions/markdown/MarkdownTaskDelete.vala:38
+msgid "Remove Markdown Tasks"
+msgstr "Markdown-Aufgaben entfernen"
+
+#: src/functions/markdown/MarkdownTaskIncomplete.vala:37
+msgid "Mark Markdown Tasks As Incomplete"
+msgstr "Markdown-Aufgaben als unvollständig markieren"
+
+#: src/functions/markdown/MarkdownTaskRemoveCompleted.vala:40
+msgid "Remove Completed Markdown Tasks"
+msgstr "Erledigte Markdown-Aufgaben entfernen"
+
+#: src/functions/match/ClearSelected.vala:32
+msgid "Clear Match Highlight"
+msgstr "Hervorhebung der Übereinstimmung löschen"
+
+#: src/functions/match/Find.vala:41
+msgid "Find"
+msgstr "Suchen"
+
+#: src/functions/match/Find.vala:63
+msgid "Search Text"
+msgstr "Text suchen"
+
+#: src/functions/match/Find.vala:131 src/Utils.vala:184
+msgid "Insert New-line"
+msgstr "Zeilenumbruch einfügen"
+
+#: src/functions/match/Find.vala:132 src/Utils.vala:186
+msgid "Insert Page Break"
+msgstr "Seitenumbruch einfügen"
+
+#: src/functions/match/InvertSelected.vala:32
+msgid "Invert Matched Text"
+msgstr "Übereinstimmenden Text invertieren"
+
+#: src/functions/match/RegExpr.vala:44 src/functions/match/RegExpr.vala:66
+msgid "Regular Expression"
+msgstr "Regulärer Ausdruck"
+
+#: src/functions/match/RegExpr.vala:72
+#: src/functions/match/ReplaceSelected.vala:59
+msgid "Replace With"
+msgstr "Ersetzen mit"
+
+#: src/functions/match/RegExpr.vala:165
+msgid "Character Patterns"
+msgstr "Zeichenmuster"
+
+#: src/functions/match/RegExpr.vala:166
+msgid "Digit"
+msgstr "Zahl"
+
+#: src/functions/match/RegExpr.vala:167
+msgid "Non-Digit"
+msgstr "Nicht-Zahl"
+
+#: src/functions/match/RegExpr.vala:168
+msgid "New-line"
+msgstr "Zeilenumbruch"
+
+#: src/functions/match/RegExpr.vala:169
+msgid "Non-New-line"
+msgstr "Nicht-Zeilenumbruch"
+
+#: src/functions/match/RegExpr.vala:170
+msgid "Tab"
+msgstr "Tabulator"
+
+#: src/functions/match/RegExpr.vala:171
+msgid "Page Break"
+msgstr "Seitenumbruch"
+
+#: src/functions/match/RegExpr.vala:172
+msgid "Whitespace"
+msgstr "Leerzeichen"
+
+#: src/functions/match/RegExpr.vala:173
+msgid "Non-Whitespace"
+msgstr "Nicht-Leerzeichen"
+
+#: src/functions/match/RegExpr.vala:174 src/functions/match/RegExpr.vala:199
+msgid "Word"
+msgstr "Wort"
+
+#: src/functions/match/RegExpr.vala:175
+msgid "Non-Word"
+msgstr "Nicht-Wort"
+
+#: src/functions/match/RegExpr.vala:176
+msgid "Any character"
+msgstr "Beliebiges Zeichen"
+
+#: src/functions/match/RegExpr.vala:181
+msgid "Location Patterns"
+msgstr "Positionsmuster"
+
+#: src/functions/match/RegExpr.vala:182
+msgid "Word Boundary"
+msgstr "Wortgrenze"
+
+#: src/functions/match/RegExpr.vala:183
+msgid "Non-Word Boundary"
+msgstr "Nicht-Wortgrenze"
+
+#: src/functions/match/RegExpr.vala:184
+msgid "Start Of Line"
+msgstr "Zeilenanfang"
+
+#: src/functions/match/RegExpr.vala:185
+msgid "End Of Line"
+msgstr "Zeilenende"
+
+#: src/functions/match/RegExpr.vala:190
+msgid "Iteration Patterns"
+msgstr "Iterationsmuster"
+
+#: src/functions/match/RegExpr.vala:191
+msgid "0 or 1 Times"
+msgstr "0 oder 1 Mal"
+
+#: src/functions/match/RegExpr.vala:192
+msgid "0 or More Times"
+msgstr "0 oder mehrere Male"
+
+#: src/functions/match/RegExpr.vala:193
+msgid "1 or More Times"
+msgstr "1 oder mehrere Male"
+
+#: src/functions/match/RegExpr.vala:198
+msgid "Advanced Patterns"
+msgstr "Erweiterte Muster"
+
+#: src/functions/match/RegExpr.vala:200
+msgid "Number"
+msgstr "Nummer"
+
+#: src/functions/match/RegExpr.vala:201
+msgid "URL"
+msgstr "URL"
+
+#: src/functions/match/RegExpr.vala:202
+msgid "E-mail"
+msgstr "E-Mail"
+
+#: src/functions/match/RegExpr.vala:203
+msgid "Date"
+msgstr "Datum"
+
+#: src/functions/match/RegExpr.vala:204
+msgid "Phone Number"
+msgstr "Telefonnummer"
+
+#: src/functions/match/RegExpr.vala:205
+msgid "HTML/XML Tags"
+msgstr "HTML/XML-Tags"
+
+#: src/functions/match/RegExpr.vala:206
+msgid "Specific Start Tag"
+msgstr "Bestimmtes Start-Tag"
+
+#: src/functions/match/RegExpr.vala:207
+msgid "Specific End Tag"
+msgstr "Bestimmtes End-Tag"
+
+#: src/functions/match/RegExpr.vala:208
+msgid "Specific Tag"
+msgstr "Bestimmtes Tag"
+
+#: src/functions/match/RegExpr.vala:209
+msgid "Any Start Tag"
+msgstr "Beliebiges Start-Tag"
+
+#: src/functions/match/RegExpr.vala:210
+msgid "Any End Tag"
+msgstr "Beliebiges End-Tag"
+
+#: src/functions/match/RegExpr.vala:211
+msgid "Any Tag"
+msgstr "Jedes Tag"
+
+#: src/functions/match/RegExpr.vala:226
+msgid "Case Patterns"
+msgstr "Schreibungsmuster"
+
+#: src/functions/match/RegExpr.vala:227
+msgid "Uppercase Next Character"
+msgstr "Nächstes Zeichen als Großbuchstabe"
+
+#: src/functions/match/RegExpr.vala:228
+msgid "Lowercase Next Character"
+msgstr "Nächstes Zeichen als Kleinbuchstabe"
+
+#: src/functions/match/RegExpr.vala:229
+msgid "Start Uppercase Change"
+msgstr "Großbuchstabenänderung starten"
+
+#: src/functions/match/RegExpr.vala:230
+msgid "Start Lowercase Change"
+msgstr "Kleinbuchstabenänderung starten"
+
+#: src/functions/match/RegExpr.vala:231
+msgid "End Case Change"
+msgstr "Schreibungsänderung beenden"
+
+#: src/functions/match/RegExpr.vala:238
+msgid "Positional Patterns"
+msgstr "Positionale Muster"
+
+#: src/functions/match/RegExpr.vala:239
+msgid "Matched Pattern"
+msgstr "Übereinstimmendes Muster"
+
+#: src/functions/match/RegExpr.vala:241
+#, c-format
+msgid "Subpattern %d"
+msgstr "Teilmuster %d"
+
+#: src/functions/match/ReplaceSelected.vala:39
+msgid "Replace Matched Text"
+msgstr "Übereinstimmenden Text ersetzen"
+
+#: src/functions/quotes/QuotesAngled.vala:30
+msgid "Change to Angled Quotes"
+msgstr "In gewinkelte Anführungszeichen ändern"
+
+#: src/functions/quotes/QuotesCJK.vala:30
+msgid "Change to CJK Quotes"
+msgstr "In CJK-Anführungszeichen ändern"
+
+#: src/functions/quotes/QuotesCurved.vala:30
+msgid "Change to Curved Quotes"
+msgstr "In geschwungene Anführungszeichen ändern"
+
+#: src/functions/quotes/QuotesDoubleSingle.vala:30
+msgid "Double to Single Quotes"
+msgstr "Doppelte zu einfachen Anführungszeichen"
+
+#: src/functions/quotes/QuotesDoubleSingle.vala:34
+msgid "Single to Double Quotes"
+msgstr "Einfache zu doppelte Anführungszeichen"
+
+#: src/functions/quotes/QuotesGerman.vala:30
+msgid "Change to German Quotes"
+msgstr "In deutsche Anführungszeichen ändern"
+
+#: src/functions/quotes/QuotesStraight.vala:30
+msgid "Change to Straight Quotes"
+msgstr "In gerade Anführungszeichen ändern"
+
+#: src/functions/remove/RemoveBlankLines.vala:29
+msgid "Remove Blank Lines"
+msgstr "Leerzeilen entfernen"
+
+#: src/functions/remove/RemoveDuplicateLines.vala:31
+msgid "Remove Duplicate Lines"
+msgstr "Doppelte Zeilen entfernen"
+
+#: src/functions/remove/RemoveLeadingWhitespace.vala:31
+msgid "Remove Leading Whitespace"
+msgstr "Führende Leerzeichen entfernen"
+
+#: src/functions/remove/RemoveLineBreaks.vala:29
+msgid "Remove Line Breaks"
+msgstr "Zeilenumbrüche entfernen"
+
+#: src/functions/remove/RemoveLineNumbers.vala:34
+msgid "Remove Line Numbers"
+msgstr "Zeilennummern entfernen"
+
+#: src/functions/remove/RemoveSelected.vala:29
+msgid "Remove Matched Text"
+msgstr "Übereinstimmenden Text entfernen"
+
+#: src/functions/remove/RemoveTrailingWhitespace.vala:31
+msgid "Remove Trailing Whitespace"
+msgstr "Nachstehende Leerzeichen entfernen"
+
+#: src/functions/repair/FixSpaces.vala:45
+msgid "Fix Spaces"
+msgstr "Leerzeichen beheben"
+
+#: src/functions/replace/ReplacePeriodsEllipsis.vala:30
+msgid "Three Periods With Ellipsis"
+msgstr "Drei Punkte mit Auslassungspunkte"
+
+#: src/functions/replace/ReplacePeriodsEllipsis.vala:34
+msgid "Ellipsis With Three Periods"
+msgstr "Auslassungspunkte mit drei Punkten"
+
+#: src/functions/replace/ReplaceReturnSpace.vala:32
+msgid "Return With Space"
+msgstr "Zeilenumbruch mit Leerzeichen"
+
+#: src/functions/replace/ReplaceReturnSpace.vala:36
+msgid "Space With Return"
+msgstr "Leerzeichen mit Zeilenumbruch"
+
+#: src/functions/replace/ReplaceReturns.vala:34
+#, c-format
+msgid "Single Return With %d Returns"
+msgstr "Einen Zeilenumbruch mit %d Zeilenumbrüchen"
+
+#: src/functions/replace/ReplaceReturns.vala:38
+#, c-format
+msgid "%d Returns With Single Return"
+msgstr "%d Zeilenumbrüche mit einem Zeilenumbruch"
+
+#: src/functions/replace/ReplaceReturns.vala:70
+msgid "Returns"
+msgstr "Zeilenumbrüche"
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:35
+msgid "Tabs With 1 Space"
+msgstr "Tabulatoren mit 1 Leerzeichen"
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:37
+#, c-format
+msgid "Tabs With %d Spaces"
+msgstr "Tabulatoren mit %d Leerzeichen"
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:43
+msgid "1 Space With Tabs"
+msgstr "1 Leerzeichen mit Tabulatoren"
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:45
+#, c-format
+msgid "%d Spaces With Tabs"
+msgstr "%d Leerzeichen mit Tabulatoren"
+
+#: src/functions/replace/ReplaceTabsSpaces.vala:78
+msgid "Spaces"
+msgstr "Leerzeichen"
+
+#: src/functions/sort/SortLines.vala:30
+msgid "Sort Lines"
+msgstr "Zeilen sortieren"
+
+#: src/functions/sort/SortLines.vala:34
+msgid "Sort Lines Reversed"
+msgstr "Zeilen rückwärts sortieren"
+
+#: src/functions/sort/SortMoveLines.vala:36
+msgid "Move 1 Line Down"
+msgstr "1 Zeile nach unten verschieben"
+
+#: src/functions/sort/SortMoveLines.vala:38
+#, c-format
+msgid "Move %d Lines Down"
+msgstr "%d Zeilen nach unten verschieben"
+
+#: src/functions/sort/SortMoveLines.vala:44
+msgid "Move 1 Line Up"
+msgstr "1 Zeile nach oben verschieben"
+
+#: src/functions/sort/SortMoveLines.vala:46
+#, c-format
+msgid "Move %d Lines Up"
+msgstr "%d Zeilen nach oben verschieben"
+
+#: src/functions/sort/SortMoveLines.vala:129
+msgid "Lines"
+msgstr "Zeilen"
+
+#: src/functions/sort/SortReverseChars.vala:30
+msgid "Reverse Characters"
+msgstr "Zeichen umkehren"
+
+#: src/MainWindow.vala:207
+msgid "New Workspace"
+msgstr "Neue Arbeitsfläche"
+
+#: src/MainWindow.vala:212 src/MainWindow.vala:444
+msgid "Open File"
+msgstr "Datei öffnen"
+
+#: src/MainWindow.vala:217 src/MainWindow.vala:476
+msgid "Save File"
+msgstr "Datei speichern"
+
+#: src/MainWindow.vala:222
+msgid "Paste Over"
+msgstr "Einfügen über"
+
+#: src/MainWindow.vala:227
+msgid "Copy All"
+msgstr "Alles kopieren"
+
+#: src/MainWindow.vala:232 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
+msgid "Undo"
+msgstr "Rückgängig"
+
+#: src/MainWindow.vala:238 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
+msgid "Redo"
+msgstr "Wiederherstellen"
+
+#: src/MainWindow.vala:246
+msgid "TextShine"
+msgstr "TextShine"
+
+#: src/MainWindow.vala:255
+msgid "Statistics"
+msgstr "Statistik"
+
+#: src/MainWindow.vala:265
+msgid "<b>Text Statistics</b>"
+msgstr "<b>Textstatistik</b>"
+
+#: src/MainWindow.vala:269
+msgid "Characters:"
+msgstr "Zeichen:"
+
+#: src/MainWindow.vala:274
+msgid "Words:"
+msgstr "Wörter:"
+
+#: src/MainWindow.vala:279
+msgid "Lines:"
+msgstr "Zeilen:"
+
+#: src/MainWindow.vala:284
+msgid "Matches:"
+msgstr "Übereinstimmungen:"
+
+#: src/MainWindow.vala:289
+msgid "Spelling Errors:"
+msgstr "Rechtschreibfehler:"
+
+#: src/MainWindow.vala:338
+msgid "Properties"
+msgstr "Eigenschaften"
+
+#: src/MainWindow.vala:362
+msgid "Font:"
+msgstr "Schriftart:"
+
+#: src/MainWindow.vala:396
+msgid "Enable Spell Checker"
+msgstr "Rechtschreibprüfung aktivieren"
+
+#: src/MainWindow.vala:476
+msgid "Save"
+msgstr "Speichern"
+
+#: src/SidebarCustom.vala:60
+msgid "Name:"
+msgstr "Name:"
+
+#: src/SidebarCustom.vala:86 src/SidebarCustom.vala:157
+msgid "Test run custom actions"
+msgstr "Testlauf benutzerdefinierter Aktionen"
+
+#: src/SidebarCustom.vala:104 src/SidebarCustom.vala:305
+msgid "Add New Action"
+msgstr "Neue Aktion hinzufügen"
+
+#: src/SidebarCustom.vala:119
+msgid "Delete"
+msgstr "Löschen"
+
+#: src/SidebarCustom.vala:123
+msgid "Done"
+msgstr "Fertig"
+
+#: src/SidebarCustom.vala:153
+msgid "Refresh text"
+msgstr "Text auffrischen"
+
+#: src/SidebarCustom.vala:230
+msgid "Test run stops after this action"
+msgstr "Testlauf wird nach dieser Aktion beendet"
+
+#: src/SidebarCustom.vala:336
+msgid "Add Action Above"
+msgstr "Aktion oben hinzufügen"
+
+#: src/SidebarCustom.vala:341
+msgid "Add Action Below"
+msgstr "Aktion unten hinzufügen"
+
+#: src/SidebarCustom.vala:346
+msgid "Remove Action"
+msgstr "Aktion entfernen"
+
+#: src/SidebarCustom.vala:354
+msgid "Remove Breakpoint"
+msgstr "Haltepunkt entfernen"
+
+#: src/SidebarCustom.vala:354 src/SidebarCustom.vala:460
+msgid "Set Breakpoint"
+msgstr "Haltepunkt hinzufügen"
+
+#: src/SidebarCustom.vala:492
+msgid "Select Action..."
+msgstr "Aktion auswählen ..."
+
+#: src/SidebarCustom.vala:497 src/SidebarFunctions.vala:64
+msgid "Search Actions"
+msgstr "Aktion suchen"
+
+#: src/SidebarCustom.vala:614 src/SidebarFunctions.vala:245
+msgid "Switch Direction"
+msgstr "Richtung wechseln"
+
+#: src/SidebarCustom.vala:614 src/SidebarFunctions.vala:245
+msgid "Swap Order"
+msgstr "Reihenfolge tauschen"
+
+#: src/SidebarCustom.vala:658 src/SidebarFunctions.vala:428
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/SidebarCustom.vala:729
+msgid "Delete Custom Action?"
+msgstr "Benutzerdefinierte Aktion löschen?"
+
+#: src/SidebarCustom.vala:730
+msgid "Deleting a custom action cannot be undone."
+msgstr "Die Löschung einer benutzerdefinierten Aktion kann nicht rückgängig gemacht werden."
+
+#: src/SidebarCustom.vala:731
+msgid "Delete Action"
+msgstr "Aktion löschen"
+
+#: src/SidebarFunctions.vala:69
+msgid "Add Custom Action"
+msgstr "Benutzerdefinierte Aktion hinzufügen"
+
+#: src/SidebarFunctions.vala:307 src/SidebarFunctions.vala:336
+msgid "Unfavorite"
+msgstr "Entfavorisieren"
+
+#: src/SidebarFunctions.vala:342
+msgid "Favorite"
+msgstr "Favorisieren"
+
+#: src/SidebarFunctions.vala:463
+msgid "Edit Action"
+msgstr "Aktion bearbeiten"
+
+#: src/TextFunctions.vala:58
+msgid "Favorites"
+msgstr "Favoriten"
+
+#: src/TextFunctions.vala:59
+msgid "Change Case"
+msgstr "Schreibung ändern"
+
+#: src/TextFunctions.vala:60
+msgid "Convert"
+msgstr "Konvertieren"
+
+#: src/TextFunctions.vala:61
+msgid "Indentation"
+msgstr "Einrückung"
+
+#: src/TextFunctions.vala:62
+msgid "Insert"
+msgstr "Einfügen"
+
+#: src/TextFunctions.vala:63
+msgid "Markdown"
+msgstr "Markdown"
+
+#: src/TextFunctions.vala:64
+msgid "Quotes"
+msgstr "Zitate"
+
+#: src/TextFunctions.vala:65
+msgid "Remove"
+msgstr "Entfernen"
+
+#: src/TextFunctions.vala:66
+msgid "Repair"
+msgstr "Reparieren"
+
+#: src/TextFunctions.vala:67
+msgid "Replace"
+msgstr "Ersetzen"
+
+#: src/TextFunctions.vala:68
+msgid "Search and Replace"
+msgstr "Suchen und Ersetzen"
+
+#: src/TextFunctions.vala:69
+msgid "Sort"
+msgstr "Sortieren"
+
+#: src/TextFunctions.vala:70
+msgid "Custom"
+msgstr "Benutzerdefiniert"
+
+#: src/UndoBuffer.vala:85 src/UndoCustomBuffer.vala:81
+msgid "Undo "
+msgstr "Rückgängig "
+
+#: src/UndoBuffer.vala:91 src/UndoCustomBuffer.vala:87
+msgid "Redo "
+msgstr "Wiederherstellen "
+
+#: src/UndoCustomItem.vala:43
+msgid "Action Add"
+msgstr "Aktion Hinzufügen"
+
+#: src/UndoCustomItem.vala:59
+msgid "Action Remove"
+msgstr "Aktion Entfernen"
+
+#: src/UndoCustomItem.vala:75
+msgid "Action Move"
+msgstr "Aktion Verschieben"
+
+#: src/Utils.vala:180
+msgid "Insert Characters"
+msgstr "Zeichen einfügen"
+
+#: src/Utils.vala:181
+msgid "Insert Date"
+msgstr "Datum einfügen"
+
+#: src/Utils.vala:182
+msgid "Insert Time"
+msgstr "Zeit einfügen"
+
+#: src/Utils.vala:185
+msgid "Insert Tab"
+msgstr "Tabulator einfügen"
+
+#: src/Utils.vala:187
+msgid "Insert Incrementing Decimal"
+msgstr "Hochzählende Dezimalzahl einfügen"
+
+#: src/Utils.vala:188
+msgid "Insert Percent Sign"
+msgstr "Prozentzeichen einfügen"
+
+#: src/Utils.vala:190
+msgid "Standard Date"
+msgstr "Standarddatum"
+
+#: src/Utils.vala:192
+msgid "Day of Month (1-31)"
+msgstr "Monatstag (1-31)"
+
+#: src/Utils.vala:193
+msgid "Day of Month (01-31)"
+msgstr "Monatstag (01-31)"
+
+#: src/Utils.vala:194
+msgid "Month (01-12)"
+msgstr "Monat (01-12)"
+
+#: src/Utils.vala:195
+msgid "Year (YYYY)"
+msgstr "Jahr (JJJJ)"
+
+#: src/Utils.vala:196
+msgid "Year (YY)"
+msgstr "Jahr (JJ)"
+
+#: src/Utils.vala:197
+msgid "Day of Week"
+msgstr "Wochentag"
+
+#: src/Utils.vala:198
+msgid "Day of Week (Abbreviated)"
+msgstr "Wochentag (abgekürzt)"
+
+#: src/Utils.vala:199
+msgid "Name of Month"
+msgstr "Monatsname"
+
+#: src/Utils.vala:200
+msgid "Name of Month (Abbreviated)"
+msgstr "Monatsname (abgekürzt)"
+
+#: src/Utils.vala:202
+msgid "Standard Time"
+msgstr "Standardzeit"
+
+#: src/Utils.vala:204
+msgid "Seconds (00-59)"
+msgstr "Sekunden (00-59)"
+
+#: src/Utils.vala:205
+msgid "Minutes (00-59)"
+msgstr "Minuten (00-59)"
+
+#: src/Utils.vala:206
+msgid "Hours (00-12)"
+msgstr "Stunden (00-12)"
+
+#: src/Utils.vala:207
+msgid "Hours (00-23)"
+msgstr "Stunden (00-23)"
+
+#: src/Utils.vala:208
+msgid "AM/PM"
+msgstr "AM/PM"
+
+#: src/Utils.vala:209
+msgid "Timezone"
+msgstr "Zeitzone"
