@@ -1,14 +1,14 @@
 # ITALIAN TRANSLATION FOR TEXTSHINE.
 # Copyright (C) 2021
 # This file is distributed under the same license as the com.github.phase1geo.textshine package.
-# ALBANO BATTISTELLA <albano_battistella@hotmail.com>, 2021.
+# ALBANO BATTISTELLA <albano_battistella@hotmail.com>, 2021,2022,2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-01-16 19:56-0600\n"
-"PO-Revision-Date: 2021-04-17 16:50-0100\n"
+"PO-Revision-Date: 2021-04-25 13:50-0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
 "Language: It\n"
@@ -34,7 +34,7 @@ msgstr ""
 
 #: src/functions/case/CaseLower.vala:30
 msgid "Lower Case"
-msgstr ""
+msgstr "Lettere Minuscolo"
 
 #: src/functions/case/CaseRandom.vala:30
 msgid "Random Case"
@@ -54,43 +54,41 @@ msgstr ""
 
 #: src/functions/case/CaseUpper.vala:30
 msgid "Upper Case"
-msgstr ""
+msgstr "Lettere maiuscole"
 
 #: src/functions/convert/ConvertBase64.vala:32
 msgid "Encode To Base64"
-msgstr ""
+msgstr "Codifica in Base64"
 
 #: src/functions/convert/ConvertBase64.vala:36
 msgid "Decode From Base64"
-msgstr ""
+msgstr "Decodifica da Base64"
 
 #: src/functions/convert/ConvertChecksum.vala:87
 #, c-format
 msgid "Encode as %s checksum"
-msgstr ""
+msgstr "Codifica come %s checksum"
 
 #: src/functions/convert/ConvertChecksum.vala:109
 msgid "Checksum Type"
-msgstr ""
+msgstr "Tipo di Checksum"
 
 #: src/functions/convert/ConvertHardWrap.vala:33
-#, fuzzy
 msgid "Characters"
-msgstr "Caratteri:"
+msgstr "Caratteri"
 
 #: src/functions/convert/ConvertHardWrap.vala:34
-#, fuzzy
 msgid "Words"
-msgstr "Parole:"
+msgstr "Parole"
 
 #: src/functions/convert/ConvertHardWrap.vala:65
 #, c-format
 msgid "Hard Wrap At %d %s"
-msgstr ""
+msgstr "Concludi a %d %s"
 
 #: src/functions/convert/ConvertHardWrap.vala:93
 msgid "Column Width"
-msgstr ""
+msgstr "Larghezza della colonna"
 
 #: src/functions/convert/ConvertHardWrap.vala:98
 msgid "Wrap Type"
@@ -102,33 +100,32 @@ msgstr ""
 
 #: src/functions/convert/ConvertURLEncode.vala:32
 msgid "Encode URL"
-msgstr ""
+msgstr "Codifica URL"
 
 #: src/functions/indent/Indent.vala:32
 msgid "Indent One Level"
-msgstr ""
+msgstr "Rientro di un livello"
 
 #: src/functions/indent/IndentXML.vala:32
 msgid "Indent XML"
-msgstr ""
+msgstr "Rientro XML"
 
 #: src/functions/indent/Unindent.vala:32
 msgid "Unindent One Level"
-msgstr ""
+msgstr "Annulla rientro di un livello"
 
 #: src/functions/insert/InsertFile.vala:36
 msgid "Insert File Text"
-msgstr ""
+msgstr "Inserisci file di testo"
 
 #: src/functions/insert/InsertFile.vala:44
 #: src/functions/insert/InsertFile.vala:92
-#, fuzzy
 msgid "Insert File"
-msgstr "Apri File"
+msgstr "Inserisci File"
 
 #: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
 msgid "Open"
-msgstr "aPRI"
+msgstr "Apri"
 
 #: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
 #: src/MainWindow.vala:476 src/SidebarCustom.vala:732
@@ -137,64 +134,64 @@ msgstr "Cancella"
 
 #: src/functions/insert/InsertLineNumbers.vala:39
 msgid "Insert Line Numbers"
-msgstr ""
+msgstr "Inserisci i numeri di riga"
 
 #: src/functions/insert/InsertLineNumbers.vala:88
 msgid "Separator"
-msgstr ""
+msgstr "Separatore"
 
 #: src/functions/insert/InsertLineNumbers.vala:92
 msgid "Add Padding"
-msgstr ""
+msgstr "Aggiungi riempimento"
 
 #: src/functions/insert/InsertLineNumbers.vala:96
 msgid "Skip Blank Lines"
-msgstr ""
+msgstr "Salta righe vuote"
 
 #: src/functions/insert/InsertLoremIpsum.vala:60
 msgid "Insert Lorem Ipsum"
-msgstr ""
+msgstr "Inserisci Lorem Ipsum"
 
 #: src/functions/insert/InsertLoremIpsum.vala:98
 msgid "Paragraphs"
-msgstr ""
+msgstr "Paragrafi"
 
 #: src/functions/insert/InsertText.vala:39
 msgid "Start of Line"
-msgstr ""
+msgstr "Inizio di linea"
 
 #: src/functions/insert/InsertText.vala:40
 msgid "End of Line"
-msgstr ""
+msgstr "Fine di linea"
 
 #: src/functions/insert/InsertText.vala:41
 msgid "Start of Document"
-msgstr ""
+msgstr "Inizio di documento"
 
 #: src/functions/insert/InsertText.vala:42
 msgid "End of Document"
-msgstr ""
+msgstr "Fine di documento"
 
 #: src/functions/insert/InsertText.vala:43
 msgid "Start of Paragraph"
-msgstr ""
+msgstr "Inizio di paragrafo"
 
 #: src/functions/insert/InsertText.vala:44
 msgid "End of Paragraphs"
-msgstr ""
+msgstr "Fine di paragrafo"
 
 #: src/functions/insert/InsertText.vala:45
 msgid "Before First Line Character"
-msgstr ""
+msgstr "Prima del carattere della prima riga"
 
 #: src/functions/insert/InsertText.vala:99
 #, c-format
 msgid "Insert Text (%s)"
-msgstr ""
+msgstr "Inserisci testo (%s)"
 
 #: src/functions/insert/InsertText.vala:136
 msgid "Inserted Text"
-msgstr ""
+msgstr "Testo inserito"
 
 #: src/functions/insert/InsertText.vala:184
 msgid "Insert At"
@@ -217,9 +214,8 @@ msgid "Beautify Tables"
 msgstr ""
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:31
-#, fuzzy
 msgid "Line"
-msgstr "Linee:"
+msgstr "Linea"
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:32
 msgid "Paragraph"
@@ -322,9 +318,8 @@ msgid "Non-Whitespace"
 msgstr ""
 
 #: src/functions/match/RegExpr.vala:174 src/functions/match/RegExpr.vala:199
-#, fuzzy
 msgid "Word"
-msgstr "Parole:"
+msgstr "Parola"
 
 #: src/functions/match/RegExpr.vala:175
 msgid "Non-Word"
@@ -574,12 +569,11 @@ msgstr ""
 
 #: src/functions/replace/ReplaceTabsSpaces.vala:78
 msgid "Spaces"
-msgstr ""
+msgstr "Spazi"
 
 #: src/functions/sort/SortLines.vala:30
-#, fuzzy
 msgid "Sort Lines"
-msgstr "Linee:"
+msgstr Odina linee"
 
 #: src/functions/sort/SortLines.vala:34
 msgid "Sort Lines Reversed"
@@ -604,14 +598,12 @@ msgid "Move %d Lines Up"
 msgstr ""
 
 #: src/functions/sort/SortMoveLines.vala:129
-#, fuzzy
 msgid "Lines"
-msgstr "Linee:"
+msgstr "Linee"
 
 #: src/functions/sort/SortReverseChars.vala:30
-#, fuzzy
 msgid "Reverse Characters"
-msgstr "Caratteri:"
+msgstr "Inverti caratteri"
 
 #: src/MainWindow.vala:207
 msgid "New Workspace"
@@ -860,17 +852,16 @@ msgid "Action Move"
 msgstr ""
 
 #: src/Utils.vala:180
-#, fuzzy
 msgid "Insert Characters"
-msgstr "Caratteri:"
+msgstr "Inserisci caratteri"
 
 #: src/Utils.vala:181
 msgid "Insert Date"
-msgstr ""
+msgstr "Inserisci data"
 
 #: src/Utils.vala:182
 msgid "Insert Time"
-msgstr ""
+msgstr "Inserisci ora"
 
 #: src/Utils.vala:185
 msgid "Insert Tab"
@@ -886,68 +877,68 @@ msgstr ""
 
 #: src/Utils.vala:190
 msgid "Standard Date"
-msgstr ""
+msgstr "Data standard"
 
 #: src/Utils.vala:192
 msgid "Day of Month (1-31)"
-msgstr ""
+msgstr "Giorno del mese (1-31)"
 
 #: src/Utils.vala:193
 msgid "Day of Month (01-31)"
-msgstr ""
+msgstr "Giorno del mese (01-31)"
 
 #: src/Utils.vala:194
 msgid "Month (01-12)"
-msgstr ""
+msgstr "Mese (01-12)"
 
 #: src/Utils.vala:195
 msgid "Year (YYYY)"
-msgstr ""
+msgstr "Anno (AAAA)"
 
 #: src/Utils.vala:196
 msgid "Year (YY)"
-msgstr ""
+msgstr "Anno (AA)"
 
 #: src/Utils.vala:197
 msgid "Day of Week"
-msgstr ""
+msgstr "Giorno della settimana"
 
 #: src/Utils.vala:198
 msgid "Day of Week (Abbreviated)"
-msgstr ""
+msgstr "Giorno della settimana (abbreviato)"
 
 #: src/Utils.vala:199
 msgid "Name of Month"
-msgstr ""
+msgstr "Nome del mese"
 
 #: src/Utils.vala:200
 msgid "Name of Month (Abbreviated)"
-msgstr ""
+msgstr "Nome del mese (abbreviato)"
 
 #: src/Utils.vala:202
 msgid "Standard Time"
-msgstr ""
+msgstr "Tempo standard"
 
 #: src/Utils.vala:204
 msgid "Seconds (00-59)"
-msgstr ""
+msgstr "Secondi (00-59)"
 
 #: src/Utils.vala:205
 msgid "Minutes (00-59)"
-msgstr ""
+msgstr "Minuti (00-59)"
 
 #: src/Utils.vala:206
 msgid "Hours (00-12)"
-msgstr ""
+msgstr "Ore (00-12)"
 
 #: src/Utils.vala:207
 msgid "Hours (00-23)"
-msgstr ""
+msgstr "Ore (00-23)"
 
 #: src/Utils.vala:208
 msgid "AM/PM"
-msgstr ""
+msgstr "AM/PM"
 
 #: src/Utils.vala:209
 msgid "Timezone"
-msgstr ""
+msgstr "Fuso orario"
