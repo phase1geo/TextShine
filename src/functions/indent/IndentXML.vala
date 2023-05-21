@@ -99,7 +99,7 @@ public class IndentXML : TextFunction {
             break;
           case "\n" :
             indent += line_indent;
-            if( !start_found ) {
+            if( !start_found && (indent >= 0) ) {
               str += string.nfill( indent, '\t' );
             }
             str += line + "\n";
@@ -118,7 +118,7 @@ public class IndentXML : TextFunction {
         pos++;
       }
     }
-    if( !start_found ) {
+    if( !start_found && ((indent + line_indent) >= 0) ) {
       str += string.nfill( (indent + line_indent), '\t' );
     }
     str += line;
