@@ -36,16 +36,9 @@ public class IndentXML : TextFunction {
     return( new IndentXML( custom ) );
   }
 
-  private bool next_char_is( string str, int start, string match_char ) {
-    for( int i=start; i<str.char_count(); i++ ) {
-      var c = str.get_char( str.index_of_nth_char( i ) ).to_string();
-      if( c == match_char ) {
-        return( true );
-      } else if( (c != " ") && (c != "\t") ) {
-        return( false );
-      }
-    }
-    return( false );
+  private bool next_char_is( string str, int start, string match ) {
+    var check_str = str.slice( str.index_of_nth_char( start ), str.length ).chug();  // Eat up leading whitespace
+    return( check_str.has_prefix( match ) );
   }
 
   /* Perform the transformation */
@@ -59,7 +52,8 @@ public class IndentXML : TextFunction {
     var saw_first   = false;  // Set when we have found the first character in a line
     var pos         = 0;
     var begin_pos   = 0;      // Position of the beginning tag char
-    var slash_pos   = 0;      // Position of the slash char
+    var slash_pos   = 0;      // Position of the slash char within a tag
+    var ques_pos    = 0;      // Position of the question mark char within a tag
     var start_found = false;  // Set when an opening tag is found on the current line
     var str         = "";
     var line        = "";
@@ -81,10 +75,11 @@ public class IndentXML : TextFunction {
                 var ins_index = orig.index_of_nth_char( i + 1 );
                 orig = orig.splice( ins_index, ins_index, "\n" );
               }
-            } else if( (slash_pos + 1) != pos ) {  // If this is an opening tag
+            } else if( ((slash_pos + 1) != pos) && ((ques_pos + 1) != pos) ) {  // If this is an opening tag
               line_indent++;
               start_found = true;
-              if( next_char_is( orig, (i + 1), "<" ) ) {
+              if( next_char_is( orig, (i + 1), "<" ) &&
+                  !next_char_is( orig, (i + 1), "</" ) ) {
                 var ins_index = orig.index_of_nth_char( i + 1 );
                 orig = orig.splice( ins_index, ins_index, "\n" );
               }
@@ -101,6 +96,12 @@ public class IndentXML : TextFunction {
         case "/"  :
           if( in_tag ) {
             slash_pos = pos;
+          }
+          saw_first = true;
+          break;
+        case "?"  :
+          if( in_tag ) {
+            ques_pos = pos;
           }
           saw_first = true;
           break;
