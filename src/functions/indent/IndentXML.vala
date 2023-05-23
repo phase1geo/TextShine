@@ -37,8 +37,16 @@ public class IndentXML : TextFunction {
   }
 
   private bool next_char_is( string str, int start, string match ) {
-    var check_str = str.slice( str.index_of_nth_char( start ), str.length ).chug();  // Eat up leading whitespace
-    return( check_str.has_prefix( match ) );
+    var start_pos = str.index_of_nth_char( start );
+    for( int i=start; i<str.char_count(); i++ ) {
+      var idx = str.index_of_nth_char( i );
+      var c   = str.get_char( idx );
+      if( (c != ' ') && (c != '\t') ) {
+        var check_str = str.slice( idx, str.length );
+        return( check_str.has_prefix( match ) );
+      }
+    }
+    return( false );
   }
 
   /* Perform the transformation */
