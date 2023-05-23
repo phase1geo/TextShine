@@ -7,12 +7,15 @@
   <name>TextShine</name>
   <name xml:lang="nl">TextShine</name>
   <name xml:lang="it">TextShine</name>
+  <name xml:lang="de">TextShine</name>
   <summary>Powerfully transform text</summary>
   <summary xml:lang="nl">Zet tekst om met dit krachtige hulpmiddel</summary>
   <summary xml:lang="it">Trasforma il testo in modo potente</summary>
+  <summary xml:lang="de">Text leistungsstark umwandeln</summary>
   <developer_name>Trevor Williams</developer_name>
   <developer_name xml:lang="nl">Trevor Williams</developer_name>
   <developer_name xml:lang="it">Trevor Williams</developer_name>
+  <developer_name xml:lang="de">Trevor Williams</developer_name>
   <provides>
     <binary>com.github.phase1geo.textshine</binary>
   </provides>
@@ -32,6 +35,7 @@
       </p>
     <p xml:lang="nl">Plak tekst van het klembord of laad tekst uit een bestand. De tekst kan worden aangepast met behulp van vele ingebouwde tekstacties en eigengemaakte werkmethoden. Nadien kunnen de aanpassingen worden opgeslagen op het klembord of in een bestand.</p>
     <p xml:lang="it">Incolla facilmente il testo dagli appunti o carica il testo da un file, modifica il testo con un sacco di azioni di testo integrate e testo personalizzato creato dall'utente conflussi di lavoro e salva le modifiche negli appunti o in un file.</p>
+    <p xml:lang="de">Fügen Sie einfach Text aus der Zwischenablage ein oder laden Sie Text aus einer Datei, ändern Sie den Text mit zahlreichen integrierten Text-Aktionen und benutzerdefinierten Text-Arbeitsabläufen, und speichern Sie die Änderungen in der Zwischenablage oder in einer Datei.</p>
     <p>
         In addition to the built-in actions, TextShine allows you to create and test
         custom text conversion workflows. These custom workflows can then be used in the
@@ -39,75 +43,100 @@
       </p>
     <p xml:lang="nl">Naast de ingebouwde acties kan TextShine eigengemaakte werkmethoden gebruiken. Deze werkmethoden kunnen vervolgens worden gebruikt op dezelfde manier als de ingebouwde acties.</p>
     <p xml:lang="it">Oltre alle azioni integrate, TextShine ti consente di creare e testare flussi di lavoro e conversioni del testo personalizzato. Questi flussi di lavoro personalizzati possono quindi essere utilizzati nello stesso modo in cui vengono utilizzate le azioni integrate all'interno dell'applicazione.</p>
+    <p xml:lang="de">Zusätzlich zu den integrierten Aktionen können Sie in TextShine benutzerdefinierte Arbeitsabläufe zur Textkonvertierung erstellen und testen. Diese benutzerdefinierten Arbeitsabläufe können dann auf die gleiche Weise verwendet werden wie die integrierten Aktionen innerhalb der Anwendung.</p>
     <p>
         Key features include the following:
       </p>
     <p xml:lang="nl">TextShine's kenmerken op een rijtje:</p>
     <p xml:lang="it">Le caratteristiche principali includono quanto segue:</p>
+    <p xml:lang="de">Zu den Hauptmerkmalen gehören die folgenden:</p>
     <ul>
       <li>Load text from clipboard or from a file.</li>
       <li xml:lang="nl">Laad tekst van het klembord of uit een bestand;</li>
       <li xml:lang="it">Carica il testo dagli appunti o da un file.</li>
+      <li xml:lang="de">Text aus der Zwischenablage oder aus einer Datei laden.</li>
       <li>Save text back to clipboard, to the same file or to a new file.</li>
       <li xml:lang="nl">Sla tekst op op het klembord of in hetzelfde of een nieuw bestand;</li>
       <li xml:lang="it">Salva il testo negli appunti, nello stesso file o in un nuovo file.</li>
+      <li xml:lang="de">Text zurück in die Zwischenablage, in dieselbe Datei oder in eine neue Datei speichern.</li>
       <li>Unlimited undo/redo of text changes.</li>
       <li xml:lang="nl">Ongelimiteerd ongedaan maken/opnieuw uitvoeren van aanpassingen;</li>
       <li xml:lang="it">Annulla/ripristina illimitate modifiche al testo.</li>
+      <li xml:lang="de">Unbegrenztes Rückgängigmachen/Wiederherstellen von Textänderungen.</li>
       <li>Apply a text action in a single click.</li>
       <li xml:lang="nl">Pas met één muisklik een actie toe;</li>
       <li xml:lang="it">Applica un'azione al testo con un solo clic.</li>
+      <li xml:lang="de">Eine Textaktion mit einem einzigen Klick anwenden.</li>
       <li>Support for action favoriting.</li>
       <li xml:lang="nl">Ondersteuning voor het kiezen van favoriete acties;</li>
       <li xml:lang="it">Supporto per favorire l'azione.</li>
+      <li xml:lang="de">Unterstützung für das Favorisieren von Aktionen.</li>
       <li>Support for creating and testing custom actions.</li>
       <li xml:lang="nl">Ondersteuning voor het maken en uitvoeren van eigen acties;</li>
       <li xml:lang="it">Supporto per la creazione e il test di azioni personalizzate.</li>
+      <li xml:lang="de">Unterstützung für das Erstellen und Testen benutzerdefinierter Aktionen.</li>
       <li>Quickly search available text actions.</li>
       <li xml:lang="nl">Snel zoeken door beschikbare acties;</li>
       <li xml:lang="it">Cerca rapidamente le azioni di testo disponibili.</li>
+      <li xml:lang="de">Verfügbare Textaktionen schnell durchsuchen.</li>
       <li>Character, word, line, match and spelling error statistics.</li>
+      <li xml:lang="de">Statistiken über Zeichen, Wörter, Zeilen, Übereinstimmungen und Rechtschreibfehler.</li>
       <li>Support for font size changes.</li>
       <li xml:lang="nl">Ondersteuning voor tekstgrootte-aanpassingen;</li>
       <li xml:lang="it">Supporto per le modifiche alla dimensione del font.</li>
+      <li xml:lang="de">Unterstützung für Schriftgrößenänderungen.</li>
       <li>Built-in spell checker.</li>
+      <li xml:lang="de">Eingebaute Rechtschreibprüfung.</li>
       <li>Categorized text actions which include:</li>
       <li xml:lang="nl">Gecategoriseerde acties, waaronder:</li>
       <li xml:lang="it">Categorizzate azioni di testo che includono:</li>
+      <li xml:lang="de">Kategorisierte Textaktionen, die Folgendes beinhalten:</li>
       <li>Action: Changing case</li>
       <li xml:lang="nl">Actie: hoofdlettergebruik aanpassen</li>
       <li xml:lang="it">Azione: Cambio di maiuscolo/minuscolo</li>
+      <li xml:lang="de">Aktion: Schreibung ändern</li>
       <li>Action: Inserting text, line numbers, lorem ipsum and file contents</li>
       <li xml:lang="nl">Actie: tekst invoegen, regelnummers, lorem ipsum en bestandsinhoud</li>
       <li xml:lang="it">Azione: Inserimento di testo, numeri di riga, lorem ipsum e contenuto di file</li>
+      <li xml:lang="de">Aktion: Einfügen von Text, Zeilennummern, lorem ipsum und Dateiinhalten</li>
       <li>Action: Removing line numbers, blank lines/spaces and matched text</li>
       <li xml:lang="nl">Actie: regelnummers, blanco regels/spaties en overeengekomen tekst wissen</li>
       <li xml:lang="it">Azione: Rimozione di numeri di riga, righe/spazi vuoti e testo abbinato</li>
+      <li xml:lang="de">Aktion: Entfernen von Zeilennummern, Leerzeilen/Leerzeichen und übereinstimmendem Text</li>
       <li>Action: Replacement of text</li>
       <li xml:lang="nl">Actie: tekst vervangen</li>
       <li xml:lang="it">Azione: Sostituzione del testo</li>
+      <li xml:lang="de">Aktion: Ersetzung von Text</li>
       <li>Action: Quotation conversion</li>
       <li xml:lang="nl">Actie: citaten omzetten</li>
       <li xml:lang="it">Azione: Conversione del preventivo</li>
+      <li xml:lang="de">Aktion: Konvertierung von Anführungszeichen</li>
       <li>Action: Line sorting</li>
       <li xml:lang="nl">Actie: regels rangschikken</li>
       <li xml:lang="it">Azione: Ordinamento riga</li>
+      <li xml:lang="de">Aktion: Zeilensortierung</li>
       <li>Action: Indentation handling</li>
       <li xml:lang="nl">Actie: inspringacties</li>
       <li xml:lang="it">Azione: Gestione dell'indentazione</li>
+      <li xml:lang="de">Aktion: Behandlung von Einrückungen</li>
       <li>Action: Search and replace (includes regular expression support)</li>
       <li xml:lang="nl">Actie: zoeken en vervangen (ondersteunt reguliere uitdrukkingen)</li>
       <li xml:lang="it">Azione: Cerca e sostituisci (include il supporto delle espressioni regolari)</li>
+      <li xml:lang="de">Aktion: Suchen und Ersetzen (mit Unterstützung für reguläre Ausdrücke)</li>
       <li>Action: Automatic text repair</li>
       <li xml:lang="nl">Actie: automatisch tekst repareren</li>
       <li xml:lang="it">Azione: Riparazione automatica del testo</li>
+      <li xml:lang="de">Aktion: Automatische Textreparatur</li>
       <li>Action: Text conversion</li>
       <li xml:lang="nl">Actie: tekst omzetten</li>
       <li xml:lang="it">Azione: Conversione del testo</li>
+      <li xml:lang="de">Aktion: Textkonvertierung</li>
       <li>Action: MD5, SHA-1/256/384/512 encoding and Base64 encoding/decoding</li>
+      <li xml:lang="de">Aktion: MD5, SHA-1/256/384/512-Kodierung und Base64-Kodierung/Dekodierung</li>
       <li>Action: Markdown utilities</li>
       <li xml:lang="nl">Actie: Markdown-hulpmiddelen</li>
       <li xml:lang="it">Azione: Utilità di Markdown</li>
+      <li xml:lang="de">Aktion: Markdown-Hilfsmittel</li>
     </ul>
   </description>
   <content_rating type="oars-1.1">
@@ -208,6 +237,7 @@
         <p>Initial release</p>
         <p xml:lang="nl">Eerste uitgave</p>
         <p xml:lang="it">Versione iniziale</p>
+        <p xml:lang="de">Erste Veröffentlichung</p>
       </description>
     </release>
   </releases>

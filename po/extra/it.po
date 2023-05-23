@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-16 19:56-0600\n"
+"POT-Creation-Date: 2023-05-22 21:58-0500\n"
 "PO-Revision-Date: 2021-04-17 17:05+0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -26,10 +26,6 @@ msgstr "TextShine"
 #: data/com.github.phase1geo.textshine.appdata.xml.in:8
 msgid "Powerfully transform text"
 msgstr "Trasforma il testo in modo potente"
-
-#: data/com.github.phase1geo.textshine.desktop.in:8
-msgid "com.github.phase1geo.textshine"
-msgstr "com.github.phase1geo.textshine"
 
 #: data/com.github.phase1geo.textshine.desktop.in:14
 msgid "textshine;text;conversion;convert;"
@@ -168,3 +164,6 @@ msgstr "Azione: Utilità di Markdown"
 #: data/com.github.phase1geo.textshine.appdata.xml.in:156
 msgid "Initial release"
 msgstr "Versione iniziale"
+
+#~ msgid "com.github.phase1geo.textshine"
+#~ msgstr "com.github.phase1geo.textshine"

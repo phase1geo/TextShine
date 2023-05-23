@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-16 19:56-0600\n"
+"POT-Creation-Date: 2023-05-22 21:58-0500\n"
 "PO-Revision-Date: 2022-01-17 14:10+0100\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
@@ -18,15 +18,15 @@ msgstr ""
 "X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Application.vala:82
+#: src/Application.vala:87
 msgid "Opening file"
 msgstr "Bestand openen"
 
-#: src/Application.vala:105
+#: src/Application.vala:110
 msgid "Display version number"
 msgstr "Toon het versienummer"
 
-#: src/Application.vala:106
+#: src/Application.vala:111
 msgid "Transform clipboard text"
 msgstr "Zet klembordtekst om"
 
@@ -125,12 +125,12 @@ msgstr "Bestandstekst invoegen"
 msgid "Insert File"
 msgstr "Bestand invoegen"
 
-#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
+#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:455
 msgid "Open"
 msgstr "Openen"
 
-#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:444
-#: src/MainWindow.vala:476 src/SidebarCustom.vala:732
+#: src/functions/insert/InsertFile.vala:44 src/MainWindow.vala:455
+#: src/MainWindow.vala:487 src/SidebarCustom.vala:732
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -253,19 +253,27 @@ msgstr "Afgeronde Markdown-taken verwijderen"
 msgid "Clear Match Highlight"
 msgstr "Markering wissen"
 
-#: src/functions/match/Find.vala:41
+#: src/functions/match/Find.vala:42
 msgid "Find"
 msgstr "Zoeken"
 
-#: src/functions/match/Find.vala:63
+#: src/functions/match/Find.vala:65
 msgid "Search Text"
 msgstr "Tekst zoeken"
 
-#: src/functions/match/Find.vala:131 src/Utils.vala:184
+#: src/functions/match/Find.vala:70
+msgid "Case-sensitive"
+msgstr ""
+
+#: src/functions/match/Find.vala:71 src/functions/match/RegExpr.vala:79
+msgid "Highlight Line"
+msgstr ""
+
+#: src/functions/match/Find.vala:157 src/Utils.vala:184
 msgid "Insert New-line"
 msgstr "Nieuwe regel invoegen"
 
-#: src/functions/match/Find.vala:132 src/Utils.vala:186
+#: src/functions/match/Find.vala:158 src/Utils.vala:186
 msgid "Insert Page Break"
 msgstr "Pagina-einde invoegen"
 
@@ -273,184 +281,184 @@ msgstr "Pagina-einde invoegen"
 msgid "Invert Matched Text"
 msgstr "Overeenkomstige tekst invoegen"
 
-#: src/functions/match/RegExpr.vala:44 src/functions/match/RegExpr.vala:66
+#: src/functions/match/RegExpr.vala:45 src/functions/match/RegExpr.vala:68
 msgid "Regular Expression"
 msgstr "Reguliere uitdrukking"
 
-#: src/functions/match/RegExpr.vala:72
+#: src/functions/match/RegExpr.vala:74
 #: src/functions/match/ReplaceSelected.vala:59
 msgid "Replace With"
 msgstr "Vervangen door"
 
-#: src/functions/match/RegExpr.vala:165
+#: src/functions/match/RegExpr.vala:183
 msgid "Character Patterns"
 msgstr "Tekenpatronen"
 
-#: src/functions/match/RegExpr.vala:166
+#: src/functions/match/RegExpr.vala:184
 msgid "Digit"
 msgstr "Getal"
 
-#: src/functions/match/RegExpr.vala:167
+#: src/functions/match/RegExpr.vala:185
 msgid "Non-Digit"
 msgstr "Geen getal"
 
-#: src/functions/match/RegExpr.vala:168
+#: src/functions/match/RegExpr.vala:186
 msgid "New-line"
 msgstr "Nieuwe regel"
 
-#: src/functions/match/RegExpr.vala:169
+#: src/functions/match/RegExpr.vala:187
 msgid "Non-New-line"
 msgstr "Geen nieuwe regel"
 
-#: src/functions/match/RegExpr.vala:170
+#: src/functions/match/RegExpr.vala:188
 msgid "Tab"
 msgstr "Tab"
 
-#: src/functions/match/RegExpr.vala:171
+#: src/functions/match/RegExpr.vala:189
 msgid "Page Break"
 msgstr "Pagina-einde"
 
-#: src/functions/match/RegExpr.vala:172
+#: src/functions/match/RegExpr.vala:190
 msgid "Whitespace"
 msgstr "Witruimte"
 
-#: src/functions/match/RegExpr.vala:173
+#: src/functions/match/RegExpr.vala:191
 msgid "Non-Whitespace"
 msgstr "Geen witruimte"
 
-#: src/functions/match/RegExpr.vala:174 src/functions/match/RegExpr.vala:199
+#: src/functions/match/RegExpr.vala:192 src/functions/match/RegExpr.vala:217
 msgid "Word"
 msgstr "Woord"
 
-#: src/functions/match/RegExpr.vala:175
+#: src/functions/match/RegExpr.vala:193
 msgid "Non-Word"
 msgstr "Geen woord"
 
-#: src/functions/match/RegExpr.vala:176
+#: src/functions/match/RegExpr.vala:194
 msgid "Any character"
 msgstr "Ieder teken"
 
-#: src/functions/match/RegExpr.vala:181
+#: src/functions/match/RegExpr.vala:199
 msgid "Location Patterns"
 msgstr "Locatiepatronen"
 
-#: src/functions/match/RegExpr.vala:182
+#: src/functions/match/RegExpr.vala:200
 msgid "Word Boundary"
 msgstr "Woordbegrenzing"
 
-#: src/functions/match/RegExpr.vala:183
+#: src/functions/match/RegExpr.vala:201
 msgid "Non-Word Boundary"
 msgstr "Geen woordbegrenzing"
 
-#: src/functions/match/RegExpr.vala:184
+#: src/functions/match/RegExpr.vala:202
 msgid "Start Of Line"
 msgstr "Regelbegin"
 
-#: src/functions/match/RegExpr.vala:185
+#: src/functions/match/RegExpr.vala:203
 msgid "End Of Line"
 msgstr "Regeleinde"
 
-#: src/functions/match/RegExpr.vala:190
+#: src/functions/match/RegExpr.vala:208
 msgid "Iteration Patterns"
 msgstr "Opvolgpatronen"
 
-#: src/functions/match/RegExpr.vala:191
+#: src/functions/match/RegExpr.vala:209
 msgid "0 or 1 Times"
 msgstr "0 of 1 keer"
 
-#: src/functions/match/RegExpr.vala:192
+#: src/functions/match/RegExpr.vala:210
 msgid "0 or More Times"
 msgstr "0 of meerdere keren"
 
-#: src/functions/match/RegExpr.vala:193
+#: src/functions/match/RegExpr.vala:211
 msgid "1 or More Times"
 msgstr "1 of meerdere keren"
 
-#: src/functions/match/RegExpr.vala:198
+#: src/functions/match/RegExpr.vala:216
 msgid "Advanced Patterns"
 msgstr "Geavanceerde patronen"
 
-#: src/functions/match/RegExpr.vala:200
+#: src/functions/match/RegExpr.vala:218
 msgid "Number"
 msgstr "Getal"
 
-#: src/functions/match/RegExpr.vala:201
+#: src/functions/match/RegExpr.vala:219
 msgid "URL"
 msgstr "URL"
 
-#: src/functions/match/RegExpr.vala:202
+#: src/functions/match/RegExpr.vala:220
 msgid "E-mail"
 msgstr "E-mailadres"
 
-#: src/functions/match/RegExpr.vala:203
+#: src/functions/match/RegExpr.vala:221
 msgid "Date"
 msgstr "Datum"
 
-#: src/functions/match/RegExpr.vala:204
+#: src/functions/match/RegExpr.vala:222
 msgid "Phone Number"
 msgstr "Telefoonnummer"
 
-#: src/functions/match/RegExpr.vala:205
+#: src/functions/match/RegExpr.vala:223
 msgid "HTML/XML Tags"
 msgstr "HTML-/XML-tags"
 
-#: src/functions/match/RegExpr.vala:206
+#: src/functions/match/RegExpr.vala:224
 msgid "Specific Start Tag"
 msgstr "Specifieke openingstag"
 
-#: src/functions/match/RegExpr.vala:207
+#: src/functions/match/RegExpr.vala:225
 msgid "Specific End Tag"
 msgstr "Specifieke afsluittag"
 
-#: src/functions/match/RegExpr.vala:208
+#: src/functions/match/RegExpr.vala:226
 msgid "Specific Tag"
 msgstr "Specifieke tag"
 
-#: src/functions/match/RegExpr.vala:209
+#: src/functions/match/RegExpr.vala:227
 msgid "Any Start Tag"
 msgstr "Iedere openingstag"
 
-#: src/functions/match/RegExpr.vala:210
+#: src/functions/match/RegExpr.vala:228
 msgid "Any End Tag"
 msgstr "Iedere afsluittag"
 
-#: src/functions/match/RegExpr.vala:211
+#: src/functions/match/RegExpr.vala:229
 msgid "Any Tag"
 msgstr "Iedere tag"
 
-#: src/functions/match/RegExpr.vala:226
+#: src/functions/match/RegExpr.vala:244
 msgid "Case Patterns"
 msgstr "Schrijfwijzepatronen"
 
-#: src/functions/match/RegExpr.vala:227
+#: src/functions/match/RegExpr.vala:245
 msgid "Uppercase Next Character"
 msgstr "Volgend teken hoofdletter"
 
-#: src/functions/match/RegExpr.vala:228
+#: src/functions/match/RegExpr.vala:246
 msgid "Lowercase Next Character"
 msgstr "Volgend teken kleine letter"
 
-#: src/functions/match/RegExpr.vala:229
+#: src/functions/match/RegExpr.vala:247
 msgid "Start Uppercase Change"
 msgstr "Begin van hoofdletteraanpassing"
 
-#: src/functions/match/RegExpr.vala:230
+#: src/functions/match/RegExpr.vala:248
 msgid "Start Lowercase Change"
 msgstr "Begin van kleineletteraanpassing"
 
-#: src/functions/match/RegExpr.vala:231
+#: src/functions/match/RegExpr.vala:249
 msgid "End Case Change"
 msgstr "Einde van aanpassing"
 
-#: src/functions/match/RegExpr.vala:238
+#: src/functions/match/RegExpr.vala:256
 msgid "Positional Patterns"
 msgstr "Positionele patronen"
 
-#: src/functions/match/RegExpr.vala:239
+#: src/functions/match/RegExpr.vala:257
 msgid "Matched Pattern"
 msgstr "Overeenkomstig patron"
 
-#: src/functions/match/RegExpr.vala:241
+#: src/functions/match/RegExpr.vala:259
 #, c-format
 msgid "Subpattern %d"
 msgstr "Subpatroon %d"
@@ -605,79 +613,79 @@ msgstr "Regels"
 msgid "Reverse Characters"
 msgstr "Tekens omkeren"
 
-#: src/MainWindow.vala:207
+#: src/MainWindow.vala:218
 msgid "New Workspace"
 msgstr "Nieuw werkblad"
 
-#: src/MainWindow.vala:212 src/MainWindow.vala:444
+#: src/MainWindow.vala:223 src/MainWindow.vala:455
 msgid "Open File"
 msgstr "Bestand openen"
 
-#: src/MainWindow.vala:217 src/MainWindow.vala:476
+#: src/MainWindow.vala:228 src/MainWindow.vala:487
 msgid "Save File"
 msgstr "Bestand opslaan"
 
-#: src/MainWindow.vala:222
+#: src/MainWindow.vala:233
 msgid "Paste Over"
 msgstr "Plakken over"
 
-#: src/MainWindow.vala:227
+#: src/MainWindow.vala:238
 msgid "Copy All"
 msgstr "Alles kopiëren"
 
-#: src/MainWindow.vala:232 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
+#: src/MainWindow.vala:243 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
 msgid "Undo"
 msgstr "Ongedaan maken"
 
-#: src/MainWindow.vala:238 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
+#: src/MainWindow.vala:249 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
 msgid "Redo"
 msgstr "Opnieuw uitvoeren"
 
-#: src/MainWindow.vala:246
+#: src/MainWindow.vala:257
 msgid "TextShine"
 msgstr "TextShine"
 
-#: src/MainWindow.vala:255
+#: src/MainWindow.vala:266
 msgid "Statistics"
 msgstr "Statistieken"
 
-#: src/MainWindow.vala:265
+#: src/MainWindow.vala:276
 msgid "<b>Text Statistics</b>"
 msgstr "<b>Tekststatistieken</b>"
 
-#: src/MainWindow.vala:269
+#: src/MainWindow.vala:280
 msgid "Characters:"
 msgstr "Aantal tekens:"
 
-#: src/MainWindow.vala:274
+#: src/MainWindow.vala:285
 msgid "Words:"
 msgstr "Aantal woorden:"
 
-#: src/MainWindow.vala:279
+#: src/MainWindow.vala:290
 msgid "Lines:"
 msgstr "Aantal regels:"
 
-#: src/MainWindow.vala:284
+#: src/MainWindow.vala:295
 msgid "Matches:"
 msgstr "Aantal overeenkomsten:"
 
-#: src/MainWindow.vala:289
+#: src/MainWindow.vala:300
 msgid "Spelling Errors:"
 msgstr "Aantal spellingfouten:"
 
-#: src/MainWindow.vala:338
+#: src/MainWindow.vala:349
 msgid "Properties"
 msgstr "Eigenschappen"
 
-#: src/MainWindow.vala:362
+#: src/MainWindow.vala:373
 msgid "Font:"
 msgstr "Lettertype:"
 
-#: src/MainWindow.vala:396
+#: src/MainWindow.vala:407
 msgid "Enable Spell Checker"
 msgstr "Spellingcontrole inschakelen"
 
-#: src/MainWindow.vala:476
+#: src/MainWindow.vala:487
 msgid "Save"
 msgstr "Opslaan"
 
