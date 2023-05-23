@@ -12,7 +12,7 @@ sources += files(
     'functions/convert/ConvertChecksum.vala',
     'functions/convert/ConvertHardWrap.vala',
     'functions/convert/ConvertROT13.vala',
-    'functions/convert/ConvertURLEncode.vala',
+    # 'functions/convert/ConvertURLEncode.vala',
 
     'functions/indent/Indent.vala',
     'functions/indent/IndentXML.vala',
