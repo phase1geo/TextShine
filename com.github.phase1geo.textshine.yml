@@ -47,74 +47,17 @@ modules:
       - type: git
         url: https://gitlab.gnome.org/GNOME/gtksourceview.git
         tag: '4.8.0'
-  - name: evolution-data-server
-    buildsystem: cmake-ninja
-    cleanup:
-      - /etc
-      - /lib/evolution-data-server/*-backends
-      - /libexec
-      - /share/dbus-1
-      - /share/GConf
-      - /share/pixmaps
+  - name: gtkspell
     config-opts:
-      - '-DCMAKE_BUILD_TYPE=RelWithDebInfo'
-      - '-DENABLE_EXAMPLES=OFF'
-      - '-DENABLE_GOA=OFF'
-      - '-DWITH_LIBDB=OFF'
-      - '-DENABLE_WEATHER=OFF'
-      - '-DENABLE_CANBERRA=OFF'
-      - '-DENABLE_VALA_BINDINGS=ON'
-      - '-DWITH_KRB5=OFF'
-      - '-DWITH_OPENLDAP=OFF'
-      - '-DENABLE_INTROSPECTION=ON'
+      - --disable-gtk-doc
     sources:
-      - type: git
-        url: https://gitlab.gnome.org/GNOME/evolution-data-server.git
-        tag: '3.40.2'
-    modules:
-      - name: intltool
-        cleanup:
-          - '*'
-        sources:
-          - type: archive
-            url: https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
-            md5: 12e517cac2b57a0121cda351570f1e63
-      - name: gtkspell
-        config-opts:
-          - '--disable-gtk-doc-html'
-        cleanup:
-          - '/share/gtk-doc' # for some reason, it still install the html folder.
-        sources:
-          - type: archive
-            url: https://downloads.sourceforge.net/gtkspell/gtkspell3-3.0.10.tar.xz
-            sha256: b040f63836b347eb344f5542443dc254621805072f7141d49c067ecb5a375732
-      - name: libgdata
-        buildsystem: meson
-        config-opts:
-          - '-Dalways_build_tests=false'
-          - '-Dgoa=disabled'
-        sources:
-          - type: git
-            url: https://gitlab.gnome.org/GNOME/libgdata.git
-            tag: '0.18.0'
-      - name: libical
-        cleanup:
-          - '/lib/cmake'
-          - '/libexec'
-        buildsystem: cmake-ninja
-        config-opts:
-          - '-DCMAKE_BUILD_TYPE=RelWithDebInfo'
-          - '-DCMAKE_INSTALL_LIBDIR=/app/lib'
-          - '-DWITH_CXX_BINDINGS=false'
-          - '-DSHARED_ONLY=true'
-          - '-DGOBJECT_INTROSPECTION=true'
-          - '-DICAL_BUILD_DOCS=false'
-          - '-DICAL_GLIB_VAPI=true'
-          - '-DLIBICAL_BUILD_TESTING=false'
-        sources:
-          - type: git
-            url: https://github.com/libical/libical.git
-            tag: v3.0.9
+      - type: archive
+        url: https://downloads.sourceforge.net/gtkspell/gtkspell3-3.0.10.tar.xz
+        sha256: b040f63836b347eb344f5542443dc254621805072f7141d49c067ecb5a375732
+    post-install:
+      - install -p -D -m 0644 "COPYING" -t "${FLATPAK_DEST}/share/licenses/gtkspell/";
+        #    modules:
+        #      - shared-modules/intltool/intltool-0.51.json
   - name: textshine
     buildsystem: meson
     sources:
