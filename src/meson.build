@@ -11,6 +11,7 @@ sources += files(
     'functions/convert/ConvertBase64.vala',
     'functions/convert/ConvertChecksum.vala',
     'functions/convert/ConvertHardWrap.vala',
+    'functions/convert/ConvertMarkdownTable.vala',
     'functions/convert/ConvertROT13.vala',
     # 'functions/convert/ConvertURLEncode.vala',
 
