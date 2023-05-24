@@ -171,13 +171,15 @@ public class ConvertMarkdownTable : TextFunction {
   /* Populates the given popover with the settings */
   public override void add_settings( Grid grid ) {
 
-    add_string_setting( grid, 1, _( "CSV Column Separator" ), _csv_delim, (value) => {
+    var delim = add_string_setting( grid, 1, _( "CSV Column Separator" ), _csv_delim, (value) => {
       _csv_delim = value;
     });
+    delim.max_length = 1;
 
-    add_string_setting( grid, 2, _( "CSV Quote Character" ), _csv_quote, (value) => {
+    var quote = add_string_setting( grid, 2, _( "CSV Quote Character" ), _csv_quote, (value) => {
       _csv_quote = value;
     });
+    quote.max_length = 1;
 
     if( direction == FunctionDirection.RIGHT_TO_LEFT ) {
       add_menubutton_setting( grid, 3, _( "Quote Column Text" ), _csv_quote_mode.label(), QuoteMode.NUM, (value) => {

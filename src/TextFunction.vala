@@ -320,7 +320,7 @@ public class TextFunction {
   }
 
   /* Called whenever a string setting widget needs to be added */
-  protected void add_string_setting( Grid grid, int row, string label, string init_value, SettingStringChangedFunc callback ) {
+  protected Entry add_string_setting( Grid grid, int row, string label, string init_value, SettingStringChangedFunc callback ) {
 
     var lbl = new Label( label + ": " );
     lbl.halign = Align.START;
@@ -342,6 +342,8 @@ public class TextFunction {
 
     grid.attach( lbl, 0, row );
     grid.attach( entry, 1, row );
+
+    return( entry );
 
   }
 
