@@ -120,8 +120,10 @@ public class TextFunctions {
     /* Category - convert */
     add_function( "convert", new ConvertHardWrap() );
     // add_function( "convert", new ConvertURLEncode() );
+    // add_function( "convert", new ConvertURLDecode() );
     add_function( "convert", new ConvertBase64() );
     add_function( "convert", new ConvertChecksum() );
+    add_function( "convert", new ConvertMarkdownTable() );
     add_function( "convert", new ConvertROT13() );
 
     /* Category - search-replace */
