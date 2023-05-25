@@ -28,6 +28,10 @@ public class IndentXML : TextFunction {
     base( "indent-xml", custom );
   }
 
+  public override string get_description() {
+    return( _( "Indents XML text for improved readability." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Indent XML" ) );
   }

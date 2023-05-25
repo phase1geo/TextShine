@@ -28,6 +28,10 @@ public class Indent : TextFunction {
     base( "indent", custom );
   }
 
+  public override string get_description() {
+    return( _( "Indents each line in the text by one level of indentation." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Indent One Level" ) );
   }

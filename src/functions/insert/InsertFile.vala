@@ -32,6 +32,10 @@ public class InsertFile : TextFunction {
     _win = win;
   }
 
+  public override string get_description() {
+    return( _( "Inserts the contents of a file." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Insert File Text" ) );
   }

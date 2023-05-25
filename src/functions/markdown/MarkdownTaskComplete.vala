@@ -33,6 +33,10 @@ public class MarkdownTaskComplete : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Mark all found Markdown tasks as completed." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Mark Markdown Tasks As Complete" ) );
   }

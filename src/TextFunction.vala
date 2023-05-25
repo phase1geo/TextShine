@@ -131,6 +131,10 @@ public class TextFunction {
     _direction = dir;
   }
 
+  public virtual string get_description() {
+    return( _( "No description is currently available." ) );
+  }
+
   protected virtual string get_label0() {
     assert( false );
     return( "" );

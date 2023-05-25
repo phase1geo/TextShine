@@ -30,6 +30,10 @@ public class RemoveLineNumbers : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Remove line numbers from the beginning of each line." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Line Numbers" ) );
   }

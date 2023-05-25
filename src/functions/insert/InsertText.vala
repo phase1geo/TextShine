@@ -95,6 +95,10 @@ public class InsertText : TextFunction {
 
   }
 
+  public override string get_description() {
+    return( _( "Inserts text at various points in the text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Insert Text (%s)".printf( _insert_loc.label() ) ) );
   }

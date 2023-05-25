@@ -25,6 +25,10 @@ public class RemoveBlankLines : TextFunction {
     base( "remove-blank-lines", custom );
   }
 
+  public override string get_description() {
+    return( _( "Removes all blank lines from text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Blank Lines" ) );
   }

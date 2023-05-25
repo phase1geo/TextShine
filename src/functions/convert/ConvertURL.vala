@@ -297,6 +297,10 @@ public class ConvertURL : TextFunction {
     // stdout.printf( "test str: (%s)\n", _entries.get_test_string() );
   }
 
+  public override string get_description() {
+    return( _( "Encode/Decode text for URLs." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Encode URL" ) );
   }

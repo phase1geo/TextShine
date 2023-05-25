@@ -83,6 +83,10 @@ public class ConvertChecksum : TextFunction {
     base( "convert-checksum", custom );
   }
 
+  public override string get_description() {
+    return( _( "Encode text into a checksum value.  Supported checksums are MD5 and various SHAs." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Encode as %s checksum" ).printf( _type.label() ) );
   }

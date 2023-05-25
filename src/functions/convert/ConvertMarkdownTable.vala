@@ -135,6 +135,10 @@ public class ConvertMarkdownTable : TextFunction {
     base( "convert-md-table", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
+  public override string get_description() {
+    return( _( "Converts CSV table data into a Markdown table.  Converts in both directions." ) );
+  }
+
   protected override string get_label0() {
     return( _( "CSV to Markdown Table" ) );
   }

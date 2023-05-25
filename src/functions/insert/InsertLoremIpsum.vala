@@ -56,6 +56,10 @@ public class InsertLoremIpsum : TextFunction {
     _lorem.append_val( "Mauris lobortis sapien eu bibendum facilisis. Pellentesque vel tortor et lectus aliquet sollicitudin in ac urna. Duis ac ipsum nec est molestie eleifend. Etiam aliquam, neque vel tincidunt ornare, sem ipsum vulputate lacus, id ultricies est arcu finibus lacus. In malesuada nisl et ipsum interdum, non efficitur ligula luctus. Maecenas et malesuada nibh. Integer a eros libero. Aliquam ut cursus nisl, id laoreet dolor. Sed volutpat turpis sed erat vestibulum dignissim. Curabitur diam sem, viverra non consequat eu, facilisis eu enim." );
   }
 
+  public override string get_description() {
+    return( _( "Inserts lorem ipsum text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Insert Lorem Ipsum" ) );
   }

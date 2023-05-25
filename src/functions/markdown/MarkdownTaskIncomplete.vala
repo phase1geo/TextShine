@@ -33,6 +33,10 @@ public class MarkdownTaskIncomplete : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Mark all Markdown tasks found in text as incomplete." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Mark Markdown Tasks As Incomplete" ) );
   }

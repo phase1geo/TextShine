@@ -61,6 +61,10 @@ public class ConvertHardWrap : TextFunction {
     base( "convert-hard-wrap", custom );
   }
 
+  public override string get_description() {
+    return( _( "Hard wraps the given text to fit within a given column width." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Hard Wrap At %d %s" ).printf( _col_width, _wrap_type.label() ) );
   }

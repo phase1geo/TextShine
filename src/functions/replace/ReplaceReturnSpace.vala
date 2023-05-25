@@ -28,6 +28,10 @@ public class ReplaceReturnSpace : TextFunction {
     base( "replace-return-space", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
+  public override string get_description() {
+    return( _( "Replaces newline character with space character and vice versa." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Return With Space" ) );
   }

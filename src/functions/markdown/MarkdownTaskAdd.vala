@@ -65,6 +65,10 @@ public class MarkdownTaskAdd : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Converts each line of text into a Markdown task." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Add Markdown Tasks" ) );
   }

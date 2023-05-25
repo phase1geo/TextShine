@@ -41,6 +41,10 @@ public class FixSpaces : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Repairs whitespace in the text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Fix Spaces" ) );
   }

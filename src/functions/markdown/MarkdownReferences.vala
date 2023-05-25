@@ -40,6 +40,10 @@ public class MarkdownReferences : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Generates Markdown references from Markdown text and appends it to the end of the document." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Generate References" ) );
   }

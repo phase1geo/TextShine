@@ -26,6 +26,10 @@ public class SortLines : TextFunction {
     base( "sort-lines", custom, FunctionDirection.TOP_DOWN );
   }
 
+  public override string get_description() {
+    return( _( "Sort lines in text alphabetically (both ascending and descending)." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Sort Lines" ) );
   }

@@ -26,6 +26,10 @@ public class QuotesCurved : TextFunction {
     base( "quotes-curved", custom, FunctionDirection.NONE );
   }
 
+  public override string get_description() {
+    return( _( "Converts all straight quotes with the appropriate curved quotes." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Change to Curved Quotes" ) );
   }

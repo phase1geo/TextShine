@@ -30,6 +30,10 @@ public class ReplaceTabsSpaces : TextFunction {
     base( "replace-tabs-spaces", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
+  public override string get_description() {
+    return( _( "Replaces tab character with space character(s) and vice versa." ) );
+  }
+
   protected override string get_label0() {
     if( _spaces == 1 ) {
       return( _( "Tabs With 1 Space" ) );

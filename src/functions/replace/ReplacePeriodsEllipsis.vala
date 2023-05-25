@@ -26,6 +26,10 @@ public class ReplacePeriodsEllipsis : TextFunction {
     base( "replace-periods-ellipsis", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
+  public override string get_description() {
+    return( _( "Replaces three periods with ellipsis character and vice versa." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Three Periods With Ellipsis" ) );
   }

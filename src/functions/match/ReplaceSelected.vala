@@ -35,6 +35,10 @@ public class ReplaceSelected : TextFunction {
 
   }
 
+  public override string get_description() {
+    return( _( "Replaces all highlighted text with new text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Replace Matched Text" ) );
   }

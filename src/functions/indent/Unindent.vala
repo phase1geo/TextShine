@@ -28,6 +28,10 @@ public class Unindent : TextFunction {
     base( "unindent", false );
   }
 
+  public override string get_description() {
+    return( _( "Unindents each line of text by one level of indentation." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Unindent One Level" ) );
   }

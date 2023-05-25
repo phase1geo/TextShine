@@ -27,6 +27,10 @@ public class RemoveDuplicateLines : TextFunction {
     base( "remove-duplicate-lines", custom );
   }
 
+  public override string get_description() {
+    return( _( "Removes all duplicate lines from text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Duplicate Lines" ) );
   }

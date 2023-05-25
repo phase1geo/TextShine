@@ -25,7 +25,9 @@ using GLib;
 
 public class TextShine : Granite.Application {
 
-  private static bool       show_version  = false;
+  private static bool       show_version   = false;
+  private static bool       show_functions = false;
+  public  static string[]?  functions      = null;
   private        MainWindow appwin;
 
   public  static GLib.Settings settings;
@@ -36,6 +38,7 @@ public class TextShine : Granite.Application {
 
     Object( application_id: "com.github.phase1geo.textshine", flags: ApplicationFlags.HANDLES_OPEN );
 
+    /* Allow application to be translated */
     Intl.setlocale( LocaleCategory.ALL, "" );
     Intl.bindtextdomain( GETTEXT_PACKAGE, LOCALEDIR );
     Intl.bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" );
@@ -58,6 +61,12 @@ public class TextShine : Granite.Application {
 
     /* Create the main window */
     appwin = new MainWindow( this );
+
+    /* If we need to display the available functions, do that and exit the application */
+    if( show_functions ) {
+      show_all_functions();
+      Process.exit( 0 );
+    }
 
     /* Initialize the editor with the clipboard contents */
     if( use_clipboard ) {
@@ -100,16 +109,63 @@ public class TextShine : Granite.Application {
     release();
   }
 
+  /* Line wraps the description string to fit on screen */
+  private string format_description( string description, int left_chars ) {
+
+    var max_chars  = 80;
+    var left_space = "\n" + string.nfill( (left_chars + 2), ' ' );
+    var str        = "";
+    var line_len   = 0;
+    
+    for( int i=0; i<description.char_count(); i++ ) {
+      var ch = description.get_char( description.index_of_nth_char( i ) );
+      if( ((line_len + left_chars) >= max_chars) && ((ch == '\n') || (ch == ' ') || (ch == '\t')) ) {
+        str += "\n";
+        line_len = 0;
+      } else {
+        str += ch.to_string();
+        line_len++;
+      }
+    }
+
+    return( str.replace( "\n", left_space ) );
+
+  }
+
+  /* Displays the list of all available functions */
+  private void show_all_functions() {
+
+    var max_count = 0;
+    var functions = appwin.functions.functions;
+
+    for( int i=0; i<functions.length; i++ ) {
+      var function = functions.index( i );
+      if( function.name.char_count() > max_count ) {
+        max_count = function.name.char_count();
+      }
+    }
+
+    stdout.printf( _( "Available Conversion Functions:\n" ) );
+
+    for( int i=0; i<functions.length; i++ ) {
+      var function = functions.index( i );
+      stdout.printf( "  %%-%ds  %%s\n".printf( max_count ), function.name, format_description( function.get_description(), (max_count + 4) ) );
+    }
+
+  }
+
   /* Parse the command-line arguments */
   private void parse_arguments( ref unowned string[] args ) {
 
     var context = new OptionContext( "- TextShine Options" );
-    var options = new OptionEntry[3];
+    var options = new OptionEntry[5];
 
     /* Create the command-line options */
-    options[0] = {"version",       0, 0, OptionArg.NONE, ref show_version, _( "Display version number" ), null};
-    options[1] = {"use-clipboard", 0, 0, OptionArg.NONE, ref use_clipboard, _( "Transform clipboard text" ), null};
-    options[2] = {null};
+    options[0] = {"version",        0, 0, OptionArg.NONE,         ref show_version,   _( "Display version number" ), null};
+    options[1] = {"use-clipboard",  0, 0, OptionArg.NONE,         ref use_clipboard,  _( "Transform clipboard text" ), null};
+    options[2] = {"show-functions", 0, 0, OptionArg.NONE,         ref show_functions, _( "Show available conversion functions" ), null};
+    options[3] = {"convert-with",   0, 0, OptionArg.STRING_ARRAY, ref functions,      _( "Convert with text functions" ), _( "FUNCTION..." )};
+    options[4] = {null};
 
     /* Parse the arguments */
     try {

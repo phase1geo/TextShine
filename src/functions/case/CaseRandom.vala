@@ -26,6 +26,10 @@ public class CaseRandom : TextFunction {
     base( "case-random", custom );
   }
 
+  protected override string get_description() {
+    return( _( "Changes case of each character to upper or lower case randomly." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Random Case" ) );
   }

@@ -26,6 +26,10 @@ public class SortReverseChars : TextFunction {
     base( "sort-reverse", custom );
   }
 
+  public override string get_description() {
+    return( _( "Reverse the order of each character in the text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Reverse Characters" ) );
   }

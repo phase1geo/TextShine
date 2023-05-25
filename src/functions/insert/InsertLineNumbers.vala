@@ -35,6 +35,10 @@ public class InsertLineNumbers : TextFunction {
     _skip_blanks = true;
   }
 
+  public override string get_description() {
+    return( _( "Inserts line numbers at the beginning of each line." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Insert Line Numbers" ) );
   }

@@ -41,6 +41,10 @@ public class RegExpr : TextFunction {
 
   }
 
+  public override string get_description() {
+    return( _( "Performs a regular expression search and highlights all matched text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Regular Expression" ) );
   }

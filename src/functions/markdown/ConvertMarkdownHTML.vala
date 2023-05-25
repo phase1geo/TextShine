@@ -31,6 +31,10 @@ public class ConvertMarkdownHTML : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Converts text between Markdown and HTML formats." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Convert Markdown to HTML" ) );
   }

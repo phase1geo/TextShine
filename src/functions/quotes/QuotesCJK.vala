@@ -26,6 +26,10 @@ public class QuotesCJK : TextFunction {
     base( "quotes-cjk", custom, FunctionDirection.NONE );
   }
 
+  public override string get_description() {
+    return( _( "Converts all straight quotes with the appropriate CJK quotes." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Change to CJK Quotes" ) );
   }

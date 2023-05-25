@@ -28,6 +28,10 @@ public class ClearSelected : TextFunction {
     base( "clear-selected", custom );
   }
 
+  public override string get_description() {
+    return( _( "Clears all highlights created from previous match function." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Clear Match Highlight" ) );
   }

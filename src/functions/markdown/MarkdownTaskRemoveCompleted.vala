@@ -36,6 +36,10 @@ public class MarkdownTaskRemoveCompleted : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Removes all completed tasks from the text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Completed Markdown Tasks" ) );
   }

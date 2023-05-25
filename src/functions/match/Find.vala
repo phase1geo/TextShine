@@ -38,6 +38,10 @@ public class Find : TextFunction {
 
   }
 
+  public override string get_description() {
+    return( _( "Searches the text form matches and highlights that text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Find" ) );
   }

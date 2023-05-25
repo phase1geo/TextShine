@@ -25,6 +25,10 @@ public class RemoveSelected : TextFunction {
     base( "remove-selected", custom );
   }
 
+  public override string get_description() {
+    return( _( "Remove any highlighted text from previous matches." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Matched Text" ) );
   }

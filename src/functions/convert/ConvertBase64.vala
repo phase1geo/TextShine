@@ -28,6 +28,10 @@ public class ConvertBase64 : TextFunction {
     base( "convert-base64", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
+  public override string get_description() {
+    return( _( "Encodes/Decodes the text to/from base64 encoded format." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Encode To Base64" ) );
   }

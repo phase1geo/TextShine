@@ -28,6 +28,10 @@ public class ConvertROT13 : TextFunction {
     base( "convert-rot13", custom );
   }
 
+  public override string get_description() {
+    return( _( "Converts text using ROT-13 encryption." ) );
+  }
+
   protected override string get_label0() {
     return( _( "ROT 13" ) );
   }

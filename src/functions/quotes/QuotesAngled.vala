@@ -26,6 +26,10 @@ public class QuotesAngled : TextFunction {
     base( "quotes-angled", custom, FunctionDirection.NONE );
   }
 
+  public override string get_description() {
+    return( _( "Converts all straight quotes with the appropriate angled quotes." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Change to Angled Quotes" ) );
   }

@@ -26,6 +26,10 @@ public class QuotesStraight : TextFunction {
     base( "quotes-straight", custom, FunctionDirection.NONE );
   }
 
+  public override string get_description() {
+    return( _( "Convert all quotes to straight quotes." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Change to Straight Quotes" ) );
   }

@@ -34,6 +34,10 @@ public class MarkdownTaskDelete : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Removes all Markdown task text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Markdown Tasks" ) );
   }

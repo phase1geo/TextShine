@@ -27,6 +27,10 @@ public class RemoveTrailingWhitespace : TextFunction {
     base( "remove-trailing-whitespace", custom );
   }
 
+  public override string get_description() {
+    return( _( "Removes trailing whitespace from each line." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Trailing Whitespace" ) );
   }

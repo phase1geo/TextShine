@@ -27,6 +27,10 @@ public class RemoveLeadingWhitespace : TextFunction {
     base( "remove-leading-whitespace", custom );
   }
 
+  public override string get_description() {
+    return( _( "Remove leading whitespace from each line." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Leading Whitespace" ) );
   }

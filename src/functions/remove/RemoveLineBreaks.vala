@@ -25,6 +25,10 @@ public class RemoveLineBreaks : TextFunction {
     base( "remove-line-breaks", custom );
   }
 
+  public override string get_description() {
+    return( _( "Remove line breaks from text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Remove Line Breaks" ) );
   }

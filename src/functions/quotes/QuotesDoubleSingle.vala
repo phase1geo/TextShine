@@ -26,6 +26,10 @@ public class QuotesDoubleSingle : TextFunction {
     base( "quotes-double-single", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
+  public override string get_description() {
+    return( _( "Converts between double and single quotes." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Double to Single Quotes" ) );
   }

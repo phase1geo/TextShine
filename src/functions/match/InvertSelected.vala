@@ -28,6 +28,10 @@ public class InvertSelected : TextFunction {
     base( "invert-selected", custom );
   }
 
+  public override string get_description() {
+    return( _( "Highlights all text that is currently not highlighted and clears the originally highlight text." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Invert Matched Text" ) );
   }

@@ -222,6 +222,10 @@ public class MarkdownTableBeauty : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Finds Markdown tables in the text and pads/aligns data in the table cells to improve readability." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Beautify Tables" ) );
   }

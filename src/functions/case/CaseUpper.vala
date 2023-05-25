@@ -26,6 +26,10 @@ public class CaseUpper : TextFunction {
     base( "case-upper", custom );
   }
 
+  public override string get_description() {
+    return( _( "Converts text to upper case." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Upper Case" ) );
   }

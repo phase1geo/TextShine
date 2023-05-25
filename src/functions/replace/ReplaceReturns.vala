@@ -30,6 +30,10 @@ public class ReplaceReturns : TextFunction {
     base( "replace-returns", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
 
+  public override string get_description() {
+    return( _( "Replaces single newline characters with multiple newline characters and vice versa." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Single Return With %d Returns" ).printf( _returns ) );
   }

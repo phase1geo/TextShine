@@ -31,6 +31,10 @@ public class CaseTitle : TextFunction {
     } catch( RegexError e ) {}
   }
 
+  public override string get_description() {
+    return( _( "Capitalizes the first character of every word." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Title Case" ) );
   }

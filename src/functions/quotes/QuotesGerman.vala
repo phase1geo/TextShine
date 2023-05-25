@@ -26,6 +26,10 @@ public class QuotesGerman : TextFunction {
     base( "quotes-german", custom, FunctionDirection.NONE );
   }
 
+  public override string get_description() {
+    return( _( "Convert straight quotes to German quotes." ) );
+  }
+
   protected override string get_label0() {
     return( _( "Change to German Quotes" ) );
   }
