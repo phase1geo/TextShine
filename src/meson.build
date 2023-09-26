@@ -72,6 +72,7 @@ sources += files(
     'Sidebar.vala',
     'SidebarBox.vala',
     'SidebarCustom.vala',
+    'SidebarCustomSettings.vala',
     'SidebarFunctions.vala',
     'TextFunction.vala',
     'TextFunctions.vala',

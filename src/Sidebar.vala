@@ -62,11 +62,12 @@ public class Functions {
 }
 
 public enum SwitchStackReason {
-  NONE,   /* There is no reason for switching */
-  NEW,    /* We are creating a new cuastom function */
-  EDIT,   /* We are editing an existing function */
-  ADD,    /* We are adding a new custom function */
-  DELETE  /* We are deleting a custom function */
+  NONE,           /* There is no reason for switching */
+  NEW,            /* We are creating a new cuastom function */
+  EDIT,           /* We are editing an existing function */
+  EDIT_SETTINGS,  /* We are editing the custom settings */
+  ADD,            /* We are adding a new custom function */
+  DELETE          /* We are deleting a custom function */
 }
 
 public class Sidebar : Stack {
@@ -76,8 +77,9 @@ public class Sidebar : Stack {
   /* Constructor */
   public Sidebar( MainWindow win, Editor editor ) {
 
-    var functions = new SidebarFunctions( win, editor );
-    var custom    = new SidebarCustom( win, editor );
+    var functions       = new SidebarFunctions( win, editor );
+    var custom          = new SidebarCustom( win, editor );
+    var custom_settings = new SidebarCustomSettings( win, editor );
 
     functions.action_applied.connect((fn) => {
       action_applied( fn );
@@ -91,12 +93,26 @@ public class Sidebar : Stack {
       action_applied( fn );
     });
     custom.switch_stack.connect((reason,fn) => {
-      visible_child_name = "functions";
-      functions.displayed( reason, fn );
+      if( reason == SwitchStackReason.EDIT_SETTINGS ) {
+        visible_child_name = "custom_settings";
+        custom_settings.displayed( reason, fn );
+      } else {
+        visible_child_name = "functions";
+        functions.displayed( reason, fn );
+      }
     });
 
-    add_named( functions, "functions" );
-    add_named( custom,    "custom" );
+    custom_settings.action_applied.connect((fn) => {
+      action_applied( fn );
+    });
+    custom_settings.switch_stack.connect((reason,fn) => {
+      visible_child_name = "custom";
+      custom.displayed( reason, fn );
+    });
+
+    add_named( functions,       "functions" );
+    add_named( custom,          "custom" );
+    add_named( custom_settings, "custom_settings" );
 
   }
 

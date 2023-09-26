@@ -41,6 +41,7 @@ public class SidebarCustom : SidebarBox {
   private UndoItem?        _test_undo = null;
   private Revealer?        _break_reveal = null;
   private UndoCustomBuffer _undo_buffer;
+  private Button           _cl;
   private Button           _undo;
   private Button           _redo;
 
@@ -66,6 +67,13 @@ public class SidebarCustom : SidebarBox {
     nbox.pack_start( nlbl,            false, false, 5 );
     nbox.pack_start( _name,           true,  true,  5 );
 
+    _cl = new Button.from_icon_name( "emblem-system", IconSize.SMALL_TOOLBAR );
+    _cl.set_relief( ReliefStyle.NONE );
+    _cl.tooltip_text = _( "Edit command-line settings" );
+    _cl.clicked.connect(() => {
+      switch_stack( SwitchStackReason.EDIT_SETTINGS, _custom );
+    });
+
     _undo = new Button.from_icon_name( "edit-undo-symbolic", IconSize.SMALL_TOOLBAR );
     _undo.set_relief( ReliefStyle.NONE );
     _undo.set_sensitive( false );
@@ -90,6 +98,7 @@ public class SidebarCustom : SidebarBox {
     abox.pack_start( _undo, false, false, 5 );
     abox.pack_start( _redo, false, false, 5 );
     abox.pack_end(   _play, false, false, 5 );
+    abox.pack_end(   _cl,   false, false, 5 );
 
     /* Create scrolled box */
     _lb = new ListBox();
@@ -712,6 +721,7 @@ public class SidebarCustom : SidebarBox {
       win.functions.save_custom();
       switch_stack( SwitchStackReason.EDIT, _custom );
     } else if( !empty ) {
+      stdout.printf( "Saving custom\n" );
       win.functions.add_function( "custom", _custom );
       win.functions.save_custom();
       switch_stack( SwitchStackReason.ADD, _custom );

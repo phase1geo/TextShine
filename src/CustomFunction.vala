@@ -30,6 +30,7 @@ public class CustomFunction : TextFunction {
 
   private Array<TextFunction> _functions;
   private string              _label;
+  private string              _description;
   private int                 _breakpoint;
 
   public Array<TextFunction> functions {
@@ -57,15 +58,17 @@ public class CustomFunction : TextFunction {
   /* Constructor */
   public CustomFunction( bool custom = false ) {
     base( "custom-%d".printf( custom_id ), custom );
-    _label      = "Custom #%d".printf( custom_id++ );
-    _functions  = new Array<TextFunction>();
-    _breakpoint = -1;
+    _label       = "Custom #%d".printf( custom_id++ );
+    _description = "";
+    _functions   = new Array<TextFunction>();
+    _breakpoint  = -1;
   }
 
   /* Copy constructor */
   public CustomFunction.copy_function( CustomFunction func ) {
     base( func.name, true );
     _label = func.label;
+    _description = func._description;
     _functions = new Array<TextFunction>();
     for( int i=0; i<func.functions.length; i++ ) {
       _functions.append_val( func.functions.index( i ).copy( true ) );
@@ -75,6 +78,18 @@ public class CustomFunction : TextFunction {
   /* Creates a copy of this custom function and returns it to the caller */
   public override TextFunction copy( bool custom ) {
     return( new CustomFunction.copy_function( this ) );
+  }
+
+  public void set_name( string str ) {
+    _name = str;
+  }
+
+  public void set_description( string str ) {
+    _description = str;
+  }
+
+  public override string get_description() {
+    return( _description );
   }
 
   protected override string get_label0() {
@@ -124,6 +139,7 @@ public class CustomFunction : TextFunction {
     Xml.Node* node = new Xml.Node( null, "custom" );
     node->set_prop( "name",  name );
     node->set_prop( "label", _label );
+    node->new_text_child( null, "description", get_description() );
     for( int i=0; i<_functions.length; i++ ) {
       node->add_child( _functions.index( i ).save() );
     }
@@ -132,12 +148,20 @@ public class CustomFunction : TextFunction {
 
   /* Loads the contents of this text function */
   public override void load( Xml.Node* node, TextFunctions functions ) {
+    var n = node->get_prop( "name" );
+    if( n != null ) {
+      _name = n;
+    }
     _label = node->get_prop( "label" );
     for( Xml.Node* it=node->children; it!=null; it=it->next ) {
-      if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "function") ) {
-        var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy( true );
-        function.load( it, functions );
-        _functions.append_val( function );
+      if( it->type == Xml.ElementType.ELEMENT_NODE ) {
+        if( it->name == "function" ) {
+          var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy( true );
+          function.load( it, functions );
+          _functions.append_val( function );
+        } else if( (it->name == "description") && (it->children != null) && (it->children->type == Xml.ElementType.TEXT_NODE) ) {
+          set_description( it->children->get_content() );
+        }
       }
     }
   }

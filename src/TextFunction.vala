@@ -83,7 +83,7 @@ public class TextFunction {
   protected const string left_german_squote  = "\u201a";
   protected const string right_german_squote = "\u2018";
 
-  private string            _name;
+  protected string          _name;
   private bool              _custom    = false;
   private FunctionDirection _direction = FunctionDirection.NONE;
 
