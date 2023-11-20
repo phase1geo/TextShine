@@ -470,7 +470,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   /* Create list of transformation buttons */
-  private Stack create_sidebar() {
+  private Box create_sidebar() {
 
     _sidebar = new Sidebar( this, _editor );
     _sidebar.action_applied.connect( action_applied );

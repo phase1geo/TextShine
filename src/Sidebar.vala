@@ -69,12 +69,18 @@ public enum SwitchStackReason {
   DELETE  /* We are deleting a custom function */
 }
 
-public class Sidebar : Stack {
+public class Sidebar : Box {
+
+  private Stack _stack;
 
   public signal void action_applied( TextFunction function );
 
   /* Constructor */
   public Sidebar( MainWindow win, Editor editor ) {
+
+    Object( orientation: Orientation.VERTICAL, spacing: 10 );
+
+    _stack = new Stack();
 
     var functions = new SidebarFunctions( win, editor );
     var custom    = new SidebarCustom( win, editor );
@@ -83,7 +89,7 @@ public class Sidebar : Stack {
       action_applied( fn );
     });
     functions.switch_stack.connect((reason, fn) => {
-      visible_child_name = "custom";
+      _stack.visible_child_name = "custom";
       custom.displayed( reason, fn );
     });
 
@@ -91,12 +97,14 @@ public class Sidebar : Stack {
       action_applied( fn );
     });
     custom.switch_stack.connect((reason,fn) => {
-      visible_child_name = "functions";
+      _stack.visible_child_name = "functions";
       functions.displayed( reason, fn );
     });
 
-    add_named( functions, "functions" );
-    add_named( custom,    "custom" );
+    _stack.add_named( functions, "functions" );
+    _stack.add_named( custom,    "custom" );
+
+    append( _stack );
 
   }
 
