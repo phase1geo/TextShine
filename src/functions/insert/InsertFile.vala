@@ -40,12 +40,22 @@ public class InsertFile : TextFunction {
     return( new InsertFile( _win, custom ) );
   }
 
-  private string? get_file() {
+  private void insert_selected_file( Editor editor ) {
+
     var dialog = new FileChooserNative( _( "Insert File" ), _win, FileChooserAction.OPEN, _( "Open" ), _( "Cancel" ) );
-    if( dialog.run() == ResponseType.ACCEPT ) {
-      return( dialog.get_filename() );
-    }
-    return( null );
+
+    dialog.response.connect((id) => {
+      if( id == ResponseType.ACCEPT ) {
+        _filename = dialog.get_file().get_path();
+        var undo_item = new UndoItem( label );
+        insert_file( editor, undo_item );
+        editor.undo_buffer.add_item( undo_item );
+      }
+      dialog.destroy();
+    });
+
+    dialog.show();
+
   }
 
   private string? get_file_contents( string filename ) {
@@ -69,34 +79,22 @@ public class InsertFile : TextFunction {
   }
 
   public override void launch( Editor editor ) {
-
     if( custom ) {
-
       insert_file( editor, null );
-
     } else {
-
-      _filename = get_file();
-      if( _filename == null ) return;
-
-      var undo_item = new UndoItem( label );
-      insert_file( editor, undo_item );
-      editor.undo_buffer.add_item( undo_item );
-
+      insert_selected_file( editor );
     }
-
   }
 
   private Box create_widget( Editor editor ) {
 
-    var chooser = new FileChooserButton( _( "Insert File" ), FileChooserAction.OPEN );
-    chooser.file_set.connect(() => {
-      _filename = chooser.get_filename();
+    var chooser = new Button.with_label( _( "Insert File" ) );
+    chooser.clicked.connect(() => {
+      insert_selected_file( editor );
     });
-    chooser.set_filename( _filename );
 
     var box = new Box( Orientation.HORIZONTAL, 5 );
-    box.pack_start( chooser, true, true, 0 );
+    box.append( chooser );
 
     return( box );
 

@@ -195,8 +195,10 @@ public class TextFunction {
 
   /* Handles a widget escape */
   protected void handle_widget_escape( Widget w, MainWindow win ) {
-    w.key_press_event.connect((e) => {
-      if( e.keyval == Gdk.Key.Escape ) {
+    var key_controller = new EventControllerKey();
+    w.add_controller( key_controller );
+    key_controller.key_pressed.connect((keyval, keycode, state) => {
+      if( keyval == Gdk.Key.Escape ) {
         win.remove_widget();
       }
       return( false );
@@ -299,12 +301,14 @@ public class TextFunction {
   /* Called whenever a number setting with a range needs to be added */
   protected void add_range_setting( Grid grid, int row, string label, int min_value, int max_value, int step, int init_value, SettingRangeChangedFunc callback ) {
 
-    var lbl = new Label( label + ": " );
-    lbl.halign = Align.START;
+    var lbl = new Label( label + ": " ) {
+      halign = Align.START
+    };
 
-    var sb = new SpinButton.with_range( min_value, max_value, step );
-    sb.halign = Align.END;
-    sb.value  = init_value;
+    var sb = new SpinButton.with_range( min_value, max_value, step ) {
+      halign = Align.END,
+      value  = init_value
+    };
     sb.value_changed.connect(() => {
       callback( (int)sb.value );
       if( custom ) {
@@ -322,22 +326,25 @@ public class TextFunction {
   /* Called whenever a string setting widget needs to be added */
   protected Entry add_string_setting( Grid grid, int row, string label, string init_value, SettingStringChangedFunc callback ) {
 
-    var lbl = new Label( label + ": " );
-    lbl.halign = Align.START;
+    var lbl = new Label( label + ": " ) {
+      halign = Align.START
+    };
 
-    var entry = new Entry();
-    entry.text = init_value;
+    var focus_controller = new EventControllerFocus();
+    var entry = new Entry() {
+      text = init_value
+    };
+    entry.add_controller( focus_controller );
     entry.activate.connect(() => {
       init_value = entry.text;
     });
-    entry.focus_out_event.connect((e) => {
+    focus_controller.leave.connect(() => {
       callback( entry.text );
       if( custom ) {
         custom_changed();
       } else {
         settings_changed();
       }
-      return( false );
     });
 
     grid.attach( lbl, 0, row );
@@ -350,12 +357,14 @@ public class TextFunction {
   /* Called whenever a boolean setting widget needs to be added */
   protected void add_bool_setting( Grid grid, int row, string label, bool init_value, SettingBoolChangedFunc callback ) {
 
-    var lbl = new Label( label + ": " );
-    lbl.halign = Align.START;
+    var lbl = new Label( label + ": " ) {
+      halign = Align.START
+    };
 
-    var sw  = new Switch();
-    sw.halign = Align.END;
-    sw.active = init_value;
+    var sw  = new Switch() {
+      halign = Align.END,
+      active = init_value
+    };
     sw.state_set.connect(() => {
       callback( sw.active );
       if( custom ) {
@@ -374,33 +383,27 @@ public class TextFunction {
   /* Called whenever a menubutton setting widget needs to be added */
   protected void add_menubutton_setting( Grid grid, int row, string label, string init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
 
-    var lbl = new Label( label + ": " );
-    lbl.halign = Align.START;
+    var lbl = new Label( label + ": " ) {
+      halign = Align.START
+    };
 
-    var mb   = new MenuButton();
-    var menu = new Gtk.Menu();
+    string[] values = {};
     for( int i=0; i<value_len; i++ ) {
-      var item_val = i;
-      var item_lbl = label_func( i );
-      var item     = new Gtk.MenuItem.with_label( item_lbl );
-      item.activate.connect(() => {
-        mb.label = item_lbl;
-        changed_func( item_val );
-        if( custom ) {
-          custom_changed();
-        } else {
-          settings_changed();
-        }
-      });
-      menu.add( item );
+      values += label_func( i );
     }
-    menu.show_all();
 
-    mb.label = init_value;
-    mb.popup = menu;
+    var dd = new DropDown.from_strings( values );
+    dd.notify["selected"].connect(() => {
+      changed_func( (int)dd.get_selected() );
+      if( custom ) {
+        custom_changed();
+      } else {
+        settings_changed();
+      }
+    });
 
     grid.attach( lbl, 0, row );
-    grid.attach( mb,  1, row );
+    grid.attach( dd,  1, row );
 
   }
 

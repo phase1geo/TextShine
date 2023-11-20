@@ -81,6 +81,11 @@ public class InsertText : TextFunction {
   private InsertLocation _insert_loc = InsertLocation.LINE_START;
   private string         _insert_text = "";
   private Regex          _first_char_re;
+  private Entry          _insert;
+
+  private const GLib.ActionEntry[] action_entries = {
+    { "action_insert", action_insert, "s" },
+  };
 
   /* Constructor */
   public InsertText( MainWindow win, bool custom = false ) {
@@ -130,39 +135,55 @@ public class InsertText : TextFunction {
     }
   }
 
+  private void action_insert( SimpleAction action, Variant? variant ) {
+    if( variant != null ) {
+      var str = variant.get_string();
+      var pos = _insert.cursor_position;
+      _insert.do_insert_text( str, str.length, ref pos );
+    }
+  }
+
   private void create_widget( Editor editor, out Box box, out Entry focus ) {
 
-    var insert = new Entry();
-    insert.placeholder_text = _( "Inserted Text" );
-    insert.populate_popup.connect((mnu) => {
-      Utils.populate_insert_popup( mnu, insert );
-    });
+    _insert = new Entry() {
+      halign = Align.FILL,
+      hexpand = true,
+      placeholder_text = _( "Inserted Text" ),
+      extra_menu = new GLib.Menu()
+    };
+
+    Utils.populate_insert_popup( (GLib.Menu)_insert.extra_menu, "insert_text.action_insert" );
 
     if( custom ) {
 
-      insert.text = _insert_text;
-      insert.changed.connect(() => {
-        _insert_text = insert.text;
+      _insert.text = _insert_text;
+      _insert.changed.connect(() => {
+        _insert_text = _insert.text;
         custom_changed();
       });
 
     } else {
 
-      insert.activate.connect(() => {
-        _insert_text = insert.text;
+      _insert.activate.connect(() => {
+        _insert_text = _insert.text;
         var undo_item = new UndoItem( label );
         do_insert( editor, undo_item );
         editor.undo_buffer.add_item( undo_item );
       });
 
-      handle_widget_escape( insert, _win );
+      handle_widget_escape( _insert, _win );
 
-      focus = insert;
+      focus = _insert;
 
     }
 
     box = new Box( Orientation.HORIZONTAL, 5 );
-    box.pack_start( insert, true,  true, 0 );
+    box.append( _insert );
+
+    /* Set the stage for menu actions */
+    var actions = new SimpleActionGroup ();
+    actions.add_action_entries( action_entries, box );
+    box.insert_action_group( "insert_text", actions );
 
   }
 

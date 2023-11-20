@@ -73,6 +73,7 @@ sources += files(
     'SidebarBox.vala',
     'SidebarCustom.vala',
     'SidebarFunctions.vala',
+    'SpellChecker.vala',
     'TextFunction.vala',
     'TextFunctions.vala',
     'UndoBuffer.vala',

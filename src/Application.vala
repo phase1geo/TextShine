@@ -23,14 +23,14 @@ using Gtk;
 using Gdk;
 using GLib;
 
-public class TextShine : Granite.Application {
+public class TextShine : Gtk.Application {
 
   private static bool       show_version  = false;
   private        MainWindow appwin;
 
   public  static GLib.Settings settings;
   public  static bool          use_clipboard = false;
-  public  static string        version       = "1.2.0";
+  public  static string        version       = "2.0.0";
 
   public TextShine () {
 
@@ -53,7 +53,7 @@ public class TextShine : Granite.Application {
     settings = new GLib.Settings( "com.github.phase1geo.textshine" );
 
     /* Add the application-specific icons */
-    weak IconTheme default_theme = IconTheme.get_default();
+    weak IconTheme default_theme = IconTheme.get_for_display( Display.get_default() );
     default_theme.add_resource_path( "/com/github/phase1geo/textshine" );
 
     /* Create the main window */
@@ -65,6 +65,8 @@ public class TextShine : Granite.Application {
     }
 
     /* Handle any changes to the position of the window */
+    /*
+     * TODO - I don't think this translates
     appwin.configure_event.connect(() => {
       int root_x, root_y;
       int size_w, size_h;
@@ -76,12 +78,12 @@ public class TextShine : Granite.Application {
       settings.set_int( "window-h", size_h );
       return( false );
     });
+    */
 
   }
 
   /* Called whenever files need to be opened */
   private void open_files( File[] files, string hint ) {
-    hold();
     foreach( File open_file in files ) {
       var file = open_file.get_path();
       appwin.notification( _( "Opening file" ), file );
@@ -89,16 +91,10 @@ public class TextShine : Granite.Application {
         stdout.printf( "ERROR:  Unable to open file '%s'\n", file );
       }
     }
-    Gtk.main();
-    release();
   }
 
   /* Called if we have no files to open */
-  protected override void activate() {
-    hold();
-    Gtk.main();
-    release();
-  }
+  protected override void activate() {}
 
   /* Parse the command-line arguments */
   private void parse_arguments( ref unowned string[] args ) {

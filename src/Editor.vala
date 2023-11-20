@@ -22,7 +22,7 @@
 using Gtk;
 using Gdk;
 
-public class Editor : SourceView {
+public class Editor : GtkSource.View {
 
   /* Structure to hold absolute position */
   public class Position {
@@ -55,10 +55,10 @@ public class Editor : SourceView {
 
   }
 
-  private UndoBuffer       _undo_buffer;
-  private bool             _ignore_edit = false;
-  private string           _lang_dict;
-  private GtkSpell.Checker _spell = null;
+  private UndoBuffer   _undo_buffer;
+  private bool         _ignore_edit = false;
+  private string       _lang_dict;
+  private SpellChecker _spell = null;
 
   public UndoBuffer undo_buffer {
     get {
@@ -127,7 +127,7 @@ public class Editor : SourceView {
 
     try {
       var css_data = ".editor { font: " + size.to_string() + "px \"" + name + "\"; }";
-      provider.load_from_data( css_data );
+      provider.load_from_data( css_data.data );
     } catch( GLib.Error e ) {
       stdout.printf( "Unable to change font: %s\n", e.message );
     }
@@ -220,8 +220,7 @@ public class Editor : SourceView {
 
   /* Copies the entire buffer contents, regardless of selection */
   public void copy_all_to_clipboard( Clipboard clipboard ) {
-    clipboard.clear();
-    clipboard.set_text( buffer.text, buffer.text.length );
+    clipboard.set_text( buffer.text );
   }
 
   /* Copies the selected text (if selected) or the entire buffer contents */
@@ -230,8 +229,7 @@ public class Editor : SourceView {
     if( buffer.get_selection_bounds( out start, out end ) ) {
       buffer.copy_clipboard( clipboard );
     } else {
-      clipboard.clear();
-      clipboard.set_text( buffer.text, buffer.text.length );
+      clipboard.set_text( buffer.text );
     }
   }
 
@@ -320,11 +318,12 @@ public class Editor : SourceView {
   private void connect_spell_checker() {
 
     _lang_dict = TextShine.settings.get_string( "spell-language" );
-    _spell     = new GtkSpell.Checker();
+    _spell     = new SpellChecker();
 
     try {
       var lang_exists = false;
-      var lang_list   = GtkSpell.Checker.get_language_list();
+      var lang_list   = new Gee.ArrayList<string>();
+      _spell.get_language_list( lang_list );
       foreach( var elem in lang_list ) {
         if( _lang_dict == elem ) {
           lang_exists = true;
@@ -332,10 +331,10 @@ public class Editor : SourceView {
           break;
         }
       }
-      if( lang_list.length() == 0 ) {
+      if( lang_list.size == 0 ) {
         _spell.set_language( null );
       } else if( !lang_exists ) {
-        _lang_dict = lang_list.first().data;
+        _lang_dict = lang_list.first();
         _spell.set_language( _lang_dict );
       }
     } catch( Error e ) {

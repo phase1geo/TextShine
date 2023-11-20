@@ -25,6 +25,11 @@ public class ReplaceSelected : TextFunction {
 
   private MainWindow _win;
   private string     _replace_text = "";
+  private Entry      _replace;
+
+  private const GLib.ActionEntry action_entries[] = {
+    { "action_insert_replace", action_insert_replace, "s" },
+  };
 
   /* Constructor */
   public ReplaceSelected( MainWindow win, bool custom = false ) {
@@ -52,40 +57,56 @@ public class ReplaceSelected : TextFunction {
     return( editor.is_selected() );
   }
 
+  /* Inserts the given string at the current insertion point */
+  private void action_insert_replace( SimpleAction action, Variant? variant ) {
+    var str = variant.get_string();
+    if( str != null ) {
+      var pos = _replace.cursor_position;
+      _replace.do_insert_text( str, str.length, ref pos );
+    }
+  }
+
   /* Creates the search UI */
   private void create_widget( Editor editor, out Box box, out Entry entry ) {
 
-    var replace = new Entry();
-    replace.placeholder_text = _( "Replace With" );
-    replace.populate_popup.connect((mnu) => {
-      Utils.populate_insert_popup( mnu, replace );
-    });
+    _replace = new Entry() {
+      halign = Align.FILL,
+      hexpand = true,
+      placeholder_text = _( "Replace With" ),
+      extra_menu = new GLib.Menu()
+    };
+    Utils.populate_insert_popup( (GLib.Menu)_replace.extra_menu, "replace_sel.action_insert_replace" );
 
     if( custom ) {
 
-      replace.text = _replace_text;
-      replace.changed.connect(() => {
-        _replace_text = replace.text;
+      _replace.text = _replace_text;
+      _replace.changed.connect(() => {
+        _replace_text = _replace.text;
         custom_changed();
       });
 
     } else {
 
-      replace.activate.connect(() => {
-        _replace_text = replace.text;
+      _replace.activate.connect(() => {
+        _replace_text = _replace.text;
         var undo_item = new UndoItem( label );
         do_replace( editor, undo_item );
         editor.undo_buffer.add_item( undo_item );
       });
 
-      handle_widget_escape( replace, _win );
+      handle_widget_escape( _replace, _win );
 
-      entry = replace;
+      entry = _replace;
 
     }
 
-    box = new Box( Orientation.HORIZONTAL, 0 );
-    box.pack_start( replace, true, true, 5 );
+    box = new Box( Orientation.HORIZONTAL, 5 );
+    box.append( _replace );
+
+    /* Add the menu actions */
+    var actions = new SimpleActionGroup();
+    actions.add_action_entries( action_entries, this );
+    box.insert_action_group( "replace_sel", actions );
 
   }
 

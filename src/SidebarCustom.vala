@@ -44,9 +44,12 @@ public class SidebarCustom : SidebarBox {
   private Button           _undo;
   private Button           _redo;
 
+  /*
+   * TODO
   static TargetEntry[] entries = {
     { "TEXTSHINE_CUSTOM_ROW", TargetFlags.SAME_APP, 0 }
   };
+  */
 
   /* Constructor */
   public SidebarCustom( MainWindow win, Editor editor ) {
@@ -57,52 +60,67 @@ public class SidebarCustom : SidebarBox {
     _undo_buffer = new UndoCustomBuffer( this );
     _undo_buffer.buffer_changed.connect( do_buffer_changed );
 
-    var nlbl = new Label( Utils.make_title( _( "Name:" ) ) );
-    nlbl.use_markup = true;
+    var nlbl = new Label( Utils.make_title( _( "Name:" ) ) ) {
+      use_markup = true
+    };
 
-    _name = new Entry();
+    _name = new Entry() {
+      halign = Align.FILL,
+      hexpand = true
+    };
 
-    var nbox = new Box( Orientation.HORIZONTAL, 0 );
-    nbox.pack_start( nlbl,            false, false, 5 );
-    nbox.pack_start( _name,           true,  true,  5 );
+    var nbox = new Box( Orientation.HORIZONTAL, 5 );
+    nbox.append( nlbl );
+    nbox.append( _name );
 
-    _undo = new Button.from_icon_name( "edit-undo-symbolic", IconSize.SMALL_TOOLBAR );
-    _undo.set_relief( ReliefStyle.NONE );
-    _undo.set_sensitive( false );
+    _undo = new Button.from_icon_name( "edit-undo-symbolic" ) {
+      halign    = Align.START,
+      has_frame = false,
+      sensitive = false
+    };
     _undo.clicked.connect(() => {
       _undo_buffer.undo();
     });
 
-    _redo = new Button.from_icon_name( "edit-redo-symbolic", IconSize.SMALL_TOOLBAR );
-    _redo.set_relief( ReliefStyle.NONE );
-    _redo.set_sensitive( false );
+    _redo = new Button.from_icon_name( "edit-redo-symbolic" ) {
+      halign    = Align.START,
+      has_frame = false,
+      sensitive = false
+    };
     _redo.clicked.connect(() => {
       _undo_buffer.redo();
     });
 
-    _play = new Button.from_icon_name( "media-playback-start-symbolic", IconSize.SMALL_TOOLBAR );
-    _play.set_relief( ReliefStyle.NONE );
-    _play.set_sensitive( false );
-    _play.tooltip_text = _( "Test run custom actions" );
+    _play = new Button.from_icon_name( "media-playback-start-symbolic" ) {
+      halign    = Align.END,
+      has_frame = false,
+      sensitive = false,
+      tooltip_text = _( "Test run custom actions" )
+    };
     _play.clicked.connect( play_refresh );
 
-    var abox = new Box( Orientation.HORIZONTAL, 0 );
-    abox.pack_start( _undo, false, false, 5 );
-    abox.pack_start( _redo, false, false, 5 );
-    abox.pack_end(   _play, false, false, 5 );
+    var abox = new Box( Orientation.HORIZONTAL, 5 );
+    abox.append( _undo );
+    abox.append( _redo );
+    abox.append( _play );
 
     /* Create scrolled box */
-    _lb = new ListBox();
-    _lb.selection_mode = SelectionMode.NONE;
+    _lb = new ListBox() {
+      selection_mode = SelectionMode.NONE
+    };
 
-    var sw = new ScrolledWindow( null, null );
-    var vp = new Viewport( null, null );
+    var vp = new Viewport( null, null ) {
+      child = _lb
+    };
     vp.set_size_request( width, height );
-    vp.add( _lb );
-    sw.add( vp );
 
-    var add = new Button.with_label( _( "Add New Action" ) );
-    add.set_relief( ReliefStyle.NONE );
+    var sw = new ScrolledWindow() {
+      child = vp
+    };
+
+    var add = new Button.with_label( _( "Add New Action" ) ) {
+      has_frame = false
+    };
     add.clicked.connect(() => {
       insert_new_action( null, 0 );
     });
@@ -112,32 +130,38 @@ public class SidebarCustom : SidebarBox {
     stack.add_named( add, "add" );
     stack.add_named( ins, "ins" );
 
-    _add_revealer = new Revealer();
-    _add_revealer.reveal_child = true;
-    _add_revealer.add( stack );
+    _add_revealer = new Revealer() {
+      reveal_child = true,
+      child = stack
+    };
 
     var del = new Button.with_label( _( "Delete" ) );
     del.get_style_context().add_class( "destructive-action" );
     del.clicked.connect( delete_custom );
 
-    var done = new Button.with_label( _( "Done" ) );
+    var done = new Button.with_label( _( "Done" ) ) {
+      halign = Align.END
+    };
     done.get_style_context().add_class( "suggested-action" );
     done.clicked.connect( save_custom );
 
-    _delete_reveal = new Revealer();
-    _delete_reveal.reveal_child    = true;
-    _delete_reveal.transition_type = RevealerTransitionType.NONE;
-    _delete_reveal.add( del );
+    _delete_reveal = new Revealer() {
+      halign = Align.START,
+      hexpand = true,
+      reveal_child = true,
+      transition_type = RevealerTransitionType.NONE,
+      child = del
+    };
 
-    var bbox = new Box( Orientation.HORIZONTAL, 0 );
-    bbox.pack_start( _delete_reveal, false, false, 5 );
-    bbox.pack_end( done, false, false, 5 );
+    var bbox = new Box( Orientation.HORIZONTAL, 5 );
+    bbox.append( _delete_reveal );
+    bbox.append( done );
 
-    pack_start( abox,          false, true, 5 );
-    pack_start( nbox,          false, true, 5 );
-    pack_start( _add_revealer, false, true, 5 );
-    pack_start( sw,            true,  true, 5 );
-    pack_start( bbox,          false, true, 5 );
+    append( abox );
+    append( nbox );
+    append( _add_revealer );
+    append( sw );
+    append( bbox );
 
     /* Create the action insertion popover */
     create_popover();
@@ -147,13 +171,12 @@ public class SidebarCustom : SidebarBox {
   private void play_refresh() {
     var play_img    = "media-playback-start-symbolic";
     var refresh_img = "view-refresh-symbolic";
-    var img         = (Gtk.Image)_play.image;
-    if( img.icon_name == play_img ) {
-      _play.image = new Image.from_icon_name( refresh_img, IconSize.SMALL_TOOLBAR );
+    if( _play.icon_name == play_img ) {
+      _play.icon_name = refresh_img;
       _play.tooltip_text = _( "Refresh text" );
       play_action();
     } else {
-      _play.image = new Image.from_icon_name( play_img, IconSize.SMALL_TOOLBAR );
+      _play.icon_name = play_img;
       _play.tooltip_text = _( "Test run custom actions" );
       refresh_text();
     }
@@ -196,10 +219,16 @@ public class SidebarCustom : SidebarBox {
   }
 
   private void clear_actions() {
+
     _add_revealer.reveal_child = true;
-    _lb.get_children().@foreach((w) => {
-      _lb.remove( w );
-    });
+
+    /* Remove all of the rows from the listbox */
+    var row = _lb.get_row_at_index( 0 );
+    while( row != null ) {
+      _lb.remove( row );
+      row = _lb.get_row_at_index( 0 );
+    }
+
   }
 
   /* Inserts the current custom actions */
@@ -209,7 +238,6 @@ public class SidebarCustom : SidebarBox {
       add_function( fn );
       _add_revealer.reveal_child = false;
     }
-    _lb.show_all();
   }
 
   /* Adds a function button to the given category item box */
@@ -217,68 +245,93 @@ public class SidebarCustom : SidebarBox {
 
     var box = new Box( Orientation.VERTICAL, 0 );
 
-    var label = new Label( Utils.make_title( function.label ) );
-    label.halign = Align.START;
-    label.use_markup = true;
+    var label = new Label( Utils.make_title( function.label ) ) {
+      halign = Align.START,
+      hexpand = true,
+      use_markup = true
+    };
 
-    var grid = new Grid();
-    grid.column_homogeneous = true;
+    var grid = new Grid() {
+      halign = Align.END,
+      column_homogeneous = true
+    };
     add_direction_button( grid, label, function );
     add_settings_button(  grid, function );
 
-    var breakpoint = new Image.from_icon_name( "media-playback-stop-symbolic", IconSize.SMALL_TOOLBAR );
-    breakpoint.tooltip_text = _( "Test run stops after this action" );
+    var breakpoint = new Image.from_icon_name( "media-playback-stop-symbolic" ) {
+      tooltip_text = _( "Test run stops after this action" )
+    };
 
-    var break_reveal = new Revealer();
-    break_reveal.add( breakpoint );
-    break_reveal.transition_type = RevealerTransitionType.NONE;
+    var break_reveal = new Revealer() {
+      halign = Align.END,
+      transition_type = RevealerTransitionType.NONE,
+      child = breakpoint
+    };
 
-    var more = new Button.from_icon_name( "view-more-symbolic", IconSize.SMALL_TOOLBAR );
-    more.relief = ReliefStyle.NONE;
-    more.clicked.connect(() => {
+    var more = new MenuButton() {
+      icon_name = "view-more-symbolic",
+      halign = Align.END,
+      has_frame = false
+    };
+    more.activate.connect(() => {
       show_action_menu( box, more, break_reveal );
     });
 
-    var lbox = new Box( Orientation.HORIZONTAL, 0 );
-    lbox.pack_start( label, false, true,  5 );
-    lbox.pack_end(   grid,  false, false, 0 );
+    var lbox = new Box( Orientation.HORIZONTAL, 5 ) {
+      halign = Align.START,
+      hexpand = true
+    };
+    lbox.append( label );
+    lbox.append( grid );
 
-    var lbbox = new Box( Orientation.HORIZONTAL, 0 );
-    lbbox.pack_start( lbox, true,  true,  2 );
-    lbbox.pack_end(   more, false, false, 2 );
-    lbbox.pack_end(   break_reveal, false, false, 0 );
+    var lbbox = new Box( Orientation.HORIZONTAL, 2 );
+    lbbox.append( lbox );
+    lbbox.append( more );
+    lbbox.append( break_reveal );
 
-    var ebox = new EventBox();
+    var ebox = new Overlay() {
+      valign = Align.FILL
+    };
 
     var wbox = function.get_widget( editor );
     if( wbox != null ) {
-      var lbw = new Box( Orientation.VERTICAL, 0 );
-      lbw.pack_start( lbbox, false, true, 5 );
-      lbw.pack_start( wbox,  false, true, 5 );
-      ebox.add( lbw );
+      var lbw = new Box( Orientation.VERTICAL, 5 );
+      lbw.append( lbbox );
+      lbw.append( wbox );
+      ebox.child = lbw;
     } else {
-      ebox.add( lbbox );
+      ebox.child = lbbox;
     }
 
     var move_mask = ModifierType.BUTTON1_MASK;
     var copy_mask = (ModifierType.BUTTON1_MASK | ModifierType.CONTROL_MASK);
 
+    /*
+     TODO
     Gtk.drag_source_set( ebox, move_mask, entries, Gdk.DragAction.MOVE );
     Gtk.drag_source_set( ebox, copy_mask, entries, Gdk.DragAction.COPY );
     Gtk.drag_dest_set( ebox, DestDefaults.ALL, entries, (Gdk.DragAction.MOVE | Gdk.DragAction.COPY) );
+    */
 
-    var fbox  = new Box( Orientation.VERTICAL, 0 );
-    fbox.margin_top    = 10;
-    fbox.margin_bottom = 10;
-    fbox.margin_left   = 5;
-    fbox.margin_right  = 5;
-    fbox.pack_start( ebox, false, true, 5 );
+    var fbox = new Box( Orientation.VERTICAL, 5 ) {
+      margin_top    = 10,
+      margin_bottom = 10,
+      margin_start  = 5,
+      margin_end    = 5
+    };
+    fbox.append( ebox );
 
-    var frame = new Frame( null );
-    frame.shadow_type = ShadowType.ETCHED_OUT;
-    frame.margin = 4;
-    frame.add( fbox );
+    var frame = new Frame( null ) {
+      // TODO? - frame.shadow_type = ShadowType.ETCHED_OUT;
+      margin_start  = 4,
+      margin_end    = 4,
+      margin_top    = 4,
+      margin_bottom = 4,
+      child = fbox
+    };
 
+    /*
+     * TODO
     ebox.drag_begin.connect((ctx) => {
       Allocation alloc;
       box.get_allocation( out alloc );
@@ -301,19 +354,21 @@ public class SidebarCustom : SidebarBox {
       move_function( drag_index, box_index );
       return( true );
     });
+    */
 
     var add_placeholder = new Label( _( "Add New Action" ) );
     var ins_placeholder = new Label( " " );
     var placeholder_stack = new Stack();
     placeholder_stack.add_named( add_placeholder, "add" );
     placeholder_stack.add_named( ins_placeholder, "ins" );
-    var add_revealer = new Revealer();
-    add_revealer.reveal_child = false;
-    add_revealer.add( placeholder_stack );
 
-    box.pack_start( frame,        false, true, 0 );
-    box.pack_start( add_revealer, false, true, 0 );
-    box.show_all();
+    var add_revealer = new Revealer() {
+      reveal_child = false,
+      child = placeholder_stack
+    };
+
+    box.append( frame );
+    box.append( add_revealer );
 
     _lb.insert( box, index );
     _play.set_sensitive( true );
@@ -327,12 +382,31 @@ public class SidebarCustom : SidebarBox {
   }
 
   /* Adds the action menu */
-  private void show_action_menu( Box box, Button btn, Revealer break_reveal ) {
+  private void show_action_menu( Box box, MenuButton btn, Revealer break_reveal ) {
 
     var index  = get_action_index( box );
     var bpoint = _custom.breakpoint == index;
-    var mnu    = new Gtk.Menu();
 
+    var add_submenu = new GLib.Menu();
+    add_submenu.append( _( "Add Action Above" ), "custom.action_insert_new_action(0)" );
+    add_submenu.append( _( "Add Action Below" ), "custom.action_insert_new_action(1)" );
+
+    var del_submenu = new GLib.Menu();
+    del_submenu.append( _( "Remove Action" ), "custom.action_delete_action" );
+
+    var break_submenu = new GLib.Menu();
+    if( bpoint ) {
+      break_submenu.append( _( "Remove Breakpoint" ), "custom.action_breakpoint" );
+    } else {
+      break_submenu.append( _( "Set Breakpoint" ), "custom.action_breakpoint" );
+    }
+
+    var mnu = new GLib.Menu();
+    mnu.append_section( null, add_submenu );
+    mnu.append_section( null, del_submenu );
+    mnu.append_section( null, break_submenu );
+
+    /*
     var add_above = new Gtk.MenuItem.with_label( _( "Add Action Above" ) );
     add_above.activate.connect(() => {
       insert_new_action( box, 0 );
@@ -355,35 +429,27 @@ public class SidebarCustom : SidebarBox {
     breakpoint.activate.connect(() => {
       handle_breakpoint( box, breakpoint, break_reveal );
     });
+    */
 
-    mnu.add( add_above );
-    mnu.add( add_below );
-    mnu.add( new Gtk.SeparatorMenuItem() );
-    mnu.add( del );
-    mnu.add( new Gtk.SeparatorMenuItem() );
-    mnu.add( breakpoint );
-
-    mnu.show_all();
-    mnu.popup_at_widget( btn, Gravity.CENTER, Gravity.NORTH_EAST );
+    btn.menu_model = mnu;
 
   }
 
   /* Returns the index of the given action box */
   private int get_action_index( Box box ) {
 
-    var index = 0;
-    var i     = 0;
+    var i   = 0;
+    var row = _lb.get_row_at_index( i );
 
-    _lb.get_children().@foreach((w) => {
-      var row = (ListBoxRow)w;
-      var b   = (Box)row.get_children().nth_data( 0 );
+    while( row != null ) {
+      var b = (Box)row.child;
       if( b == box ) {
-        index = i;
+        return( i );
       }
-      i++;
-    });
+      row = _lb.get_row_at_index( ++i );
+    }
 
-    return( index );
+    return( -1 );
 
   }
 
@@ -392,9 +458,8 @@ public class SidebarCustom : SidebarBox {
     if( index == 0 ) {
       return( _add_revealer );
     } else {
-      var row = (ListBoxRow)_lb.get_children().nth_data( _insert_index - 1 );
-      var box = (Box)row.get_children().nth_data( 0 );
-      return( (Revealer)box.get_children().nth_data( 1 ) );
+      var row = _lb.get_row_at_index( _insert_index - 1 );
+      return( (Revealer)Utils.get_child_at_index( row.child, 1 ) );
     }
   }
 
@@ -407,7 +472,7 @@ public class SidebarCustom : SidebarBox {
     var revealer = get_revealer( _insert_index );
     revealer.reveal_child = true;
 
-    _popover.relative_to = revealer;
+    _popover.set_parent( revealer );
     _popover.popup();
 
   }
@@ -432,7 +497,7 @@ public class SidebarCustom : SidebarBox {
 
     var fn = _custom.functions.index( index );
 
-    _lb.remove( _lb.get_children().nth_data( index ) );
+    _lb.remove( _lb.get_row_at_index( index ) );
     _custom.functions.remove_index( index );
 
     if( _custom.functions.length == 0 ) {
@@ -456,6 +521,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  /* Handles a code breakpoint */
+  /*
   private void handle_breakpoint( Box box, Gtk.MenuItem menu_item, Revealer break_reveal ) {
     if( menu_item.label == _( "Set Breakpoint" ) ) {
       set_breakpoint( box );
@@ -470,6 +537,7 @@ public class SidebarCustom : SidebarBox {
       _break_reveal = null;
     }
   }
+  */
 
   /* Sets the given box as a breakpoint */
   private void set_breakpoint( Box box ) {
@@ -489,36 +557,52 @@ public class SidebarCustom : SidebarBox {
 
     _functions = new Array<Functions>();
 
-    _new_action_label = new Label( _( "Select Action..." ) );
-    _new_action_label.halign = Align.START;
+    _new_action_label = new Label( _( "Select Action..." ) ) {
+      halign = Align.START
+    };
 
     /* Create search box */
-    _search = new SearchEntry();
-    _search.placeholder_text = _( "Search Actions" );
-    _search.margin = 5;
+    _search = new SearchEntry() {
+      halign = Align.FILL,
+      hexpand = true,
+      placeholder_text = _( "Search Actions" ),
+      margin_start     = 5,
+      margin_end       = 5,
+      margin_top       = 5,
+      margin_bottom    = 5
+    };
     _search.search_changed.connect( search_functions );
 
     /* Create scrolled box */
-    _pbox = new Grid();
-    _pbox.border_width = 5;
-    var sw   = new ScrolledWindow( null, null );
-    var vp   = new Viewport( null, null );
+    _pbox = new Grid() {
+      margin_start  = 5,
+      margin_end    = 5,
+      margin_top    = 5,
+      margin_bottom = 5
+    };
+
+    var vp = new Viewport( null, null ) {
+      child = _pbox
+    };
     vp.set_size_request( width, height );
-    vp.add( _pbox );
-    sw.add( vp );
+    var sw   = new ScrolledWindow() {
+      halign = Align.FILL,
+      hexpand = true,
+      valign = Align.FILL,
+      vexpand = true,
+      child   = vp
+    };
 
     var box = new Box( Orientation.VERTICAL, 0 );
     box.set_size_request( 350, 500 );
-    box.pack_start( _search, false, true, 0 );
-    box.pack_start( sw,      true,  true, 0 );
+    box.append( _search );
+    box.append( sw );
 
-    box.show_all();
-
-    _popover = new Popover( null );
-    _popover.modal = true;
-    _popover.relative_to = _new_action_label;
-    _popover.position    = PositionType.LEFT;
-    _popover.add( box );
+    _popover = new Popover() {
+      position = PositionType.LEFT,
+      child    = box
+    };
+    _popover.set_parent( _new_action_label );
     _popover.show.connect( popover_opened );
     _popover.closed.connect( popover_closed );
 
@@ -534,17 +618,15 @@ public class SidebarCustom : SidebarBox {
     _search.text = "";
 
     /* Clear the contents */
-    _pbox.get_children().foreach((w) => {
-      _pbox.remove( w );
-    });
+    while( _pbox.get_first_child() != null ) {
+      _pbox.remove( _pbox.get_first_child() );
+    }
 
     /* Insert the new elements */
     var functions = win.functions.functions;
     for( int i=0; i<functions.length; i++ ) {
       add_popup_function( i, functions.index( i ) );
     }
-
-    _pbox.show_all();
 
   }
 
@@ -572,25 +654,29 @@ public class SidebarCustom : SidebarBox {
   /* Adds a function button to the popup box */
   public void add_popup_function( int row, TextFunction function ) {
 
-    var label = new Label( win.functions.get_category_label_for_function( function ).up() + ": " );
-    label.xalign = (float)0;
+    var label = new Label( win.functions.get_category_label_for_function( function ).up() + ": " ) {
+      xalign = 0
+    };
 
-    var lreveal = new Revealer();
-    lreveal.reveal_child = true;
-    lreveal.add( label );
+    var lreveal = new Revealer() {
+      reveal_child = true,
+      child = label
+    };
 
-    var button = new Button.with_label( function.label );
-    button.halign = Align.START;
-    button.set_relief( ReliefStyle.NONE );
+    var button = new Button.with_label( function.label ) {
+      halign = Align.START,
+      has_frame = false
+    };
     button.clicked.connect(() => {
       _undo_buffer.add_item( new UndoCustomAddItem( function, _insert_index ) );
       insert_function( function, _insert_index );
       _popover.popdown();
     });
 
-    var breveal = new Revealer();
-    breveal.reveal_child = true;
-    breveal.add( button );
+    var breveal = new Revealer() {
+      reveal_child = true,
+      child = button
+    };
 
     _pbox.attach( lreveal, 0, row );
     _pbox.attach( breveal, 1, row );
@@ -613,10 +699,12 @@ public class SidebarCustom : SidebarBox {
     var icon_name = "media-playlist-repeat-symbolic";
     var tooltip   = function.direction.is_vertical() ? _( "Switch Direction" ) : _( "Swap Order" );
 
-    var direction = new Button.from_icon_name( icon_name, IconSize.SMALL_TOOLBAR );
-    direction.halign = Align.START;
-    direction.relief = ReliefStyle.NONE;
-    direction.set_tooltip_text( tooltip );
+    var direction = new Button.from_icon_name( icon_name ) {
+      halign = Align.START,
+      has_frame = false,
+      tooltip_text = tooltip
+    };
+
     direction.clicked.connect(() => {
       switch( function.direction ) {
         case FunctionDirection.TOP_DOWN :
@@ -651,11 +739,12 @@ public class SidebarCustom : SidebarBox {
       return;
     }
 
-    var settings = new MenuButton();
-    settings.image   = new Image.from_icon_name( "open-menu-symbolic", IconSize.SMALL_TOOLBAR );
-    settings.relief  = ReliefStyle.NONE;
-    settings.popover = new Popover( null );
-    settings.set_tooltip_text( _( "Settings" ) );
+    var settings = new MenuButton() {
+      icon_name = "open-menu-symbolic",
+      has_frame = false,
+      tooltip_text = _( "Settings" ),
+      popover = new Popover()
+    };
 
     settings.popover.show.connect(() => {
       on_settings_show( settings.popover, function );
@@ -668,21 +757,23 @@ public class SidebarCustom : SidebarBox {
   /* Populates the settings popover with the list of options from the function */
   private void on_settings_show( Popover popover, TextFunction function ) {
 
-    var child = popover.get_child();
-    if( child != null ) {
-      popover.remove( child );
+    if( popover.child != null ) {
+      popover.child.destroy();
     }
 
-    var grid = new Grid();
-    grid.border_width   = 5;
-    grid.row_spacing    = 5;
-    grid.column_spacing = 5;
-    grid.column_homogeneous = false;
+    var grid = new Grid() {
+      margin_start   = 5,
+      margin_end     = 5,
+      margin_top     = 5,
+      margin_bottom  = 5,
+      row_spacing    = 5,
+      column_spacing = 5,
+      column_homogeneous = false
+    };
 
     function.add_settings( grid );
-    grid.show_all();
 
-    popover.add( grid );
+    popover.child = grid;
 
   }
 
@@ -734,14 +825,17 @@ public class SidebarCustom : SidebarBox {
     del.get_style_context().add_class( "destructive-action" );
     can.grab_focus();
 
-    if( dialog.run() == ResponseType.ACCEPT ) {
-      cleanup();
-      win.functions.remove_function( _custom );
-      win.functions.save_custom();
-      switch_stack( SwitchStackReason.DELETE, _custom );
-    }
+    dialog.response.connect((id) => {
+      if( id == ResponseType.ACCEPT ) {
+        cleanup();
+        win.functions.remove_function( _custom );
+        win.functions.save_custom();
+        switch_stack( SwitchStackReason.DELETE, _custom );
+      }
+      dialog.destroy();
+    });
 
-    dialog.close();
+    dialog.show();
 
   }
 

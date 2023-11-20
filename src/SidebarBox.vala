@@ -34,7 +34,7 @@ public class SidebarBox : Box {
   /* Constructor */
   public SidebarBox( MainWindow win, Editor editor ) {
 
-    Object( orientation: Orientation.VERTICAL, spacing: 0 );
+    Object( orientation: Orientation.VERTICAL, spacing: 10 );
 
     width = TextShine.settings.get_int( "sidebar-width" );
 
