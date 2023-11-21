@@ -116,9 +116,77 @@ public class SidebarCustom : SidebarBox {
     abox.append( _play );
 
     /* Create scrolled box */
+    var drag_source = new DragSource();
+    var drop_target = new DropTarget( Type.STRING, (DragAction.COPY | DragAction.MOVE) );
     _lb = new ListBox() {
       selection_mode = SelectionMode.NONE
     };
+    _lb.add_controller( drag_source );
+    _lb.add_controller( drop_target );
+
+    drag_source.prepare.connect((x, y) => {
+      var row = _lb.get_row_at_y( (int)y );
+      if( row != null ) {
+        _drag_box = (Box)row.child;
+        var val = new Value( typeof(string) );
+        val.set_string( _drag_box.name );
+        var content = new ContentProvider.for_value( val );
+        return( content );
+      }
+      return( null );
+    });
+    drag_source.drag_end.connect((drag) => {
+      if( (_drag_box != null) && (drag.actions == DragAction.MOVE) ) {
+        delete_action( _drag_box.name );
+      }
+      _drag_box = null;
+    });
+    /*
+    drop_target.accept.connect((drop) => {
+      return( _drag_box != null );
+    });
+    */
+    drop_target.drop.connect((val, x, y) => {
+      if( _drag_box != null ) {
+        var row = _lb.get_row_at_y( (int)y );
+        if( row != null ) {
+          var box = (Box)row.child;
+          if( box == _drag_box ) return( false );
+          var box_index  = get_action_index( box.name );
+          var drag_index = get_action_index( _drag_box.name );
+          _undo_buffer.add_item( new UndoCustomMoveItem( drag_index, box_index ) );
+          move_function( drag_index, box_index );
+          return( true );
+        }
+      }
+      return( false );
+    });
+
+    /*
+     * TODO
+    ebox.drag_begin.connect((ctx) => {
+      Allocation alloc;
+      box.get_allocation( out alloc );
+      var surface = new Cairo.ImageSurface( Cairo.Format.ARGB32, alloc.width, alloc.height );
+      var cr      = new Cairo.Context( surface );
+      box.draw( cr );
+      drag_set_icon_surface( ctx, surface );
+      _drag_box = box;
+    });
+
+    ebox.drag_end.connect((ctx) => {
+      _drag_box = null;
+    });
+
+    ebox.drag_drop.connect((ctx, x, y, time_) => {
+      if( box == _drag_box ) return( false );
+      var box_index  = get_action_index( box );
+      var drag_index = get_action_index( _drag_box );
+      _undo_buffer.add_item( new UndoCustomMoveItem( drag_index, box_index ) );
+      move_function( drag_index, box_index );
+      return( true );
+    });
+    */
 
     var vp = new Viewport( null, null ) {
       child = _lb
@@ -327,16 +395,6 @@ public class SidebarCustom : SidebarBox {
     };
     ebox.append( lbw );
 
-    var move_mask = ModifierType.BUTTON1_MASK;
-    var copy_mask = (ModifierType.BUTTON1_MASK | ModifierType.CONTROL_MASK);
-
-    /*
-     TODO
-    Gtk.drag_source_set( ebox, move_mask, entries, Gdk.DragAction.MOVE );
-    Gtk.drag_source_set( ebox, copy_mask, entries, Gdk.DragAction.COPY );
-    Gtk.drag_dest_set( ebox, DestDefaults.ALL, entries, (Gdk.DragAction.MOVE | Gdk.DragAction.COPY) );
-    */
-
     var fbox = new Box( Orientation.VERTICAL, 5 ) {
       margin_top    = 10,
       margin_bottom = 10,
@@ -506,14 +564,16 @@ public class SidebarCustom : SidebarBox {
   }
 
   private void action_delete_action( SimpleAction action, Variant? variant ) {
-
     if( variant != null ) {
-      var idx = get_action_index( variant.get_string() );
-      var fn  = _custom.functions.index( idx );
-      _undo_buffer.add_item( new UndoCustomDeleteItem( fn, idx ) );
-      delete_function( idx );
+      delete_action( variant.get_string() );
     }
+  }
 
+  private void delete_action( string box_name ) {
+    var idx = get_action_index( box_name );
+    var fn  = _custom.functions.index( idx );
+    _undo_buffer.add_item( new UndoCustomDeleteItem( fn, idx ) );
+    delete_function( idx );
   }
 
   /*
