@@ -140,6 +140,7 @@ public class InsertText : TextFunction {
       var str = variant.get_string();
       var pos = _insert.cursor_position;
       _insert.do_insert_text( str, str.length, ref pos );
+      _insert.grab_focus();
     }
   }
 
@@ -182,7 +183,7 @@ public class InsertText : TextFunction {
 
     /* Set the stage for menu actions */
     var actions = new SimpleActionGroup ();
-    actions.add_action_entries( action_entries, box );
+    actions.add_action_entries( action_entries, this );
     box.insert_action_group( "insert_text", actions );
 
   }
@@ -200,9 +201,9 @@ public class InsertText : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Grid grid ) {
+  public override void add_settings( Popover popover, Grid grid ) {
 
-    add_menubutton_setting( grid, 0, _( "Insert At" ), _insert_loc.label(), InsertLocation.LENGTH, (value) => {
+    add_menubutton_setting( popover, grid, 0, _( "Insert At" ), _insert_loc.label(), InsertLocation.LENGTH, (value) => {
       var loc = (InsertLocation)value;
       return( loc.label() );
     }, (value) => {

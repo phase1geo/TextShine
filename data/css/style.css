@@ -19,6 +19,7 @@
 @define-color textColorPrimary       @BLACK_500;
 @define-color textColorPrimaryShadow #ffe16b;
 
+/*
 .color-button radio,
 .color-button radio.checked {
   border-color: alpha (#000, 0.3);
@@ -37,6 +38,7 @@
     0 1px 0 0 alpha (@bg_highlight_color, 0.3),
     0 0 0 1px alpha (@colorAccent, 0.25);
 }
+*/
 
 list {
   background-color: @bg_color;

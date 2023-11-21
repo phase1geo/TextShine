@@ -70,16 +70,16 @@ public class RegExpr : TextFunction {
   }
 
   private void action_insert_pattern( SimpleAction action, Variant? variant ) {
-    var str = variant.get_string();
-    if( str != null ) {
+    if( variant != null ) {
+      var str = variant.get_string();
       var pos = _pattern.cursor_position;
       _pattern.do_insert_text( str, str.length, ref pos );
     }
   }
 
   private void action_insert_replace( SimpleAction action, Variant? variant ) {
-    var str = variant.get_string();
-    if( str != null ) {
+    if( variant != null ) {
+      var str = variant.get_string();
       var pos = _replace.cursor_position;
       _replace.do_insert_text( str, str.length, ref pos );
     }
@@ -247,12 +247,12 @@ public class RegExpr : TextFunction {
     add_pattern( submenu, _( "Date" ),         """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
     add_pattern( submenu, _( "Phone Number" ), """\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}""" );
     add_submenu( submenu, _( "HTML/XML Tags" ), out tags );
-    add_pattern( tags, _( "Specific Start Tag" ), """<TAG(\s+\w+=("[^"]*"|'[^']*'))*\s*>""" );
+    add_pattern( tags, _( "Specific Start Tag" ), """<TAG(\s+\w+=("[^"]*"|\'[^\']*\'))*\s*>""" );
     add_pattern( tags, _( "Specific End Tag" ),   """</TAG\s*>""" );
-    add_pattern( tags, _( "Specific Tag" ),       """</?TAG(\s+\w+=("[^"]*"|'[^']*'))*\s*>""" );
-    add_pattern( tags, _( "Any Start Tag" ),      """<(\w+)(\s+\w+=("[^"]*"|'[^']*'))*\s*>""" );
+    add_pattern( tags, _( "Specific Tag" ),       """</?TAG(\s+\w+=("[^"]*"|\'[^\']*\'))*\s*>""" );
+    add_pattern( tags, _( "Any Start Tag" ),      """<(\w+)(\s+\w+=("[^"]*"|\'[^\']*\'))*\s*>""" );
     add_pattern( tags, _( "Any End Tag" ),        """</(\w+)\s*>""" );
-    add_pattern( tags, _( "Any Tag" ),            """<("[^"]*"|'[^']*'|[^'">])*>""" );
+    add_pattern( tags, _( "Any Tag" ),            """<("[^"]*"|\'[^\']*\'|[^\'">])*>""" );
   }
 
   private void add_replace( GLib.Menu mnu, string lbl, string pattern ) {

@@ -43,6 +43,13 @@ public class SidebarCustom : SidebarBox {
   private UndoCustomBuffer _undo_buffer;
   private Button           _undo;
   private Button           _redo;
+  private int              _next_box_id = 0;
+
+  private const GLib.ActionEntry action_entries[] = {
+    { "action_insert_new_action", action_insert_new_action, "s" },
+    { "action_delete_action", action_delete_action, "s" },
+    { "action_breakpoint", action_breakpoint, "s" },
+  };
 
   /*
    * TODO
@@ -69,7 +76,10 @@ public class SidebarCustom : SidebarBox {
       hexpand = true
     };
 
-    var nbox = new Box( Orientation.HORIZONTAL, 5 );
+    var nbox = new Box( Orientation.HORIZONTAL, 5 ) {
+      margin_start = 5,
+      margin_end   = 5
+    };
     nbox.append( nlbl );
     nbox.append( _name );
 
@@ -84,6 +94,7 @@ public class SidebarCustom : SidebarBox {
 
     _redo = new Button.from_icon_name( "edit-redo-symbolic" ) {
       halign    = Align.START,
+      hexpand   = true,
       has_frame = false,
       sensitive = false
     };
@@ -115,6 +126,8 @@ public class SidebarCustom : SidebarBox {
     vp.set_size_request( width, height );
 
     var sw = new ScrolledWindow() {
+      valign = Align.FILL,
+      vexpand = true,
       child = vp
     };
 
@@ -122,7 +135,7 @@ public class SidebarCustom : SidebarBox {
       has_frame = false
     };
     add.clicked.connect(() => {
-      insert_new_action( null, 0 );
+      insert_new_action( 0 );
     });
 
     var ins = new Label( " " );
@@ -153,7 +166,12 @@ public class SidebarCustom : SidebarBox {
       child = del
     };
 
-    var bbox = new Box( Orientation.HORIZONTAL, 5 );
+    var bbox = new Box( Orientation.HORIZONTAL, 5 ) {
+      margin_start  = 5,
+      margin_end    = 5,
+      margin_top    = 5,
+      margin_bottom = 5
+    };
     bbox.append( _delete_reveal );
     bbox.append( done );
 
@@ -165,6 +183,11 @@ public class SidebarCustom : SidebarBox {
 
     /* Create the action insertion popover */
     create_popover();
+
+    /* Add the menu actions */
+    var actions = new SimpleActionGroup();
+    actions.add_action_entries( action_entries, this );
+    insert_action_group( "custom", actions );
 
   }
 
@@ -229,6 +252,8 @@ public class SidebarCustom : SidebarBox {
       row = _lb.get_row_at_index( 0 );
     }
 
+    _next_box_id = 0;
+
   }
 
   /* Inserts the current custom actions */
@@ -243,7 +268,9 @@ public class SidebarCustom : SidebarBox {
   /* Adds a function button to the given category item box */
   public Box add_function( TextFunction function, int index = -1 ) {
 
-    var box = new Box( Orientation.VERTICAL, 0 );
+    var box = new Box( Orientation.VERTICAL, 0 ) {
+      name = "fbox%d".printf( _next_box_id++ )
+    };
 
     var label = new Label( Utils.make_title( function.label ) ) {
       halign = Align.START,
@@ -273,9 +300,7 @@ public class SidebarCustom : SidebarBox {
       halign = Align.END,
       has_frame = false
     };
-    more.activate.connect(() => {
-      show_action_menu( box, more, break_reveal );
-    });
+    show_action_menu( box, more );
 
     var lbox = new Box( Orientation.HORIZONTAL, 5 ) {
       halign = Align.START,
@@ -289,19 +314,18 @@ public class SidebarCustom : SidebarBox {
     lbbox.append( more );
     lbbox.append( break_reveal );
 
-    var ebox = new Overlay() {
-      valign = Align.FILL
-    };
+    var lbw = new Box( Orientation.VERTICAL, 5 );
+    lbw.append( lbbox );
 
     var wbox = function.get_widget( editor );
     if( wbox != null ) {
-      var lbw = new Box( Orientation.VERTICAL, 5 );
-      lbw.append( lbbox );
       lbw.append( wbox );
-      ebox.child = lbw;
-    } else {
-      ebox.child = lbbox;
     }
+
+    var ebox = new Box( Orientation.HORIZONTAL, 0 ) {
+      valign = Align.FILL
+    };
+    ebox.append( lbw );
 
     var move_mask = ModifierType.BUTTON1_MASK;
     var copy_mask = (ModifierType.BUTTON1_MASK | ModifierType.CONTROL_MASK);
@@ -382,23 +406,26 @@ public class SidebarCustom : SidebarBox {
   }
 
   /* Adds the action menu */
-  private void show_action_menu( Box box, MenuButton btn, Revealer break_reveal ) {
+  private void show_action_menu( Box box, MenuButton btn ) {
 
-    var index  = get_action_index( box );
+    var index  = get_action_index( box.name );
     var bpoint = _custom.breakpoint == index;
+    var var0   = new Variant( "(ss)", box.name, 0.to_string() );
+    var var1   = new Variant( "(ss)", box.name, 1.to_string() );
+    var bvar   = new Variant( "(ss)", box.name, bpoint.to_string() );
 
     var add_submenu = new GLib.Menu();
-    add_submenu.append( _( "Add Action Above" ), "custom.action_insert_new_action(0)" );
-    add_submenu.append( _( "Add Action Below" ), "custom.action_insert_new_action(1)" );
+    add_submenu.append( _( "Add Action Above" ), "custom.action_insert_new_action(\"%s\")".printf( var0.print( true ) ) );
+    add_submenu.append( _( "Add Action Below" ), "custom.action_insert_new_action(\"%s\")".printf( var1.print( true ) ) );
 
     var del_submenu = new GLib.Menu();
-    del_submenu.append( _( "Remove Action" ), "custom.action_delete_action" );
+    del_submenu.append( _( "Remove Action" ), "custom.action_delete_action('%s')".printf( box.name ) );
 
     var break_submenu = new GLib.Menu();
     if( bpoint ) {
-      break_submenu.append( _( "Remove Breakpoint" ), "custom.action_breakpoint" );
+      break_submenu.append( _( "Remove Breakpoint" ), "custom.action_breakpoint(\"%s\")".printf( bvar.print( true ) ) );
     } else {
-      break_submenu.append( _( "Set Breakpoint" ), "custom.action_breakpoint" );
+      break_submenu.append( _( "Set Breakpoint" ), "custom.action_breakpoint(\"%s\")".printf( bvar.print( true ) ) );
     }
 
     var mnu = new GLib.Menu();
@@ -406,44 +433,18 @@ public class SidebarCustom : SidebarBox {
     mnu.append_section( null, del_submenu );
     mnu.append_section( null, break_submenu );
 
-    /*
-    var add_above = new Gtk.MenuItem.with_label( _( "Add Action Above" ) );
-    add_above.activate.connect(() => {
-      insert_new_action( box, 0 );
-    });
-
-    var add_below = new Gtk.MenuItem.with_label( _( "Add Action Below" ) );
-    add_below.activate.connect(() => {
-      insert_new_action( box, 1 );
-    });
-
-    var del = new Gtk.MenuItem.with_label( _( "Remove Action" ) );
-    del.activate.connect(() => {
-      var idx = get_action_index( box );
-      var fn  = _custom.functions.index( idx );
-      _undo_buffer.add_item( new UndoCustomDeleteItem( fn, idx ) );
-      delete_function( idx );
-    });
-
-    var breakpoint = new Gtk.MenuItem.with_label( bpoint ? _( "Remove Breakpoint" ) : _( "Set Breakpoint" ) );
-    breakpoint.activate.connect(() => {
-      handle_breakpoint( box, breakpoint, break_reveal );
-    });
-    */
-
     btn.menu_model = mnu;
 
   }
 
   /* Returns the index of the given action box */
-  private int get_action_index( Box box ) {
+  private int get_action_index( string name ) {
 
     var i   = 0;
     var row = _lb.get_row_at_index( i );
 
     while( row != null ) {
-      var b = (Box)row.child;
-      if( b == box ) {
+      if( row.child.name == name ) {
         return( i );
       }
       row = _lb.get_row_at_index( ++i );
@@ -464,16 +465,54 @@ public class SidebarCustom : SidebarBox {
   }
 
   /* Inserts the new action label in the given position */
-  private void insert_new_action( Box? box, int add_to_index ) {
+  private void action_insert_new_action( SimpleAction action, Variant? variant ) {  // Box? box, int add_to_index ) {
 
-    /* Figure out what index we are going to insert at */
-    _insert_index = (box == null) ? 0 : (get_action_index( box ) + add_to_index);
+    if( variant != null ) {
+
+      string? box_name = null;
+      string? add_to_index = null;
+      Variant v;
+
+      try {
+        v = Variant.parse( null, variant.get_string() );
+      } catch( VariantParseError e ) {
+        return;
+      }
+
+      var iter = v.iterator();
+      iter.next( "s", out box_name );
+      iter.next( "s", out add_to_index );
+
+      if( (box_name != null) && (add_to_index != null) ) {
+        var index = get_action_index( box_name );
+        insert_new_action( (index == -1) ? -1 : (index + int.parse( add_to_index )) );
+      }
+
+    }
+
+  }
+
+  private void insert_new_action( int index ) {
+
+    _insert_index = (index == -1) ? 0 : index;
 
     var revealer = get_revealer( _insert_index );
     revealer.reveal_child = true;
 
+    _popover.unparent();
     _popover.set_parent( revealer );
     _popover.popup();
+
+  }
+
+  private void action_delete_action( SimpleAction action, Variant? variant ) {
+
+    if( variant != null ) {
+      var idx = get_action_index( variant.get_string() );
+      var fn  = _custom.functions.index( idx );
+      _undo_buffer.add_item( new UndoCustomDeleteItem( fn, idx ) );
+      delete_function( idx );
+    }
 
   }
 
@@ -522,26 +561,58 @@ public class SidebarCustom : SidebarBox {
   }
 
   /* Handles a code breakpoint */
-  /*
-  private void handle_breakpoint( Box box, Gtk.MenuItem menu_item, Revealer break_reveal ) {
-    if( menu_item.label == _( "Set Breakpoint" ) ) {
-      set_breakpoint( box );
-      break_reveal.reveal_child = true;
-      if( _break_reveal != null ) {
-        _break_reveal.reveal_child = false;
+  private void action_breakpoint( SimpleAction action, Variant? variant ) {
+
+    if( variant != null ) {
+
+      string? box_name   = null;
+      string? bpoint_str = null;
+      Variant v;
+
+      try {
+        v = Variant.parse( null, variant.get_string() );
+      } catch( VariantParseError e ) {
+        return;
       }
-      _break_reveal = break_reveal;
-    } else {
-      clear_breakpoint();
-      _break_reveal.reveal_child = false;
-      _break_reveal = null;
+
+      var iter = v.iterator();
+      iter.next( "s", out box_name );
+      iter.next( "s", out bpoint_str );
+
+      if( (box_name != null) && (bpoint_str != null) ) {
+
+        var bpoint       = bool.parse( bpoint_str );
+        var row          = _lb.get_row_at_index( get_action_index( box_name ) );
+        var box          = (Box)row.child;
+        var frame        = (Frame)Utils.get_child_at_index( box, 0 );
+        var fbox         = (Box)frame.child;
+        var ebox         = (Box)Utils.get_child_at_index( fbox, 0 );
+        var lbw          = (Box)Utils.get_child_at_index( ebox, 0 );
+        var lbbox        = (Box)Utils.get_child_at_index( lbw, 0 );
+        var break_reveal = (Revealer)Utils.get_child_at_index( lbbox, 2 );
+
+        if( bpoint ) {
+          set_breakpoint( box );
+          break_reveal.reveal_child = true;
+          if( _break_reveal != null ) {
+            _break_reveal.reveal_child = false;
+          }
+          _break_reveal = break_reveal;
+        } else {
+          clear_breakpoint();
+          _break_reveal.reveal_child = false;
+          _break_reveal = null;
+        }
+
+      }
+
     }
+
   }
-  */
 
   /* Sets the given box as a breakpoint */
   private void set_breakpoint( Box box ) {
-    _custom.breakpoint = get_action_index( box );
+    _custom.breakpoint = get_action_index( box.name );
   }
 
   /* Clears the breakpoint */
@@ -600,6 +671,7 @@ public class SidebarCustom : SidebarBox {
 
     _popover = new Popover() {
       position = PositionType.LEFT,
+      autohide = true,
       child    = box
     };
     _popover.set_parent( _new_action_label );
@@ -658,11 +730,6 @@ public class SidebarCustom : SidebarBox {
       xalign = 0
     };
 
-    var lreveal = new Revealer() {
-      reveal_child = true,
-      child = label
-    };
-
     var button = new Button.with_label( function.label ) {
       halign = Align.START,
       has_frame = false
@@ -673,16 +740,11 @@ public class SidebarCustom : SidebarBox {
       _popover.popdown();
     });
 
-    var breveal = new Revealer() {
-      reveal_child = true,
-      child = button
-    };
-
-    _pbox.attach( lreveal, 0, row );
-    _pbox.attach( breveal, 1, row );
+    _pbox.attach( label, 0, row );
+    _pbox.attach( button, 1, row );
 
     /* Add the function so that we can hide it while searching */
-    _functions.append_val( new Functions( function, null, lreveal, breveal ) );
+    _functions.append_val( new Functions( function, null, label, button ) );
 
   }
 
@@ -743,7 +805,9 @@ public class SidebarCustom : SidebarBox {
       icon_name = "open-menu-symbolic",
       has_frame = false,
       tooltip_text = _( "Settings" ),
-      popover = new Popover()
+      popover = new Popover() {
+        autohide = true
+      }
     };
 
     settings.popover.show.connect(() => {
@@ -771,7 +835,7 @@ public class SidebarCustom : SidebarBox {
       column_homogeneous = false
     };
 
-    function.add_settings( grid );
+    function.add_settings( popover, grid );
 
     popover.child = grid;
 

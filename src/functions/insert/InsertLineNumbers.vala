@@ -83,7 +83,7 @@ public class InsertLineNumbers : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Grid grid ) {
+  public override void add_settings( Popover popover, Grid grid ) {
 
     add_string_setting( grid, 0, _( "Separator" ), _separator, (value) => {
       _separator = value;

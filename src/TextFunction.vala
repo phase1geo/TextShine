@@ -294,7 +294,7 @@ public class TextFunction {
   }
 
   /* Populates the given popover with the text function settings widgets */
-  public virtual void add_settings( Grid grid ) {
+  public virtual void add_settings( Popover popover, Grid grid ) {
     // By default, we will do nothing
   }
 
@@ -381,7 +381,7 @@ public class TextFunction {
   }
 
   /* Called whenever a menubutton setting widget needs to be added */
-  protected void add_menubutton_setting( Grid grid, int row, string label, string init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
+  protected void add_menubutton_setting( Popover popover, Grid grid, int row, string label, string init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
 
     var lbl = new Label( label + ": " ) {
       halign = Align.START
@@ -400,6 +400,10 @@ public class TextFunction {
       } else {
         settings_changed();
       }
+      Idle.add(() => {
+        popover.autohide = true;
+        return( false );
+      });
     });
 
     grid.attach( lbl, 0, row );

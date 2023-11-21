@@ -61,7 +61,7 @@ public class SidebarFunctions : SidebarBox {
 
     /* Create search entry */
     _search = new SearchEntry() {
-      halign = Align.START,
+      halign = Align.FILL,
       hexpand = true,
       placeholder_text = _( "Search Actions" )
     };
@@ -77,6 +77,9 @@ public class SidebarFunctions : SidebarBox {
     });
 
     var tbox = new Box( Orientation.HORIZONTAL, 5 ) {
+      margin_end    = 5,
+      margin_top    = 5,
+      margin_bottom = 5,
       halign = Align.FILL,
       hexpand = true
     };
@@ -91,11 +94,9 @@ public class SidebarFunctions : SidebarBox {
     vp.set_size_request( width, height );
 
     var sw = new ScrolledWindow() {
-      halign = Align.FILL,
-      hexpand = true,
-      valign = Align.FILL,
+      valign  = Align.FILL,
       vexpand = true,
-      child = vp
+      child   = vp
     };
 
     /* Add widgets to box */
@@ -183,7 +184,12 @@ public class SidebarFunctions : SidebarBox {
   /* Adds a function button to the given category item box */
   public void add_function( string category, Box box, Expander? exp, TextFunction function ) {
 
-    var fbox = new Box( Orientation.HORIZONTAL, 5 );
+    var fbox = new Box( Orientation.HORIZONTAL, 5 ) {
+      margin_start  = 5,
+      margin_end    = 5,
+      margin_top    = 5,
+      margin_bottom = 5
+    };
 
     var button = new Button.with_label( function.label ) {
       halign = Align.START,
@@ -225,19 +231,10 @@ public class SidebarFunctions : SidebarBox {
     fbox.append( button );
     fbox.append( grid );
 
-    var revealer = new Revealer() {
-      margin_start  = 5,
-      margin_end    = 5,
-      margin_top    = 5,
-      margin_bottom = 5,
-      reveal_child  = true,
-      child = fbox
-    };
-
-    box.append( revealer );
+    box.append( fbox );
 
     if( exp != null ) {
-      _functions.append_val( new Functions( function, fav, revealer, null, exp ) );
+      _functions.append_val( new Functions( function, fav, fbox, null, exp ) );
       function.update_button_label.connect(() => {
         button.label = function.label;
       });
@@ -449,15 +446,19 @@ public class SidebarFunctions : SidebarBox {
       return;
     }
 
+    var popup = new Popover() {
+      autohide = true
+    };
+
     var settings = new MenuButton() {
       icon_name = "open-menu-symbolic",
       has_frame = false,
-      popover   = new Popover(),
+      popover   = popup,
       tooltip_text = _( "Settings" )
     };
 
-    settings.popover.show.connect(() => {
-      on_settings_show( settings.popover, function );
+    popup.show.connect(() => {
+      on_settings_show( popup, function );
     });
 
     grid.attach( settings, 1, 0 );
@@ -481,7 +482,7 @@ public class SidebarFunctions : SidebarBox {
       column_homogeneous = false
     };
 
-    function.add_settings( grid );
+    function.add_settings( popover, grid );
 
     popover.child = grid;
 

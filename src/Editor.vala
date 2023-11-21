@@ -115,6 +115,8 @@ public class Editor : GtkSource.View {
       undo_item.add_edit( false, start.get_offset(), start.get_text( end ) );
     });
 
+    extra_menu = new GLib.Menu();
+
     /* Connect spell checker */
     connect_spell_checker();
 
@@ -315,50 +317,45 @@ public class Editor : GtkSource.View {
     buffer.remove_tag_by_name( "selected", start, end );
   }
 
+  public void set_spellchecker() {
+    if( TextShine.settings.get_boolean( "enable-spell-checking" ) ) {
+      _spell.attach( this );
+    } else {
+      _spell.detach();
+    }
+  }
+
+  private void populate_extra_menu() {
+    extra_menu = new GLib.Menu();
+  }
+
   private void connect_spell_checker() {
 
-    _lang_dict = TextShine.settings.get_string( "spell-language" );
-    _spell     = new SpellChecker();
+    _spell = new SpellChecker();
+    _spell.populate_extra_menu.connect( populate_extra_menu );
 
-    try {
-      var lang_exists = false;
-      var lang_list   = new Gee.ArrayList<string>();
-      _spell.get_language_list( lang_list );
-      foreach( var elem in lang_list ) {
-        if( _lang_dict == elem ) {
-          lang_exists = true;
-          _spell.set_language( _lang_dict );
-          break;
-        }
-      }
-      if( lang_list.size == 0 ) {
-        _spell.set_language( null );
-      } else if( !lang_exists ) {
-        _lang_dict = lang_list.first();
-        _spell.set_language( _lang_dict );
-      }
-    } catch( Error e ) {
-      warning( e.message );
-    }
+    var lang_exists = false;
+    var lang      = Environment.get_variable( "LANGUAGE" );
+    var lang_list = new Gee.ArrayList<string>();
+    _spell.get_language_list( lang_list );
 
-    _spell.language_changed.connect((lang_dict) => {
-      _lang_dict = lang_dict;
+    lang_list.foreach((elem) => {
+      if( elem == lang ) {
+        _spell.set_language( lang );
+        lang_exists = true;
+        return( false );
+      }
+      return( true );
     });
 
-    if( TextShine.settings.get_boolean( "enable-spell-checking" ) ) {
-      activate_spell_checking();
+    if( lang_list.size == 0 ) {
+      _spell.set_language( null );
+    } else if( !lang_exists ) {
+      _spell.set_language( lang_list.get( 0 ) );
     }
 
-  }
+    set_spellchecker();
 
-  /* Enables the spell checker */
-  public void activate_spell_checking() {
-    _spell.attach( this );
-  }
-
-  /* Disables the spell checker */
-  public void deactivate_spell_checking() {
-    _spell.detach();
   }
 
 }

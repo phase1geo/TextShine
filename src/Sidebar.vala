@@ -26,8 +26,8 @@ using Gee;
 public class Functions {
   private TextFunction _func;
   private Button?      _favorite;
-  private Revealer     _revealer1;
-  private Revealer     _revealer2;
+  private Widget       _widget1;
+  private Widget?      _widget2;
   private Expander?    _exp;
   public TextFunction func {
     get {
@@ -35,18 +35,25 @@ public class Functions {
     }
   }
   public delegate void UpdateButtonStateFunc( Button btn );
-  public Functions( TextFunction func, Button? favorite, Revealer revealer1, Revealer? revealer2 = null, Expander? exp = null ) {
-    _func      = func;
-    _favorite  = favorite;
-    _revealer1 = revealer1;
-    _revealer2 = revealer2;
-    _exp       = exp;
+  public Functions( TextFunction func, Button? favorite, Widget widget1, Widget? widget2 = null, Expander? exp = null ) {
+    _func     = func;
+    _favorite = favorite;
+    _widget1  = widget1;
+    _widget2  = widget2;
+    _exp      = exp;
   }
   public void reveal( string value ) {
     var contains = _func.label.down().contains( value );
-    _revealer1.reveal_child = contains;
-    if( _revealer2 != null ) {
-      _revealer2.reveal_child = contains;
+    if( contains ) {
+      _widget1.show();
+      if( _widget2 != null ) {
+        _widget2.show();
+      }
+    } else {
+      _widget1.hide();
+      if( _widget2 != null ) {
+        _widget2.hide();
+      }
     }
     if( (_exp != null) && contains ) {
       _exp.expanded = true;

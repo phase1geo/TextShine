@@ -267,7 +267,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   private MenuButton add_stats_button() {
 
     var stats_btn = new MenuButton() {
-      icon_name = get_icon_name( "org.gnome.PowerStats" ),
+      icon_name = "org.gnome.PowerStats",
       tooltip_markup = _( "Statistics" )
     };
 
@@ -338,6 +338,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     /* Create the popover and associate it with the menu button */
     stats_btn.popover = new Popover() {
+      autohide = true,
       child = grid
     };
 
@@ -366,7 +367,12 @@ public class MainWindow : Gtk.ApplicationWindow {
   /* Adds the property button and associated popover */
   private MenuButton add_properties_button() {
 
-    var box = new Box( Orientation.VERTICAL, 10 );
+    var box = new Box( Orientation.VERTICAL, 10 ) {
+      margin_start  = 10,
+      margin_end    = 10,
+      margin_top    = 10,
+      margin_bottom = 10
+    };
 
     /* Add the properties items */
     box.append( create_font_selection() );
@@ -374,13 +380,14 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     /* Create the popover and associate it with the menu button */
     var prop_popover = new Popover() {
+      autohide = true,
       child = box
     };
 
     _prop_btn = new MenuButton() {
-      icon_name = get_icon_name( "open-menu" ),
+      icon_name    = get_icon_name( "open-menu" ),
       tooltip_text = _( "Properties" ),
-      child = prop_popover
+      popover      = prop_popover
     };
 
     _prop_btn.activate.connect( properties_clicked );
@@ -433,7 +440,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   private Box create_spell_checker() {
 
-    var lbl = new Label( _( "Enable Spell Checker" ) ) {
+    var lbl = new Label( _( "Enable Spell Checker:" ) ) {
       halign = Align.START,
       hexpand = true
     };
@@ -445,12 +452,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     };
 
     sw.state_set.connect((state) => {
-      if( state ) {
-        _editor.activate_spell_checking();
-      } else {
-        _editor.deactivate_spell_checking();
-      }
       TextShine.settings.set_boolean( "enable-spell-checking", state );
+      _editor.set_spellchecker();
       return( true );
     });
 

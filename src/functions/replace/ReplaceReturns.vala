@@ -65,7 +65,7 @@ public class ReplaceReturns : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Grid grid ) {
+  public override void add_settings( Popover popover, Grid grid ) {
 
     add_range_setting( grid, 0, _( "Returns" ), 2, 20, 1, _returns, (value) => {
       _returns = value;
