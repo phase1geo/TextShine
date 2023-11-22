@@ -90,9 +90,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     /* Handle any changes to the dark mode preference setting */
     handle_prefer_dark_changes();
 
-    /* Position the window size and position */
-    position_window();
-
     /* Create the header */
     create_header();
 
@@ -185,27 +182,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     });
   }
 
-  /* Positions the window based on the settings */
-  private void position_window() {
-
-    /*
-     * TODO - I don't think this code will port over
-    var window_x = TextShine.settings.get_int( "window-x" );
-    var window_y = TextShine.settings.get_int( "window-y" );
-    var window_w = TextShine.settings.get_int( "window-w" );
-    var window_h = TextShine.settings.get_int( "window-h" );
-
-    // Set the main window data
-    if( (window_x == -1) && (window_y == -1) ) {
-      set_position( Gtk.WindowPosition.CENTER );
-    } else {
-      move( window_x, window_y );
-    }
-    set_default_size( window_w, window_h );
-    */
-
-  }
-
   /* Returns the name of the icon to use based on if we are running elementary */
   private string get_icon_name( string icon_name ) {
     return "%s%s".printf( icon_name, (on_elementary ? "" : "-symbolic") );
@@ -271,7 +247,10 @@ public class MainWindow : Gtk.ApplicationWindow {
       tooltip_markup = _( "Statistics" )
     };
 
-    stats_btn.activate.connect( stats_clicked );
+    stats_btn.notify["active"].connect( stats_clicked );
+    stats_btn.notify.connect((s, p) => {
+      stdout.printf("stats_btn property '%s' has changed!\n", p.name);
+    });
 
     var grid = new Grid() {
       margin_start   = 10,
@@ -341,6 +320,12 @@ public class MainWindow : Gtk.ApplicationWindow {
       autohide = true,
       child = grid
     };
+
+    stats_btn.popover.notify["visible"].connect((s, p) => {
+      if( stats_btn.popover.visible ) {
+        stats_clicked();
+      }
+    });
 
     return( stats_btn );
 
@@ -599,7 +584,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   private void save_new_custom( CustomFunction function ) {
     var fn = function.copy( false );
-    // TBD - _sidebar.add_custom_function( (CustomFunction)fn );
     functions.add_function( "custom", fn );
     functions.save_custom();
   }

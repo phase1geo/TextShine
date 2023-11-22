@@ -43,7 +43,6 @@ public class SpellChecker {
   };
 
   public signal void populate_extra_menu();
-  public signal void language_changed( string dict );  // TODO - Need to call this from somewhere
 
   /* Default constructor */
   public SpellChecker() {

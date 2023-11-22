@@ -51,13 +51,6 @@ public class SidebarCustom : SidebarBox {
     { "action_breakpoint", action_breakpoint, "s" },
   };
 
-  /*
-   * TODO
-  static TargetEntry[] entries = {
-    { "TEXTSHINE_CUSTOM_ROW", TargetFlags.SAME_APP, 0 }
-  };
-  */
-
   /* Constructor */
   public SidebarCustom( MainWindow win, Editor editor ) {
 
@@ -141,11 +134,9 @@ public class SidebarCustom : SidebarBox {
       }
       _drag_box = null;
     });
-    /*
     drop_target.accept.connect((drop) => {
       return( _drag_box != null );
     });
-    */
     drop_target.drop.connect((val, x, y) => {
       if( _drag_box != null ) {
         var row = _lb.get_row_at_y( (int)y );
@@ -161,32 +152,6 @@ public class SidebarCustom : SidebarBox {
       }
       return( false );
     });
-
-    /*
-     * TODO
-    ebox.drag_begin.connect((ctx) => {
-      Allocation alloc;
-      box.get_allocation( out alloc );
-      var surface = new Cairo.ImageSurface( Cairo.Format.ARGB32, alloc.width, alloc.height );
-      var cr      = new Cairo.Context( surface );
-      box.draw( cr );
-      drag_set_icon_surface( ctx, surface );
-      _drag_box = box;
-    });
-
-    ebox.drag_end.connect((ctx) => {
-      _drag_box = null;
-    });
-
-    ebox.drag_drop.connect((ctx, x, y, time_) => {
-      if( box == _drag_box ) return( false );
-      var box_index  = get_action_index( box );
-      var drag_index = get_action_index( _drag_box );
-      _undo_buffer.add_item( new UndoCustomMoveItem( drag_index, box_index ) );
-      move_function( drag_index, box_index );
-      return( true );
-    });
-    */
 
     var vp = new Viewport( null, null ) {
       child = _lb
@@ -390,53 +355,21 @@ public class SidebarCustom : SidebarBox {
       lbw.append( wbox );
     }
 
-    var ebox = new Box( Orientation.HORIZONTAL, 0 ) {
-      valign = Align.FILL
-    };
-    ebox.append( lbw );
-
     var fbox = new Box( Orientation.VERTICAL, 5 ) {
       margin_top    = 10,
       margin_bottom = 10,
       margin_start  = 5,
       margin_end    = 5
     };
-    fbox.append( ebox );
+    fbox.append( lbw );
 
     var frame = new Frame( null ) {
-      // TODO? - frame.shadow_type = ShadowType.ETCHED_OUT;
       margin_start  = 4,
       margin_end    = 4,
       margin_top    = 4,
       margin_bottom = 4,
       child = fbox
     };
-
-    /*
-     * TODO
-    ebox.drag_begin.connect((ctx) => {
-      Allocation alloc;
-      box.get_allocation( out alloc );
-      var surface = new Cairo.ImageSurface( Cairo.Format.ARGB32, alloc.width, alloc.height );
-      var cr      = new Cairo.Context( surface );
-      box.draw( cr );
-      drag_set_icon_surface( ctx, surface );
-      _drag_box = box;
-    });
-
-    ebox.drag_end.connect((ctx) => {
-      _drag_box = null;
-    });
-
-    ebox.drag_drop.connect((ctx, x, y, time_) => {
-      if( box == _drag_box ) return( false );
-      var box_index  = get_action_index( box );
-      var drag_index = get_action_index( _drag_box );
-      _undo_buffer.add_item( new UndoCustomMoveItem( drag_index, box_index ) );
-      move_function( drag_index, box_index );
-      return( true );
-    });
-    */
 
     var add_placeholder = new Label( _( "Add New Action" ) );
     var ins_placeholder = new Label( " " );
@@ -646,8 +579,7 @@ public class SidebarCustom : SidebarBox {
         var box          = (Box)row.child;
         var frame        = (Frame)Utils.get_child_at_index( box, 0 );
         var fbox         = (Box)frame.child;
-        var ebox         = (Box)Utils.get_child_at_index( fbox, 0 );
-        var lbw          = (Box)Utils.get_child_at_index( ebox, 0 );
+        var lbw          = (Box)Utils.get_child_at_index( fbox, 0 );
         var lbbox        = (Box)Utils.get_child_at_index( lbw, 0 );
         var break_reveal = (Revealer)Utils.get_child_at_index( lbbox, 2 );
 

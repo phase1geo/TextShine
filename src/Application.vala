@@ -64,22 +64,6 @@ public class TextShine : Gtk.Application {
       appwin.do_paste_over();
     }
 
-    /* Handle any changes to the position of the window */
-    /*
-     * TODO - I don't think this translates
-    appwin.configure_event.connect(() => {
-      int root_x, root_y;
-      int size_w, size_h;
-      appwin.get_position( out root_x, out root_y );
-      appwin.get_size( out size_w, out size_h );
-      settings.set_int( "window-x", root_x );
-      settings.set_int( "window-y", root_y );
-      settings.set_int( "window-w", size_w );
-      settings.set_int( "window-h", size_h );
-      return( false );
-    });
-    */
-
   }
 
   /* Called whenever files need to be opened */
