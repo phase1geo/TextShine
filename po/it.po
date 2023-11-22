@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-22 02:20-0600\n"
+"POT-Creation-Date: 2023-11-22 02:58-0600\n"
 "PO-Revision-Date: 2021-04-25 13:50-0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -200,12 +200,12 @@ msgstr "Inserisci file di testo"
 msgid "Insert File"
 msgstr "Inserisci File"
 
-#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:480
+#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:475
 msgid "Open"
 msgstr "Apri"
 
-#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:480
-#: src/MainWindow.vala:518 src/SidebarCustom.vala:879
+#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:475
+#: src/MainWindow.vala:513 src/SidebarCustom.vala:849
 msgid "Cancel"
 msgstr "Cancella"
 
@@ -694,11 +694,11 @@ msgstr "Inverti caratteri"
 msgid "New Workspace"
 msgstr "Nuovo spazio di lavoro"
 
-#: src/MainWindow.vala:203 src/MainWindow.vala:480
+#: src/MainWindow.vala:203 src/MainWindow.vala:475
 msgid "Open File"
 msgstr "Apri File"
 
-#: src/MainWindow.vala:208 src/MainWindow.vala:518
+#: src/MainWindow.vala:208 src/MainWindow.vala:513
 msgid "Save File"
 msgstr "Salva File"
 
@@ -726,123 +726,119 @@ msgstr "TextShine"
 msgid "Statistics"
 msgstr "Statistiche"
 
-#: src/MainWindow.vala:266
+#: src/MainWindow.vala:261
 msgid "<b>Text Statistics</b>"
 msgstr "<b>Statistiche di Testo</b>"
 
-#: src/MainWindow.vala:271
+#: src/MainWindow.vala:266
 msgid "Characters:"
 msgstr "Caratteri:"
 
-#: src/MainWindow.vala:278
+#: src/MainWindow.vala:273
 msgid "Words:"
 msgstr "Parole:"
 
-#: src/MainWindow.vala:285
+#: src/MainWindow.vala:280
 msgid "Lines:"
 msgstr "Linee:"
 
-#: src/MainWindow.vala:292
+#: src/MainWindow.vala:287
 msgid "Matches:"
 msgstr "Corrispondenze:"
 
-#: src/MainWindow.vala:299
+#: src/MainWindow.vala:294
 msgid "Spelling Errors:"
 msgstr ""
 
-#: src/MainWindow.vala:374
+#: src/MainWindow.vala:369
 msgid "Properties"
 msgstr "Proprietà"
 
-#: src/MainWindow.vala:387
+#: src/MainWindow.vala:382
 msgid "Font:"
 msgstr "Font:"
 
-#: src/MainWindow.vala:428
+#: src/MainWindow.vala:423
 msgid "Enable Spell Checker:"
 msgstr ""
 
-#: src/MainWindow.vala:518
+#: src/MainWindow.vala:513
 msgid "Save"
 msgstr "Salva"
 
-#: src/SidebarCustom.vala:63
+#: src/SidebarCustom.vala:62
 msgid "Name:"
 msgstr ""
 
-#: src/SidebarCustom.vala:102 src/SidebarCustom.vala:236
+#: src/SidebarCustom.vala:101 src/SidebarCustom.vala:235
 msgid "Test run custom actions"
 msgstr ""
 
-#: src/SidebarCustom.vala:167 src/SidebarCustom.vala:374
+#: src/SidebarCustom.vala:166 src/SidebarCustom.vala:373
 msgid "Add New Action"
 msgstr ""
 
-#: src/SidebarCustom.vala:184
+#: src/SidebarCustom.vala:183
 msgid "Delete"
 msgstr ""
 
-#: src/SidebarCustom.vala:188
+#: src/SidebarCustom.vala:187
 msgid "Done"
 msgstr ""
 
-#: src/SidebarCustom.vala:232
+#: src/SidebarCustom.vala:231
 msgid "Refresh text"
 msgstr ""
 
-#: src/SidebarCustom.vala:322
+#: src/SidebarCustom.vala:321
 msgid "Test run stops after this action"
 msgstr ""
 
-#: src/SidebarCustom.vala:409
+#: src/SidebarCustom.vala:405
 msgid "Add Action Above"
 msgstr ""
 
-#: src/SidebarCustom.vala:410
+#: src/SidebarCustom.vala:406
 msgid "Add Action Below"
 msgstr ""
 
-#: src/SidebarCustom.vala:413
+#: src/SidebarCustom.vala:409
 msgid "Remove Action"
 msgstr ""
 
-#: src/SidebarCustom.vala:417
-msgid "Remove Breakpoint"
+#: src/SidebarCustom.vala:412
+msgid "Toggle Breakpoint"
 msgstr ""
 
-#: src/SidebarCustom.vala:419
-msgid "Set Breakpoint"
-msgstr ""
-
-#: src/SidebarCustom.vala:623
+#: src/SidebarCustom.vala:594
 msgid "Select Action..."
 msgstr ""
 
-#: src/SidebarCustom.vala:631 src/SidebarFunctions.vala:66
+#: src/SidebarCustom.vala:602 src/SidebarFunctions.vala:66
 msgid "Search Actions"
 msgstr ""
 
-#: src/SidebarCustom.vala:754 src/SidebarFunctions.vala:270
+#: src/SidebarCustom.vala:725 src/SidebarFunctions.vala:270
 msgid "Switch Direction"
 msgstr ""
 
-#: src/SidebarCustom.vala:754 src/SidebarFunctions.vala:270
+#: src/SidebarCustom.vala:725 src/SidebarFunctions.vala:270
 msgid "Swap Order"
 msgstr ""
 
-#: src/SidebarCustom.vala:799 src/SidebarFunctions.vala:457
+#: src/SidebarCustom.vala:770 src/SidebarFunctions.vala:457
 msgid "Settings"
 msgstr ""
 
-#: src/SidebarCustom.vala:876
+#: src/SidebarCustom.vala:846
 msgid "Delete Custom Action?"
 msgstr ""
 
-#: src/SidebarCustom.vala:877
+#: src/SidebarCustom.vala:847
 msgid "Deleting a custom action cannot be undone."
 msgstr ""
 
-#: src/SidebarCustom.vala:878
+#: src/SidebarCustom.vala:848
 msgid "Delete Action"
 msgstr ""
 
