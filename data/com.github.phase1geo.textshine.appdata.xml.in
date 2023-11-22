@@ -98,6 +98,34 @@
       <value key="x-appcenter-stripe">pk_live_51Ccoj4BJm4hDdHaF1YKGdyGLCLtShzElKsr4GM9hJDJAoZArcWrNHsjL9b8SBs01GQBYpakj0l1tYenVJOqke93300TULHWdph</value>
     </custom>
     <releases>
+      <release version="2.0.0" date="2023-11-27">
+        <p>New</p>
+        <ul>
+          <li>Added highlight-line option to Find and Regular Expression.</li>
+          <li>Added German translation (thanks to Benjamin Weis).</li>
+          <li>Added convert function between CSV and Markdown Table formats.</li>
+          <li>Added convert function for decoding URLs.</li>
+        </ul>
+        <p>Changes</p>
+        <ul>
+          <li>Updated from GTK3 to GTK4.</li>
+          <li>Updated Dutch translation (thanks to @Vistaus).</li>
+          <li>Updated Italian translation (thanks to @albanobattistella).</li>
+          <li>Updated Flatpak version from 6 to 7.2.</li>
+          <li>Added home directory permissions by default to Flatpak.</li>
+          <li>Improved header bar icons to work in non-elementary environments.</li>
+          <li>Widening sidebar to accommodate different displays (this can also be changed with gsettings).</li>
+          <li>Rewrote URL Encode convert function to remove libcamel dependency.</li>
+          <li>Enhanced Indent XML functionality to properly indent XML code that is in minimized format.</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed regexp searching issue that could cause application to hang.</li>
+          <li>Fixed app script warnings.</li>
+          <li>Fixed issue with translations not working in Flatpak.</li>
+          <li>Fixed issue using Indent XML that could cause the application to crash.</li>
+        </ul>
+      </release>
       <release version="1.2.0" date="2022-01-17">
         <p>New</p>
         <ul>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-22 02:58-0600\n"
+"POT-Creation-Date: 2023-11-22 03:06-0600\n"
 "PO-Revision-Date: 2021-09-30 14:37+0200\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Action: Markdown utilities"
 msgstr "Actie: Markdown-hulpmiddelen"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:156
+#: data/com.github.phase1geo.textshine.appdata.xml.in:184
 msgid "Initial release"
 msgstr "Eerste uitgave"
 
