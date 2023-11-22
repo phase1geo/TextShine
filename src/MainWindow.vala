@@ -247,11 +247,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       tooltip_markup = _( "Statistics" )
     };
 
-    stats_btn.notify["active"].connect( stats_clicked );
-    stats_btn.notify.connect((s, p) => {
-      stdout.printf("stats_btn property '%s' has changed!\n", p.name);
-    });
-
     var grid = new Grid() {
       margin_start   = 10,
       margin_end     = 10,

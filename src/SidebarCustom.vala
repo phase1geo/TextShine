@@ -39,7 +39,6 @@ public class SidebarCustom : SidebarBox {
   private Box?             _drag_box;
   private Button           _play;
   private UndoItem?        _test_undo = null;
-  private Revealer?        _break_reveal = null;
   private UndoCustomBuffer _undo_buffer;
   private Button           _undo;
   private Button           _redo;
@@ -399,11 +398,8 @@ public class SidebarCustom : SidebarBox {
   /* Adds the action menu */
   private void show_action_menu( Box box, MenuButton btn ) {
 
-    var index  = get_action_index( box.name );
-    var bpoint = _custom.breakpoint == index;
-    var var0   = new Variant( "(ss)", box.name, 0.to_string() );
-    var var1   = new Variant( "(ss)", box.name, 1.to_string() );
-    var bvar   = new Variant( "(ss)", box.name, bpoint.to_string() );
+    var var0 = new Variant( "(ss)", box.name, 0.to_string() );
+    var var1 = new Variant( "(ss)", box.name, 1.to_string() );
 
     var add_submenu = new GLib.Menu();
     add_submenu.append( _( "Add Action Above" ), "custom.action_insert_new_action(\"%s\")".printf( var0.print( true ) ) );
@@ -413,11 +409,7 @@ public class SidebarCustom : SidebarBox {
     del_submenu.append( _( "Remove Action" ), "custom.action_delete_action('%s')".printf( box.name ) );
 
     var break_submenu = new GLib.Menu();
-    if( bpoint ) {
-      break_submenu.append( _( "Remove Breakpoint" ), "custom.action_breakpoint(\"%s\")".printf( bvar.print( true ) ) );
-    } else {
-      break_submenu.append( _( "Set Breakpoint" ), "custom.action_breakpoint(\"%s\")".printf( bvar.print( true ) ) );
-    }
+    break_submenu.append( _( "Toggle Breakpoint" ), "custom.action_breakpoint('%s')".printf( box.name ) );
 
     var mnu = new GLib.Menu();
     mnu.append_section( null, add_submenu );
@@ -558,44 +550,23 @@ public class SidebarCustom : SidebarBox {
 
     if( variant != null ) {
 
-      string? box_name   = null;
-      string? bpoint_str = null;
-      Variant v;
+      var box_name     = variant.get_string();
+      var index        = get_action_index( box_name );
+      var bpoint       = (index == _custom.breakpoint);
+      var row          = _lb.get_row_at_index( index );
+      var box          = (Box)row.child;
+      var frame        = (Frame)Utils.get_child_at_index( box, 0 );
+      var fbox         = (Box)frame.child;
+      var lbw          = (Box)Utils.get_child_at_index( fbox, 0 );
+      var lbbox        = (Box)Utils.get_child_at_index( lbw, 0 );
+      var break_reveal = (Revealer)Utils.get_child_at_index( lbbox, 2 );
 
-      try {
-        v = Variant.parse( null, variant.get_string() );
-      } catch( VariantParseError e ) {
-        return;
-      }
-
-      var iter = v.iterator();
-      iter.next( "s", out box_name );
-      iter.next( "s", out bpoint_str );
-
-      if( (box_name != null) && (bpoint_str != null) ) {
-
-        var bpoint       = bool.parse( bpoint_str );
-        var row          = _lb.get_row_at_index( get_action_index( box_name ) );
-        var box          = (Box)row.child;
-        var frame        = (Frame)Utils.get_child_at_index( box, 0 );
-        var fbox         = (Box)frame.child;
-        var lbw          = (Box)Utils.get_child_at_index( fbox, 0 );
-        var lbbox        = (Box)Utils.get_child_at_index( lbw, 0 );
-        var break_reveal = (Revealer)Utils.get_child_at_index( lbbox, 2 );
-
-        if( bpoint ) {
-          set_breakpoint( box );
-          break_reveal.reveal_child = true;
-          if( _break_reveal != null ) {
-            _break_reveal.reveal_child = false;
-          }
-          _break_reveal = break_reveal;
-        } else {
-          clear_breakpoint();
-          _break_reveal.reveal_child = false;
-          _break_reveal = null;
-        }
-
+      if( !break_reveal.reveal_child ) {
+        set_breakpoint( box );
+        break_reveal.reveal_child = true;
+      } else {
+        clear_breakpoint();
+        break_reveal.reveal_child = false;
       }
 
     }
@@ -841,7 +812,6 @@ public class SidebarCustom : SidebarBox {
     }
 
     _custom.breakpoint = -1;
-    _break_reveal = null;
 
   }
 

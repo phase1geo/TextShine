@@ -283,7 +283,7 @@ public class Editor : GtkSource.View {
 
   /* Returns the number of spelling errors in the highlighted text */
   public int num_spelling_errors() {
-    return( num_tagged( "gtkspell-misspelled" ) );
+    return( num_tagged( "misspelled-tag" ) );
   }
 
   /* Adds a new tag by the given name */
