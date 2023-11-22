@@ -22,7 +22,7 @@
 using Gtk;
 using Gdk;
 
-public class Editor : SourceView {
+public class Editor : GtkSource.View {
 
   /* Structure to hold absolute position */
   public class Position {
@@ -55,10 +55,10 @@ public class Editor : SourceView {
 
   }
 
-  private UndoBuffer       _undo_buffer;
-  private bool             _ignore_edit = false;
-  private string           _lang_dict;
-  private GtkSpell.Checker _spell = null;
+  private UndoBuffer   _undo_buffer;
+  private bool         _ignore_edit = false;
+  private string       _lang_dict;
+  private SpellChecker _spell = null;
 
   public UndoBuffer undo_buffer {
     get {
@@ -73,9 +73,6 @@ public class Editor : SourceView {
 
     /* TBD - We may want to make this a preference */
     wrap_mode    = WrapMode.WORD;
-    // show_line_numbers = true;
-    // show_line_marks   = true;
-    // highlight_current_line = true;
     top_margin   = 20;
     left_margin  = 10;
     right_margin = 10;
@@ -115,6 +112,8 @@ public class Editor : SourceView {
       undo_item.add_edit( false, start.get_offset(), start.get_text( end ) );
     });
 
+    extra_menu = new GLib.Menu();
+
     /* Connect spell checker */
     connect_spell_checker();
 
@@ -127,7 +126,7 @@ public class Editor : SourceView {
 
     try {
       var css_data = ".editor { font: " + size.to_string() + "px \"" + name + "\"; }";
-      provider.load_from_data( css_data );
+      provider.load_from_data( css_data.data );
     } catch( GLib.Error e ) {
       stdout.printf( "Unable to change font: %s\n", e.message );
     }
@@ -220,8 +219,7 @@ public class Editor : SourceView {
 
   /* Copies the entire buffer contents, regardless of selection */
   public void copy_all_to_clipboard( Clipboard clipboard ) {
-    clipboard.clear();
-    clipboard.set_text( buffer.text, buffer.text.length );
+    clipboard.set_text( buffer.text );
   }
 
   /* Copies the selected text (if selected) or the entire buffer contents */
@@ -230,8 +228,7 @@ public class Editor : SourceView {
     if( buffer.get_selection_bounds( out start, out end ) ) {
       buffer.copy_clipboard( clipboard );
     } else {
-      clipboard.clear();
-      clipboard.set_text( buffer.text, buffer.text.length );
+      clipboard.set_text( buffer.text );
     }
   }
 
@@ -286,7 +283,7 @@ public class Editor : SourceView {
 
   /* Returns the number of spelling errors in the highlighted text */
   public int num_spelling_errors() {
-    return( num_tagged( "gtkspell-misspelled" ) );
+    return( num_tagged( "misspelled-tag" ) );
   }
 
   /* Adds a new tag by the given name */
@@ -317,49 +314,45 @@ public class Editor : SourceView {
     buffer.remove_tag_by_name( "selected", start, end );
   }
 
+  public void set_spellchecker() {
+    if( TextShine.settings.get_boolean( "enable-spell-checking" ) ) {
+      _spell.attach( this );
+    } else {
+      _spell.detach();
+    }
+  }
+
+  private void populate_extra_menu() {
+    extra_menu = new GLib.Menu();
+  }
+
   private void connect_spell_checker() {
 
-    _lang_dict = TextShine.settings.get_string( "spell-language" );
-    _spell     = new GtkSpell.Checker();
+    _spell = new SpellChecker();
+    _spell.populate_extra_menu.connect( populate_extra_menu );
 
-    try {
-      var lang_exists = false;
-      var lang_list   = GtkSpell.Checker.get_language_list();
-      foreach( var elem in lang_list ) {
-        if( _lang_dict == elem ) {
-          lang_exists = true;
-          _spell.set_language( _lang_dict );
-          break;
-        }
-      }
-      if( lang_list.length() == 0 ) {
-        _spell.set_language( null );
-      } else if( !lang_exists ) {
-        _lang_dict = lang_list.first().data;
-        _spell.set_language( _lang_dict );
-      }
-    } catch( Error e ) {
-      warning( e.message );
-    }
+    var lang_exists = false;
+    var lang      = Environment.get_variable( "LANGUAGE" );
+    var lang_list = new Gee.ArrayList<string>();
+    _spell.get_language_list( lang_list );
 
-    _spell.language_changed.connect((lang_dict) => {
-      _lang_dict = lang_dict;
+    lang_list.foreach((elem) => {
+      if( elem == lang ) {
+        _spell.set_language( lang );
+        lang_exists = true;
+        return( false );
+      }
+      return( true );
     });
 
-    if( TextShine.settings.get_boolean( "enable-spell-checking" ) ) {
-      activate_spell_checking();
+    if( lang_list.size == 0 ) {
+      _spell.set_language( null );
+    } else if( !lang_exists ) {
+      _spell.set_language( lang_list.get( 0 ) );
     }
 
-  }
+    set_spellchecker();
 
-  /* Enables the spell checker */
-  public void activate_spell_checking() {
-    _spell.attach( this );
-  }
-
-  /* Disables the spell checker */
-  public void deactivate_spell_checking() {
-    _spell.detach();
   }
 
 }

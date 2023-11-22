@@ -22,12 +22,12 @@
 using Gtk;
 using Gee;
 
-public class MainWindow : Hdy.ApplicationWindow {
+public class MainWindow : Gtk.ApplicationWindow {
 
   private const string DESKTOP_SCHEMA = "io.elementary.desktop";
   private const string DARK_KEY       = "prefer-dark";
 
-  private Hdy.HeaderBar  _header;
+  private HeaderBar      _header;
   private Editor         _editor;
   private Button         _clear_btn;
   private Button         _open_btn;
@@ -39,8 +39,10 @@ public class MainWindow : Hdy.ApplicationWindow {
   private MenuButton     _prop_btn;
   private FontButton     _font;
   private Sidebar        _sidebar;
-  private Box            _widget_box;
+  private Box               _widget_box;
+  private GLib.List<Widget> _widget_items;
   private InfoBar        _info;
+  private Label          _info_label;
   private TextFunctions  _functions;
   private CustomFunction _custom;
   private string?        _current_file = null;
@@ -79,17 +81,14 @@ public class MainWindow : Hdy.ApplicationWindow {
     /* Add the application CSS */
     var provider = new Gtk.CssProvider ();
     provider.load_from_resource( "/com/github/phase1geo/textshine/css/style.css" );
-    StyleContext.add_provider_for_screen( Gdk.Screen.get_default(), provider, STYLE_PROVIDER_PRIORITY_APPLICATION );
+    StyleContext.add_provider_for_display( get_display(), provider, STYLE_PROVIDER_PRIORITY_APPLICATION );
 
     _custom = new CustomFunction();
 
-    var box = new Box( Orientation.HORIZONTAL, 0 );
+    var box = new Box( Orientation.HORIZONTAL, 5 );
 
     /* Handle any changes to the dark mode preference setting */
     handle_prefer_dark_changes();
-
-    /* Position the window size and position */
-    position_window();
 
     /* Create the header */
     create_header();
@@ -98,24 +97,36 @@ public class MainWindow : Hdy.ApplicationWindow {
     _editor = new Editor( this );
     _editor.buffer_changed.connect( do_buffer_changed );
 
-    var sw = new ScrolledWindow( null, null );
-    sw.min_content_width  = 600;
-    sw.min_content_height = 400;
-    sw.add( _editor );
+    var sw = new ScrolledWindow() {
+      valign = Align.FILL,
+      vexpand = true,
+      min_content_width = 600,
+      min_content_height = 400,
+      child = _editor
+    };
 
-    var ebox = new Box( Orientation.VERTICAL, 0 );
+    var ebox = new Box( Orientation.VERTICAL, 0 ) {
+      halign  = Align.FILL,
+      hexpand = true
+    };
 
     /* Create widget bar */
-    _widget_box = new Box( Orientation.VERTICAL, 0 );
+    _widget_box = new Box( Orientation.VERTICAL, 0 ) {
+      valign = Align.FILL
+    };
+    _widget_items = new GLib.List<Widget>();
 
-    _info = new InfoBar();
-    _info.revealed = false;
-    _info.get_content_area().add( new Label( "" ) );
+    _info_label = new Label( "" );
+    _info = new InfoBar() {
+      valign = Align.FILL,
+      revealed = false
+    };
+    _info.add_child( _info_label );
     _info.close.connect( close_error );
 
-    ebox.pack_start( _widget_box, false, true, 0 );
-    ebox.pack_start( _info,       false, true, 0 );
-    ebox.pack_start( sw,          true,  true, 0 );
+    ebox.append( _widget_box );
+    ebox.append( _info );
+    ebox.append( sw );
 
     /* Create the widgets and functions after we have added some of the UI elements */
     _functions = new TextFunctions( this );
@@ -123,15 +134,12 @@ public class MainWindow : Hdy.ApplicationWindow {
     /* Create sidebar */
     var sidebar = create_sidebar();
 
-    box.pack_start( ebox,    true,  true,  5 );
-    box.pack_start( sidebar, false, false, 5 );
+    box.append( ebox );
+    box.append( sidebar );
 
-    var top_box = new Box( Orientation.VERTICAL, 0 );
-    top_box.pack_start( _header, false, true, 0 );
-    top_box.pack_start( box, true, true, 0 );
+    child = box;
 
-    add( top_box );
-    show_all();
+    show();
 
     /* Set the stage for menu actions */
     var actions = new SimpleActionGroup ();
@@ -144,13 +152,6 @@ public class MainWindow : Hdy.ApplicationWindow {
     /* Make sure that the editor has input focus */
     _editor.grab_focus();
 
-    /* Handle the application closing */
-    destroy.connect( Gtk.main_quit );
-
-  }
-
-  static construct {
-    Hdy.init();
   }
 
   /* Adds keyboard shortcuts for the menu actions */
@@ -181,71 +182,50 @@ public class MainWindow : Hdy.ApplicationWindow {
     });
   }
 
-  /* Positions the window based on the settings */
-  private void position_window() {
-
-    var window_x = TextShine.settings.get_int( "window-x" );
-    var window_y = TextShine.settings.get_int( "window-y" );
-    var window_w = TextShine.settings.get_int( "window-w" );
-    var window_h = TextShine.settings.get_int( "window-h" );
-
-    /* Set the main window data */
-    if( (window_x == -1) && (window_y == -1) ) {
-      set_position( Gtk.WindowPosition.CENTER );
-    } else {
-      move( window_x, window_y );
-    }
-    set_default_size( window_w, window_h );
-
-  }
-
   /* Returns the name of the icon to use based on if we are running elementary */
   private string get_icon_name( string icon_name ) {
     return "%s%s".printf( icon_name, (on_elementary ? "" : "-symbolic") );
   }
 
-  private IconSize get_icon_size() {
-    return( on_elementary ? IconSize.LARGE_TOOLBAR : IconSize.SMALL_TOOLBAR );
-  }
-
   /* Create the header bar */
   private void create_header() {
 
-    _header = new Hdy.HeaderBar();
-    _header.set_show_close_button( true );
+    _header = new HeaderBar() {
+      show_title_buttons = true
+    };
 
-    _clear_btn = new Button.from_icon_name( get_icon_name( "document-new" ), get_icon_size() );
+    _clear_btn = new Button.from_icon_name( get_icon_name( "document-new" ) );
     _clear_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "New Workspace" ), "<Control>n" ) );
     _clear_btn.clicked.connect( do_new );
     _header.pack_start( _clear_btn );
 
-    _open_btn = new Button.from_icon_name( get_icon_name( "document-open" ), get_icon_size() );
+    _open_btn = new Button.from_icon_name( get_icon_name( "document-open" ) );
     _open_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Open File" ), "<Control>o" ) );
     _open_btn.clicked.connect( do_open );
     _header.pack_start( _open_btn );
 
-    _save_btn = new Button.from_icon_name( get_icon_name( "document-save" ), get_icon_size() );
+    _save_btn = new Button.from_icon_name( get_icon_name( "document-save" ) );
     _save_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Save File" ), "<Control>s" ) );
     _save_btn.clicked.connect( do_save );
     _header.pack_start( _save_btn );
 
-    _paste_btn = new Button.from_icon_name( get_icon_name( "edit-paste" ), get_icon_size() );
+    _paste_btn = new Button.from_icon_name( get_icon_name( "edit-paste" ) );
     _paste_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Paste Over" ), "<Shift><Control>v" ) );
     _paste_btn.clicked.connect( do_paste_over );
     _header.pack_start( _paste_btn );
 
-    _copy_btn = new Button.from_icon_name( get_icon_name( "edit-copy" ), get_icon_size() );
+    _copy_btn = new Button.from_icon_name( get_icon_name( "edit-copy" ) );
     _copy_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Copy All" ), "<Shift><Control>c" ) );
     _copy_btn.clicked.connect( do_copy_all );
     _header.pack_start( _copy_btn );
 
-    _undo_btn = new Button.from_icon_name( get_icon_name( "edit-undo" ), get_icon_size() );
+    _undo_btn = new Button.from_icon_name( get_icon_name( "edit-undo" ) );
     _undo_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Undo" ), "<Control>z" ) );
     _undo_btn.set_sensitive( false );
     _undo_btn.clicked.connect( do_undo );
     _header.pack_start( _undo_btn );
 
-    _redo_btn = new Button.from_icon_name( get_icon_name( "edit-redo" ), get_icon_size() );
+    _redo_btn = new Button.from_icon_name( get_icon_name( "edit-redo" ) );
     _redo_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Redo" ), "<Control><Shift>z" ) );
     _redo_btn.set_sensitive( false );
     _redo_btn.clicked.connect( do_redo );
@@ -255,52 +235,68 @@ public class MainWindow : Hdy.ApplicationWindow {
     _header.pack_end( add_stats_button() );
 
     set_title( _( "TextShine" ) );
+    set_titlebar( _header );
 
   }
 
   /* Adds the statistics functionality */
-  private Button add_stats_button() {
+  private MenuButton add_stats_button() {
 
-    var stats_btn = new MenuButton();
-    stats_btn.set_image( new Image.from_icon_name( "org.gnome.PowerStats", get_icon_size() ) );
-    stats_btn.set_tooltip_markup( _( "Statistics" ) );
-    stats_btn.clicked.connect( stats_clicked );
+    var stats_btn = new MenuButton() {
+      icon_name = "org.gnome.PowerStats",
+      tooltip_markup = _( "Statistics" )
+    };
 
-    var grid = new Grid();
-    grid.border_width   = 10;
-    grid.row_spacing    = 10;
-    grid.column_spacing = 10;
+    var grid = new Grid() {
+      margin_start   = 10,
+      margin_end     = 10,
+      margin_top     = 10,
+      margin_bottom  = 10,
+      row_spacing    = 10,
+      column_spacing = 10
+    };
 
     var lmargin = "    ";
 
-    var group_text = new Label( _( "<b>Text Statistics</b>" ) );
-    group_text.xalign     = 0;
-    group_text.use_markup = true;
+    var group_text = new Label( _( "<b>Text Statistics</b>" ) ) {
+      xalign     = 0,
+      use_markup = true
+    };
 
-    var lbl_chars = new Label( lmargin + _( "Characters:") );
-    lbl_chars.xalign = 0;
-    _stats_chars = new Label( "0" );
-    _stats_chars.xalign = 0;
+    var lbl_chars = new Label( lmargin + _( "Characters:") ) {
+      xalign = 0
+    };
+    _stats_chars = new Label( "0" ) {
+      xalign = 0
+    };
 
-    var lbl_words = new Label( lmargin + _( "Words:" ) );
-    lbl_words.xalign = 0;
-    _stats_words = new Label( "0" );
-    _stats_words.xalign = 0;
+    var lbl_words = new Label( lmargin + _( "Words:" ) ) {
+      xalign = 0
+    };
+    _stats_words = new Label( "0" ) {
+      xalign = 0
+    };
 
-    var lbl_lines = new Label( lmargin + _( "Lines:") );
-    lbl_lines.xalign = 0;
-    _stats_lines = new Label( "0" );
-    _stats_lines.xalign = 0;
+    var lbl_lines = new Label( lmargin + _( "Lines:") ) {
+      xalign = 0
+    };
+    _stats_lines = new Label( "0" ) {
+      xalign = 0
+    };
 
-    var lbl_matches = new Label( lmargin + _( "Matches:") );
-    lbl_matches.xalign = 0;
-    _stats_matches = new Label( "0" );
-    _stats_matches.xalign = 0;
+    var lbl_matches = new Label( lmargin + _( "Matches:") ) {
+      xalign = 0
+    };
+    _stats_matches = new Label( "0" ) {
+      xalign = 0
+    };
 
-    var lbl_spell = new Label( lmargin + _( "Spelling Errors:" ) );
-    lbl_spell.xalign = 0;
-    _stats_spell = new Label( "0" );
-    _stats_spell.xalign = 0;
+    var lbl_spell = new Label( lmargin + _( "Spelling Errors:" ) ) {
+      xalign = 0
+    };
+    _stats_spell = new Label( "0" ) {
+      xalign = 0
+    };
 
     grid.attach( group_text,     0, 0, 2 );
     grid.attach( lbl_chars,      0, 1 );
@@ -313,11 +309,18 @@ public class MainWindow : Hdy.ApplicationWindow {
     grid.attach( _stats_matches, 1, 4 );
     grid.attach( lbl_spell,      0, 5 );
     grid.attach( _stats_spell,   1, 5 );
-    grid.show_all();
 
     /* Create the popover and associate it with the menu button */
-    stats_btn.popover = new Popover( null );
-    stats_btn.popover.add( grid );
+    stats_btn.popover = new Popover() {
+      autohide = true,
+      child = grid
+    };
+
+    stats_btn.popover.notify["visible"].connect((s, p) => {
+      if( stats_btn.popover.visible ) {
+        stats_clicked();
+      }
+    });
 
     return( stats_btn );
 
@@ -342,25 +345,32 @@ public class MainWindow : Hdy.ApplicationWindow {
   }
 
   /* Adds the property button and associated popover */
-  private Button add_properties_button() {
+  private MenuButton add_properties_button() {
 
-    _prop_btn = new MenuButton();
-    _prop_btn.set_image( new Image.from_icon_name( get_icon_name( "open-menu" ), get_icon_size() ) );
-    _prop_btn.set_tooltip_text( _( "Properties" ) );
-    _prop_btn.clicked.connect( properties_clicked );
-
-    var box = new Box( Orientation.VERTICAL, 0 );
+    var box = new Box( Orientation.VERTICAL, 10 ) {
+      margin_start  = 10,
+      margin_end    = 10,
+      margin_top    = 10,
+      margin_bottom = 10
+    };
 
     /* Add the properties items */
-    box.pack_start( create_font_selection(), false, false, 10 );
-    box.pack_start( create_spell_checker(),  false, false, 10 );
-
-    box.show_all();
+    box.append( create_font_selection() );
+    box.append( create_spell_checker() );
 
     /* Create the popover and associate it with the menu button */
-    var prop_popover = new Popover( null );
-    prop_popover.add( box );
-    _prop_btn.popover = prop_popover;
+    var prop_popover = new Popover() {
+      autohide = true,
+      child = box
+    };
+
+    _prop_btn = new MenuButton() {
+      icon_name    = get_icon_name( "open-menu" ),
+      tooltip_text = _( "Properties" ),
+      popover      = prop_popover
+    };
+
+    _prop_btn.activate.connect( properties_clicked );
 
     return( _prop_btn );
 
@@ -369,17 +379,23 @@ public class MainWindow : Hdy.ApplicationWindow {
   /* Create font selection box */
   private Box create_font_selection() {
 
-    var box = new Box( Orientation.HORIZONTAL, 0 );
-    var lbl = new Label( _( "Font:" ) );
+    var lbl = new Label( _( "Font:" ) ) {
+      halign = Align.START,
+      hexpand = true
+    };
 
-    _font = new FontButton();
-    _font.show_style = false;
+    _font = new FontButton() {
+      halign = Align.END,
+      hexpand = true
+    };
+
     _font.set_filter_func( (family, face) => {
       var fd     = face.describe();
       var weight = fd.get_weight();
       var style  = fd.get_style();
       return( (weight == Pango.Weight.NORMAL) && (style == Pango.Style.NORMAL) );
     });
+
     _font.font_set.connect(() => {
       var name = _font.get_font_family().get_name();
       var size = _font.get_font_size() / Pango.SCALE;
@@ -394,8 +410,9 @@ public class MainWindow : Hdy.ApplicationWindow {
     fd.set_size( TextShine.settings.get_int( "default-font-size" ) * Pango.SCALE );
     _font.set_font_desc( fd );
 
-    box.pack_start( lbl,   false, false, 10 );
-    box.pack_end(   _font, false, false, 10 );
+    var box = new Box( Orientation.HORIZONTAL, 10 );
+    box.append( lbl );
+    box.append( _font );
 
     return( box );
 
@@ -403,23 +420,26 @@ public class MainWindow : Hdy.ApplicationWindow {
 
   private Box create_spell_checker() {
 
-    var box = new Box( Orientation.HORIZONTAL, 0 );
-    var lbl = new Label( _( "Enable Spell Checker" ) );
+    var lbl = new Label( _( "Enable Spell Checker:" ) ) {
+      halign = Align.START,
+      hexpand = true
+    };
 
-    var sw = new Switch();
-    sw.active = TextShine.settings.get_boolean( "enable-spell-checking" );
+    var sw = new Switch() {
+      halign = Align.END,
+      hexpand = true,
+      active = TextShine.settings.get_boolean( "enable-spell-checking" )
+    };
+
     sw.state_set.connect((state) => {
-      if( state ) {
-        _editor.activate_spell_checking();
-      } else {
-        _editor.deactivate_spell_checking();
-      }
       TextShine.settings.set_boolean( "enable-spell-checking", state );
+      _editor.set_spellchecker();
       return( true );
     });
 
-    box.pack_start( lbl, false, false, 10 );
-    box.pack_end(   sw,  false, false, 10 );
+    var box = new Box( Orientation.HORIZONTAL, 10 );
+    box.append( lbl );
+    box.append( sw );
 
     return( box );
 
@@ -433,7 +453,7 @@ public class MainWindow : Hdy.ApplicationWindow {
   }
 
   /* Create list of transformation buttons */
-  private Stack create_sidebar() {
+  private Box create_sidebar() {
 
     _sidebar = new Sidebar( this, _editor );
     _sidebar.action_applied.connect( action_applied );
@@ -453,9 +473,15 @@ public class MainWindow : Hdy.ApplicationWindow {
   private void do_open() {
 
     var dialog = new FileChooserNative( _( "Open File" ), this, FileChooserAction.OPEN, _( "Open" ), _( "Cancel" ) );
-    if( dialog.run() != ResponseType.ACCEPT ) return;
 
-    open_file( dialog.get_filename() );
+    dialog.response.connect((id) => {
+      if( id == ResponseType.ACCEPT ) {
+        open_file( dialog.get_file().get_path() );
+      }
+      dialog.destroy();
+    });
+
+    dialog.show();
 
   }
 
@@ -485,8 +511,13 @@ public class MainWindow : Hdy.ApplicationWindow {
 
     if( _current_file == null ) {
       var dialog = new FileChooserNative( _( "Save File" ), this, FileChooserAction.SAVE, _( "Save" ), _( "Cancel" ) );
-      if( dialog.run() != ResponseType.ACCEPT ) return;
-      _current_file = dialog.get_filename();
+      dialog.response.connect((id) => {
+        if( id == ResponseType.ACCEPT ) {
+          _current_file = dialog.get_file().get_path();
+        }
+        dialog.destroy();
+      });
+      dialog.show();
     }
 
     var file = File.new_for_path( _current_file );
@@ -515,21 +546,21 @@ public class MainWindow : Hdy.ApplicationWindow {
 
   /* Pastes the contents of the clipboard to the editor */
   private void do_paste() {
-    var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
+    var clipboard = Gdk.Display.get_default().get_clipboard();
     _editor.buffer.paste_clipboard( clipboard, null, true );
     _editor.grab_focus();
   }
 
   /* Copies the entire contents of the editor to the clipboard */
   public void do_copy_all() {
-    var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
+    var clipboard = Gdk.Display.get_default().get_clipboard();
     _editor.copy_all_to_clipboard( clipboard );
     _editor.grab_focus();
   }
 
   /* Copies the contents of editor to the clipboard */
   private void do_copy() {
-    var clipboard = Clipboard.get_default( Gdk.Display.get_default() );
+    var clipboard = Gdk.Display.get_default().get_clipboard();
     _editor.copy_to_clipboard( clipboard );
     _editor.grab_focus();
   }
@@ -548,7 +579,6 @@ public class MainWindow : Hdy.ApplicationWindow {
 
   private void save_new_custom( CustomFunction function ) {
     var fn = function.copy( false );
-    // TBD - _sidebar.add_custom_function( (CustomFunction)fn );
     functions.add_function( "custom", fn );
     functions.save_custom();
   }
@@ -556,15 +586,17 @@ public class MainWindow : Hdy.ApplicationWindow {
   /* Adds the given widget to the widgets box */
   public void add_widget( Widget w, Widget? focus_widget = null ) {
 
-    var revealer = new Revealer();
-    revealer.add( w );
-    revealer.reveal_child = false;
-    revealer.border_width = 5;
+    var revealer = new Revealer() {
+      child         = w,
+      reveal_child  = true,
+      margin_start  = 5,
+      margin_end    = 5,
+      margin_top    = 5,
+      margin_bottom = 5
+    };
 
-    _widget_box.pack_start( revealer, true, true, 0 );
-    _widget_box.show_all();
-
-    revealer.reveal_child = true;
+    _widget_box.append( revealer );
+    _widget_items.append( revealer );
 
     if( focus_widget != null ) {
       focus_widget.grab_focus();
@@ -574,16 +606,18 @@ public class MainWindow : Hdy.ApplicationWindow {
 
   /* Removes the given widget from the widget box */
   public void remove_widget() {
-    if( _widget_box.get_children().length() > 0 ) {
-      _widget_box.remove( _widget_box.get_children().nth_data( 0 ) );
+    if( _widget_items.length() > 0 ) {
+      var widget = _widget_items.nth_data( 0 );
+      _widget_box.remove( widget );
+      _widget_items.remove( widget );
+      widget.destroy();
     }
     _editor.grab_focus();
   }
 
   /* Displays the given error message */
   public void show_error( string msg ) {
-    var lbl = (Label)_info.get_content_area().get_children().nth_data( 0 );
-    lbl.label = msg;
+    _info_label.label       = msg;
     _info.message_type      = MessageType.ERROR;
     _info.show_close_button = true;
     _info.revealed          = true;

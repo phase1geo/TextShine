@@ -60,38 +60,54 @@ public class SidebarFunctions : SidebarBox {
     _categories = new Array<Category>();
 
     /* Create search entry */
-    _search = new SearchEntry();
-    _search.placeholder_text = _( "Search Actions" );
+    _search = new SearchEntry() {
+      halign = Align.FILL,
+      hexpand = true,
+      placeholder_text = _( "Search Actions" )
+    };
     _search.search_changed.connect( search_functions );
 
     /* Create new custom function button */
-    var custom = new Button.from_icon_name( "list-add-symbolic", IconSize.SMALL_TOOLBAR );
-    custom.set_tooltip_text( _( "Add Custom Action" ) );
+    var custom = new Button.from_icon_name( "list-add-symbolic" ) {
+      halign = Align.END,
+      tooltip_text = _( "Add Custom Action" )
+    };
     custom.clicked.connect(() => {
       switch_stack( SwitchStackReason.NEW, null );
     });
 
-    var tbox = new Box( Orientation.HORIZONTAL, 5 );
-    tbox.pack_start( _search, true,  true,  0 );
-    tbox.pack_end(   custom,  false, false, 0 );
+    var tbox = new Box( Orientation.HORIZONTAL, 5 ) {
+      margin_end    = 5,
+      margin_top    = 5,
+      margin_bottom = 5,
+      halign = Align.FILL,
+      hexpand = true
+    };
+    tbox.append( _search );
+    tbox.append( custom );
 
     /* Create scrolled box */
     var cbox = new Box( Orientation.VERTICAL, 0 );
-    var sw   = new ScrolledWindow( null, null );
-    var vp   = new Viewport( null, null );
+    var vp   = new Viewport( null, null ) {
+      child = cbox
+    };
     vp.set_size_request( width, height );
-    vp.add( cbox );
-    sw.add( vp );
+
+    var sw = new ScrolledWindow() {
+      valign  = Align.FILL,
+      vexpand = true,
+      child   = vp
+    };
 
     /* Add widgets to box */
     var functions = win.functions;
     for( int i=0; i<functions.categories.length; i++ ) {
       var category = functions.categories.index( i );
-      cbox.pack_start( create_category( category, functions.get_category_label( category ) ), false, false, 0 );
+      cbox.append( create_category( category, functions.get_category_label( category ) ) );
     }
 
-    pack_start( tbox, false, true, 10 );
-    pack_start( sw,   true,  true, 10 );
+    append( tbox );
+    append( sw );
 
   }
 
@@ -120,23 +136,28 @@ public class SidebarFunctions : SidebarBox {
 
     var setting = "category-" + name + "-expanded";
 
+    var ibox = new Box( Orientation.VERTICAL, 10 ) {
+      margin_start  = 10,
+      margin_end    = 10,
+      margin_top    = 10,
+      margin_bottom = 10
+    };
+
     /* Create expander */
-    var exp = new Expander( "  " + Utils.make_title( label ) );
-    exp.margin_top = 5;
-    exp.use_markup = true;
-    exp.expanded   = TextShine.settings.get_boolean( setting );
+    var exp = new Expander( "  " + Utils.make_title( label ) ) {
+      margin_top = 5,
+      use_markup = true,
+      expanded   = TextShine.settings.get_boolean( setting ),
+      child      = ibox
+    };
     exp.activate.connect(() => {
       TextShine.settings.set_boolean( setting, !exp.expanded );
     });
 
-    var ibox = new Box( Orientation.VERTICAL, 0 );
-    ibox.border_width = 10;
-
-    exp.add( ibox );
-
-    var rev = new Revealer();
-    rev.add( exp );
-    rev.reveal_child = true;
+    var rev = new Revealer() {
+      reveal_child = true,
+      child = exp
+    };
 
     _categories.append_val( new Category( setting, exp, rev ) );
 
@@ -163,11 +184,18 @@ public class SidebarFunctions : SidebarBox {
   /* Adds a function button to the given category item box */
   public void add_function( string category, Box box, Expander? exp, TextFunction function ) {
 
-    var fbox = new Box( Orientation.HORIZONTAL, 5 );
+    var fbox = new Box( Orientation.HORIZONTAL, 5 ) {
+      margin_start  = 5,
+      margin_end    = 5,
+      margin_top    = 5,
+      margin_bottom = 5
+    };
 
-    var button = new Button.with_label( function.label );
-    button.halign = Align.START;
-    button.set_relief( ReliefStyle.NONE );
+    var button = new Button.with_label( function.label ) {
+      halign = Align.START,
+      hexpand = true,
+      has_frame = false
+    };
     button.clicked.connect(() => {
       editor.grab_focus();
       if( function.launchable( editor ) ) {
@@ -177,8 +205,10 @@ public class SidebarFunctions : SidebarBox {
       }
     });
 
-    var grid = new Grid();
-    grid.column_homogeneous = true;
+    var grid = new Grid() {
+      halign = Align.END,
+      column_homogeneous = true
+    };
 
     Button fav;
 
@@ -198,18 +228,13 @@ public class SidebarFunctions : SidebarBox {
         break;
     }
 
-    fbox.pack_start( button, false, true,  0 );
-    fbox.pack_end(   grid,   false, false, 0 );
+    fbox.append( button );
+    fbox.append( grid );
 
-    var revealer = new Revealer();
-    revealer.add( fbox );
-    revealer.border_width = 5;
-    revealer.reveal_child = true;
-
-    box.pack_start( revealer, false, false, 0 );
+    box.append( fbox );
 
     if( exp != null ) {
-      _functions.append_val( new Functions( function, fav, revealer, null, exp ) );
+      _functions.append_val( new Functions( function, fav, fbox, null, exp ) );
       function.update_button_label.connect(() => {
         button.label = function.label;
       });
@@ -244,10 +269,12 @@ public class SidebarFunctions : SidebarBox {
     var icon_name = "media-playlist-repeat-symbolic";
     var tooltip   = function.direction.is_vertical() ? _( "Switch Direction" ) : _( "Swap Order" );
 
-    var direction = new Button.from_icon_name( icon_name, IconSize.SMALL_TOOLBAR );
-    direction.halign = Align.START;
-    direction.relief = ReliefStyle.NONE;
-    direction.set_tooltip_text( tooltip );
+    var direction = new Button.from_icon_name( icon_name ) {
+      halign = Align.START,
+      has_frame = false,
+      tooltip_text = tooltip
+    };
+
     direction.clicked.connect(() => {
       switch( function.direction ) {
         case FunctionDirection.TOP_DOWN :
@@ -286,8 +313,9 @@ public class SidebarFunctions : SidebarBox {
 
   private Button add_favorite_button( Grid grid, TextFunction function ) {
 
-    var button = new Button();
-    button.relief = ReliefStyle.NONE;
+    var button = new Button() {
+      has_frame = false
+    };
     button.clicked.connect(() => {
       favorite_function( button, function );
     });
@@ -302,9 +330,10 @@ public class SidebarFunctions : SidebarBox {
 
   private Button add_unfavorite_button( Grid grid, TextFunction function ) {
 
-    var button = new Button.from_icon_name( "starred-symbolic", IconSize.SMALL_TOOLBAR );
-    button.relief = ReliefStyle.NONE;
-    button.set_tooltip_text( _( "Unfavorite" ) );
+    var button = new Button.from_icon_name( "starred-symbolic" ) {
+      has_frame = false,
+      tooltip_text = _( "Unfavorite" )
+    };
     button.clicked.connect(() => {
       unfavorite_function( button, function );
     });
@@ -320,7 +349,7 @@ public class SidebarFunctions : SidebarBox {
 
     /* Remove the function as a favorite */
     var index  = win.functions.unfavorite_function( function );
-    var reveal = (Revealer)_favorite_box.get_children().nth_data( index );
+    var reveal = (Revealer)Utils.get_child_at_index( _favorite_box, index );
 
     /* Wait until idle to remove the widget so that we avoid an error */
     Idle.add(() => {
@@ -332,13 +361,13 @@ public class SidebarFunctions : SidebarBox {
 
   /* Sets the state of the specified favorite button to indicate that it is currently favorited */
   public void favorite_button_state( Button button ) {
-    button.image = new Image.from_icon_name( "starred-symbolic", IconSize.SMALL_TOOLBAR );
+    button.icon_name = "starred-symbolic";
     button.set_tooltip_text( _( "Unfavorite" ) );
   }
 
   /* Sets the state of the specified favorite button to indicate that it is currently unfavorited */
   public void unfavorite_button_state( Button button ) {
-    button.image = new Image.from_icon_name( "non-starred-symbolic", IconSize.SMALL_TOOLBAR );
+    button.icon_name = "non-starred-symbolic";
     button.set_tooltip_text( _( "Favorite" ) );
   }
 
@@ -369,8 +398,6 @@ public class SidebarFunctions : SidebarBox {
 
       add_function( "favorites", _favorite_box, null, fn );
 
-      _favorite_box.show_all();
-
       favorite_button_state( button );
 
     }
@@ -398,19 +425,17 @@ public class SidebarFunctions : SidebarBox {
   /* Adds a new custom function to the sidebar */
   public void add_custom_function( CustomFunction function ) {
     add_function( "custom", _custom_box, _custom_exp, function );
-    _custom_box.show_all();
   }
 
   /* Deletes an existing custom function from the sidebar */
   public void delete_custom_function( CustomFunction function ) {
-    _custom_box.get_children().@foreach((w) => {
-      _custom_box.remove( w );
-    });
+    while( _custom_box.get_first_child() != null ) {
+      _custom_box.remove( _custom_box.get_first_child() );
+    }
     var functions = win.functions.get_category_functions( "custom" );
     for( int i=0; i<functions.length; i++ ) {
       add_custom_function( (CustomFunction)functions.index( i ) );
     }
-    _custom_box.show_all();
   }
 
   /* Adds the settings button to the text function */
@@ -421,14 +446,19 @@ public class SidebarFunctions : SidebarBox {
       return;
     }
 
-    var settings = new MenuButton();
-    settings.image   = new Image.from_icon_name( "open-menu-symbolic", IconSize.SMALL_TOOLBAR );
-    settings.relief  = ReliefStyle.NONE;
-    settings.popover = new Popover( null );
-    settings.set_tooltip_text( _( "Settings" ) );
+    var popup = new Popover() {
+      autohide = true
+    };
 
-    settings.popover.show.connect(() => {
-      on_settings_show( settings.popover, function );
+    var settings = new MenuButton() {
+      icon_name = "open-menu-symbolic",
+      has_frame = false,
+      popover   = popup,
+      tooltip_text = _( "Settings" )
+    };
+
+    popup.show.connect(() => {
+      on_settings_show( popup, function );
     });
 
     grid.attach( settings, 1, 0 );
@@ -439,28 +469,32 @@ public class SidebarFunctions : SidebarBox {
 
     var child = popover.get_child();
     if( child != null ) {
-      popover.remove( child );
+      child.destroy();
     }
 
-    var grid = new Grid();
-    grid.border_width   = 5;
-    grid.row_spacing    = 5;
-    grid.column_spacing = 5;
-    grid.column_homogeneous = false;
+    var grid = new Grid() {
+      margin_start   = 5,
+      margin_end     = 5,
+      margin_top     = 5,
+      margin_bottom  = 5,
+      row_spacing    = 5,
+      column_spacing = 5,
+      column_homogeneous = false
+    };
 
-    function.add_settings( grid );
-    grid.show_all();
+    function.add_settings( popover, grid );
 
-    popover.add( grid );
+    popover.child = grid;
 
   }
 
   /* Adds the edit button to the custom function */
   private void add_edit_button( Box fbox, Grid grid, TextFunction function ) {
 
-    var edit = new Button.from_icon_name( "edit-symbolic", IconSize.SMALL_TOOLBAR );
-    edit.relief = ReliefStyle.NONE;
-    edit.set_tooltip_text( _( "Edit Action" ) );
+    var edit = new Button.from_icon_name( "edit-symbolic" ) {
+      has_frame = false,
+      tooltip_text = _( "Edit Action" )
+    };
     edit.clicked.connect(() => {
       _edit_fbox = fbox;
       switch_stack( SwitchStackReason.EDIT, function );
@@ -473,7 +507,7 @@ public class SidebarFunctions : SidebarBox {
   /* Updates the custom button name that was being edited */
   private void update_custom_name( TextFunction function ) {
 
-    var btn = (Button)_edit_fbox.get_children().nth_data( 0 );
+    var btn = (Button)Utils.get_child_at_index( _edit_fbox, 0 );
     btn.label = function.label;
 
   }

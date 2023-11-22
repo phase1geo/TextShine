@@ -26,8 +26,8 @@ using Gee;
 public class Functions {
   private TextFunction _func;
   private Button?      _favorite;
-  private Revealer     _revealer1;
-  private Revealer     _revealer2;
+  private Widget       _widget1;
+  private Widget?      _widget2;
   private Expander?    _exp;
   public TextFunction func {
     get {
@@ -35,18 +35,25 @@ public class Functions {
     }
   }
   public delegate void UpdateButtonStateFunc( Button btn );
-  public Functions( TextFunction func, Button? favorite, Revealer revealer1, Revealer? revealer2 = null, Expander? exp = null ) {
-    _func      = func;
-    _favorite  = favorite;
-    _revealer1 = revealer1;
-    _revealer2 = revealer2;
-    _exp       = exp;
+  public Functions( TextFunction func, Button? favorite, Widget widget1, Widget? widget2 = null, Expander? exp = null ) {
+    _func     = func;
+    _favorite = favorite;
+    _widget1  = widget1;
+    _widget2  = widget2;
+    _exp      = exp;
   }
   public void reveal( string value ) {
     var contains = _func.label.down().contains( value );
-    _revealer1.reveal_child = contains;
-    if( _revealer2 != null ) {
-      _revealer2.reveal_child = contains;
+    if( contains ) {
+      _widget1.show();
+      if( _widget2 != null ) {
+        _widget2.show();
+      }
+    } else {
+      _widget1.hide();
+      if( _widget2 != null ) {
+        _widget2.hide();
+      }
     }
     if( (_exp != null) && contains ) {
       _exp.expanded = true;
@@ -69,12 +76,18 @@ public enum SwitchStackReason {
   DELETE  /* We are deleting a custom function */
 }
 
-public class Sidebar : Stack {
+public class Sidebar : Box {
+
+  private Stack _stack;
 
   public signal void action_applied( TextFunction function );
 
   /* Constructor */
   public Sidebar( MainWindow win, Editor editor ) {
+
+    Object( orientation: Orientation.VERTICAL, spacing: 10 );
+
+    _stack = new Stack();
 
     var functions = new SidebarFunctions( win, editor );
     var custom    = new SidebarCustom( win, editor );
@@ -83,7 +96,7 @@ public class Sidebar : Stack {
       action_applied( fn );
     });
     functions.switch_stack.connect((reason, fn) => {
-      visible_child_name = "custom";
+      _stack.visible_child_name = "custom";
       custom.displayed( reason, fn );
     });
 
@@ -91,12 +104,14 @@ public class Sidebar : Stack {
       action_applied( fn );
     });
     custom.switch_stack.connect((reason,fn) => {
-      visible_child_name = "functions";
+      _stack.visible_child_name = "functions";
       functions.displayed( reason, fn );
     });
 
-    add_named( functions, "functions" );
-    add_named( custom,    "custom" );
+    _stack.add_named( functions, "functions" );
+    _stack.add_named( custom,    "custom" );
+
+    append( _stack );
 
   }
 

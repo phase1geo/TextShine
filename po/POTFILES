@@ -9,8 +9,9 @@ src/functions/case/CaseUpper.vala
 src/functions/convert/ConvertBase64.vala
 src/functions/convert/ConvertChecksum.vala
 src/functions/convert/ConvertHardWrap.vala
+src/functions/convert/ConvertMarkdownTable.vala
 src/functions/convert/ConvertROT13.vala
-src/functions/convert/ConvertURLEncode.vala
+src/functions/convert/ConvertURL.vala
 src/functions/indent/Indent.vala
 src/functions/indent/IndentXML.vala
 src/functions/indent/Unindent.vala
@@ -55,6 +56,7 @@ src/functions/sort/SortReverseChars.vala
 src/MainWindow.vala
 src/SidebarCustom.vala
 src/SidebarFunctions.vala
+src/SpellChecker.vala
 src/TextFunctions.vala
 src/UndoBuffer.vala
 src/UndoCustomBuffer.vala

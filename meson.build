@@ -64,12 +64,11 @@ dependencies = [
     dependency('gobject-2.0'),
     dependency('glib-2.0'),
     dependency('gee-0.8'),
-    dependency('granite'),
-    dependency('gtk+-3.0'),
+    dependency('granite-7'),
+    dependency('gtk4'),
     dependency('libxml-2.0'),
-    dependency('gtksourceview-4'),
-    dependency('libhandy-1'),
-    dependency('gtkspell3-3.0'),
+    dependency('gtksourceview-5'),
+    dependency('enchant-2'),
     libmarkdown,
     math_dep
 ]
@@ -85,6 +84,9 @@ e = executable('com.github.phase1geo.textshine',
     install : true
 )
 
-#test('tests', e, args : ['--run-tests'])
-
-meson.add_install_script('meson/post_install.py')
+# Perform post install operations
+gnome.post_install(
+  glib_compile_schemas: true,
+  gtk_update_icon_cache: true,
+  update_desktop_database: true
+)

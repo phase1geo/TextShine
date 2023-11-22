@@ -28,6 +28,11 @@ public class Find : TextFunction {
   private string      _find_text      = "";
   private bool        _case_sensitive = false;
   private bool        _highlight_line = false;
+  private Entry       _find;
+
+  private const GLib.ActionEntry action_entries[] = {
+    { "action_insert_find", action_insert_find, "s" },
+  };
 
   /* Constructor */
   public Find( MainWindow win, bool custom = false ) {
@@ -58,23 +63,34 @@ public class Find : TextFunction {
     return( false );
   }
 
+  /* Inserts the given string into the find entry at the current insertion point */
+  private void action_insert_find( SimpleAction action, Variant? variant ) {
+    var str = variant.get_string();
+    if( str != null ) {
+      var pos = _find.cursor_position;
+      _find.do_insert_text( str, str.length, ref pos );
+    }
+  }
+
   /* Creates the search UI */
   private void create_widget( Editor editor, out Box box, out Entry entry ) {
 
-    var find = new Entry();
-    find.placeholder_text = _( "Search Text" );
-    find.populate_popup.connect((menu) => {
-      populate_find_popup( menu, find );
-    });
+    _find = new Entry() {
+      halign = Align.FILL,
+      hexpand = true,
+      placeholder_text = _( "Search Text" ),
+      extra_menu = new GLib.Menu()
+    };
+    populate_find_popup( (GLib.Menu)_find.extra_menu );
 
     var case_sensitive = new CheckButton.with_label( _( "Case-sensitive" ) );
     var highlight_line = new CheckButton.with_label( _( "Highlight Line" ) );
 
     if( custom ) {
 
-      find.text = _find_text;
-      find.changed.connect(() => {
-        _find_text = find.text;
+      _find.text = _find_text;
+      _find.changed.connect(() => {
+        _find_text = _find.text;
         custom_changed();
       });
 
@@ -91,22 +107,26 @@ public class Find : TextFunction {
       });
 
       var cbox = new Box( Orientation.HORIZONTAL, 10 );
-      cbox.pack_start( case_sensitive, false, false, 0 );
-      cbox.pack_start( highlight_line, false, false, 0 );
+      cbox.append( case_sensitive );
+      cbox.append( highlight_line );
 
-      box = new Box( Orientation.VERTICAL, 10 );
-      box.margin = 10;
-      box.pack_start( find, true,  true, 0 );
-      box.pack_start( cbox, false, true, 0 );
+      box = new Box( Orientation.VERTICAL, 10 ) {
+        margin_start  = 10,
+        margin_end    = 10,
+        margin_top    = 10,
+        margin_bottom = 10
+      };
+      box.append( _find );
+      box.append( cbox );
 
     } else {
 
-      find.changed.connect(() => {
-        _find_text = find.text;
+      _find.changed.connect(() => {
+        _find_text = _find.text;
         _undo_item = new UndoItem( label );
         do_find( editor, _undo_item );
       });
-      find.activate.connect(() => {
+      _find.activate.connect(() => {
         complete_find( editor );
       });
 
@@ -122,18 +142,27 @@ public class Find : TextFunction {
         do_find( editor, _undo_item );
       });
 
-      handle_widget_escape( find, _win );
+      handle_widget_escape( _find, _win );
       handle_widget_escape( case_sensitive, _win );
 
-      entry = find;
+      entry = _find;
 
-      box = new Box( Orientation.HORIZONTAL, 10 );
-      box.margin = 10;
-      box.pack_start( find,           true,  true,  0 );
-      box.pack_start( case_sensitive, false, false, 0 );
-      box.pack_start( highlight_line, false, false, 0 );
+      box = new Box( Orientation.HORIZONTAL, 10 ) {
+        margin_start  = 10,
+        margin_end    = 10,
+        margin_top    = 10,
+        margin_bottom = 10
+      };
+      box.append( _find );
+      box.append( case_sensitive );
+      box.append( highlight_line );
 
     }
+
+    /* Add the menu actions */
+    var actions = new SimpleActionGroup();
+    actions.add_action_entries( action_entries, this );
+    box.insert_action_group( "find", actions );
 
   }
 
@@ -144,19 +173,11 @@ public class Find : TextFunction {
     return( box );
   }
 
-  private void add_insert( Gtk.Menu mnu, Entry entry, string lbl, string str ) {
-    var item = new Gtk.MenuItem.with_label( lbl );
-    item.activate.connect(() => {
-      entry.insert_at_cursor( str );
-    });
-    mnu.add( item );
-  }
-
-  private void populate_find_popup( Gtk.Menu menu, Entry entry ) {
-    menu.add( new SeparatorMenuItem() );
-    add_insert( menu, entry, _( "Insert New-line" ),   "\n" );
-    add_insert( menu, entry, _( "Insert Page Break" ), "\f" );
-    menu.show_all();
+  private void populate_find_popup( GLib.Menu menu ) {
+    var section = new GLib.Menu();
+    section.append( _( "Insert New-line" ),   "find.action_insert_find('\\n')" );
+    section.append( _( "Insert Page Break" ), "find.action_insert_find('\\f')" );
+    menu.append_section( null, section );
   }
 
   private void do_find( Editor editor, UndoItem? undo_item ) {

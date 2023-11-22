@@ -58,22 +58,6 @@ public class Utils {
     ctx.set_source_rgba( color.red, color.green, color.blue, alpha );
   }
 
-  /*
-   Adds the given accelerator label to the given menu item.
-  */
-  public static void add_accel_label( Gtk.MenuItem item, uint key, Gdk.ModifierType mods ) {
-
-    /* Convert the menu item to an accelerator label */
-    AccelLabel? label = item.get_child() as AccelLabel;
-
-    if( label == null ) return;
-
-    /* Add the accelerator to the label */
-    label.set_accel( key, mods );
-    label.refetch();
-
-  }
-
   /* Returns a string that is used to display a tooltip with displayed accelerator */
   public static string tooltip_with_accel( string tooltip, string accel ) {
     string[] accels = {accel};
@@ -138,78 +122,78 @@ public class Utils {
    Adds a submenu to the given menu with the specified name, returning the
    created submenu.
   */
-  public static void add_submenu( Gtk.Menu menu, string name, out Gtk.Menu submenu ) {
-    submenu = new Gtk.Menu();
-    var item = new Gtk.MenuItem.with_label( name );
-    item.submenu = submenu;
-    menu.add( item );
+  public static void add_submenu( GLib.Menu menu, string name, out GLib.Menu submenu ) {
+    submenu = new GLib.Menu();
+    menu.append_submenu( name, submenu );
   }
 
   /*
    Adds a new menu item that inserts a given pattern at the current insertion
    point.
   */
-  public static void add_literal_pattern( Gtk.Entry entry, Gtk.Menu mnu, string lbl, string pattern ) {
-    var item = new Gtk.MenuItem.with_label( lbl );
-    item.activate.connect(() => {
-      entry.insert_at_cursor( pattern );
-    });
-    mnu.add( item );
+  public static void add_literal_pattern( GLib.Menu mnu, string action, string lbl, string pattern ) {
+    mnu.append( lbl, "%s('%s')".printf( action, pattern ) );
   }
 
   /*
    Adds a new menu item that inserts a given pattern at the current insertion
    point.
   */
-  public static void add_pattern( Gtk.Entry entry, Gtk.Menu mnu, string lbl, string pattern ) {
-    var label = (pattern.length < 5) ? (lbl + " - <b>" + pattern + "</b>") : lbl;
-    var item = new Gtk.MenuItem.with_label( label );
-    (item.get_child() as Label).use_markup = true;
-    item.activate.connect(() => {
-      entry.insert_at_cursor( pattern );
-    });
-    mnu.add( item );
+  public static void add_pattern( GLib.Menu mnu, string action, string lbl, string pattern ) {
+    var label = (pattern.length < 5) ? (lbl + " - " + pattern) : lbl;
+    mnu.append( label, "%s('%s')".printf( action, pattern ) );
   }
 
   /* Adds items to the popup menu for a text insertion based widget */
-  public static void populate_insert_popup( Gtk.Menu menu, Gtk.Entry entry ) {
+  public static void populate_insert_popup( GLib.Menu menu, string action ) {
 
-    Gtk.Menu chars, date, time;
+    GLib.Menu chars, date, time;
 
-    menu.add( new SeparatorMenuItem() );
-    add_submenu( menu, _( "Insert Characters" ), out chars );
-    add_submenu( menu, _( "Insert Date" ), out date );
-    add_submenu( menu, _( "Insert Time" ), out time );
+    var section = new GLib.Menu();
+    menu.append_section( null, section );
 
-    add_literal_pattern( entry, chars, _( "Insert New-line" ),   "\n" );
-    add_literal_pattern( entry, chars, _( "Insert Tab" ),        "\t" );
-    add_literal_pattern( entry, chars, _( "Insert Page Break" ), "\f" );
-    add_pattern( entry, chars, _( "Insert Incrementing Decimal" ), "%1" );
-    add_pattern( entry, chars, _( "Insert Percent Sign" ), "%%" );
+    add_submenu( section, _( "Insert Characters" ), out chars );
+    add_submenu( section, _( "Insert Date" ), out date );
+    add_submenu( section, _( "Insert Time" ), out time );
 
-    add_pattern( entry, date, _( "Standard Date" ), "%x" );
-    date.add( new SeparatorMenuItem() );
-    add_pattern( entry, date, _( "Day of Month (1-31)" ), "%e" );
-    add_pattern( entry, date, _( "Day of Month (01-31)" ), "%d" );
-    add_pattern( entry, date, _( "Month (01-12)" ), "%m" );
-    add_pattern( entry, date, _( "Year (YYYY)" ), "%Y" );
-    add_pattern( entry, date, _( "Year (YY)" ), "%y" );
-    add_pattern( entry, date, _( "Day of Week" ), "%A" );
-    add_pattern( entry, date, _( "Day of Week (Abbreviated)" ), "%a" );
-    add_pattern( entry, date, _( "Name of Month" ), "%B" );
-    add_pattern( entry, date, _( "Name of Month (Abbreviated)" ), "%b" );
+    add_literal_pattern( chars, action, _( "Insert New-line" ),   "\n" );
+    add_literal_pattern( chars, action, _( "Insert Tab" ),        "\t" );
+    add_literal_pattern( chars, action, _( "Insert Page Break" ), "\f" );
+    add_pattern( chars, action, _( "Insert Incrementing Decimal" ), "%1" );
+    add_pattern( chars, action, _( "Insert Percent Sign" ), "%%" );
 
-    add_pattern( entry, time, _( "Standard Time" ), "%X" );
-    time.add( new SeparatorMenuItem() );
-    add_pattern( entry, time, _( "Seconds (00-59)" ), "%S" );
-    add_pattern( entry, time, _( "Minutes (00-59)" ), "%M" );
-    add_pattern( entry, time, _( "Hours (00-12)" ), "%H" );
-    add_pattern( entry, time, _( "Hours (00-23)" ), "%I" );
-    add_pattern( entry, time, _( "AM/PM" ), "%p" );
-    add_pattern( entry, time, _( "Timezone" ), "%Z" );
+    var dsection = new GLib.Menu();
+    add_pattern( date, action, _( "Standard Date" ), "%x" );
+    date.append_section( null, dsection );
+    add_pattern( dsection, action, _( "Day of Month (1-31)" ), "%e" );
+    add_pattern( dsection, action, _( "Day of Month (01-31)" ), "%d" );
+    add_pattern( dsection, action, _( "Month (01-12)" ), "%m" );
+    add_pattern( dsection, action, _( "Year (YYYY)" ), "%Y" );
+    add_pattern( dsection, action, _( "Year (YY)" ), "%y" );
+    add_pattern( dsection, action, _( "Day of Week" ), "%A" );
+    add_pattern( dsection, action, _( "Day of Week (Abbreviated)" ), "%a" );
+    add_pattern( dsection, action, _( "Name of Month" ), "%B" );
+    add_pattern( dsection, action, _( "Name of Month (Abbreviated)" ), "%b" );
 
-    menu.show_all();
+    var tsection = new GLib.Menu();
+    add_pattern( time, action, _( "Standard Time" ), "%X" );
+    time.append_section( null, tsection );
+    add_pattern( tsection, action, _( "Seconds (00-59)" ), "%S" );
+    add_pattern( tsection, action, _( "Minutes (00-59)" ), "%M" );
+    add_pattern( tsection, action, _( "Hours (00-12)" ), "%H" );
+    add_pattern( tsection, action, _( "Hours (00-23)" ), "%I" );
+    add_pattern( tsection, action, _( "AM/PM" ), "%p" );
+    add_pattern( tsection, action, _( "Timezone" ), "%Z" );
 
+  }
+
+  /* Returns the child widget at the given index of the parent widget (or null if one does not exist) */
+  public static Widget? get_child_at_index( Widget parent, int index ) {
+    var child = parent.get_first_child();
+    while( (child != null) && (index-- > 0) ) {
+      child = child.get_next_sibling();
+    }
+    return( child );
   }
 
 }

@@ -169,7 +169,7 @@ public class ConvertMarkdownTable : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Grid grid ) {
+  public override void add_settings( Popover popover, Grid grid ) {
 
     var delim = add_string_setting( grid, 1, _( "CSV Column Separator" ), _csv_delim, (value) => {
       _csv_delim = value;
@@ -182,7 +182,7 @@ public class ConvertMarkdownTable : TextFunction {
     quote.max_length = 1;
 
     if( direction == FunctionDirection.RIGHT_TO_LEFT ) {
-      add_menubutton_setting( grid, 3, _( "Quote Column Text" ), _csv_quote_mode.label(), QuoteMode.NUM, (value) => {
+      add_menubutton_setting( popover, grid, 3, _( "Quote Column Text" ), _csv_quote_mode.label(), QuoteMode.NUM, (value) => {
         var mode = (QuoteMode)value;
         return( mode.label() );
       }, (value) => {
@@ -192,7 +192,7 @@ public class ConvertMarkdownTable : TextFunction {
     }
 
     if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
-      add_menubutton_setting( grid, 4, _( "Column Alignment" ), _align.label(), MarkdownAlignment.NUM, (value) => {
+      add_menubutton_setting( popover, grid, 4, _( "Column Alignment" ), _align.label(), MarkdownAlignment.NUM, (value) => {
         var align = (MarkdownAlignment)value;
         return( align.label() );
       }, (value) => {
