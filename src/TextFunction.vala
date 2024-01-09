@@ -365,14 +365,13 @@ public class TextFunction {
       halign = Align.END,
       active = init_value
     };
-    sw.state_set.connect(() => {
+    sw.notify["active"].connect(() => {
       callback( sw.active );
       if( custom ) {
         custom_changed();
       } else {
         settings_changed();
       }
-      return( false );
     });
 
     grid.attach( lbl, 0, row );

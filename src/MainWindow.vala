@@ -431,10 +431,9 @@ public class MainWindow : Gtk.ApplicationWindow {
       active = TextShine.settings.get_boolean( "enable-spell-checking" )
     };
 
-    sw.state_set.connect((state) => {
-      TextShine.settings.set_boolean( "enable-spell-checking", state );
+    sw.notify["active"].connect(() => {
+      TextShine.settings.set_boolean( "enable-spell-checking", sw.active );
       _editor.set_spellchecker();
-      return( true );
     });
 
     var box = new Box( Orientation.HORIZONTAL, 10 );
