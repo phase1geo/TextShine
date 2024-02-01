@@ -31,6 +31,7 @@ public class CustomFunction : TextFunction {
   private Array<TextFunction> _functions;
   private string              _label;
   private int                 _breakpoint;
+  private string              _description;
 
   public Array<TextFunction> functions {
     get {
@@ -51,6 +52,14 @@ public class CustomFunction : TextFunction {
     }
     set {
       _breakpoint = (value < _functions.length) ? value : -1;
+    }
+  }
+  public string description {
+    get {
+      return( _description );
+    }
+    set {
+      _description = value;
     }
   }
 
@@ -124,6 +133,7 @@ public class CustomFunction : TextFunction {
     Xml.Node* node = new Xml.Node( null, "custom" );
     node->set_prop( "name",  name );
     node->set_prop( "label", _label );
+    node->set_prop( "description", _description );
     for( int i=0; i<_functions.length; i++ ) {
       node->add_child( _functions.index( i ).save() );
     }
@@ -133,6 +143,7 @@ public class CustomFunction : TextFunction {
   /* Loads the contents of this text function */
   public override void load( Xml.Node* node, TextFunctions functions ) {
     _label = node->get_prop( "label" );
+    _description = node->get_prop( "description" );
     for( Xml.Node* it=node->children; it!=null; it=it->next ) {
       if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "function") ) {
         var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy( true );

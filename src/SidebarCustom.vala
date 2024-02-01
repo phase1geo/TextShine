@@ -48,6 +48,7 @@ public class SidebarCustom : SidebarBox {
     { "action_insert_new_action", action_insert_new_action, "s" },
     { "action_delete_action", action_delete_action, "s" },
     { "action_breakpoint", action_breakpoint, "s" },
+    { "action_edit_description", action_edit_description, "s" },
   };
 
   /* Constructor */
@@ -315,7 +316,6 @@ public class SidebarCustom : SidebarBox {
       column_homogeneous = true
     };
     add_direction_button( grid, label, function );
-    add_settings_button(  grid, function );
 
     var breakpoint = new Image.from_icon_name( "media-playback-stop-symbolic" ) {
       tooltip_text = _( "Test run stops after this action" )
@@ -346,6 +346,45 @@ public class SidebarCustom : SidebarBox {
     lbbox.append( more );
     lbbox.append( break_reveal );
 
+    var dentry = new Entry() {
+      halign  = Align.FILL,
+      xalign  = 0,
+      text    = function.description,
+      visible = false
+    };
+
+    var dlabel = new Label( function.description ) {
+      halign = Align.FILL,
+      xalign = 0,
+      wrap   = true
+    };
+
+    var dsep = new Separator( Orientation.HORIZONTAL ) {
+      halign = Align.FILL
+    };
+
+    var dbox = new Box( Orientation.VERTICAL, 5 ) {
+      halign = Align.FILL
+    };
+    dbox.append( dsep );
+    dbox.append( dentry );
+    dbox.append( dlabel );
+
+    if( function.description == "" ) {
+      dbox.hide();
+    }
+
+    dentry.activate.connect(() => {
+      function.description = dentry.text;
+      if( dentry.text == "" ) {
+        dbox.hide();
+      }
+      dentry.hide();
+      dlabel.label = dentry.text;
+      dlabel.show();
+      more.grab_focus();
+    });
+
     var lbw = new Box( Orientation.VERTICAL, 5 );
     lbw.append( lbbox );
 
@@ -353,6 +392,10 @@ public class SidebarCustom : SidebarBox {
     if( wbox != null ) {
       lbw.append( wbox );
     }
+
+    add_settings_button( lbw, grid, function );
+
+    lbw.append( dbox );
 
     var fbox = new Box( Orientation.VERTICAL, 5 ) {
       margin_top    = 10,
@@ -411,10 +454,14 @@ public class SidebarCustom : SidebarBox {
     var break_submenu = new GLib.Menu();
     break_submenu.append( _( "Toggle Breakpoint" ), "custom.action_breakpoint('%s')".printf( box.name ) );
 
+    var description_submenu = new GLib.Menu();
+    description_submenu.append( _( "Edit Description" ), "custom.action_edit_description('%s')".printf( box.name ) );
+
     var mnu = new GLib.Menu();
     mnu.append_section( null, add_submenu );
     mnu.append_section( null, del_submenu );
     mnu.append_section( null, break_submenu );
+    mnu.append_section( null, description_submenu );
 
     btn.menu_model = mnu;
 
@@ -581,6 +628,33 @@ public class SidebarCustom : SidebarBox {
   /* Clears the breakpoint */
   private void clear_breakpoint() {
     _custom.breakpoint = -1;
+  }
+
+  /* Allows the user to edit the description */
+  private void action_edit_description( SimpleAction action, Variant? variant ) {
+
+    if( variant != null ) {
+
+      var box_name = variant.get_string();
+      var index    = get_action_index( box_name );
+      var row      = _lb.get_row_at_index( index );
+      var box      = (Box)row.child;
+      var frame    = (Frame)Utils.get_child_at_index( box, 0 );
+      var fbox     = (Box)frame.child;
+      var lbw      = (Box)Utils.get_child_at_index( fbox, 0 );
+      var dbox     = (Box)lbw.get_last_child();
+      var dentry   = (Entry)Utils.get_child_at_index( dbox, 1 );
+      var dlabel   = (Label)Utils.get_child_at_index( dbox, 2 );
+
+      if( (dentry != null) && (dlabel != null) ) {
+        dentry.show();
+        dlabel.hide();
+        dbox.show();
+        dentry.grab_focus();
+      }
+
+    }
+
   }
 
   //----------------------------------------------------------------------------
@@ -757,25 +831,48 @@ public class SidebarCustom : SidebarBox {
   }
 
   /* Adds the settings button to the text function */
-  private void add_settings_button( Grid grid, TextFunction function ) {
+  private void add_settings_button( Box rowbox, Grid grid, TextFunction function ) {
 
     if( !function.settings_available() ) {
       add_blank( grid, 1 );
       return;
     }
 
-    var settings = new MenuButton() {
-      icon_name = "open-menu-symbolic",
+    var settings = new Button.from_icon_name( "open-menu-symbolic" ) {
       has_frame = false,
-      tooltip_text = _( "Settings" ),
-      popover = new Popover() {
-        autohide = true
-      }
+      tooltip_text = _( "Settings" )
     };
 
-    settings.popover.show.connect(() => {
-      on_settings_show( settings.popover, function );
+    var settings_grid = new Grid() {
+      margin_start   = 5,
+      margin_end     = 5,
+      margin_top     = 5,
+      margin_bottom  = 5,
+      row_spacing    = 5,
+      column_spacing = 5,
+      column_homogeneous = false,
+      visible = false
+    };
+
+    /*
+    var settings_frame = new Frame( null ) {
+      margin_start = 25,
+      visible      = false,
+      child        = settings_grid
+    };
+    */
+
+    function.add_settings( settings_grid );
+
+    settings.clicked.connect(() => {
+      if( settings_grid.visible ) {
+        settings_grid.hide();
+      } else {
+        settings_grid.show();
+      }
     });
+
+    rowbox.append( settings_grid );
 
     grid.attach( settings, 1, 0 );
 

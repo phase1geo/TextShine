@@ -84,8 +84,9 @@ public class TextFunction {
   protected const string right_german_squote = "\u2018";
 
   private string            _name;
-  private bool              _custom    = false;
-  private FunctionDirection _direction = FunctionDirection.NONE;
+  private bool              _custom      = false;
+  private FunctionDirection _direction   = FunctionDirection.NONE;
+  private string            _description = "";
 
   public string name {
     get {
@@ -112,6 +113,14 @@ public class TextFunction {
       }
     }
   }
+  public string description {
+    get {
+      return( _description );
+    }
+    set {
+      _description = value;
+    }
+  }
 
   public bool custom {
     get {
@@ -125,10 +134,11 @@ public class TextFunction {
   public signal void custom_changed();
 
   /* Constructor */
-  public TextFunction( string name, bool custom, FunctionDirection dir = FunctionDirection.NONE ) {
-    _name      = name;
-    _custom    = custom;
-    _direction = dir;
+  public TextFunction( string name, bool custom, FunctionDirection dir = FunctionDirection.NONE, string description = "" ) {
+    _name        = name;
+    _custom      = custom;
+    _direction   = dir;
+    _description = description;
   }
 
   protected virtual string get_label0() {
@@ -411,6 +421,7 @@ public class TextFunction {
     Xml.Node* node = new Xml.Node( null, "function" );
     node->set_prop( "name", _name );
     node->set_prop( "direction", direction.to_string() );
+    node->set_prop( "description", _description );
     return( node );
   }
 
@@ -419,6 +430,10 @@ public class TextFunction {
     var d = node->get_prop( "direction" );
     if( d != null ) {
       direction = FunctionDirection.parse( d );
+    }
+    var e = node->get_prop( "description" );
+    if( e != null ) {
+      _description = e;
     }
   }
 

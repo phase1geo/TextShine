@@ -455,14 +455,6 @@ public class SidebarFunctions : SidebarBox {
       tooltip_text = _( "Settings" )
     };
 
-    settings.clicked.connect(() => {
-      if( rowbox.get_last_child().visible ) {
-        rowbox.get_last_child().hide();
-      } else {
-        rowbox.get_last_child().show();
-      }
-    });
-
     var settings_grid = new Grid() {
       margin_start   = 5,
       margin_end     = 5,
@@ -480,6 +472,14 @@ public class SidebarFunctions : SidebarBox {
     };
 
     function.add_settings( settings_grid );
+
+    settings.clicked.connect(() => {
+      if( settings_frame.visible ) {
+        settings_frame.hide();
+      } else {
+        settings_frame.show();
+      }
+    });
 
     rowbox.append( settings_frame );
 
@@ -506,7 +506,9 @@ public class SidebarFunctions : SidebarBox {
   /* Updates the custom button name that was being edited */
   private void update_custom_name( TextFunction function ) {
 
-    var btn = (Button)Utils.get_child_at_index( _edit_fbox, 0 );
+    var tbox = (Box)Utils.get_child_at_index( _edit_fbox, 0 );
+    var btn  = (Button)Utils.get_child_at_index( tbox, 0 );
+
     btn.label = function.label;
 
   }
