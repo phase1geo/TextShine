@@ -184,12 +184,14 @@ public class SidebarFunctions : SidebarBox {
   /* Adds a function button to the given category item box */
   public void add_function( string category, Box box, Expander? exp, TextFunction function ) {
 
-    var fbox = new Box( Orientation.HORIZONTAL, 5 ) {
+    var fbox = new Box( Orientation.VERTICAL, 5 ) {
       margin_start  = 5,
       margin_end    = 5,
       margin_top    = 5,
       margin_bottom = 5
     };
+
+    var tbox = new Box( Orientation.HORIZONTAL, 5 );
 
     var button = new Button.with_label( function.label ) {
       halign = Align.START,
@@ -212,6 +214,8 @@ public class SidebarFunctions : SidebarBox {
 
     Button fav;
 
+    fbox.append( tbox );
+
     switch( category ) {
       case "favorites" :
         fav = add_unfavorite_button( grid, function );
@@ -223,13 +227,13 @@ public class SidebarFunctions : SidebarBox {
         break;
       default          :
         add_direction_button( grid, button, function );
-        add_settings_button(  grid, function );
+        add_settings_button( fbox, grid, function );
         fav = add_favorite_button( grid, function );
         break;
     }
 
-    fbox.append( button );
-    fbox.append( grid );
+    tbox.append( button );
+    tbox.append( grid );
 
     box.append( fbox );
 
@@ -439,40 +443,27 @@ public class SidebarFunctions : SidebarBox {
   }
 
   /* Adds the settings button to the text function */
-  private void add_settings_button( Grid grid, TextFunction function ) {
+  private void add_settings_button( Box rowbox, Grid grid, TextFunction function ) {
 
     if( !function.settings_available() ) {
       add_blank( grid, 1 );
       return;
     }
 
-    var popup = new Popover() {
-      autohide = true
-    };
-
-    var settings = new MenuButton() {
-      icon_name = "open-menu-symbolic",
+    var settings = new Button.from_icon_name( "open-menu-symbolic" ) {
       has_frame = false,
-      popover   = popup,
       tooltip_text = _( "Settings" )
     };
 
-    popup.show.connect(() => {
-      on_settings_show( popup, function );
+    settings.clicked.connect(() => {
+      if( rowbox.get_last_child().visible ) {
+        rowbox.get_last_child().hide();
+      } else {
+        rowbox.get_last_child().show();
+      }
     });
 
-    grid.attach( settings, 1, 0 );
-
-  }
-
-  private void on_settings_show( Popover popover, TextFunction function ) {
-
-    var child = popover.get_child();
-    if( child != null ) {
-      child.destroy();
-    }
-
-    var grid = new Grid() {
+    var settings_grid = new Grid() {
       margin_start   = 5,
       margin_end     = 5,
       margin_top     = 5,
@@ -482,9 +473,17 @@ public class SidebarFunctions : SidebarBox {
       column_homogeneous = false
     };
 
-    function.add_settings( popover, grid );
+    var settings_frame = new Frame( null ) {
+      margin_start = 25,
+      visible      = false,
+      child        = settings_grid
+    };
 
-    popover.child = grid;
+    function.add_settings( settings_grid );
+
+    rowbox.append( settings_frame );
+
+    grid.attach( settings, 1, 0 );
 
   }
 

@@ -39,7 +39,8 @@ public class SpellChecker {
   private const GLib.ActionEntry action_entries[] = {
     { "action_replace_word",      action_replace_word, "s" },
     { "action_add_to_dictionary", action_add_to_dictionary },
-    { "action_ignore_all",        action_ignore_all }
+    { "action_ignore_all",        action_ignore_all },
+    { "action_none",              null }
   };
 
   public signal void populate_extra_menu();
@@ -231,7 +232,7 @@ public class SpellChecker {
     var more_menu    = new GLib.Menu();
 
     if( suggestions.length == 0 ) {
-      suggest_menu.append( _( "No suggestions" ), "" );
+      suggest_menu.append( _( "No suggestions" ), "spell.action_none" );
     } else {
       var count = 0;
       foreach( var suggestion in suggestions ) {
@@ -330,6 +331,11 @@ public class SpellChecker {
       var actions = new SimpleActionGroup();
       actions.add_action_entries( action_entries, this );
       view.insert_action_group( "spell", actions );
+
+      var action = (SimpleAction)actions.lookup_action( "action_none" );
+      if( action != null ) {
+        action.set_enabled( false );
+      }
 
       var tagtable = view.buffer.get_tag_table();
       tag_highlight = tagtable.lookup( "misspelled-tag" );

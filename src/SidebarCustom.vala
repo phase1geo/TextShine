@@ -798,7 +798,7 @@ public class SidebarCustom : SidebarBox {
       column_homogeneous = false
     };
 
-    function.add_settings( popover, grid );
+    function.add_settings( grid );
 
     popover.child = grid;
 

@@ -93,7 +93,7 @@ public class InsertLoremIpsum : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Popover popover, Grid grid ) {
+  public override void add_settings( Grid grid ) {
 
     add_range_setting( grid, 0, _( "Paragraphs" ), 1, 20, 1, _paragraphs, (value) => {
       _paragraphs = value;

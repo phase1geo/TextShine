@@ -104,9 +104,9 @@ public class ConvertChecksum : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Popover popover, Grid grid ) {
+  public override void add_settings( Grid grid ) {
 
-    add_menubutton_setting( popover, grid, 1, _( "Checksum Type" ), _type.label(), EncodeType.LENGTH, (value) => {
+    add_menubutton_setting( grid, 1, _( "Checksum Type" ), _type.label(), EncodeType.LENGTH, (value) => {
       var type = (EncodeType)value;
       return( type.label() );
     }, (value) => {

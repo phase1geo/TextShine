@@ -88,14 +88,14 @@ public class ConvertHardWrap : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Popover popover, Grid grid ) {
+  public override void add_settings( Grid grid ) {
 
     add_range_setting( grid, 0, _( "Column Width" ), 20, 150, 5, _col_width, (value) => {
       _col_width = value;
       update_button_label();
     });
 
-    add_menubutton_setting( popover, grid, 1, _( "Wrap Type" ), _wrap_type.label(), HardWrapType.LENGTH, (value) => {
+    add_menubutton_setting( grid, 1, _( "Wrap Type" ), _wrap_type.label(), HardWrapType.LENGTH, (value) => {
       var type = (HardWrapType)value;
       return( type.label() );
     }, (value) => {

@@ -124,7 +124,7 @@ public class SortMoveLines : TextFunction {
     return( true );
   }
 
-  public override void add_settings( Popover popover, Grid grid ) {
+  public override void add_settings( Grid grid ) {
 
     add_range_setting( grid, 0, _( "Lines" ), 1, 1000, 1, _count, (value) => {
       _count = value;

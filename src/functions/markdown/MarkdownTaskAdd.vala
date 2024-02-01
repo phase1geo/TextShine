@@ -84,8 +84,8 @@ public class MarkdownTaskAdd : TextFunction {
   }
 
   /* Populates the given popover with the settings */
-  public override void add_settings( Popover popover, Grid grid ) {
-    add_menubutton_setting( popover, grid, 0, _( "Apply To" ), _apply.label(), MarkdownTaskApplyType.LENGTH, (value) => {
+  public override void add_settings( Grid grid ) {
+    add_menubutton_setting( grid, 0, _( "Apply To" ), _apply.label(), MarkdownTaskApplyType.LENGTH, (value) => {
       var apply = (MarkdownTaskApplyType)value;
       return( apply.label() );
     }, (value) => {

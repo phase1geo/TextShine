@@ -332,13 +332,14 @@ public class Editor : GtkSource.View {
     _spell.populate_extra_menu.connect( populate_extra_menu );
 
     var lang_exists = false;
-    var lang      = Environment.get_variable( "LANGUAGE" );
+    var language    = Environment.get_variable( "LANG" );
+    var lang        = language.split( "." );
     var lang_list = new Gee.ArrayList<string>();
     _spell.get_language_list( lang_list );
 
     lang_list.foreach((elem) => {
-      if( elem == lang ) {
-        _spell.set_language( lang );
+      if( elem == lang[0] ) {
+        _spell.set_language( lang[0] );
         lang_exists = true;
         return( false );
       }
