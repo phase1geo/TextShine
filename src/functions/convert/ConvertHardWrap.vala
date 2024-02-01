@@ -95,7 +95,7 @@ public class ConvertHardWrap : TextFunction {
       update_button_label();
     });
 
-    add_menubutton_setting( grid, 1, _( "Wrap Type" ), _wrap_type.label(), HardWrapType.LENGTH, (value) => {
+    add_menubutton_setting( grid, 1, _( "Wrap Type" ), _wrap_type, HardWrapType.LENGTH, (value) => {
       var type = (HardWrapType)value;
       return( type.label() );
     }, (value) => {
