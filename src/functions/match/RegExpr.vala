@@ -92,6 +92,7 @@ public class RegExpr : TextFunction {
       halign = Align.FILL,
       hexpand = true,
       placeholder_text = _( "Regular Expression" ),
+      tooltip_text     = _( "Regular Expression" ),
       extra_menu = new GLib.Menu()
     };
     populate_pattern_popup( (GLib.Menu)_pattern.extra_menu );
@@ -100,6 +101,7 @@ public class RegExpr : TextFunction {
       halign = Align.FILL,
       hexpand = true,
       placeholder_text = _( "Replace With" ),
+      tooltip_text     = _( "Replacement Text" ),
       extra_menu = new GLib.Menu()
     };
     populate_replace_popup( (GLib.Menu)_replace.extra_menu );

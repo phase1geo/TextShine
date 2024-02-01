@@ -79,6 +79,7 @@ public class Find : TextFunction {
       halign = Align.FILL,
       hexpand = true,
       placeholder_text = _( "Search Text" ),
+      tooltip_text = _( "Search Text" ),
       extra_menu = new GLib.Menu()
     };
     populate_find_popup( (GLib.Menu)_find.extra_menu );

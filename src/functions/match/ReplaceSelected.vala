@@ -73,6 +73,7 @@ public class ReplaceSelected : TextFunction {
       halign = Align.FILL,
       hexpand = true,
       placeholder_text = _( "Replace With" ),
+      tooltip_text = _( "Replacement Text" ),
       extra_menu = new GLib.Menu()
     };
     Utils.populate_insert_popup( (GLib.Menu)_replace.extra_menu, "replace_sel.action_insert_replace" );

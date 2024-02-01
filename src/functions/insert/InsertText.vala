@@ -150,6 +150,7 @@ public class InsertText : TextFunction {
       halign = Align.FILL,
       hexpand = true,
       placeholder_text = _( "Inserted Text" ),
+      tooltip_text = _( "Inserted Text" ),
       extra_menu = new GLib.Menu()
     };
 
