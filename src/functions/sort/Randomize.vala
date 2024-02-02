@@ -25,6 +25,7 @@ public enum RandomizeBlob {
   CHARACTER,
   WORD,
   LINE,
+  SENTENCE,
   PARAGRAPH,
   NUM;
 
@@ -33,6 +34,7 @@ public enum RandomizeBlob {
       case CHARACTER :  return( "char" );
       case WORD      :  return( "word" );
       case LINE      :  return( "line" );
+      case SENTENCE  :  return( "sent" );
       case PARAGRAPH :  return( "para" );
       default        :  assert_not_reached();
     }
@@ -43,6 +45,7 @@ public enum RandomizeBlob {
       case "char" :  return( CHARACTER );
       case "word" :  return( WORD );
       case "line" :  return( LINE );
+      case "sent" :  return( SENTENCE );
       case "para" :  return( PARAGRAPH );
       default     :  return( LINE );
     }
@@ -53,15 +56,38 @@ public enum RandomizeBlob {
       case CHARACTER :  return( _( "Characters" ) );
       case WORD      :  return( _( "Words" ) );
       case LINE      :  return( _( "Lines" ) );
+      case SENTENCE  :  return( _( "Sentences" ) );
       case PARAGRAPH :  return( _( "Paragraphs" ) );
       default        :  assert_not_reached();
     }
   }
+
+  public bool within_word() {
+    return( this == CHARACTER );
+  }
+
+  public bool within_line() {
+    return( (this == CHARACTER) || (this == WORD) );
+  }
+
+  public bool within_sentence() {
+    return( (this == CHARACTER) || (this == WORD) );
+  }
+
+  public bool within_paragraph() {
+    return( (this == CHARACTER) || (this == WORD) || (this == LINE) || (this == SENTENCE) );
+  }
+
+  public bool within_document() {
+    return( true );
+  }
+
 }
 
 public enum RandomizeWithin {
   WORD,
   LINE,
+  SENTENCE,
   PARAGRAPH,
   DOCUMENT,
   NUM;
@@ -70,6 +96,7 @@ public enum RandomizeWithin {
     switch( this ) {
       case WORD      :  return( "word" );
       case LINE      :  return( "line" );
+      case SENTENCE  :  return( "sent" );
       case PARAGRAPH :  return( "para" );
       case DOCUMENT  :  return( "doc" );
       default        :  assert_not_reached();
@@ -80,6 +107,7 @@ public enum RandomizeWithin {
     switch( val ) {
       case "word" :  return( WORD );
       case "line" :  return( LINE );
+      case "sent" :  return( SENTENCE );
       case "para" :  return( PARAGRAPH );
       case "doc"  :  return( DOCUMENT );
       default     :  return( LINE );
@@ -90,9 +118,21 @@ public enum RandomizeWithin {
     switch( this ) {
       case WORD      :  return( _( "Word" ) );
       case LINE      :  return( _( "Line" ) );
+      case SENTENCE  :  return( _( "Sentence" ) );
       case PARAGRAPH :  return( _( "Paragraph" ) );
       case DOCUMENT  :  return( _( "Document" ) );
       default        :  assert_not_reached();
+    }
+  }
+
+  public bool allowed_blob( RandomizeBlob blob ) {
+    switch( this ) {
+      case WORD      :  return( blob.within_word() );
+      case LINE      :  return( blob.within_line() );
+      case SENTENCE  :  return( blob.within_sentence() );
+      case PARAGRAPH :  return( blob.within_paragraph() );
+      case DOCUMENT  :  return( blob.within_document() );
+      default        :  return( false );
     }
   }
 
@@ -125,70 +165,74 @@ public class Randomize : TextFunction {
     return( base.matches( function ) && (_blob == ((Randomize)function)._blob) && (_within == ((Randomize)function)._within) );
   }
 
+  /* Randomly swap characters in the given string */
+  private string randomize_characters( string orig_str ) {
+    var str = orig_str;
+    for( int i=0; i<str.char_count(); i++ ) {
+      var rn   = Random.int_range( 0, str.char_count() );
+      var from = str.index_of_nth_char( i );
+      var to   = str.index_of_nth_char( rn );
+      var c    = str.get_char( from );
+      str = str.splice( from, str.index_of_nth_char( i + 1 ), str.get_char( to ).to_string() );
+      str = str.splice( to,   str.index_of_nth_char( rn + 1 ), c.to_string() );
+    }
+    return( str );
+  }
+
   public override void launch( Editor editor ) {
 
-    TextIter start, end, first, last, cursor;
-    string   text = "";
-
-    var buf      = editor.buffer;
-    var selected = buf.has_selection;
-
-    // FOOBAR - We need to finish editing this function
-
-    buf.get_iter_at_mark( out cursor, buf.get_insert() );
-    var cursor_line = cursor.get_line();
-    var cursor_col  = cursor.get_line_offset();
-
-    /* Get the lines that need to be moved */
-    if( !buf.get_selection_bounds( out start, out end ) ) {
-      buf.get_iter_at_mark( out start, buf.get_insert() );
-      end = start;
+    /* If we cannot do the required action, just return and do nothing */
+    if( !_within.allowed_blob( _blob ) ) {
+      return;
     }
 
-    var start_line = start.get_line();
-    var start_col  = start.get_line_offset();
-    var end_line   = end.get_line();
-    var end_col    = end.get_line_offset();
+    var within_ranges = new Array<Editor.Position>();
 
-    /* Adjust the start and end iterators so that they encompass the entire line */
-    buf.get_iter_at_line( out start, start.get_line() );
-    if( !end.ends_line() ) end.forward_to_line_end();
-
-    text  = start.get_slice( end );
-    first = start;
-    last  = end;
-
-    var _count = 1;  // FOOBAR - This needs to be removed
-    var down   = false;  // FOOBAR - This needs to be removed
-
-    if( down ) {
-      if( !last.forward_lines( _count ) ) return;
-      last.forward_to_line_end();
-      end.forward_char();
-      text = end.get_slice( last ) + "\n" + text;
+    if( _within == DOCUMENT ) {
+      editor.get_ranges( within_ranges, true );
     } else {
-      if( !first.backward_lines( _count ) ) return;
-      start.backward_char();
-      text = text + "\n" + first.get_slice( start );
+      var ranges = new Array<Editor.Position>();
+      editor.get_ranges( ranges, true );
+      switch( _within ) {
+        case RandomizeWithin.WORD      :  editor.get_words( ranges, within_ranges );       break;
+        case RandomizeWithin.LINE      :  editor.get_lines( ranges, within_ranges );       break;
+        case RandomizeWithin.SENTENCE  :  editor.get_sentences( ranges, within_ranges );   break;
+        case RandomizeWithin.PARAGRAPH :  editor.get_paragraphs( ranges, within_ranges );  break;
+      }
     }
 
-    /* Adjust the text */
-    var undo_item = new UndoItem( label );
-    editor.replace_text( first, last, text, undo_item );
-    editor.undo_buffer.add_item( undo_item );
-
-    var adjust = down ? _count : (0 - _count);
-
-    /* Adjust the selection, if necessary */
-    if( selected ) {
-      buf.get_iter_at_line_offset( out start, (start_line + adjust), start_col );
-      buf.get_iter_at_line_offset( out end,   (end_line   + adjust), end_col );
-      buf.select_range( start, end );
+    if( _blob == RandomizeBlob.CHARACTER ) {
+      for( int i=(int)(within_ranges.length - 1); i>=0; i-- ) {
+        var pos     = within_ranges.index( i );
+        var replace = randomize_characters( editor.get_text( pos.start, pos.end ) );
+        editor.replace_text( pos.start, pos.end, replace, null );
+      }
+    } else {
+      for( int i=(int)(within_ranges.length - 1); i>=0; i-- ) {
+        var pos         = within_ranges.index( i );
+        var blob_ranges = new Array<Editor.Position>();
+        var from_range  = new Array<Editor.Position>();
+        from_range.append_val( new Editor.Position( pos.start, pos.end ) );
+        switch( _blob ) {
+          case RandomizeBlob.WORD      :  editor.get_words( from_range, blob_ranges );       break;
+          case RandomizeBlob.LINE      :  editor.get_lines( from_range, blob_ranges );       break;
+          case RandomizeBlob.SENTENCE  :  editor.get_sentences( from_range, blob_ranges );   break;
+          case RandomizeBlob.PARAGRAPH :  editor.get_paragraphs( from_range, blob_ranges );  break;
+        }
+        var blobs = new Array<string>();
+        for( int j=0; j<blob_ranges.length; j++ ) {
+          var blob_pos = blob_ranges.index( j );
+          blobs.append_val( editor.get_text( blob_pos.start, blob_pos.end ) );
+        }
+        blobs.sort((a, b) => {
+          return( Random.int_range(-1,2) );
+        });
+        for( int j=(int)(blob_ranges.length - 1); j>=0; j-- ) {
+          var blob_pos = blob_ranges.index( j );
+          editor.replace_text( blob_pos.start, blob_pos.end, blobs.index( j ), null );
+        }
+      }
     }
-
-    /* Adjust the cursor */
-    buf.get_iter_at_line_offset( out start, (cursor_line + adjust), cursor_col );
-    buf.place_cursor( start );
 
   }
 

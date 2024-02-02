@@ -168,6 +168,132 @@ public class Editor : GtkSource.View {
 
   }
 
+  /* Returns the locations of all words with a length > 1 character within the given from_ranges */
+  public void get_words( Array<Position> from_ranges, Array<Position> ranges ) {
+
+    TextIter? starting = null, ending = null;
+
+    for( int i=0; i<from_ranges.length; i++ ) {
+      var pos = from_ranges.index( i );
+      var str = get_text( pos.start, pos.end );
+      var within = false;
+      for( int j=0; j<str.char_count(); j++ ) {
+        var index = str.index_of_nth_char( j );
+        var c     = str.get_char( index );
+        if( c.isalnum() || c.ismark() || (c == '_') ) {
+          if( !within ) {
+            starting = pos.start.copy();
+            starting.forward_chars( j );
+          }
+          within = true;
+        } else {
+          if( within ) {
+            ending = pos.start.copy();
+            ending.forward_chars( j );
+            ranges.append_val( new Position( starting, ending ) );
+          }
+          within = false;
+        }
+      }
+      if( within ) {
+        ranges.append_val( new Position( starting, pos.end.copy() ) );
+      }
+    }
+
+  }
+
+  /* Returns the locations of lines that contain at least one character */
+  public void get_lines( Array<Position> from_ranges, Array<Position> ranges ) {
+
+    TextIter? starting = null, ending = null;
+
+    for( int i=0; i<from_ranges.length; i++ ) {
+      var pos = from_ranges.index( i );
+      var str = get_text( pos.start, pos.end );
+      var within = false;
+      for( int j=0; j<str.char_count(); j++ ) {
+        var index = str.index_of_nth_char( j );
+        if( str.get_char( index ) == '\n' ) {
+          if( within ) {
+            ending = pos.start.copy();
+            ending.forward_chars( j );
+            ranges.append_val( new Position( starting, ending ) );
+            within = false;
+          }
+        } else if( !within ) {
+          starting = pos.start.copy();
+          starting.forward_chars( j );
+          within = true;
+        }
+      }
+      if( within ) {
+        ranges.append_val( new Position( starting, pos.end.copy() ) );
+      }
+    }
+
+  }
+
+  /* Returns a list of ranges locating any sentences with at least one character */
+  public void get_sentences( Array<Position> from_ranges, Array<Position> ranges ) {
+
+    TextIter? starting = null, ending = null;
+
+    var word_ranges = new Array<Position>();
+    get_words( from_ranges, word_ranges );
+
+    var within = false;
+    for( int i=0; i<word_ranges.length; i++ ) {
+      var pos = word_ranges.index( i );
+      var c   = pos.end.get_char();
+      if( !within ) {
+        starting = pos.start.copy();
+        within   = true;
+      }
+      if( within && ((c == '.') || (c == '?') || (c == '!') || ((i + 1) == word_ranges.length)) ) {
+        ending = pos.end.copy();
+        ending.forward_char();
+        ranges.append_val( new Position( starting, ending ) ); 
+        within = false;
+      }
+    }
+
+  }
+
+  /* Returns a list of ranges locating any paragraphs with at least one line */
+  public void get_paragraphs( Array<Position> from_ranges, Array<Position> ranges ) {
+
+    TextIter? starting = null, ending = null;
+
+    for( int i=0; i<from_ranges.length; i++ ) {
+      var pos = from_ranges.index( i );
+      var str = get_text( pos.start, pos.end );
+      var within = false;
+      for( int j=0; j<str.char_count(); j++ ) {
+        var index = str.index_of_nth_char( j );
+        var c     = str.get_char( index );
+        if( c == '\n' ) {
+          if( within ) {
+            index = str.index_of_nth_char( j + 1 );
+            if( str.get_char( index ) == '\n' ) {
+              ending = pos.start.copy();
+              ending.forward_chars( j );
+              ranges.append_val( new Position( starting, ending ) );
+              within = false;
+            }
+          }
+        } else if( !c.isspace() && !within ) {
+          starting = pos.start.copy();
+          starting.forward_chars( j );
+          within = true;
+        }
+      }
+      if( within ) {
+        ranges.append_val( new Position( starting, pos.end.copy() ) );
+      }
+    }
+
+  }
+
   /* Returns the current range of text that will be transformed */
   public string get_text( TextIter start, TextIter end ) {
     return( buffer.get_text( start, end, false ) );
@@ -257,6 +383,7 @@ public class Editor : GtkSource.View {
     return( (tag != null) && iter.forward_to_tag_toggle( tag ) );
   }
 
+  /* Counts the number of tags that match the given name within the text */
   private int num_tagged( string tag_name ) {
 
     var count = 0;
@@ -314,6 +441,7 @@ public class Editor : GtkSource.View {
     buffer.remove_tag_by_name( "selected", start, end );
   }
 
+  /* Attaches the spell checker to ourselves */
   public void set_spellchecker() {
     if( TextShine.settings.get_boolean( "enable-spell-checking" ) ) {
       _spell.attach( this );
@@ -322,10 +450,15 @@ public class Editor : GtkSource.View {
     }
   }
 
+  /* Creates and populates the extra menu associated with this text widget */
   private void populate_extra_menu() {
     extra_menu = new GLib.Menu();
   }
 
+  /*
+   Connects the spell checker and selects the checked language as specified by the
+   user's LANG environment variable.
+  */
   private void connect_spell_checker() {
 
     _spell = new SpellChecker();
