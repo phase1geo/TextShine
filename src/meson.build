@@ -61,6 +61,7 @@ sources += files(
     'functions/replace/ReplaceReturnSpace.vala',
     'functions/replace/ReplaceTabsSpaces.vala',
 
+    'functions/sort/Randomize.vala',
     'functions/sort/SortLines.vala',
     'functions/sort/SortMoveLines.vala',
     'functions/sort/SortReverseChars.vala',

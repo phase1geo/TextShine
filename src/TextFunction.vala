@@ -390,7 +390,7 @@ public class TextFunction {
   }
 
   /* Called whenever a menubutton setting widget needs to be added */
-  protected void add_menubutton_setting( Grid grid, int row, string label, string init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
+  protected void add_menubutton_setting( Grid grid, int row, string label, int init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
 
     var lbl = new Label( label + ": " ) {
       halign = Align.START
@@ -401,7 +401,9 @@ public class TextFunction {
       values += label_func( i );
     }
 
-    var dd = new DropDown.from_strings( values );
+    var dd = new DropDown.from_strings( values ) {
+      selected = init_value
+    };
     dd.notify["selected"].connect(() => {
       changed_func( (int)dd.get_selected() );
       if( custom ) {

@@ -111,6 +111,7 @@ public class TextFunctions {
     add_function( "sort", new SortLines() );
     add_function( "sort", new SortReverseChars() );
     add_function( "sort", new SortMoveLines() );
+    add_function( "sort", new Randomize() );
 
     /* Category - indent */
     add_function( "indent", new Indent() );

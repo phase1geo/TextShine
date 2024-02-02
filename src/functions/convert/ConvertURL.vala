@@ -327,7 +327,7 @@ public class ConvertURL : TextFunction {
 
   public override void add_settings( Grid grid ) {
 
-    add_menubutton_setting( grid, 1, _( "Character Set" ), _type.label(), CharacterSet.UTF8, (value) => {
+    add_menubutton_setting( grid, 1, _( "Character Set" ), _type, CharacterSet.UTF8, (value) => {
       var type = (CharacterSet)value;
       return( type.label() );
     }, (value) => {
