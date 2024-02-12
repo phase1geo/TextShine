@@ -45,6 +45,13 @@ public class Utils {
     return( "#%02x%02x%02x".printf( (int)(rgba.red * 255), (int)(rgba.green * 255), (int)(rgba.blue * 255) ) );
   }
 
+  /* Returns the RGBA color for the given color value */
+  public static RGBA color_from_string( string value ) {
+    RGBA c = {(float)1.0, (float)1.0, (float)1.0, (float)1.0};
+    c.parse( value );
+    return( c );
+  }
+
   /* Sets the context source color to the given color value */
   public static void set_context_color( Context ctx, RGBA color ) {
     ctx.set_source_rgba( color.red, color.green, color.blue, color.alpha );
@@ -56,6 +63,29 @@ public class Utils {
   */
   public static void set_context_color_with_alpha( Context ctx, RGBA color, double alpha ) {
     ctx.set_source_rgba( color.red, color.green, color.blue, alpha );
+  }
+
+  /* Returns the rectangle associated with the given widget (the widget must be realized) */
+  public static Graphene.Rect get_rect_for_widget( Widget w ) {
+    Graphene.Rect rect;
+    if( w.compute_bounds( w.parent, out rect ) ) {
+      return( rect );
+    }
+    Requisition min_size, nat_size;
+    rect = Graphene.Rect.alloc();
+    w.get_preferred_size(out min_size, out nat_size );
+    rect.init( (float)0, (float)0, (float)nat_size.width, (float)nat_size.height );
+    return( rect );
+  }
+
+  /* Returns the relative coordinates of the given widget within its parent */
+  public static void get_relative_coordinates( Widget w, out double x, out double y ) {
+    double tmp_x = 0, tmp_y = 0;
+    Gdk.ModifierType mask = 0;
+
+    var pointer = w.get_display().get_default_seat().get_pointer();
+    w.root.get_surface().get_device_position( pointer, out tmp_x, out tmp_y, out mask );
+    w.root.translate_coordinates( w.parent, tmp_x, tmp_y, out x, out y );
   }
 
   /* Returns a string that is used to display a tooltip with displayed accelerator */

@@ -110,7 +110,7 @@ public class SidebarCustom : SidebarBox {
 
     /* Create scrolled box */
     var drag_source = new DragSource();
-    var drop_target = new DropTarget( Type.STRING, (DragAction.COPY | DragAction.MOVE) );
+    var drop_target = new DropTarget( Type.OBJECT, (DragAction.COPY | DragAction.MOVE) );
     _lb = new ListBox() {
       selection_mode = SelectionMode.NONE
     };
@@ -121,12 +121,27 @@ public class SidebarCustom : SidebarBox {
       var row = _lb.get_row_at_y( (int)y );
       if( row != null ) {
         _drag_box = (Box)row.child;
-        var val = new Value( typeof(string) );
-        val.set_string( _drag_box.name );
+        var val = new Value( typeof(Object) );
+        val.set_object( _drag_box );
         var content = new ContentProvider.for_value( val );
         return( content );
       }
       return( null );
+    });
+    drag_source.drag_begin.connect((drag) => {
+      if( _drag_box != null ) {
+        double hotspot_x, hotspot_y;
+        var snapshot = new Gtk.Snapshot();
+        var rect     = Utils.get_rect_for_widget( _drag_box );
+
+        var cr = snapshot.append_cairo( rect );
+        win.get_style_context().render_background( cr, 0, 0, rect.size.width, rect.size.height );
+        _drag_box.snapshot( snapshot );
+
+        Utils.get_relative_coordinates( _drag_box, out hotspot_x, out hotspot_y );
+        // snapshot.append_color( bg, rect );
+        DragIcon.set_from_paintable( drag, snapshot.free_to_paintable( null ), (int)hotspot_x, (int)hotspot_y );
+      }
     });
     drag_source.drag_end.connect((drag) => {
       if( (_drag_box != null) && (drag.actions == DragAction.MOVE) ) {
