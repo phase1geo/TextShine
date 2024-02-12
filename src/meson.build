@@ -23,6 +23,7 @@ sources += files(
     'functions/insert/InsertLineNumbers.vala',
     'functions/insert/InsertLoremIpsum.vala',
     'functions/insert/InsertText.vala',
+    'functions/insert/InsertURL.vala',
 
     'functions/markdown/ConvertMarkdownHTML.vala',
     'functions/markdown/MarkdownReferences.vala',

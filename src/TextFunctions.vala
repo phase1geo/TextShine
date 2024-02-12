@@ -83,6 +83,7 @@ public class TextFunctions {
     add_function( "insert", new InsertLineNumbers() );
     add_function( "insert", new InsertLoremIpsum() );
     add_function( "insert", new InsertFile( win ) );
+    add_function( "insert", new InsertURL( win ) );
 
     /* Category - remove */
     add_function( "remove", new RemoveBlankLines() );
