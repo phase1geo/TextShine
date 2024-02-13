@@ -57,26 +57,33 @@ public class IndentXML : TextFunction {
     var in_tag      = false;  // Set when we are within a tag
     var in_ds       = false;  // Set when we are in a double-quoted string
     var in_ss       = false;  // Set when we are in a single-quoted string
+    var in_com      = false;  // Set when we are in a comment
     var saw_first   = false;  // Set when we have found the first character in a line
-    var pos         = 0;
+    var pos         = 0;      // Current character position
     var begin_pos   = 0;      // Position of the beginning tag char
     var slash_pos   = 0;      // Position of the slash char within a tag
     var ques_pos    = 0;      // Position of the question mark char within a tag
+    var exclam_pos  = 0;      // Position of the exclamation mark char within a tag
+    var dash_pos    = 0;      // Position of the dash char within a tag
+    var fdash_pos   = 0;      // Position of the first dash that is a part of a double dash
     var start_found = false;  // Set when an opening tag is found on the current line
     var str         = "";
     var line        = "";
     for( int i=0; i<orig.char_count(); i++ ) {
       var c = orig.get_char( orig.index_of_nth_char( i ) ).to_string();
+      // stdout.printf( "%s, fdash_pos: %d, dash_pos: %d, pos: %d, in_com: %s\n", c, fdash_pos, dash_pos, pos, in_com.to_string() );
       switch( c ) {
         case "<"  :
-          if( !in_ds && !in_ss && !in_tag ) {
+          if( !in_ds && !in_ss && !in_tag && !in_com ) {
             in_tag = true;
             begin_pos = pos;
           }
           saw_first = true;
           break;
         case ">"  :
-          if( in_tag ) {
+          if( in_com && ((fdash_pos + 2) == pos) ) {
+            in_com = false;
+          } else if( in_tag ) {
             if( (begin_pos + 1) == slash_pos ) {   // If this is an closing tag
               line_indent--;
               if( !next_char_is( orig, (i + 1), "\n" ) ) {
@@ -112,6 +119,24 @@ public class IndentXML : TextFunction {
             ques_pos = pos;
           }
           saw_first = true;
+          break;
+        case "!"  :
+          if( in_tag && ((begin_pos + 1) == pos) ) {
+            exclam_pos = pos;
+          }
+          saw_first = true;
+          break;
+        case "-"  :
+          if( in_tag || in_com ) {
+            if( (dash_pos + 1) == pos ) {
+              fdash_pos = dash_pos;
+            }
+            if( (exclam_pos + 1) == fdash_pos ) {
+              in_com = true;
+              in_tag = false;
+            }
+            dash_pos = pos;
+          }
           break;
         case "\"" :
           if( in_tag && !in_ss ) {
