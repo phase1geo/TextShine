@@ -22,7 +22,7 @@
 using Gtk;
 using Gdk;
 
-public class Editor : GtkSource.View {
+public class Editor {
 
   /* Structure to hold absolute position */
   public class Position {
@@ -55,14 +55,39 @@ public class Editor : GtkSource.View {
 
   }
 
-  private UndoBuffer   _undo_buffer;
-  private bool         _ignore_edit = false;
-  private string       _lang_dict;
-  private SpellChecker _spell = null;
+  private GtkSource.View   _view;
+  private GtkSource.Buffer _buffer;
+  private UndoBuffer       _undo_buffer;
+  private bool             _ignore_edit = false;
+  private string           _lang_dict;
+  private SpellChecker     _spell = null;
+  private bool             _dark_mode   = false;
 
+  public GtkSource.View view {
+    get {
+      return( _view );
+    }
+  }
+  public TextBuffer buffer {
+    get {
+      return( _view.buffer );
+    }
+  }
   public UndoBuffer undo_buffer {
     get {
       return( _undo_buffer );
+    }
+  }
+  public bool dark_mode {
+    get {
+      return( _dark_mode );
+    }
+    set {
+      if( _dark_mode != value ) {
+        _dark_mode = value;
+        var style_mgr = GtkSource.StyleSchemeManager.get_default();
+        _buffer.style_scheme = style_mgr.get_scheme( _dark_mode ? "Adwaita-dark" : "Adwaita" );
+      }
     }
   }
 
@@ -71,11 +96,14 @@ public class Editor : GtkSource.View {
   /* Constructor */
   public Editor( MainWindow win ) {
 
-    /* TBD - We may want to make this a preference */
-    wrap_mode    = WrapMode.WORD;
-    top_margin   = 20;
-    left_margin  = 10;
-    right_margin = 10;
+    _buffer = new GtkSource.Buffer( null );
+
+    _view = new GtkSource.View.with_buffer( _buffer ) {
+      wrap_mode    = WrapMode.WORD,
+      top_margin   = 20,
+      left_margin  = 10,
+      right_margin = 10
+    };
 
     /* Add the undo_buffer */
     _undo_buffer = new UndoBuffer( this );
@@ -84,7 +112,7 @@ public class Editor : GtkSource.View {
     });
 
     /* Set a CSS style class so that we can adjust the font */
-    get_style_context().add_class( "editor" );
+    _view.get_style_context().add_class( "editor" );
 
     /* Set the default font */
     var font_name = TextShine.settings.get_string( "default-font-family" );
@@ -112,11 +140,16 @@ public class Editor : GtkSource.View {
       undo_item.add_edit( false, start.get_offset(), start.get_text( end ) );
     });
 
-    extra_menu = new GLib.Menu();
+    _view.extra_menu = new GLib.Menu();
 
     /* Connect spell checker */
     connect_spell_checker();
 
+  }
+
+  /* Grabs keyboard focus */
+  public bool grab_focus() {
+    return( _view.grab_focus() );
   }
 
   /* Updates the font theme */
@@ -132,7 +165,7 @@ public class Editor : GtkSource.View {
     }
 
     /* Set the CSS */
-    get_style_context().add_provider(
+    _view.get_style_context().add_provider(
       provider,
       STYLE_PROVIDER_PRIORITY_APPLICATION
     );
@@ -444,7 +477,7 @@ public class Editor : GtkSource.View {
   /* Attaches the spell checker to ourselves */
   public void set_spellchecker() {
     if( TextShine.settings.get_boolean( "enable-spell-checking" ) ) {
-      _spell.attach( this );
+      _spell.attach( _view );
     } else {
       _spell.detach();
     }
@@ -452,7 +485,7 @@ public class Editor : GtkSource.View {
 
   /* Creates and populates the extra menu associated with this text widget */
   private void populate_extra_menu() {
-    extra_menu = new GLib.Menu();
+    _view.extra_menu = new GLib.Menu();
   }
 
   /*

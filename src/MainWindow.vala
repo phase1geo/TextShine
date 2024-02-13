@@ -88,7 +88,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     var box = new Box( Orientation.HORIZONTAL, 5 );
 
     /* Handle any changes to the dark mode preference setting */
-    handle_prefer_dark_changes();
+    var dark_mode = handle_prefer_dark_changes();
 
     /* Create the header */
     create_header();
@@ -96,13 +96,14 @@ public class MainWindow : Gtk.ApplicationWindow {
     /* Create editor */
     _editor = new Editor( this );
     _editor.buffer_changed.connect( do_buffer_changed );
+    _editor.dark_mode = dark_mode;
 
     var sw = new ScrolledWindow() {
       valign = Align.FILL,
       vexpand = true,
       min_content_width = 600,
       min_content_height = 400,
-      child = _editor
+      child = _editor.view
     };
 
     var ebox = new Box( Orientation.VERTICAL, 0 ) {
@@ -173,13 +174,15 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   /* Handles any changes to the dark mode preference gsettings for the desktop */
-  private void handle_prefer_dark_changes() {
+  private bool handle_prefer_dark_changes() {
     var granite_settings = Granite.Settings.get_default();
     var gtk_settings     = Gtk.Settings.get_default();
     gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
     granite_settings.notify["prefers-color-scheme"].connect (() => {
       gtk_settings.gtk_application_prefer_dark_theme = granite_settings.prefers_color_scheme == Granite.Settings.ColorScheme.DARK;
+      _editor.dark_mode = gtk_settings.gtk_application_prefer_dark_theme;
     });
+    return( gtk_settings.gtk_application_prefer_dark_theme );
   }
 
   /* Returns the name of the icon to use based on if we are running elementary */
