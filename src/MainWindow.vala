@@ -153,6 +153,15 @@ public class MainWindow : Gtk.ApplicationWindow {
     /* Make sure that the editor has input focus */
     _editor.grab_focus();
 
+    /* Handle any request to close the window */
+    close_request.connect(() => {
+      save_window_size();
+      return( false );
+    });
+
+    /* Set the default window size from settings */
+    set_window_size();
+
   }
 
   /* Adds keyboard shortcuts for the menu actions */
@@ -536,8 +545,22 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
+  /* Sets the window size to the values stored in settings */
+  private void set_window_size() {
+    var w = TextShine.settings.get_int( "window-w" );
+    var h = TextShine.settings.get_int( "window-h" );
+    set_default_size( w, h );
+  }
+
+  /* Saves the current size of the window to settings */
+  private void save_window_size() {
+    TextShine.settings.set_int( "window-w", get_width() );
+    TextShine.settings.set_int( "window-h", get_height() );
+  }
+
   /* Quits the application */
   private void do_quit() {
+    save_window_size();
     destroy();
   }
 
