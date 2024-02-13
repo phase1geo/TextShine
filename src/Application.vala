@@ -30,7 +30,7 @@ public class TextShine : Gtk.Application {
 
   public  static GLib.Settings settings;
   public  static bool          use_clipboard = false;
-  public  static string        version       = "2.0.0";
+  public  static string        version       = "2.0";
 
   public TextShine () {
 
