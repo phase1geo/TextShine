@@ -85,7 +85,7 @@ public class Sidebar : Box {
   /* Constructor */
   public Sidebar( MainWindow win, Editor editor ) {
 
-    Object( orientation: Orientation.VERTICAL, spacing: 10 );
+    Object( orientation: Orientation.VERTICAL, spacing: 10, halign: Align.END, hexpand: false );
 
     _stack = new Stack();
 
