@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-22 03:06-0600\n"
+"POT-Creation-Date: 2024-02-12 23:48-0600\n"
 "PO-Revision-Date: 2023-01-30 20:00+0100\n"
 "Last-Translator: Benjamin Weis <benjamin.weis@gmx.com>\n"
 "Language-Team: \n"
@@ -167,6 +167,6 @@ msgstr ""
 msgid "Action: Markdown utilities"
 msgstr "Aktion: Markdown-Hilfsmittel"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:184
+#: data/com.github.phase1geo.textshine.appdata.xml.in:194
 msgid "Initial release"
 msgstr "Erste Veröffentlichung"

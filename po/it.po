@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-22 03:06-0600\n"
+"POT-Creation-Date: 2024-02-12 23:48-0600\n"
 "PO-Revision-Date: 2021-04-25 13:50-0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -74,10 +74,12 @@ msgid "Checksum Type"
 msgstr "Tipo di Checksum"
 
 #: src/functions/convert/ConvertHardWrap.vala:33
+#: src/functions/sort/Randomize.vala:56
 msgid "Characters"
 msgstr "Caratteri"
 
 #: src/functions/convert/ConvertHardWrap.vala:34
+#: src/functions/sort/Randomize.vala:57
 msgid "Words"
 msgstr "Parole"
 
@@ -200,12 +202,12 @@ msgstr "Inserisci file di testo"
 msgid "Insert File"
 msgstr "Inserisci File"
 
-#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:475
+#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:486
 msgid "Open"
 msgstr "Apri"
 
-#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:475
-#: src/MainWindow.vala:513 src/SidebarCustom.vala:849
+#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:486
+#: src/MainWindow.vala:524 src/SidebarCustom.vala:961
 msgid "Cancel"
 msgstr "Cancella"
 
@@ -230,6 +232,7 @@ msgid "Insert Lorem Ipsum"
 msgstr "Inserisci Lorem Ipsum"
 
 #: src/functions/insert/InsertLoremIpsum.vala:98
+#: src/functions/sort/Randomize.vala:60
 msgid "Paragraphs"
 msgstr "Paragrafi"
 
@@ -267,12 +270,24 @@ msgid "Insert Text (%s)"
 msgstr "Inserisci testo (%s)"
 
 #: src/functions/insert/InsertText.vala:152
+#: src/functions/insert/InsertText.vala:153
 msgid "Inserted Text"
 msgstr "Testo inserito"
 
-#: src/functions/insert/InsertText.vala:206
+#: src/functions/insert/InsertText.vala:207
 msgid "Insert At"
 msgstr ""
+
+#: src/functions/insert/InsertURL.vala:36
+#, fuzzy
+msgid "Insert URL Content"
+msgstr "Inserisci data"
+
+#: src/functions/insert/InsertURL.vala:90
+#: src/functions/insert/InsertURL.vala:91
+#, fuzzy
+msgid "Enter URL"
+msgstr "Codifica URL"
 
 #: src/functions/markdown/ConvertMarkdownHTML.vala:35
 msgid "Convert Markdown to HTML"
@@ -291,10 +306,12 @@ msgid "Beautify Tables"
 msgstr ""
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:31
+#: src/functions/sort/Randomize.vala:120
 msgid "Line"
 msgstr "Linea"
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:32
+#: src/functions/sort/Randomize.vala:122
 msgid "Paragraph"
 msgstr ""
 
@@ -332,23 +349,23 @@ msgstr ""
 msgid "Find"
 msgstr ""
 
-#: src/functions/match/Find.vala:81
+#: src/functions/match/Find.vala:81 src/functions/match/Find.vala:82
 msgid "Search Text"
 msgstr ""
 
-#: src/functions/match/Find.vala:86
+#: src/functions/match/Find.vala:87
 msgid "Case-sensitive"
 msgstr ""
 
-#: src/functions/match/Find.vala:87 src/functions/match/RegExpr.vala:107
+#: src/functions/match/Find.vala:88 src/functions/match/RegExpr.vala:109
 msgid "Highlight Line"
 msgstr ""
 
-#: src/functions/match/Find.vala:178 src/Utils.vala:159
+#: src/functions/match/Find.vala:179 src/Utils.vala:189
 msgid "Insert New-line"
 msgstr ""
 
-#: src/functions/match/Find.vala:179 src/Utils.vala:161
+#: src/functions/match/Find.vala:180 src/Utils.vala:191
 msgid "Insert Page Break"
 msgstr ""
 
@@ -357,185 +374,192 @@ msgid "Invert Matched Text"
 msgstr ""
 
 #: src/functions/match/RegExpr.vala:53 src/functions/match/RegExpr.vala:94
+#: src/functions/match/RegExpr.vala:95
 msgid "Regular Expression"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:102
+#: src/functions/match/RegExpr.vala:103
 #: src/functions/match/ReplaceSelected.vala:75
 msgid "Replace With"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:209
+#: src/functions/match/RegExpr.vala:104
+#: src/functions/match/ReplaceSelected.vala:76
+msgid "Replacement Text"
+msgstr ""
+
+#: src/functions/match/RegExpr.vala:211
 #, fuzzy
 msgid "Character Patterns"
 msgstr "Caratteri:"
 
-#: src/functions/match/RegExpr.vala:210
+#: src/functions/match/RegExpr.vala:212
 msgid "Digit"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:211
+#: src/functions/match/RegExpr.vala:213
 msgid "Non-Digit"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:212
+#: src/functions/match/RegExpr.vala:214
 msgid "New-line"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:213
+#: src/functions/match/RegExpr.vala:215
 msgid "Non-New-line"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:214
+#: src/functions/match/RegExpr.vala:216
 msgid "Tab"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:215
+#: src/functions/match/RegExpr.vala:217
 msgid "Page Break"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:216
+#: src/functions/match/RegExpr.vala:218
 msgid "Whitespace"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:217
+#: src/functions/match/RegExpr.vala:219
 msgid "Non-Whitespace"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:218 src/functions/match/RegExpr.vala:243
+#: src/functions/match/RegExpr.vala:220 src/functions/match/RegExpr.vala:245
+#: src/functions/sort/Randomize.vala:119
 msgid "Word"
 msgstr "Parola"
 
-#: src/functions/match/RegExpr.vala:219
+#: src/functions/match/RegExpr.vala:221
 msgid "Non-Word"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:220
+#: src/functions/match/RegExpr.vala:222
 #, fuzzy
 msgid "Any character"
 msgstr "Caratteri:"
 
-#: src/functions/match/RegExpr.vala:225
+#: src/functions/match/RegExpr.vala:227
 msgid "Location Patterns"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:226
+#: src/functions/match/RegExpr.vala:228
 msgid "Word Boundary"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:227
+#: src/functions/match/RegExpr.vala:229
 msgid "Non-Word Boundary"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:228
+#: src/functions/match/RegExpr.vala:230
 msgid "Start Of Line"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:229
+#: src/functions/match/RegExpr.vala:231
 msgid "End Of Line"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:234
+#: src/functions/match/RegExpr.vala:236
 msgid "Iteration Patterns"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:235
+#: src/functions/match/RegExpr.vala:237
 msgid "0 or 1 Times"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:236
+#: src/functions/match/RegExpr.vala:238
 msgid "0 or More Times"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:237
+#: src/functions/match/RegExpr.vala:239
 msgid "1 or More Times"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:242
+#: src/functions/match/RegExpr.vala:244
 msgid "Advanced Patterns"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:244
+#: src/functions/match/RegExpr.vala:246
 msgid "Number"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:245
+#: src/functions/match/RegExpr.vala:247
 msgid "URL"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:246
+#: src/functions/match/RegExpr.vala:248
 msgid "E-mail"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:247
+#: src/functions/match/RegExpr.vala:249
 msgid "Date"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:248
+#: src/functions/match/RegExpr.vala:250
 msgid "Phone Number"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:249
+#: src/functions/match/RegExpr.vala:251
 msgid "HTML/XML Tags"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:250
+#: src/functions/match/RegExpr.vala:252
 msgid "Specific Start Tag"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:251
+#: src/functions/match/RegExpr.vala:253
 msgid "Specific End Tag"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:252
+#: src/functions/match/RegExpr.vala:254
 msgid "Specific Tag"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:253
+#: src/functions/match/RegExpr.vala:255
 msgid "Any Start Tag"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:254
+#: src/functions/match/RegExpr.vala:256
 msgid "Any End Tag"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:255
+#: src/functions/match/RegExpr.vala:257
 msgid "Any Tag"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:265
+#: src/functions/match/RegExpr.vala:267
 msgid "Case Patterns"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:266
+#: src/functions/match/RegExpr.vala:268
 msgid "Uppercase Next Character"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:267
+#: src/functions/match/RegExpr.vala:269
 msgid "Lowercase Next Character"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:268
+#: src/functions/match/RegExpr.vala:270
 msgid "Start Uppercase Change"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:269
+#: src/functions/match/RegExpr.vala:271
 msgid "Start Lowercase Change"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:270
+#: src/functions/match/RegExpr.vala:272
 msgid "End Case Change"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:277
+#: src/functions/match/RegExpr.vala:279
 msgid "Positional Patterns"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:278
+#: src/functions/match/RegExpr.vala:280
 msgid "Matched Pattern"
 msgstr ""
 
-#: src/functions/match/RegExpr.vala:280
+#: src/functions/match/RegExpr.vala:282
 #, c-format
 msgid "Subpattern %d"
 msgstr ""
@@ -656,6 +680,37 @@ msgstr ""
 msgid "Spaces"
 msgstr "Spazi"
 
+#: src/functions/sort/Randomize.vala:58
+#: src/functions/sort/SortMoveLines.vala:129
+msgid "Lines"
+msgstr "Linee"
+
+#: src/functions/sort/Randomize.vala:59
+msgid "Sentences"
+msgstr ""
+
+#: src/functions/sort/Randomize.vala:121
+msgid "Sentence"
+msgstr ""
+
+#: src/functions/sort/Randomize.vala:123
+#, fuzzy
+msgid "Document"
+msgstr "Fine di documento"
+
+#: src/functions/sort/Randomize.vala:154
+#, c-format
+msgid "Randomize %s Within %s"
+msgstr ""
+
+#: src/functions/sort/Randomize.vala:245
+msgid "Randomize"
+msgstr ""
+
+#: src/functions/sort/Randomize.vala:254
+msgid "Within"
+msgstr ""
+
 #: src/functions/sort/SortLines.vala:30
 msgid "Sort Lines"
 msgstr "Odina linee"
@@ -682,163 +737,163 @@ msgstr ""
 msgid "Move %d Lines Up"
 msgstr ""
 
-#: src/functions/sort/SortMoveLines.vala:129
-msgid "Lines"
-msgstr "Linee"
-
 #: src/functions/sort/SortReverseChars.vala:30
 msgid "Reverse Characters"
 msgstr "Inverti caratteri"
 
-#: src/MainWindow.vala:198
+#: src/MainWindow.vala:210
 msgid "New Workspace"
 msgstr "Nuovo spazio di lavoro"
 
-#: src/MainWindow.vala:203 src/MainWindow.vala:475
+#: src/MainWindow.vala:215 src/MainWindow.vala:486
 msgid "Open File"
 msgstr "Apri File"
 
-#: src/MainWindow.vala:208 src/MainWindow.vala:513
+#: src/MainWindow.vala:220 src/MainWindow.vala:524
 msgid "Save File"
 msgstr "Salva File"
 
-#: src/MainWindow.vala:213
+#: src/MainWindow.vala:225
 msgid "Paste Over"
 msgstr "Incolla Sopra"
 
-#: src/MainWindow.vala:218
+#: src/MainWindow.vala:230
 msgid "Copy All"
 msgstr "Copia Tutto"
 
-#: src/MainWindow.vala:223 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
+#: src/MainWindow.vala:235 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
 msgid "Undo"
 msgstr "Annulla"
 
-#: src/MainWindow.vala:229 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
+#: src/MainWindow.vala:241 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
 msgid "Redo"
 msgstr "Rifai"
 
-#: src/MainWindow.vala:237
+#: src/MainWindow.vala:249
 msgid "TextShine"
 msgstr "TextShine"
 
-#: src/MainWindow.vala:247
+#: src/MainWindow.vala:259
 msgid "Statistics"
 msgstr "Statistiche"
 
-#: src/MainWindow.vala:261
+#: src/MainWindow.vala:273
 msgid "<b>Text Statistics</b>"
 msgstr "<b>Statistiche di Testo</b>"
 
-#: src/MainWindow.vala:266
+#: src/MainWindow.vala:278
 msgid "Characters:"
 msgstr "Caratteri:"
 
-#: src/MainWindow.vala:273
+#: src/MainWindow.vala:285
 msgid "Words:"
 msgstr "Parole:"
 
-#: src/MainWindow.vala:280
+#: src/MainWindow.vala:292
 msgid "Lines:"
 msgstr "Linee:"
 
-#: src/MainWindow.vala:287
+#: src/MainWindow.vala:299
 msgid "Matches:"
 msgstr "Corrispondenze:"
 
-#: src/MainWindow.vala:294
+#: src/MainWindow.vala:306
 msgid "Spelling Errors:"
 msgstr ""
 
-#: src/MainWindow.vala:369
+#: src/MainWindow.vala:381
 msgid "Properties"
 msgstr "Proprietà"
 
-#: src/MainWindow.vala:382
+#: src/MainWindow.vala:394
 msgid "Font:"
 msgstr "Font:"
 
-#: src/MainWindow.vala:423
+#: src/MainWindow.vala:435
 msgid "Enable Spell Checker:"
 msgstr ""
 
-#: src/MainWindow.vala:513
+#: src/MainWindow.vala:524
 msgid "Save"
 msgstr "Salva"
 
-#: src/SidebarCustom.vala:62
+#: src/SidebarCustom.vala:63
 msgid "Name:"
 msgstr ""
 
-#: src/SidebarCustom.vala:101 src/SidebarCustom.vala:235
+#: src/SidebarCustom.vala:102 src/SidebarCustom.vala:251
 msgid "Test run custom actions"
 msgstr ""
 
-#: src/SidebarCustom.vala:166 src/SidebarCustom.vala:373
+#: src/SidebarCustom.vala:182 src/SidebarCustom.vala:431
 msgid "Add New Action"
 msgstr ""
 
-#: src/SidebarCustom.vala:183
+#: src/SidebarCustom.vala:199
 msgid "Delete"
 msgstr ""
 
-#: src/SidebarCustom.vala:187
+#: src/SidebarCustom.vala:203
 msgid "Done"
 msgstr ""
 
-#: src/SidebarCustom.vala:231
+#: src/SidebarCustom.vala:247
 msgid "Refresh text"
 msgstr ""
 
-#: src/SidebarCustom.vala:321
+#: src/SidebarCustom.vala:336
 msgid "Test run stops after this action"
 msgstr ""
 
-#: src/SidebarCustom.vala:405
+#: src/SidebarCustom.vala:463
 msgid "Add Action Above"
 msgstr ""
 
-#: src/SidebarCustom.vala:406
+#: src/SidebarCustom.vala:464
 msgid "Add Action Below"
 msgstr ""
 
-#: src/SidebarCustom.vala:409
+#: src/SidebarCustom.vala:467
 msgid "Remove Action"
 msgstr ""
 
-#: src/SidebarCustom.vala:412
+#: src/SidebarCustom.vala:470
 msgid "Toggle Breakpoint"
 msgstr ""
 
-#: src/SidebarCustom.vala:594
+#: src/SidebarCustom.vala:473
+msgid "Edit Description"
+msgstr ""
+
+#: src/SidebarCustom.vala:683
 msgid "Select Action..."
 msgstr ""
 
-#: src/SidebarCustom.vala:602 src/SidebarFunctions.vala:66
+#: src/SidebarCustom.vala:691 src/SidebarFunctions.vala:66
 msgid "Search Actions"
 msgstr ""
 
-#: src/SidebarCustom.vala:725 src/SidebarFunctions.vala:270
+#: src/SidebarCustom.vala:814 src/SidebarFunctions.vala:274
 msgid "Switch Direction"
 msgstr ""
 
-#: src/SidebarCustom.vala:725 src/SidebarFunctions.vala:270
+#: src/SidebarCustom.vala:814 src/SidebarFunctions.vala:274
 msgid "Swap Order"
 msgstr ""
 
-#: src/SidebarCustom.vala:770 src/SidebarFunctions.vala:457
+#: src/SidebarCustom.vala:858 src/SidebarFunctions.vala:455
 msgid "Settings"
 msgstr ""
 
-#: src/SidebarCustom.vala:846
+#: src/SidebarCustom.vala:958
 msgid "Delete Custom Action?"
 msgstr ""
 
-#: src/SidebarCustom.vala:847
+#: src/SidebarCustom.vala:959
 msgid "Deleting a custom action cannot be undone."
 msgstr ""
 
-#: src/SidebarCustom.vala:848
+#: src/SidebarCustom.vala:960
 msgid "Delete Action"
 msgstr ""
 
@@ -846,36 +901,36 @@ msgstr ""
 msgid "Add Custom Action"
 msgstr ""
 
-#: src/SidebarFunctions.vala:335 src/SidebarFunctions.vala:365
+#: src/SidebarFunctions.vala:339 src/SidebarFunctions.vala:369
 msgid "Unfavorite"
 msgstr ""
 
-#: src/SidebarFunctions.vala:371
+#: src/SidebarFunctions.vala:375
 msgid "Favorite"
 msgstr ""
 
-#: src/SidebarFunctions.vala:496
+#: src/SidebarFunctions.vala:495
 msgid "Edit Action"
 msgstr ""
 
-#: src/SpellChecker.vala:234
+#: src/SpellChecker.vala:235
 msgid "No suggestions"
 msgstr ""
 
-#: src/SpellChecker.vala:246
+#: src/SpellChecker.vala:247
 msgid "More Suggestions"
 msgstr ""
 
-#: src/SpellChecker.vala:251
+#: src/SpellChecker.vala:252
 #, c-format
 msgid "Add \"%s\" to Dictionary"
 msgstr ""
 
-#: src/SpellChecker.vala:252
+#: src/SpellChecker.vala:253
 msgid "Ignore All"
 msgstr ""
 
-#: src/SpellChecker.vala:259
+#: src/SpellChecker.vala:260
 msgid "Spell Check"
 msgstr ""
 
@@ -953,94 +1008,94 @@ msgstr ""
 msgid "Action Move"
 msgstr ""
 
-#: src/Utils.vala:155
+#: src/Utils.vala:185
 msgid "Insert Characters"
 msgstr "Inserisci caratteri"
 
-#: src/Utils.vala:156
+#: src/Utils.vala:186
 msgid "Insert Date"
 msgstr "Inserisci data"
 
-#: src/Utils.vala:157
+#: src/Utils.vala:187
 msgid "Insert Time"
 msgstr "Inserisci ora"
 
-#: src/Utils.vala:160
+#: src/Utils.vala:190
 msgid "Insert Tab"
 msgstr ""
 
-#: src/Utils.vala:162
+#: src/Utils.vala:192
 msgid "Insert Incrementing Decimal"
 msgstr ""
 
-#: src/Utils.vala:163
+#: src/Utils.vala:193
 msgid "Insert Percent Sign"
 msgstr ""
 
-#: src/Utils.vala:166
+#: src/Utils.vala:196
 msgid "Standard Date"
 msgstr "Data standard"
 
-#: src/Utils.vala:168
+#: src/Utils.vala:198
 msgid "Day of Month (1-31)"
 msgstr "Giorno del mese (1-31)"
 
-#: src/Utils.vala:169
+#: src/Utils.vala:199
 msgid "Day of Month (01-31)"
 msgstr "Giorno del mese (01-31)"
 
-#: src/Utils.vala:170
+#: src/Utils.vala:200
 msgid "Month (01-12)"
 msgstr "Mese (01-12)"
 
-#: src/Utils.vala:171
+#: src/Utils.vala:201
 msgid "Year (YYYY)"
 msgstr "Anno (AAAA)"
 
-#: src/Utils.vala:172
+#: src/Utils.vala:202
 msgid "Year (YY)"
 msgstr "Anno (AA)"
 
-#: src/Utils.vala:173
+#: src/Utils.vala:203
 msgid "Day of Week"
 msgstr "Giorno della settimana"
 
-#: src/Utils.vala:174
+#: src/Utils.vala:204
 msgid "Day of Week (Abbreviated)"
 msgstr "Giorno della settimana (abbreviato)"
 
-#: src/Utils.vala:175
+#: src/Utils.vala:205
 msgid "Name of Month"
 msgstr "Nome del mese"
 
-#: src/Utils.vala:176
+#: src/Utils.vala:206
 msgid "Name of Month (Abbreviated)"
 msgstr "Nome del mese (abbreviato)"
 
-#: src/Utils.vala:179
+#: src/Utils.vala:209
 msgid "Standard Time"
 msgstr "Tempo standard"
 
-#: src/Utils.vala:181
+#: src/Utils.vala:211
 msgid "Seconds (00-59)"
 msgstr "Secondi (00-59)"
 
-#: src/Utils.vala:182
+#: src/Utils.vala:212
 msgid "Minutes (00-59)"
 msgstr "Minuti (00-59)"
 
-#: src/Utils.vala:183
+#: src/Utils.vala:213
 msgid "Hours (00-12)"
 msgstr "Ore (00-12)"
 
-#: src/Utils.vala:184
+#: src/Utils.vala:214
 msgid "Hours (00-23)"
 msgstr "Ore (00-23)"
 
-#: src/Utils.vala:185
+#: src/Utils.vala:215
 msgid "AM/PM"
 msgstr "AM/PM"
 
-#: src/Utils.vala:186
+#: src/Utils.vala:216
 msgid "Timezone"
 msgstr "Fuso orario"

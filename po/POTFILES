@@ -19,6 +19,7 @@ src/functions/insert/InsertFile.vala
 src/functions/insert/InsertLineNumbers.vala
 src/functions/insert/InsertLoremIpsum.vala
 src/functions/insert/InsertText.vala
+src/functions/insert/InsertURL.vala
 src/functions/markdown/ConvertMarkdownHTML.vala
 src/functions/markdown/MarkdownReferences.vala
 src/functions/markdown/MarkdownTableBeauty.vala
@@ -50,6 +51,7 @@ src/functions/replace/ReplacePeriodsEllipsis.vala
 src/functions/replace/ReplaceReturnSpace.vala
 src/functions/replace/ReplaceReturns.vala
 src/functions/replace/ReplaceTabsSpaces.vala
+src/functions/sort/Randomize.vala
 src/functions/sort/SortLines.vala
 src/functions/sort/SortMoveLines.vala
 src/functions/sort/SortReverseChars.vala

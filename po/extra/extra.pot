@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-22 03:06-0600\n"
+"POT-Creation-Date: 2024-02-12 23:48-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,6 +150,6 @@ msgstr ""
 msgid "Action: Markdown utilities"
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:184
+#: data/com.github.phase1geo.textshine.appdata.xml.in:194
 msgid "Initial release"
 msgstr ""

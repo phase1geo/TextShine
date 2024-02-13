@@ -179,13 +179,18 @@
     <value key="x-appcenter-stripe">pk_live_51Ccoj4BJm4hDdHaF1YKGdyGLCLtShzElKsr4GM9hJDJAoZArcWrNHsjL9b8SBs01GQBYpakj0l1tYenVJOqke93300TULHWdph</value>
   </custom>
   <releases>
-    <release version="2.0.0" date="2023-11-27">
+    <release version="2.0.0" date="2024-02-13">
       <p>New</p>
       <ul>
         <li>Added highlight-line option to Find and Regular Expression.</li>
         <li>Added German translation (thanks to Benjamin Weis).</li>
         <li>Added convert function between CSV and Markdown Table formats.</li>
         <li>Added convert function for decoding URLs.</li>
+        <li>Added support for setting sidebar width via gsettings.</li>
+        <li>Added support for inserting the contents from a URL.</li>
+        <li>Added support for adding user notes to custom functions.</li>
+        <li>Added new randomize function to operate on text.</li>
+        <li>Added new insert URL content function.</li>
       </ul>
       <p>Changes</p>
       <ul>
@@ -196,8 +201,10 @@
         <li>Added home directory permissions by default to Flatpak.</li>
         <li>Improved header bar icons to work in non-elementary environments.</li>
         <li>Widening sidebar to accommodate different displays (this can also be changed with gsettings).</li>
-        <li>Rewrote URL Encode convert function to remove libcamel dependency.</li>
         <li>Enhanced Indent XML functionality to properly indent XML code that is in minimized format.</li>
+        <li>Improved Convert Markdown Table settings UI.</li>
+        <li>Text function options are now displayed inline in the sidebar rather than via a popup.</li>
+        <li>Added tooltips to entry fields in functions.</li>
       </ul>
       <p>Bug Fixes</p>
       <ul>
@@ -205,6 +212,9 @@
         <li>Fixed app script warnings.</li>
         <li>Fixed issue with translations not working in Flatpak.</li>
         <li>Fixed issue using Indent XML that could cause the application to crash.</li>
+        <li>Fixed handling of XML comments in Indent XML conversion function.</li>
+        <li>Fixed issue with spell-checker when no matches are available.</li>
+        <li>Fixed issue with remembering size of window when it was last closed.</li>
       </ul>
     </release>
     <release version="1.2.0" date="2022-01-17">
