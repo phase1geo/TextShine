@@ -177,95 +177,103 @@
   </custom>
   <releases>
     <release version="2.0.0" date="2024-02-13">
-      <p>New</p>
-      <ul>
-        <li>Added highlight-line option to Find and Regular Expression.</li>
-        <li>Added German translation (thanks to Benjamin Weis).</li>
-        <li>Added convert function between CSV and Markdown Table formats.</li>
-        <li>Added convert function for decoding URLs.</li>
-        <li>Added support for setting sidebar width via gsettings.</li>
-        <li>Added support for inserting the contents from a URL.</li>
-        <li>Added support for adding user notes to custom functions.</li>
-        <li>Added new randomize function to operate on text.</li>
-        <li>Added new insert URL content function.</li>
-      </ul>
-      <p>Changes</p>
-      <ul>
-        <li>Updated from GTK3 to GTK4.</li>
-        <li>Updated Dutch translation (thanks to @Vistaus).</li>
-        <li>Updated Italian translation (thanks to @albanobattistella).</li>
-        <li>Updated Flatpak version from 6 to 7.2.</li>
-        <li>Added home directory permissions by default to Flatpak.</li>
-        <li>Improved header bar icons to work in non-elementary environments.</li>
-        <li>Widening sidebar to accommodate different displays (this can also be changed with gsettings).</li>
-        <li>Enhanced Indent XML functionality to properly indent XML code that is in minimized format.</li>
-        <li>Improved Convert Markdown Table settings UI.</li>
-        <li>Text function options are now displayed inline in the sidebar rather than via a popup.</li>
-        <li>Added tooltips to entry fields in functions.</li>
-      </ul>
-      <p>Bug Fixes</p>
-      <ul>
-        <li>Fixed regexp searching issue that could cause application to hang.</li>
-        <li>Fixed app script warnings.</li>
-        <li>Fixed issue with translations not working in Flatpak.</li>
-        <li>Fixed issue using Indent XML that could cause the application to crash.</li>
-        <li>Fixed handling of XML comments in Indent XML conversion function.</li>
-        <li>Fixed issue with spell-checker when no matches are available.</li>
-        <li>Fixed issue with remembering size of window when it was last closed.</li>
-      </ul>
+      <description>
+        <p>New</p>
+        <ul>
+          <li>Added highlight-line option to Find and Regular Expression.</li>
+          <li>Added German translation (thanks to Benjamin Weis).</li>
+          <li>Added convert function between CSV and Markdown Table formats.</li>
+          <li>Added convert function for decoding URLs.</li>
+          <li>Added support for setting sidebar width via gsettings.</li>
+          <li>Added support for inserting the contents from a URL.</li>
+          <li>Added support for adding user notes to custom functions.</li>
+          <li>Added new randomize function to operate on text.</li>
+          <li>Added new insert URL content function.</li>
+        </ul>
+        <p>Changes</p>
+        <ul>
+          <li>Updated from GTK3 to GTK4.</li>
+          <li>Updated Dutch translation (thanks to @Vistaus).</li>
+          <li>Updated Italian translation (thanks to @albanobattistella).</li>
+          <li>Updated Flatpak version from 6 to 7.2.</li>
+          <li>Added home directory permissions by default to Flatpak.</li>
+          <li>Improved header bar icons to work in non-elementary environments.</li>
+          <li>Widening sidebar to accommodate different displays (this can also be changed with gsettings).</li>
+          <li>Enhanced Indent XML functionality to properly indent XML code that is in minimized format.</li>
+          <li>Improved Convert Markdown Table settings UI.</li>
+          <li>Text function options are now displayed inline in the sidebar rather than via a popup.</li>
+          <li>Added tooltips to entry fields in functions.</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed regexp searching issue that could cause application to hang.</li>
+          <li>Fixed app script warnings.</li>
+          <li>Fixed issue with translations not working in Flatpak.</li>
+          <li>Fixed issue using Indent XML that could cause the application to crash.</li>
+          <li>Fixed handling of XML comments in Indent XML conversion function.</li>
+          <li>Fixed issue with spell-checker when no matches are available.</li>
+          <li>Fixed issue with remembering size of window when it was last closed.</li>
+        </ul>
+      </description>
     </release>
     <release version="1.2.0" date="2022-01-17">
-      <p>New</p>
-      <ul>
-        <li>Added MD5, SHA-1/256/384/512 checksum conversion functions.</li>
-        <li>Added Base64 encoding/decoding functions.</li>
-        <li>Added functions to support Markdown task manipulation.</li>
-        <li>Added spell checker.</li>
-        <li>Added number of spelling errors to document statistics.</li>
-      </ul>
-      <p>Changes</p>
-      <ul>
-        <li>Changed editor margins for improved readability.</li>
-        <li>Improved accuracy of the list of translatable files.</li>
-        <li>Added application to the open desktop WordProcessor category.</li>
-        <li>Improved layout of function buttons.</li>
-        <li>Enhanced built-in, insertable HTML/XML tag regular expressions.</li>
-        <li>Moved Create Custom Action... button from action list to the right of the search field in the sidebar.</li>
-        <li>Removed Accounts permissions from Flatpak manifest as it is no longer needed.</li>
-      </ul>
-      <p>Bug Fixes</p>
-      <ul>
-        <li>Fixed XML indentation functionality.</li>
-        <li>Removed extraneous debug output when running in terminal.</li>
-        <li>Fixed issue where changing function menu options did not properly save the state.</li>
-        <li>Fixed issues with favoriting/unfavoriting actions.</li>
-        <li>Fixed action search to include custom actions.</li>
-        <li>Fixed issue with loading favorited custom actions.</li>
-        <li>Fixed UI issues with custom sidebar.</li>
-        <li>Fixed issues with converting lower/upper case of Unicode characters.</li>
-      </ul>
+      <description>
+        <p>New</p>
+        <ul>
+          <li>Added MD5, SHA-1/256/384/512 checksum conversion functions.</li>
+          <li>Added Base64 encoding/decoding functions.</li>
+          <li>Added functions to support Markdown task manipulation.</li>
+          <li>Added spell checker.</li>
+          <li>Added number of spelling errors to document statistics.</li>
+        </ul>
+        <p>Changes</p>
+        <ul>
+          <li>Changed editor margins for improved readability.</li>
+          <li>Improved accuracy of the list of translatable files.</li>
+          <li>Added application to the open desktop WordProcessor category.</li>
+          <li>Improved layout of function buttons.</li>
+          <li>Enhanced built-in, insertable HTML/XML tag regular expressions.</li>
+          <li>Moved Create Custom Action... button from action list to the right of the search field in the sidebar.</li>
+          <li>Removed Accounts permissions from Flatpak manifest as it is no longer needed.</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed XML indentation functionality.</li>
+          <li>Removed extraneous debug output when running in terminal.</li>
+          <li>Fixed issue where changing function menu options did not properly save the state.</li>
+          <li>Fixed issues with favoriting/unfavoriting actions.</li>
+          <li>Fixed action search to include custom actions.</li>
+          <li>Fixed issue with loading favorited custom actions.</li>
+          <li>Fixed UI issues with custom sidebar.</li>
+          <li>Fixed issues with converting lower/upper case of Unicode characters.</li>
+        </ul>
+      </description>
     </release>
     <release version="1.1.0" date="2021-08-08">
-      <p>New</p>
-      <ul>
-        <li>Added Italian translation (thanks to @albanobattistella).</li>
-        <li>Added Flatpak manifest for releasing for elementary OS 6.</li>
-        <li>Added dark mode system support.</li>
-      </ul>
-      <p>Changes</p>
-      <ul>
-        <li>Updated application to use libhandy-1 to comply with elementary OS HIG recommendations.</li>
-        <li>Updated gtksourceview from 3 to 4.</li>
-      </ul>
-      <p>Bug Fixes</p>
-      <ul>
-        <li>Fixed random case transform functionality.</li>
-        <li>Fixed determination of camel case in text string.</li>
-        <li>Fixed warning messages when non-existent files are attempted to be opened.</li>
-      </ul>
+      <description>
+        <p>New</p>
+        <ul>
+          <li>Added Italian translation (thanks to @albanobattistella).</li>
+          <li>Added Flatpak manifest for releasing for elementary OS 6.</li>
+          <li>Added dark mode system support.</li>
+        </ul>
+        <p>Changes</p>
+        <ul>
+          <li>Updated application to use libhandy-1 to comply with elementary OS HIG recommendations.</li>
+          <li>Updated gtksourceview from 3 to 4.</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed random case transform functionality.</li>
+          <li>Fixed determination of camel case in text string.</li>
+          <li>Fixed warning messages when non-existent files are attempted to be opened.</li>
+        </ul>
+      </description>
     </release>
     <release version="1.0.1" date="2021-04-11">
-      <p>Fixing application icon in AppCenter</p>
+      <description>
+        <p>Fixing application icon in AppCenter</p>
+      </description>
     </release>
     <release version="1.0.0" date="2020-11-29">
       <description>
