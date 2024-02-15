@@ -95,14 +95,8 @@
       <li xml:lang="nl">Actie: hoofdlettergebruik aanpassen</li>
       <li xml:lang="it">Azione: Cambio di maiuscolo/minuscolo</li>
       <li xml:lang="de">Aktion: Schreibung ändern</li>
-      <li>Action: Inserting text, line numbers, lorem ipsum and file contents</li>
-      <li xml:lang="nl">Actie: tekst invoegen, regelnummers, lorem ipsum en bestandsinhoud</li>
-      <li xml:lang="it">Azione: Inserimento di testo, numeri di riga, lorem ipsum e contenuto di file</li>
-      <li xml:lang="de">Aktion: Einfügen von Text, Zeilennummern, lorem ipsum und Dateiinhalten</li>
-      <li>Action: Removing line numbers, blank lines/spaces and matched text</li>
-      <li xml:lang="nl">Actie: regelnummers, blanco regels/spaties en overeengekomen tekst wissen</li>
-      <li xml:lang="it">Azione: Rimozione di numeri di riga, righe/spazi vuoti e testo abbinato</li>
-      <li xml:lang="de">Aktion: Entfernen von Zeilennummern, Leerzeilen/Leerzeichen und übereinstimmendem Text</li>
+      <li>Action: Inserting text, line numbers, lorem ipsum and file/URL contents</li>
+      <li>Action: Removing line numbers, duplicate lines, blank lines/spaces and matched text</li>
       <li>Action: Replacement of text</li>
       <li xml:lang="nl">Actie: tekst vervangen</li>
       <li xml:lang="it">Azione: Sostituzione del testo</li>
@@ -115,6 +109,7 @@
       <li xml:lang="nl">Actie: regels rangschikken</li>
       <li xml:lang="it">Azione: Ordinamento riga</li>
       <li xml:lang="de">Aktion: Zeilensortierung</li>
+      <li>Action: Character, word, line, sentence and paragraph randomization</li>
       <li>Action: Indentation handling</li>
       <li xml:lang="nl">Actie: inspringacties</li>
       <li xml:lang="it">Azione: Gestione dell'indentazione</li>
@@ -133,6 +128,8 @@
       <li xml:lang="de">Aktion: Textkonvertierung</li>
       <li>Action: MD5, SHA-1/256/384/512 encoding and Base64 encoding/decoding</li>
       <li xml:lang="de">Aktion: MD5, SHA-1/256/384/512-Kodierung und Base64-Kodierung/Dekodierung</li>
+      <li>Action: URL encoding/decoding</li>
+      <li>Action: Hard wrapping</li>
       <li>Action: Markdown utilities</li>
       <li xml:lang="nl">Actie: Markdown-hulpmiddelen</li>
       <li xml:lang="it">Azione: Utilità di Markdown</li>

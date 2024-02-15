@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-12 23:48-0600\n"
+"POT-Creation-Date: 2024-02-14 22:16-0600\n"
 "PO-Revision-Date: 2021-04-17 17:05+0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -115,12 +115,16 @@ msgid "Action: Changing case"
 msgstr "Azione: Cambio di maiuscolo/minuscolo"
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:48
-msgid "Action: Inserting text, line numbers, lorem ipsum and file contents"
+#, fuzzy
+msgid "Action: Inserting text, line numbers, lorem ipsum and file/URL contents"
 msgstr ""
 "Azione: Inserimento di testo, numeri di riga, lorem ipsum e contenuto di file"
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:49
-msgid "Action: Removing line numbers, blank lines/spaces and matched text"
+#, fuzzy
+msgid ""
+"Action: Removing line numbers, duplicate lines, blank lines/spaces and "
+"matched text"
 msgstr ""
 "Azione: Rimozione di numeri di riga, righe/spazi vuoti e testo abbinato"
 
@@ -137,31 +141,46 @@ msgid "Action: Line sorting"
 msgstr "Azione: Ordinamento riga"
 
 #: data/com.github.phase1geo.textshine.appdata.xml.in:53
+#, fuzzy
+msgid "Action: Character, word, line, sentence and paragraph randomization"
+msgstr "Carattere,parola,linea e Statistiche abbinate."
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:54
 msgid "Action: Indentation handling"
 msgstr "Azione: Gestione dell'indentazione"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:54
+#: data/com.github.phase1geo.textshine.appdata.xml.in:55
 msgid "Action: Search and replace (includes regular expression support)"
 msgstr ""
 "Azione: Cerca e sostituisci (include il supporto delle espressioni regolari)"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:55
+#: data/com.github.phase1geo.textshine.appdata.xml.in:56
 msgid "Action: Automatic text repair"
 msgstr "Azione: Riparazione automatica del testo"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:56
+#: data/com.github.phase1geo.textshine.appdata.xml.in:57
 msgid "Action: Text conversion"
 msgstr "Azione: Conversione del testo"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:57
+#: data/com.github.phase1geo.textshine.appdata.xml.in:58
 msgid "Action: MD5, SHA-1/256/384/512 encoding and Base64 encoding/decoding"
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:58
+#: data/com.github.phase1geo.textshine.appdata.xml.in:59
+#, fuzzy
+msgid "Action: URL encoding/decoding"
+msgstr "Azione: Ordinamento riga"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:60
+#, fuzzy
+msgid "Action: Hard wrapping"
+msgstr "Azione: Ordinamento riga"
+
+#: data/com.github.phase1geo.textshine.appdata.xml.in:61
 msgid "Action: Markdown utilities"
 msgstr "Azione: Utilità di Markdown"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:194
+#: data/com.github.phase1geo.textshine.appdata.xml.in:197
 msgid "Initial release"
 msgstr "Versione iniziale"
 
