@@ -316,6 +316,7 @@ public class SidebarCustom : SidebarBox {
   /* Adds a function button to the given category item box */
   public Box add_function( TextFunction function, int index = -1 ) {
 
+    // Box containing the function frame
     var box = new Box( Orientation.VERTICAL, 0 ) {
       name = "fbox%d".printf( _next_box_id++ )
     };
@@ -326,6 +327,7 @@ public class SidebarCustom : SidebarBox {
       use_markup = true
     };
 
+    // Grid contains all of the function buttons (direction, settings)
     var grid = new Grid() {
       halign = Align.END,
       column_homogeneous = true
@@ -342,6 +344,7 @@ public class SidebarCustom : SidebarBox {
       child = breakpoint
     };
 
+    // Contains right-most menu to add a function above/below/etc.
     var more = new MenuButton() {
       icon_name = "view-more-symbolic",
       halign = Align.END,
@@ -349,13 +352,14 @@ public class SidebarCustom : SidebarBox {
     };
     show_action_menu( box, more );
 
+    // Contains the function label and the grid
     var lbox = new Box( Orientation.HORIZONTAL, 5 ) {
-      halign = Align.START,
-      hexpand = true
+      halign = Align.FILL
     };
     lbox.append( label );
     lbox.append( grid );
 
+    // Contains the elements of the top-most row of the function
     var lbbox = new Box( Orientation.HORIZONTAL, 2 );
     lbbox.append( lbox );
     lbbox.append( more );
@@ -378,6 +382,7 @@ public class SidebarCustom : SidebarBox {
       halign = Align.FILL
     };
 
+    // Contains the description elements
     var dbox = new Box( Orientation.VERTICAL, 5 ) {
       halign = Align.FILL
     };
@@ -400,18 +405,20 @@ public class SidebarCustom : SidebarBox {
       more.grab_focus();
     });
 
+    // Contains the first row, settings options and description
     var lbw = new Box( Orientation.VERTICAL, 5 );
     lbw.append( lbbox );
+
+    add_settings_button( lbw, grid, function );
 
     var wbox = function.get_widget( editor );
     if( wbox != null ) {
       lbw.append( wbox );
     }
 
-    add_settings_button( lbw, grid, function );
-
     lbw.append( dbox );
 
+    // Not actually necessary but exists for some reason
     var fbox = new Box( Orientation.VERTICAL, 5 ) {
       margin_top    = 10,
       margin_bottom = 10,
@@ -420,6 +427,7 @@ public class SidebarCustom : SidebarBox {
     };
     fbox.append( lbw );
 
+    // Draws nameless frame around the function contents
     var frame = new Frame( null ) {
       margin_start  = 4,
       margin_end    = 4,
