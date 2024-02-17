@@ -62,6 +62,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     { "action_copy",        do_copy },
     { "action_undo",        do_undo },
     { "action_redo",        do_redo },
+    { "action_shortcuts",   action_shortcuts },
     { "action_preferences", action_preferences }
   };
 
@@ -171,16 +172,18 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   /* Adds keyboard shortcuts for the menu actions */
   private void add_keyboard_shortcuts( Gtk.Application app ) {
-    app.set_accels_for_action( "win.action_new",        { "<Control>n" } );
-    app.set_accels_for_action( "win.action_open",       { "<Control>o" } );
-    app.set_accels_for_action( "win.action_save",       { "<Control>s" } );
-    app.set_accels_for_action( "win.action_quit",       { "<Control>q" } );
-    app.set_accels_for_action( "win.action_paste_over", { "<Shift><Control>v" } );
-    app.set_accels_for_action( "win.action_copy_all",   { "<Shift><Control>c" } );
-    app.set_accels_for_action( "win.action_paste",      { "<Control>v" } );
-    app.set_accels_for_action( "win.action_copy",       { "<Control>c" } );
-    app.set_accels_for_action( "win.action_undo",       { "<Control>z" } );
-    app.set_accels_for_action( "win.action_redo",       { "<Control><Shift>z" } );
+    app.set_accels_for_action( "win.action_new",         { "<Control>n" } );
+    app.set_accels_for_action( "win.action_open",        { "<Control>o" } );
+    app.set_accels_for_action( "win.action_save",        { "<Control>s" } );
+    app.set_accels_for_action( "win.action_quit",        { "<Control>q" } );
+    app.set_accels_for_action( "win.action_paste_over",  { "<Shift><Control>v" } );
+    app.set_accels_for_action( "win.action_copy_all",    { "<Shift><Control>c" } );
+    app.set_accels_for_action( "win.action_paste",       { "<Control>v" } );
+    app.set_accels_for_action( "win.action_copy",        { "<Control>c" } );
+    app.set_accels_for_action( "win.action_undo",        { "<Control>z" } );
+    app.set_accels_for_action( "win.action_redo",        { "<Control><Shift>z" } );
+    app.set_accels_for_action( "win.action_shortcuts",   { "<Control>question" } );
+    app.set_accels_for_action( "win.action_preferences", { "<Control>comma" } );
   }
 
   private void action_applied( TextFunction function ) {
@@ -260,7 +263,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   private MenuButton add_stats_button() {
 
     var stats_btn = new MenuButton() {
-      icon_name = "org.gnome.PowerStats",
+      icon_name = on_elementary ? "org.gnome.PowerStats" : "document-properties-symbolic",
       tooltip_markup = _( "Statistics" )
     };
 
@@ -365,7 +368,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   private MenuButton add_properties_button() {
 
     var menu = new GLib.Menu();
-    menu.append( _( "Preferences…" ), "win.action_preferences" );
+    menu.append( _( "Shortcut Cheatsheet…" ), "win.action_shortcuts" );
+    menu.append( _( "Preferences…" ),         "win.action_preferences" );
 
     _prop_btn = new MenuButton() {
       icon_name    = get_icon_name( "open-menu" ),
@@ -376,6 +380,17 @@ public class MainWindow : Gtk.ApplicationWindow {
     _prop_btn.activate.connect( properties_clicked );
 
     return( _prop_btn );
+
+  }
+
+  private void action_shortcuts() {
+
+    var builder = new Builder.from_resource( "/com/github/phase1geo/textshine/shortcuts.ui" );
+
+    var shortcuts = builder.get_object( "shortcuts" ) as ShortcutsWindow;
+    shortcuts.transient_for = this;
+    shortcuts.view_name     = null;
+    shortcuts.show();
 
   }
 
