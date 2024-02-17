@@ -214,40 +214,47 @@ public class MainWindow : Gtk.ApplicationWindow {
       show_title_buttons = true
     };
 
-    _clear_btn = new Button.from_icon_name( get_icon_name( "document-new" ) );
-    _clear_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "New Workspace" ), "<Control>n" ) );
+    _clear_btn = new Button.from_icon_name( get_icon_name( "document-new" ) ) {
+      tooltip_markup = Utils.tooltip_with_accel( _( "New Workspace" ), "<Control>n" )
+    };
     _clear_btn.clicked.connect( do_new );
     _header.pack_start( _clear_btn );
 
-    _open_btn = new Button.from_icon_name( get_icon_name( "document-open" ) );
-    _open_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Open File" ), "<Control>o" ) );
+    _open_btn = new Button.from_icon_name( get_icon_name( "document-open" ) ) {
+      tooltip_markup = Utils.tooltip_with_accel( _( "Open File" ), "<Control>o" )
+    };
     _open_btn.clicked.connect( do_open );
     _header.pack_start( _open_btn );
 
-    _save_btn = new Button.from_icon_name( get_icon_name( "document-save" ) );
-    _save_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Save File" ), "<Control>s" ) );
+    _save_btn = new Button.from_icon_name( get_icon_name( "document-save" ) ) {
+      tooltip_markup = Utils.tooltip_with_accel( _( "Save File" ), "<Control>s" )
+    };
     _save_btn.clicked.connect( do_save );
     _header.pack_start( _save_btn );
 
-    _paste_btn = new Button.from_icon_name( get_icon_name( "edit-paste" ) );
-    _paste_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Paste Over" ), "<Shift><Control>v" ) );
+    _paste_btn = new Button.from_icon_name( get_icon_name( "edit-paste" ) ) {
+      tooltip_markup = Utils.tooltip_with_accel( _( "Paste Over" ), "<Shift><Control>v" )
+    };
     _paste_btn.clicked.connect( do_paste_over );
     _header.pack_start( _paste_btn );
 
-    _copy_btn = new Button.from_icon_name( get_icon_name( "edit-copy" ) );
-    _copy_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Copy All" ), "<Shift><Control>c" ) );
+    _copy_btn = new Button.from_icon_name( get_icon_name( "edit-copy" ) ) {
+      tooltip_markup = Utils.tooltip_with_accel( _( "Copy All" ), "<Shift><Control>c" )
+    };
     _copy_btn.clicked.connect( do_copy_all );
     _header.pack_start( _copy_btn );
 
-    _undo_btn = new Button.from_icon_name( get_icon_name( "edit-undo" ) );
-    _undo_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Undo" ), "<Control>z" ) );
-    _undo_btn.set_sensitive( false );
+    _undo_btn = new Button.from_icon_name( get_icon_name( "edit-undo" ) ) {
+      tooltip_markup = Utils.tooltip_with_accel( _( "Undo" ), "<Control>z" ),
+      sensitive = false
+    };
     _undo_btn.clicked.connect( do_undo );
     _header.pack_start( _undo_btn );
 
-    _redo_btn = new Button.from_icon_name( get_icon_name( "edit-redo" ) );
-    _redo_btn.set_tooltip_markup( Utils.tooltip_with_accel( _( "Redo" ), "<Control><Shift>z" ) );
-    _redo_btn.set_sensitive( false );
+    _redo_btn = new Button.from_icon_name( get_icon_name( "edit-redo" ) ) {
+      tooltip_markup = Utils.tooltip_with_accel( _( "Redo" ), "<Control><Shift>z" ),
+      sensitive = false
+    };
     _redo_btn.clicked.connect( do_redo );
     _header.pack_start( _redo_btn );
 
