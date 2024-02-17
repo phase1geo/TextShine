@@ -101,7 +101,7 @@
       <value key="x-appcenter-stripe">pk_live_51Ccoj4BJm4hDdHaF1YKGdyGLCLtShzElKsr4GM9hJDJAoZArcWrNHsjL9b8SBs01GQBYpakj0l1tYenVJOqke93300TULHWdph</value>
     </custom>
     <releases>
-      <release version="2.0.0" date="2024-02-13">
+      <release version="2.0.0" date="2024-02-18">
         <description>
           <p>New</p>
           <ul>
@@ -114,6 +114,9 @@
             <li>Added support for adding user notes to custom functions.</li>
             <li>Added new randomize function to operate on text.</li>
             <li>Added new insert URL content function.</li>
+            <li>Added keyboard shortcuts cheatsheet.</li>
+            <li>Added preferences window support.</li>
+            <li>Added preference support for changing spellchecker language.</li>
           </ul>
           <p>Changes</p>
           <ul>
@@ -138,6 +141,7 @@
             <li>Fixed handling of XML comments in Indent XML conversion function.</li>
             <li>Fixed issue with spell-checker when no matches are available.</li>
             <li>Fixed issue with remembering size of window when it was last closed.</li>
+            <li>Fixed statistics icon for non-elementary OS environments.</li>
           </ul>
         </description>
       </release>

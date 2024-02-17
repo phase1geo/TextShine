@@ -56,6 +56,7 @@ src/functions/sort/SortLines.vala
 src/functions/sort/SortMoveLines.vala
 src/functions/sort/SortReverseChars.vala
 src/MainWindow.vala
+src/Preferences.vala
 src/SidebarCustom.vala
 src/SidebarFunctions.vala
 src/SpellChecker.vala
