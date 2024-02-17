@@ -90,6 +90,11 @@ public class Editor {
       }
     }
   }
+  public SpellChecker spell {
+    get {
+      return( _spell );
+    }
+  }
 
   public signal void buffer_changed( UndoBuffer buf );
 
@@ -488,6 +493,39 @@ public class Editor {
     _view.extra_menu = new GLib.Menu();
   }
 
+  /* Sets the language based on the settings value */
+  public void update_spell_language() {
+
+    var lang        = TextShine.settings.get_string( "spell-language" );
+    var lang_exists = false;
+
+    if( lang == "system" ) {
+      var env_lang = Environment.get_variable( "LANG" ).split( "." );
+      lang = env_lang[0];
+    }
+
+    var lang_list = new Gee.ArrayList<string>();
+    _spell.get_language_list( lang_list );
+
+    /* Check to see if the given language exists */
+    lang_list.foreach((elem) => {
+      if( elem == lang ) {
+        _spell.set_language( lang );
+        lang_exists = true;
+        return( false );
+      }
+      return( true );
+    });
+
+    /* Based on the search, set the language to use in the spell checker */
+    if( lang_list.size == 0 ) {
+      _spell.set_language( null );
+    } else if( !lang_exists ) {
+      _spell.set_language( lang_list.get( 0 ) );
+    }
+
+  }
+
   /*
    Connects the spell checker and selects the checked language as specified by the
    user's LANG environment variable.
@@ -497,27 +535,7 @@ public class Editor {
     _spell = new SpellChecker();
     _spell.populate_extra_menu.connect( populate_extra_menu );
 
-    var lang_exists = false;
-    var language    = Environment.get_variable( "LANG" );
-    var lang        = language.split( "." );
-    var lang_list = new Gee.ArrayList<string>();
-    _spell.get_language_list( lang_list );
-
-    lang_list.foreach((elem) => {
-      if( elem == lang[0] ) {
-        _spell.set_language( lang[0] );
-        lang_exists = true;
-        return( false );
-      }
-      return( true );
-    });
-
-    if( lang_list.size == 0 ) {
-      _spell.set_language( null );
-    } else if( !lang_exists ) {
-      _spell.set_language( lang_list.get( 0 ) );
-    }
-
+    update_spell_language();
     set_spellchecker();
 
   }

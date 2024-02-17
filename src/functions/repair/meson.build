@@ -1,0 +1,5 @@
+sources += files(
+
+    'FixSpaces.vala'
+
+)

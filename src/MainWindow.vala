@@ -37,7 +37,6 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Button         _undo_btn;
   private Button         _redo_btn;
   private MenuButton     _prop_btn;
-  private FontButton     _font;
   private Sidebar        _sidebar;
   private Box               _widget_box;
   private GLib.List<Widget> _widget_items;
@@ -53,16 +52,17 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Label          _stats_spell;
 
   private const GLib.ActionEntry[] action_entries = {
-    { "action_new",        do_new },
-    { "action_open",       do_open },
-    { "action_save",       do_save },
-    { "action_quit",       do_quit },
-    { "action_paste_over", do_paste_over },
-    { "action_copy_all",   do_copy_all },
-    { "action_paste",      do_paste },
-    { "action_copy",       do_copy },
-    { "action_undo",       do_undo },
-    { "action_redo",       do_redo }
+    { "action_new",         do_new },
+    { "action_open",        do_open },
+    { "action_save",        do_save },
+    { "action_quit",        do_quit },
+    { "action_paste_over",  do_paste_over },
+    { "action_copy_all",    do_copy_all },
+    { "action_paste",       do_paste },
+    { "action_copy",        do_copy },
+    { "action_undo",        do_undo },
+    { "action_redo",        do_redo },
+    { "action_preferences", action_preferences }
   };
 
   private bool on_elementary = Gtk.Settings.get_default().gtk_icon_theme_name == "elementary";
@@ -70,6 +70,11 @@ public class MainWindow : Gtk.ApplicationWindow {
   public TextFunctions functions {
     get {
       return( _functions );
+    }
+  }
+  public Editor editor {
+    get {
+      return( _editor );
     }
   }
 
@@ -90,13 +95,13 @@ public class MainWindow : Gtk.ApplicationWindow {
     /* Handle any changes to the dark mode preference setting */
     var dark_mode = handle_prefer_dark_changes();
 
-    /* Create the header */
-    create_header();
-
     /* Create editor */
     _editor = new Editor( this );
     _editor.buffer_changed.connect( do_buffer_changed );
     _editor.dark_mode = dark_mode;
+
+    /* Create the header */
+    create_header();
 
     var sw = new ScrolledWindow() {
       valign = Align.FILL,
@@ -359,27 +364,13 @@ public class MainWindow : Gtk.ApplicationWindow {
   /* Adds the property button and associated popover */
   private MenuButton add_properties_button() {
 
-    var box = new Box( Orientation.VERTICAL, 10 ) {
-      margin_start  = 10,
-      margin_end    = 10,
-      margin_top    = 10,
-      margin_bottom = 10
-    };
-
-    /* Add the properties items */
-    box.append( create_font_selection() );
-    box.append( create_spell_checker() );
-
-    /* Create the popover and associate it with the menu button */
-    var prop_popover = new Popover() {
-      autohide = true,
-      child = box
-    };
+    var menu = new GLib.Menu();
+    menu.append( _( "Preferences…" ), "win.action_preferences" );
 
     _prop_btn = new MenuButton() {
       icon_name    = get_icon_name( "open-menu" ),
       tooltip_text = _( "Properties" ),
-      popover      = prop_popover
+      menu_model   = menu
     };
 
     _prop_btn.activate.connect( properties_clicked );
@@ -388,71 +379,11 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Create font selection box */
-  private Box create_font_selection() {
+  /* Displays preferences window */
+  private void action_preferences() {
 
-    var lbl = new Label( _( "Font:" ) ) {
-      halign = Align.START,
-      hexpand = true
-    };
-
-    _font = new FontButton() {
-      halign = Align.END,
-      hexpand = true
-    };
-
-    _font.set_filter_func( (family, face) => {
-      var fd     = face.describe();
-      var weight = fd.get_weight();
-      var style  = fd.get_style();
-      return( (weight == Pango.Weight.NORMAL) && (style == Pango.Style.NORMAL) );
-    });
-
-    _font.font_set.connect(() => {
-      var name = _font.get_font_family().get_name();
-      var size = _font.get_font_size() / Pango.SCALE;
-      _editor.change_name_font( name, size );
-      TextShine.settings.set_string( "default-font-family", name );
-      TextShine.settings.set_int( "default-font-size", size );
-    });
-
-    /* Set the font button defaults */
-    var fd = _font.get_font_desc();
-    fd.set_family( TextShine.settings.get_string( "default-font-family" ) );
-    fd.set_size( TextShine.settings.get_int( "default-font-size" ) * Pango.SCALE );
-    _font.set_font_desc( fd );
-
-    var box = new Box( Orientation.HORIZONTAL, 10 );
-    box.append( lbl );
-    box.append( _font );
-
-    return( box );
-
-  }
-
-  private Box create_spell_checker() {
-
-    var lbl = new Label( _( "Enable Spell Checker:" ) ) {
-      halign = Align.START,
-      hexpand = true
-    };
-
-    var sw = new Switch() {
-      halign = Align.END,
-      hexpand = true,
-      active = TextShine.settings.get_boolean( "enable-spell-checking" )
-    };
-
-    sw.notify["active"].connect(() => {
-      TextShine.settings.set_boolean( "enable-spell-checking", sw.active );
-      _editor.set_spellchecker();
-    });
-
-    var box = new Box( Orientation.HORIZONTAL, 10 );
-    box.append( lbl );
-    box.append( sw );
-
-    return( box );
+    var prefs = new Preferences( this );
+    prefs.show();
 
   }
 
