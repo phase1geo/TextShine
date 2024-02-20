@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-17 15:16-0600\n"
-"PO-Revision-Date: 2022-01-17 14:10+0100\n"
+"PO-Revision-Date: 2024-02-20 14:26+0100\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: src/Application.vala:73
 msgid "Opening file"
@@ -100,59 +100,55 @@ msgstr "Soort afbreking"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:46
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:47
 msgid "Left"
-msgstr ""
+msgstr "Links"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:48
 msgid "Right"
-msgstr ""
+msgstr "Rechts"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:49
 msgid "Center"
-msgstr ""
+msgstr "Centreren"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:93
 msgid "Never"
-msgstr ""
+msgstr "Nooit"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:94
 msgid "Automatic"
-msgstr ""
+msgstr "Automatisch"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:95
 msgid "Always"
-msgstr ""
+msgstr "Altijd"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:139
-#, fuzzy
 msgid "CSV to Markdown Table"
-msgstr "Markdown-taken verwijderen"
+msgstr "Csv naar Markdowntabel"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:143
 msgid "Markdown Table to CSV"
-msgstr ""
+msgstr "Markdowntabel naar csv"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:174
-#, fuzzy
 msgid "CSV Column Separator"
-msgstr "Scheidingsteken"
+msgstr "Csv-kolomscheidingsteken"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:179
-#, fuzzy
 msgid "CSV Quote Character"
-msgstr "Aantal tekens"
+msgstr "Csv-citaatteken"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:185
 msgid "Quote Column Text"
-msgstr ""
+msgstr "Citaatkolomtekst"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:195
-#, fuzzy
 msgid "Column Alignment"
-msgstr "Kolombreedte"
+msgstr "Kolomuitlijning"
 
 #: src/functions/convert/ConvertROT13.vala:32
 msgid "ROT 13"
@@ -160,30 +156,27 @@ msgstr "ROT 13"
 
 #: src/functions/convert/ConvertURL.vala:41
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #: src/functions/convert/ConvertURL.vala:42
 msgid "Windows-1252"
-msgstr ""
+msgstr "Windows-1252"
 
 #: src/functions/convert/ConvertURL.vala:301
 msgid "Encode URL"
-msgstr "URL versleutelen"
+msgstr "Url versleutelen"
 
 #: src/functions/convert/ConvertURL.vala:305
-#, fuzzy
 msgid "Decode URL"
-msgstr "URL versleutelen"
+msgstr "Url decoderen"
 
 #: src/functions/convert/ConvertURL.vala:330
-#, fuzzy
 msgid "Character Set"
-msgstr "Aantal tekens"
+msgstr "Tekenset"
 
 #: src/functions/convert/ConvertURL.vala:338
-#, fuzzy
 msgid "Replace space with '+'"
-msgstr "Vervangen door"
+msgstr "Spatie vervangen door ‘+’"
 
 #: src/functions/indent/Indent.vala:32
 msgid "Indent One Level"
@@ -283,15 +276,13 @@ msgid "Insert At"
 msgstr "Invoegen op"
 
 #: src/functions/insert/InsertURL.vala:36
-#, fuzzy
 msgid "Insert URL Content"
-msgstr "Datum invoegen"
+msgstr "Url-inhoud invoegen"
 
 #: src/functions/insert/InsertURL.vala:90
 #: src/functions/insert/InsertURL.vala:91
-#, fuzzy
 msgid "Enter URL"
-msgstr "URL versleutelen"
+msgstr "Voer een url in"
 
 #: src/functions/markdown/ConvertMarkdownHTML.vala:35
 msgid "Convert Markdown to HTML"
@@ -299,7 +290,7 @@ msgstr "Markdown converteren naar html"
 
 #: src/functions/markdown/ConvertMarkdownHTML.vala:39
 msgid "Convert HTML to Markdown"
-msgstr "HTML converteren naar Markdown"
+msgstr "Html converteren naar Markdown"
 
 #: src/functions/markdown/MarkdownReferences.vala:44
 msgid "Generate References"
@@ -321,7 +312,7 @@ msgstr "Paragraaf"
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:69
 msgid "Add Markdown Tasks"
-msgstr "Markdown-taken invoegen"
+msgstr "Markdowntaken invoegen"
 
 #: src/functions/markdown/MarkdownTaskAdd.vala:88
 #: src/functions/markdown/MarkdownTaskDelete.vala:57
@@ -331,19 +322,19 @@ msgstr "Toepassen op"
 
 #: src/functions/markdown/MarkdownTaskComplete.vala:37
 msgid "Mark Markdown Tasks As Complete"
-msgstr "Markdown-taken markeren als afgerond"
+msgstr "Markdowntaken markeren als afgerond"
 
 #: src/functions/markdown/MarkdownTaskDelete.vala:38
 msgid "Remove Markdown Tasks"
-msgstr "Markdown-taken verwijderen"
+msgstr "Markdowntaken wissen"
 
 #: src/functions/markdown/MarkdownTaskIncomplete.vala:37
 msgid "Mark Markdown Tasks As Incomplete"
-msgstr "Markdown-taken markeren als onafgerond"
+msgstr "Markdowntaken markeren als onafgerond"
 
 #: src/functions/markdown/MarkdownTaskRemoveCompleted.vala:40
 msgid "Remove Completed Markdown Tasks"
-msgstr "Afgeronde Markdown-taken verwijderen"
+msgstr "Afgeronde Markdowntaken wissen"
 
 #: src/functions/match/ClearSelected.vala:32
 msgid "Clear Match Highlight"
@@ -359,11 +350,11 @@ msgstr "Tekst zoeken"
 
 #: src/functions/match/Find.vala:87
 msgid "Case-sensitive"
-msgstr ""
+msgstr "Hoofdlettergevoelig"
 
 #: src/functions/match/Find.vala:88 src/functions/match/RegExpr.vala:109
 msgid "Highlight Line"
-msgstr ""
+msgstr "Regel markeren"
 
 #: src/functions/match/Find.vala:179 src/Utils.vala:189
 msgid "Insert New-line"
@@ -389,9 +380,8 @@ msgstr "Vervangen door"
 
 #: src/functions/match/RegExpr.vala:104
 #: src/functions/match/ReplaceSelected.vala:76
-#, fuzzy
 msgid "Replacement Text"
-msgstr "Overeenkomstige tekst vervangen"
+msgstr "Vervangende tekst"
 
 #: src/functions/match/RegExpr.vala:211
 msgid "Character Patterns"
@@ -488,7 +478,7 @@ msgstr "Getal"
 
 #: src/functions/match/RegExpr.vala:247
 msgid "URL"
-msgstr "URL"
+msgstr "Url"
 
 #: src/functions/match/RegExpr.vala:248
 msgid "E-mail"
@@ -504,7 +494,7 @@ msgstr "Telefoonnummer"
 
 #: src/functions/match/RegExpr.vala:251
 msgid "HTML/XML Tags"
-msgstr "HTML-/XML-tags"
+msgstr "Html-/Xml-tags"
 
 #: src/functions/match/RegExpr.vala:252
 msgid "Specific Start Tag"
@@ -689,33 +679,29 @@ msgid "Lines"
 msgstr "Regels"
 
 #: src/functions/sort/Randomize.vala:59
-#, fuzzy
 msgid "Sentences"
-msgstr "Zinsschrijfwijze"
+msgstr "Zinnen"
 
 #: src/functions/sort/Randomize.vala:121
-#, fuzzy
 msgid "Sentence"
-msgstr "Zinsschrijfwijze"
+msgstr "Zin"
 
 #: src/functions/sort/Randomize.vala:123
-#, fuzzy
 msgid "Document"
-msgstr "Einde van document"
+msgstr "Document"
 
 #: src/functions/sort/Randomize.vala:154
 #, c-format
 msgid "Randomize %s Within %s"
-msgstr ""
+msgstr "%s willekeurig toepassen binnen %s"
 
 #: src/functions/sort/Randomize.vala:245
-#, fuzzy
 msgid "Randomize"
-msgstr "Willekeurige schrijfwijze"
+msgstr "Willekeurig"
 
 #: src/functions/sort/Randomize.vala:254
 msgid "Within"
-msgstr ""
+msgstr "Binnen"
 
 #: src/functions/sort/SortLines.vala:30
 msgid "Sort Lines"
@@ -809,12 +795,11 @@ msgstr "Aantal spellingfouten:"
 
 #: src/MainWindow.vala:371
 msgid "Shortcut Cheatsheet…"
-msgstr ""
+msgstr "Sneltoetsen…"
 
 #: src/MainWindow.vala:372
-#, fuzzy
 msgid "Preferences…"
-msgstr "Referenties samenstellen"
+msgstr "Voorkeuren…"
 
 #: src/MainWindow.vala:376
 msgid "Properties"
@@ -825,27 +810,24 @@ msgid "Save"
 msgstr "Opslaan"
 
 #: src/Preferences.vala:39
-#, fuzzy
 msgid "Preferences"
-msgstr "Referenties samenstellen"
+msgstr "Voorkeuren"
 
 #: src/Preferences.vala:71
 msgid "Font:"
 msgstr "Lettertype:"
 
 #: src/Preferences.vala:112
-#, fuzzy
 msgid "Enable Spell Checker:"
-msgstr "Spellingcontrole inschakelen"
+msgstr "Spellingcontrole inschakelen:"
 
 #: src/Preferences.vala:145 src/Preferences.vala:166 src/Preferences.vala:186
 msgid "Use System Language"
-msgstr ""
+msgstr "Systeemtaal gebruiken"
 
 #: src/Preferences.vala:177
-#, fuzzy
 msgid "Spell Checker Language:"
-msgstr "Spellingcontrole inschakelen"
+msgstr "Spellingcontroletaal:"
 
 #: src/SidebarCustom.vala:63
 msgid "Name:"
@@ -888,14 +870,12 @@ msgid "Remove Action"
 msgstr "Actie verwijderen"
 
 #: src/SidebarCustom.vala:478
-#, fuzzy
 msgid "Toggle Breakpoint"
 msgstr "Regeleinde instellen"
 
 #: src/SidebarCustom.vala:481
-#, fuzzy
 msgid "Edit Description"
-msgstr "Actie bewerken"
+msgstr "Beschrijving bewerken"
 
 #: src/SidebarCustom.vala:691
 msgid "Select Action..."
@@ -947,25 +927,24 @@ msgstr "Actie bewerken"
 
 #: src/SpellChecker.vala:235
 msgid "No suggestions"
-msgstr ""
+msgstr "Geen suggesties"
 
 #: src/SpellChecker.vala:247
 msgid "More Suggestions"
-msgstr ""
+msgstr "Meer suggesties"
 
 #: src/SpellChecker.vala:252
-#, fuzzy, c-format
+#, c-format
 msgid "Add \"%s\" to Dictionary"
-msgstr "Aangepaste actie toevoegen"
+msgstr "‘%s’ toevoegen aan woordenboek"
 
 #: src/SpellChecker.vala:253
 msgid "Ignore All"
-msgstr ""
+msgstr "Alles negeren"
 
 #: src/SpellChecker.vala:260
-#, fuzzy
 msgid "Spell Check"
-msgstr "Spellingcontrole inschakelen"
+msgstr "Spellingcontrole"
 
 #: src/TextFunctions.vala:58
 msgid "Favorites"
