@@ -1,21 +1,21 @@
 # GERMAN TRANSLATION FOR TEXTSHINE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the com.github.phase1geo.textshine package.
-# Benjamin Weis <benjamin.weis@gmx.com>, 2023.
+# Benjamin Weis <benjamin.weis@gmx.com>, 2023-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-17 15:16-0600\n"
-"PO-Revision-Date: 2023-01-30 19:49+0100\n"
+"PO-Revision-Date: 2024-04-27 15:31+0200\n"
 "Last-Translator: Benjamin Weis <benjamin.weis@gmx.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: src/Application.vala:73
 msgid "Opening file"
@@ -99,59 +99,55 @@ msgstr "Umbruchart"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:46
 msgid "None"
-msgstr ""
+msgstr "Keine"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:47
 msgid "Left"
-msgstr ""
+msgstr "Links"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:48
 msgid "Right"
-msgstr ""
+msgstr "Rechts"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:49
 msgid "Center"
-msgstr ""
+msgstr "Zentriert"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:93
 msgid "Never"
-msgstr ""
+msgstr "Nie"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:94
 msgid "Automatic"
-msgstr ""
+msgstr "Automatisch"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:95
 msgid "Always"
-msgstr ""
+msgstr "Immer"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:139
-#, fuzzy
 msgid "CSV to Markdown Table"
-msgstr "Markdown-Aufgaben entfernen"
+msgstr "CSV zu Markdown-Tabelle"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:143
 msgid "Markdown Table to CSV"
-msgstr ""
+msgstr "Markdown-Tabelle zu CSV"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:174
-#, fuzzy
 msgid "CSV Column Separator"
-msgstr "Trennzeichen"
+msgstr "CSV-Spaltentrennzeichen"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:179
-#, fuzzy
 msgid "CSV Quote Character"
-msgstr "Zeichen"
+msgstr "CSV-Anführungszeichen"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:185
 msgid "Quote Column Text"
 msgstr ""
 
 #: src/functions/convert/ConvertMarkdownTable.vala:195
-#, fuzzy
 msgid "Column Alignment"
-msgstr "Spaltenbreite"
+msgstr "Spaltenausrichtung"
 
 #: src/functions/convert/ConvertROT13.vala:32
 msgid "ROT 13"
@@ -170,19 +166,16 @@ msgid "Encode URL"
 msgstr "URL kodieren"
 
 #: src/functions/convert/ConvertURL.vala:305
-#, fuzzy
 msgid "Decode URL"
-msgstr "URL kodieren"
+msgstr "URL dekodieren"
 
 #: src/functions/convert/ConvertURL.vala:330
-#, fuzzy
 msgid "Character Set"
-msgstr "Zeichen"
+msgstr "Zeichensatz"
 
 #: src/functions/convert/ConvertURL.vala:338
-#, fuzzy
 msgid "Replace space with '+'"
-msgstr "Ersetzen mit"
+msgstr "Leerzeichen durch '+' ersetzen"
 
 #: src/functions/indent/Indent.vala:32
 msgid "Indent One Level"
@@ -282,15 +275,13 @@ msgid "Insert At"
 msgstr "Einfügen bei"
 
 #: src/functions/insert/InsertURL.vala:36
-#, fuzzy
 msgid "Insert URL Content"
-msgstr "Datum einfügen"
+msgstr "URL-Inhalt einfügen"
 
 #: src/functions/insert/InsertURL.vala:90
 #: src/functions/insert/InsertURL.vala:91
-#, fuzzy
 msgid "Enter URL"
-msgstr "URL kodieren"
+msgstr "URL eingeben"
 
 #: src/functions/markdown/ConvertMarkdownHTML.vala:35
 msgid "Convert Markdown to HTML"
@@ -358,11 +349,11 @@ msgstr "Text suchen"
 
 #: src/functions/match/Find.vala:87
 msgid "Case-sensitive"
-msgstr ""
+msgstr "Groß- und Kleinschreibung beachten"
 
 #: src/functions/match/Find.vala:88 src/functions/match/RegExpr.vala:109
 msgid "Highlight Line"
-msgstr ""
+msgstr "Zeile hervorheben"
 
 #: src/functions/match/Find.vala:179 src/Utils.vala:189
 msgid "Insert New-line"
@@ -388,9 +379,8 @@ msgstr "Ersetzen mit"
 
 #: src/functions/match/RegExpr.vala:104
 #: src/functions/match/ReplaceSelected.vala:76
-#, fuzzy
 msgid "Replacement Text"
-msgstr "Übereinstimmenden Text ersetzen"
+msgstr "Ersetzungstext"
 
 #: src/functions/match/RegExpr.vala:211
 msgid "Character Patterns"
@@ -688,33 +678,29 @@ msgid "Lines"
 msgstr "Zeilen"
 
 #: src/functions/sort/Randomize.vala:59
-#, fuzzy
 msgid "Sentences"
-msgstr "Satzschreibung"
+msgstr "Sätze"
 
 #: src/functions/sort/Randomize.vala:121
-#, fuzzy
 msgid "Sentence"
-msgstr "Satzschreibung"
+msgstr "Satz"
 
 #: src/functions/sort/Randomize.vala:123
-#, fuzzy
 msgid "Document"
-msgstr "Dokumentende"
+msgstr "Dokument"
 
 #: src/functions/sort/Randomize.vala:154
 #, c-format
 msgid "Randomize %s Within %s"
-msgstr ""
+msgstr "%s innerhalb von %s randomisieren"
 
 #: src/functions/sort/Randomize.vala:245
-#, fuzzy
 msgid "Randomize"
-msgstr "Zufällige Schreibung"
+msgstr "Randomisieren"
 
 #: src/functions/sort/Randomize.vala:254
 msgid "Within"
-msgstr ""
+msgstr "Innerhalb"
 
 #: src/functions/sort/SortLines.vala:30
 msgid "Sort Lines"
@@ -811,9 +797,8 @@ msgid "Shortcut Cheatsheet…"
 msgstr ""
 
 #: src/MainWindow.vala:372
-#, fuzzy
 msgid "Preferences…"
-msgstr "Referenzen generieren"
+msgstr "Einstellungen…"
 
 #: src/MainWindow.vala:376
 msgid "Properties"
@@ -824,27 +809,24 @@ msgid "Save"
 msgstr "Speichern"
 
 #: src/Preferences.vala:39
-#, fuzzy
 msgid "Preferences"
-msgstr "Referenzen generieren"
+msgstr "Einstellungen"
 
 #: src/Preferences.vala:71
 msgid "Font:"
 msgstr "Schriftart:"
 
 #: src/Preferences.vala:112
-#, fuzzy
 msgid "Enable Spell Checker:"
-msgstr "Rechtschreibprüfung aktivieren"
+msgstr "Rechtschreibprüfung aktivieren:"
 
 #: src/Preferences.vala:145 src/Preferences.vala:166 src/Preferences.vala:186
 msgid "Use System Language"
-msgstr ""
+msgstr "Systemsprache verwenden"
 
 #: src/Preferences.vala:177
-#, fuzzy
 msgid "Spell Checker Language:"
-msgstr "Rechtschreibprüfung aktivieren"
+msgstr "Rechtschreibprüfungssprache:"
 
 #: src/SidebarCustom.vala:63
 msgid "Name:"
@@ -887,14 +869,12 @@ msgid "Remove Action"
 msgstr "Aktion entfernen"
 
 #: src/SidebarCustom.vala:478
-#, fuzzy
 msgid "Toggle Breakpoint"
-msgstr "Haltepunkt hinzufügen"
+msgstr "Haltepunkt umschalten"
 
 #: src/SidebarCustom.vala:481
-#, fuzzy
 msgid "Edit Description"
-msgstr "Aktion bearbeiten"
+msgstr "Beschreibung bearbeiten"
 
 #: src/SidebarCustom.vala:691
 msgid "Select Action..."
@@ -948,25 +928,24 @@ msgstr "Aktion bearbeiten"
 
 #: src/SpellChecker.vala:235
 msgid "No suggestions"
-msgstr ""
+msgstr "Keine Vorschläge"
 
 #: src/SpellChecker.vala:247
 msgid "More Suggestions"
-msgstr ""
+msgstr "Mehr Vorschläge"
 
 #: src/SpellChecker.vala:252
-#, fuzzy, c-format
+#, c-format
 msgid "Add \"%s\" to Dictionary"
-msgstr "Benutzerdefinierte Aktion hinzufügen"
+msgstr "„%s“ zum Wörterbuch hinzufügen"
 
 #: src/SpellChecker.vala:253
 msgid "Ignore All"
-msgstr ""
+msgstr "Alle ignorieren"
 
 #: src/SpellChecker.vala:260
-#, fuzzy
 msgid "Spell Check"
-msgstr "Rechtschreibprüfung aktivieren"
+msgstr "Rechtschreibprüfung"
 
 #: src/TextFunctions.vala:58
 msgid "Favorites"
