@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-17 15:16-0600\n"
+"POT-Creation-Date: 2024-08-04 23:12-0500\n"
 "PO-Revision-Date: 2021-04-25 13:50-0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -202,12 +202,12 @@ msgstr "Inserisci file di testo"
 msgid "Insert File"
 msgstr "Inserisci File"
 
-#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:432
+#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:439
 msgid "Open"
 msgstr "Apri"
 
-#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:432
-#: src/MainWindow.vala:470 src/SidebarCustom.vala:969
+#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:439
+#: src/MainWindow.vala:477 src/SidebarCustom.vala:969
 msgid "Cancel"
 msgstr "Cancella"
 
@@ -745,75 +745,75 @@ msgstr "Inverti caratteri"
 msgid "New Workspace"
 msgstr "Nuovo spazio di lavoro"
 
-#: src/MainWindow.vala:223 src/MainWindow.vala:432
+#: src/MainWindow.vala:224 src/MainWindow.vala:439
 msgid "Open File"
 msgstr "Apri File"
 
-#: src/MainWindow.vala:228 src/MainWindow.vala:470
+#: src/MainWindow.vala:230 src/MainWindow.vala:477
 msgid "Save File"
 msgstr "Salva File"
 
-#: src/MainWindow.vala:233
+#: src/MainWindow.vala:236
 msgid "Paste Over"
 msgstr "Incolla Sopra"
 
-#: src/MainWindow.vala:238
+#: src/MainWindow.vala:242
 msgid "Copy All"
 msgstr "Copia Tutto"
 
-#: src/MainWindow.vala:243 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
+#: src/MainWindow.vala:248 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
 msgid "Undo"
 msgstr "Annulla"
 
-#: src/MainWindow.vala:249 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
+#: src/MainWindow.vala:255 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
 msgid "Redo"
 msgstr "Rifai"
 
-#: src/MainWindow.vala:257
+#: src/MainWindow.vala:264
 msgid "TextShine"
 msgstr "TextShine"
 
-#: src/MainWindow.vala:267
+#: src/MainWindow.vala:274
 msgid "Statistics"
 msgstr "Statistiche"
 
-#: src/MainWindow.vala:281
+#: src/MainWindow.vala:288
 msgid "<b>Text Statistics</b>"
 msgstr "<b>Statistiche di Testo</b>"
 
-#: src/MainWindow.vala:286
+#: src/MainWindow.vala:293
 msgid "Characters:"
 msgstr "Caratteri:"
 
-#: src/MainWindow.vala:293
+#: src/MainWindow.vala:300
 msgid "Words:"
 msgstr "Parole:"
 
-#: src/MainWindow.vala:300
+#: src/MainWindow.vala:307
 msgid "Lines:"
 msgstr "Linee:"
 
-#: src/MainWindow.vala:307
+#: src/MainWindow.vala:314
 msgid "Matches:"
 msgstr "Corrispondenze:"
 
-#: src/MainWindow.vala:314
+#: src/MainWindow.vala:321
 msgid "Spelling Errors:"
 msgstr ""
 
-#: src/MainWindow.vala:371
+#: src/MainWindow.vala:378
 msgid "Shortcut Cheatsheet…"
 msgstr ""
 
-#: src/MainWindow.vala:372
+#: src/MainWindow.vala:379
 msgid "Preferences…"
 msgstr ""
 
-#: src/MainWindow.vala:376
+#: src/MainWindow.vala:383
 msgid "Properties"
 msgstr "Proprietà"
 
-#: src/MainWindow.vala:470
+#: src/MainWindow.vala:477
 msgid "Save"
 msgstr "Salva"
 

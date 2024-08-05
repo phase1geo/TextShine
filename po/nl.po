@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-17 15:16-0600\n"
+"POT-Creation-Date: 2024-08-04 23:12-0500\n"
 "PO-Revision-Date: 2024-02-20 14:26+0100\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
@@ -199,12 +199,12 @@ msgstr "Bestandstekst invoegen"
 msgid "Insert File"
 msgstr "Bestand invoegen"
 
-#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:432
+#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:439
 msgid "Open"
 msgstr "Openen"
 
-#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:432
-#: src/MainWindow.vala:470 src/SidebarCustom.vala:969
+#: src/functions/insert/InsertFile.vala:45 src/MainWindow.vala:439
+#: src/MainWindow.vala:477 src/SidebarCustom.vala:969
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -737,75 +737,75 @@ msgstr "Tekens omkeren"
 msgid "New Workspace"
 msgstr "Nieuw werkblad"
 
-#: src/MainWindow.vala:223 src/MainWindow.vala:432
+#: src/MainWindow.vala:224 src/MainWindow.vala:439
 msgid "Open File"
 msgstr "Bestand openen"
 
-#: src/MainWindow.vala:228 src/MainWindow.vala:470
+#: src/MainWindow.vala:230 src/MainWindow.vala:477
 msgid "Save File"
 msgstr "Bestand opslaan"
 
-#: src/MainWindow.vala:233
+#: src/MainWindow.vala:236
 msgid "Paste Over"
 msgstr "Plakken over"
 
-#: src/MainWindow.vala:238
+#: src/MainWindow.vala:242
 msgid "Copy All"
 msgstr "Alles kopiëren"
 
-#: src/MainWindow.vala:243 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
+#: src/MainWindow.vala:248 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
 msgid "Undo"
 msgstr "Ongedaan maken"
 
-#: src/MainWindow.vala:249 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
+#: src/MainWindow.vala:255 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
 msgid "Redo"
 msgstr "Opnieuw uitvoeren"
 
-#: src/MainWindow.vala:257
+#: src/MainWindow.vala:264
 msgid "TextShine"
 msgstr "TextShine"
 
-#: src/MainWindow.vala:267
+#: src/MainWindow.vala:274
 msgid "Statistics"
 msgstr "Statistieken"
 
-#: src/MainWindow.vala:281
+#: src/MainWindow.vala:288
 msgid "<b>Text Statistics</b>"
 msgstr "<b>Tekststatistieken</b>"
 
-#: src/MainWindow.vala:286
+#: src/MainWindow.vala:293
 msgid "Characters:"
 msgstr "Aantal tekens:"
 
-#: src/MainWindow.vala:293
+#: src/MainWindow.vala:300
 msgid "Words:"
 msgstr "Aantal woorden:"
 
-#: src/MainWindow.vala:300
+#: src/MainWindow.vala:307
 msgid "Lines:"
 msgstr "Aantal regels:"
 
-#: src/MainWindow.vala:307
+#: src/MainWindow.vala:314
 msgid "Matches:"
 msgstr "Aantal overeenkomsten:"
 
-#: src/MainWindow.vala:314
+#: src/MainWindow.vala:321
 msgid "Spelling Errors:"
 msgstr "Aantal spellingfouten:"
 
-#: src/MainWindow.vala:371
+#: src/MainWindow.vala:378
 msgid "Shortcut Cheatsheet…"
 msgstr "Sneltoetsen…"
 
-#: src/MainWindow.vala:372
+#: src/MainWindow.vala:379
 msgid "Preferences…"
 msgstr "Voorkeuren…"
 
-#: src/MainWindow.vala:376
+#: src/MainWindow.vala:383
 msgid "Properties"
 msgstr "Eigenschappen"
 
-#: src/MainWindow.vala:470
+#: src/MainWindow.vala:477
 msgid "Save"
 msgstr "Opslaan"
 

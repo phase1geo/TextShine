@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-17 15:16-0600\n"
+"POT-Creation-Date: 2024-08-04 23:12-0500\n"
 "PO-Revision-Date: 2023-01-30 20:00+0100\n"
 "Last-Translator: Benjamin Weis <benjamin.weis@gmx.com>\n"
 "Language-Team: \n"
@@ -40,7 +40,7 @@ msgstr "Text in der Zwischenablage bearbeiten"
 msgid "Trevor Williams"
 msgstr "Trevor Williams"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:22
+#: data/com.github.phase1geo.textshine.appdata.xml.in:23
 msgid ""
 "Easily paste text from the clipboard or load text from a file, modify the "
 "text with loads of built-in text actions and user-created custom text "
@@ -51,7 +51,7 @@ msgstr ""
 "und benutzerdefinierten Text-Arbeitsabläufen, und speichern Sie die "
 "Änderungen in der Zwischenablage oder in einer Datei."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:27
+#: data/com.github.phase1geo.textshine.appdata.xml.in:28
 msgid ""
 "In addition to the built-in actions, TextShine allows you to create and test "
 "custom text conversion workflows. These custom workflows can then be used in "
@@ -62,70 +62,70 @@ msgstr ""
 "testen. Diese benutzerdefinierten Arbeitsabläufe können dann auf die gleiche "
 "Weise verwendet werden wie die integrierten Aktionen innerhalb der Anwendung."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:32
+#: data/com.github.phase1geo.textshine.appdata.xml.in:33
 msgid "Key features include the following:"
 msgstr "Zu den Hauptmerkmalen gehören die folgenden:"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:36
+#: data/com.github.phase1geo.textshine.appdata.xml.in:37
 msgid "Load text from clipboard or from a file."
 msgstr "Text aus der Zwischenablage oder aus einer Datei laden."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:37
+#: data/com.github.phase1geo.textshine.appdata.xml.in:38
 msgid "Save text back to clipboard, to the same file or to a new file."
 msgstr ""
 "Text zurück in die Zwischenablage, in dieselbe Datei oder in eine neue Datei "
 "speichern."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:38
+#: data/com.github.phase1geo.textshine.appdata.xml.in:39
 msgid "Unlimited undo/redo of text changes."
 msgstr "Unbegrenztes Rückgängigmachen/Wiederherstellen von Textänderungen."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:39
+#: data/com.github.phase1geo.textshine.appdata.xml.in:40
 msgid "Apply a text action in a single click."
 msgstr "Eine Textaktion mit einem einzigen Klick anwenden."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:40
+#: data/com.github.phase1geo.textshine.appdata.xml.in:41
 msgid "Support for action favoriting."
 msgstr "Unterstützung für das Favorisieren von Aktionen."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:41
+#: data/com.github.phase1geo.textshine.appdata.xml.in:42
 msgid "Support for creating and testing custom actions."
 msgstr ""
 "Unterstützung für das Erstellen und Testen benutzerdefinierter Aktionen."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:42
+#: data/com.github.phase1geo.textshine.appdata.xml.in:43
 msgid "Quickly search available text actions."
 msgstr "Verfügbare Textaktionen schnell durchsuchen."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:43
+#: data/com.github.phase1geo.textshine.appdata.xml.in:44
 msgid "Character, word, line, match and spelling error statistics."
 msgstr ""
 "Statistiken über Zeichen, Wörter, Zeilen, Übereinstimmungen und "
 "Rechtschreibfehler."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:44
+#: data/com.github.phase1geo.textshine.appdata.xml.in:45
 msgid "Support for font size changes."
 msgstr "Unterstützung für Schriftgrößenänderungen."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:45
+#: data/com.github.phase1geo.textshine.appdata.xml.in:46
 msgid "Built-in spell checker."
 msgstr "Eingebaute Rechtschreibprüfung."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:46
+#: data/com.github.phase1geo.textshine.appdata.xml.in:47
 msgid "Categorized text actions which include:"
 msgstr "Kategorisierte Textaktionen, die Folgendes beinhalten:"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:47
+#: data/com.github.phase1geo.textshine.appdata.xml.in:48
 msgid "Action: Changing case"
 msgstr "Aktion: Schreibung ändern"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:48
+#: data/com.github.phase1geo.textshine.appdata.xml.in:49
 #, fuzzy
 msgid "Action: Inserting text, line numbers, lorem ipsum and file/URL contents"
 msgstr ""
 "Aktion: Einfügen von Text, Zeilennummern, lorem ipsum und Dateiinhalten"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:49
+#: data/com.github.phase1geo.textshine.appdata.xml.in:50
 #, fuzzy
 msgid ""
 "Action: Removing line numbers, duplicate lines, blank lines/spaces and "
@@ -134,335 +134,335 @@ msgstr ""
 "Aktion: Entfernen von Zeilennummern, Leerzeilen/Leerzeichen und "
 "übereinstimmendem Text"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:50
+#: data/com.github.phase1geo.textshine.appdata.xml.in:51
 msgid "Action: Replacement of text"
 msgstr "Aktion: Ersetzung von Text"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:51
+#: data/com.github.phase1geo.textshine.appdata.xml.in:52
 msgid "Action: Quotation conversion"
 msgstr "Aktion: Konvertierung von Anführungszeichen"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:52
+#: data/com.github.phase1geo.textshine.appdata.xml.in:53
 msgid "Action: Line sorting"
 msgstr "Aktion: Zeilensortierung"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:53
+#: data/com.github.phase1geo.textshine.appdata.xml.in:54
 #, fuzzy
 msgid "Action: Character, word, line, sentence and paragraph randomization"
 msgstr ""
 "Statistiken über Zeichen, Wörter, Zeilen, Übereinstimmungen und "
 "Rechtschreibfehler."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:54
+#: data/com.github.phase1geo.textshine.appdata.xml.in:55
 msgid "Action: Indentation handling"
 msgstr "Aktion: Behandlung von Einrückungen"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:55
+#: data/com.github.phase1geo.textshine.appdata.xml.in:56
 msgid "Action: Search and replace (includes regular expression support)"
 msgstr "Aktion: Suchen und Ersetzen (mit Unterstützung für reguläre Ausdrücke)"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:56
+#: data/com.github.phase1geo.textshine.appdata.xml.in:57
 msgid "Action: Automatic text repair"
 msgstr "Aktion: Automatische Textreparatur"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:57
+#: data/com.github.phase1geo.textshine.appdata.xml.in:58
 msgid "Action: Text conversion"
 msgstr "Aktion: Textkonvertierung"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:58
+#: data/com.github.phase1geo.textshine.appdata.xml.in:59
 msgid "Action: MD5, SHA-1/256/384/512 encoding and Base64 encoding/decoding"
 msgstr ""
 "Aktion: MD5, SHA-1/256/384/512-Kodierung und Base64-Kodierung/Dekodierung"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:59
+#: data/com.github.phase1geo.textshine.appdata.xml.in:60
 #, fuzzy
 msgid "Action: URL encoding/decoding"
 msgstr "Aktion: Zeilensortierung"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:60
+#: data/com.github.phase1geo.textshine.appdata.xml.in:61
 #, fuzzy
 msgid "Action: Hard wrapping"
 msgstr "Aktion: Zeilensortierung"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:61
+#: data/com.github.phase1geo.textshine.appdata.xml.in:62
 msgid "Action: Markdown utilities"
 msgstr "Aktion: Markdown-Hilfsmittel"
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:106
-#: data/com.github.phase1geo.textshine.appdata.xml.in:150
-#: data/com.github.phase1geo.textshine.appdata.xml.in:183
+#: data/com.github.phase1geo.textshine.appdata.xml.in:107
+#: data/com.github.phase1geo.textshine.appdata.xml.in:151
+#: data/com.github.phase1geo.textshine.appdata.xml.in:184
 msgid "New"
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:108
+#: data/com.github.phase1geo.textshine.appdata.xml.in:109
 msgid "Added highlight-line option to Find and Regular Expression."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:109
+#: data/com.github.phase1geo.textshine.appdata.xml.in:110
 msgid "Added German translation (thanks to Benjamin Weis)."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:110
+#: data/com.github.phase1geo.textshine.appdata.xml.in:111
 msgid "Added convert function between CSV and Markdown Table formats."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:111
+#: data/com.github.phase1geo.textshine.appdata.xml.in:112
 msgid "Added convert function for decoding URLs."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:112
+#: data/com.github.phase1geo.textshine.appdata.xml.in:113
 msgid "Added support for setting sidebar width via gsettings."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:113
+#: data/com.github.phase1geo.textshine.appdata.xml.in:114
 msgid "Added support for inserting the contents from a URL."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:114
+#: data/com.github.phase1geo.textshine.appdata.xml.in:115
 #, fuzzy
 msgid "Added support for adding user notes to custom functions."
 msgstr ""
 "Unterstützung für das Erstellen und Testen benutzerdefinierter Aktionen."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:115
+#: data/com.github.phase1geo.textshine.appdata.xml.in:116
 msgid "Added new randomize function to operate on text."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:116
+#: data/com.github.phase1geo.textshine.appdata.xml.in:117
 msgid "Added new insert URL content function."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:117
+#: data/com.github.phase1geo.textshine.appdata.xml.in:118
 msgid "Added keyboard shortcuts cheatsheet."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:118
+#: data/com.github.phase1geo.textshine.appdata.xml.in:119
 msgid "Added preferences window support."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:119
+#: data/com.github.phase1geo.textshine.appdata.xml.in:120
 msgid "Added preference support for changing spellchecker language."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:121
-#: data/com.github.phase1geo.textshine.appdata.xml.in:158
-#: data/com.github.phase1geo.textshine.appdata.xml.in:189
+#: data/com.github.phase1geo.textshine.appdata.xml.in:122
+#: data/com.github.phase1geo.textshine.appdata.xml.in:159
+#: data/com.github.phase1geo.textshine.appdata.xml.in:190
 msgid "Changes"
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:123
+#: data/com.github.phase1geo.textshine.appdata.xml.in:124
 msgid "Updated from GTK3 to GTK4."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:124
+#: data/com.github.phase1geo.textshine.appdata.xml.in:125
 msgid "Updated Dutch translation (thanks to @Vistaus)."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:125
+#: data/com.github.phase1geo.textshine.appdata.xml.in:126
 msgid "Updated Italian translation (thanks to @albanobattistella)."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:126
+#: data/com.github.phase1geo.textshine.appdata.xml.in:127
 msgid "Updated Flatpak version from 6 to 7.2."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:127
+#: data/com.github.phase1geo.textshine.appdata.xml.in:128
 msgid "Added home directory permissions by default to Flatpak."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:128
+#: data/com.github.phase1geo.textshine.appdata.xml.in:129
 msgid "Improved header bar icons to work in non-elementary environments."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:129
+#: data/com.github.phase1geo.textshine.appdata.xml.in:130
 msgid ""
 "Widening sidebar to accommodate different displays (this can also be changed "
 "with gsettings)."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:130
+#: data/com.github.phase1geo.textshine.appdata.xml.in:131
 msgid ""
 "Enhanced Indent XML functionality to properly indent XML code that is in "
 "minimized format."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:131
+#: data/com.github.phase1geo.textshine.appdata.xml.in:132
 msgid "Improved Convert Markdown Table settings UI."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:132
+#: data/com.github.phase1geo.textshine.appdata.xml.in:133
 msgid ""
 "Text function options are now displayed inline in the sidebar rather than "
 "via a popup."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:133
+#: data/com.github.phase1geo.textshine.appdata.xml.in:134
 msgid "Added tooltips to entry fields in functions."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:135
-#: data/com.github.phase1geo.textshine.appdata.xml.in:168
-#: data/com.github.phase1geo.textshine.appdata.xml.in:194
+#: data/com.github.phase1geo.textshine.appdata.xml.in:136
+#: data/com.github.phase1geo.textshine.appdata.xml.in:169
+#: data/com.github.phase1geo.textshine.appdata.xml.in:195
 msgid "Bug Fixes"
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:137
+#: data/com.github.phase1geo.textshine.appdata.xml.in:138
 msgid "Fixed regexp searching issue that could cause application to hang."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:138
+#: data/com.github.phase1geo.textshine.appdata.xml.in:139
 msgid "Fixed app script warnings."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:139
+#: data/com.github.phase1geo.textshine.appdata.xml.in:140
 msgid "Fixed issue with translations not working in Flatpak."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:140
+#: data/com.github.phase1geo.textshine.appdata.xml.in:141
 msgid "Fixed issue using Indent XML that could cause the application to crash."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:141
+#: data/com.github.phase1geo.textshine.appdata.xml.in:142
 msgid "Fixed handling of XML comments in Indent XML conversion function."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:142
+#: data/com.github.phase1geo.textshine.appdata.xml.in:143
 msgid "Fixed issue with spell-checker when no matches are available."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:143
+#: data/com.github.phase1geo.textshine.appdata.xml.in:144
 msgid "Fixed issue with remembering size of window when it was last closed."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:144
+#: data/com.github.phase1geo.textshine.appdata.xml.in:145
 msgid "Fixed statistics icon for non-elementary OS environments."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:152
+#: data/com.github.phase1geo.textshine.appdata.xml.in:153
 msgid "Added MD5, SHA-1/256/384/512 checksum conversion functions."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:153
+#: data/com.github.phase1geo.textshine.appdata.xml.in:154
 msgid "Added Base64 encoding/decoding functions."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:154
+#: data/com.github.phase1geo.textshine.appdata.xml.in:155
 msgid "Added functions to support Markdown task manipulation."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:155
+#: data/com.github.phase1geo.textshine.appdata.xml.in:156
 #, fuzzy
 msgid "Added spell checker."
 msgstr "Eingebaute Rechtschreibprüfung."
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:156
+#: data/com.github.phase1geo.textshine.appdata.xml.in:157
 msgid "Added number of spelling errors to document statistics."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:160
+#: data/com.github.phase1geo.textshine.appdata.xml.in:161
 msgid "Changed editor margins for improved readability."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:161
+#: data/com.github.phase1geo.textshine.appdata.xml.in:162
 msgid "Improved accuracy of the list of translatable files."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:162
+#: data/com.github.phase1geo.textshine.appdata.xml.in:163
 msgid "Added application to the open desktop WordProcessor category."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:163
+#: data/com.github.phase1geo.textshine.appdata.xml.in:164
 msgid "Improved layout of function buttons."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:164
+#: data/com.github.phase1geo.textshine.appdata.xml.in:165
 msgid "Enhanced built-in, insertable HTML/XML tag regular expressions."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:165
+#: data/com.github.phase1geo.textshine.appdata.xml.in:166
 msgid ""
 "Moved Create Custom Action... button from action list to the right of the "
 "search field in the sidebar."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:166
+#: data/com.github.phase1geo.textshine.appdata.xml.in:167
 msgid ""
 "Removed Accounts permissions from Flatpak manifest as it is no longer needed."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:170
+#: data/com.github.phase1geo.textshine.appdata.xml.in:171
 msgid "Fixed XML indentation functionality."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:171
+#: data/com.github.phase1geo.textshine.appdata.xml.in:172
 msgid "Removed extraneous debug output when running in terminal."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:172
+#: data/com.github.phase1geo.textshine.appdata.xml.in:173
 msgid ""
 "Fixed issue where changing function menu options did not properly save the "
 "state."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:173
+#: data/com.github.phase1geo.textshine.appdata.xml.in:174
 msgid "Fixed issues with favoriting/unfavoriting actions."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:174
+#: data/com.github.phase1geo.textshine.appdata.xml.in:175
 msgid "Fixed action search to include custom actions."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:175
+#: data/com.github.phase1geo.textshine.appdata.xml.in:176
 msgid "Fixed issue with loading favorited custom actions."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:176
+#: data/com.github.phase1geo.textshine.appdata.xml.in:177
 msgid "Fixed UI issues with custom sidebar."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:177
+#: data/com.github.phase1geo.textshine.appdata.xml.in:178
 msgid "Fixed issues with converting lower/upper case of Unicode characters."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:185
+#: data/com.github.phase1geo.textshine.appdata.xml.in:186
 msgid "Added Italian translation (thanks to @albanobattistella)."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:186
+#: data/com.github.phase1geo.textshine.appdata.xml.in:187
 msgid "Added Flatpak manifest for releasing for elementary OS 6."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:187
+#: data/com.github.phase1geo.textshine.appdata.xml.in:188
 msgid "Added dark mode system support."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:191
+#: data/com.github.phase1geo.textshine.appdata.xml.in:192
 msgid ""
 "Updated application to use libhandy-1 to comply with elementary OS HIG "
 "recommendations."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:192
+#: data/com.github.phase1geo.textshine.appdata.xml.in:193
 msgid "Updated gtksourceview from 3 to 4."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:196
+#: data/com.github.phase1geo.textshine.appdata.xml.in:197
 msgid "Fixed random case transform functionality."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:197
+#: data/com.github.phase1geo.textshine.appdata.xml.in:198
 msgid "Fixed determination of camel case in text string."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:198
+#: data/com.github.phase1geo.textshine.appdata.xml.in:199
 msgid ""
 "Fixed warning messages when non-existent files are attempted to be opened."
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:204
+#: data/com.github.phase1geo.textshine.appdata.xml.in:205
 msgid "Fixing application icon in AppCenter"
 msgstr ""
 
-#: data/com.github.phase1geo.textshine.appdata.xml.in:209
+#: data/com.github.phase1geo.textshine.appdata.xml.in:210
 msgid "Initial release"
 msgstr "Erste Veröffentlichung"

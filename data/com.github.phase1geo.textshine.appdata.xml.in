@@ -7,6 +7,7 @@
     <name>TextShine</name>
     <summary>Powerfully transform text</summary>
     <developer_name>Trevor Williams</developer_name>
+    <developer>com.github.phase1geo</developer>
     <provides>
       <binary>com.github.phase1geo.textshine</binary>
     </provides>
