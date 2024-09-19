@@ -12,7 +12,7 @@
       <description>Most recent height of window</description>
     </key>
     <key name="sidebar-width" type="i">
-      <default>350</default>
+      <default>375</default>
       <summary>Width of the sidebar (in pixels)</summary>
       <description>Width of the sidebar (in pixels)</description>
     </key>
