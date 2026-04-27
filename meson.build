@@ -73,7 +73,7 @@ e = executable('com.github.phase1geo.textshine',
     gresource,
     dependencies: dependencies,
     vala_args: [
-        meson.source_root() + '/vapi/libmarkdown.vapi'
+        meson.project_source_root() + '/vapi/libmarkdown.vapi'
     ],
     install : true
 )
