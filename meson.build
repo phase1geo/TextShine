@@ -48,8 +48,8 @@ cc = meson.get_compiler('c')
 libmarkdown = cc.find_library('markdown', required: true)
 
 add_project_arguments([
-        '--vapidir', join_paths(meson.current_source_dir(), 'vapi'),
-        '--disable-warnings'
+        '--vapidir', join_paths(meson.current_source_dir(), 'vapi')
+        # '--disable-warnings'
     ],
     language: 'vala',
 )

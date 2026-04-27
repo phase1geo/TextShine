@@ -59,7 +59,6 @@ public class Editor {
   private GtkSource.Buffer _buffer;
   private UndoBuffer       _undo_buffer;
   private bool             _ignore_edit = false;
-  private string           _lang_dict;
   private SpellChecker     _spell = null;
   private bool             _dark_mode   = false;
 

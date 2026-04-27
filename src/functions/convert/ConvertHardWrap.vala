@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -56,7 +56,8 @@ public class ConvertHardWrap : TextFunction {
   private int          _col_width = 80;
   private HardWrapType _wrap_type = HardWrapType.WORD;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ConvertHardWrap( bool custom = false ) {
     base( "convert-hard-wrap", custom );
   }
@@ -87,7 +88,8 @@ public class ConvertHardWrap : TextFunction {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
 
     add_range_setting( grid, 0, _( "Column Width" ), 20, 150, 5, _col_width, (value) => {
@@ -105,7 +107,8 @@ public class ConvertHardWrap : TextFunction {
 
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
 
     var lines = original.split( "\n" );
@@ -115,6 +118,7 @@ public class ConvertHardWrap : TextFunction {
       switch( _wrap_type ) {
         case HardWrapType.CHAR :  str += char_wrap( line );  break;
         case HardWrapType.WORD :  str += word_wrap( line );  break;
+        default                :  assert_not_reached();
       }
     }
 

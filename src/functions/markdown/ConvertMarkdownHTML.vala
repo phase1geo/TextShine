@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,7 +23,8 @@ public class ConvertMarkdownHTML : TextFunction {
 
   private Regex _re;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ConvertMarkdownHTML( bool custom = false ) {
     base( "convert-markdown-html", custom, FunctionDirection.LEFT_TO_RIGHT );
     try {
@@ -45,7 +46,8 @@ public class ConvertMarkdownHTML : TextFunction {
     return( fn );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
       return( markdown_to_html( original ) );
@@ -54,7 +56,8 @@ public class ConvertMarkdownHTML : TextFunction {
     }
   }
 
-  /* Converts the given string into HTML from Markdown */
+  //-------------------------------------------------------------
+  // Converts the given string into HTML from Markdown
   private string markdown_to_html( string text ) {
     var html = "";
     var flags = 0x47607004;
@@ -64,7 +67,8 @@ public class ConvertMarkdownHTML : TextFunction {
     return( html );
   }
 
-  /* Converts the given string into Markdown from HTML */
+  //-------------------------------------------------------------
+  // Converts the given string into Markdown from HTML
   private string html_to_markdown( string original ) {
     var html = "<div>" + original + "</div>";
     var doc = Xml.Parser.parse_memory( html, html.length );
@@ -102,6 +106,8 @@ public class ConvertMarkdownHTML : TextFunction {
           } catch( RegexError e ) {}
         }
         break;
+      default :
+        break;
     }
     return( str );
   }
@@ -114,7 +120,8 @@ public class ConvertMarkdownHTML : TextFunction {
     return( verbatim ? str : str.strip() );
   }
 
-  /* Parses the given element for tag information */
+  //-------------------------------------------------------------
+  // Parses the given element for tag information
   private string parse_element( Xml.Node* node, bool verbatim ) {
     var name = node->name.down();
     switch( name ) {

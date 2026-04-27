@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -34,7 +34,8 @@ public class Find : TextFunction {
     { "action_insert_find", action_insert_find, "s" },
   };
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public Find( MainWindow win, bool custom = false ) {
 
     base( "find", custom );
@@ -63,7 +64,9 @@ public class Find : TextFunction {
     return( false );
   }
 
-  /* Inserts the given string into the find entry at the current insertion point */
+  //-------------------------------------------------------------
+  // Inserts the given string into the find entry at the current
+  // insertion point
   private void action_insert_find( SimpleAction action, Variant? variant ) {
     var str = variant.get_string();
     if( str != null ) {
@@ -72,7 +75,8 @@ public class Find : TextFunction {
     }
   }
 
-  /* Creates the search UI */
+  //-------------------------------------------------------------
+  // Creates the search UI
   private void create_widget( Editor editor, out Box box, out Entry entry ) {
 
     _find = new Entry() {
@@ -160,7 +164,7 @@ public class Find : TextFunction {
 
     }
 
-    /* Add the menu actions */
+    // Add the menu actions
     var actions = new SimpleActionGroup();
     actions.add_action_entries( action_entries, this );
     box.insert_action_group( "find", actions );
@@ -183,12 +187,12 @@ public class Find : TextFunction {
 
   private void do_find( Editor editor, UndoItem? undo_item ) {
 
-    /* Get the selected ranges and clear them */
+    // Get the selected ranges and clear them
     var ranges = new Array<Editor.Position>();
     editor.get_ranges( ranges, false );
     editor.remove_selected( undo_item );
 
-    /* If the pattern text is empty, just return now */
+    // If the pattern text is empty, just return now
     if( _find_text == "" ) {
       return;
     }
@@ -237,7 +241,8 @@ public class Find : TextFunction {
     do_find( editor, undo_item );
   }
 
-  /* Called when the action button is clicked.  Displays the UI. */
+  //-------------------------------------------------------------
+  // Called when the action button is clicked.  Displays the UI.
   public override void launch( Editor editor ) {
     if( custom ) {
       do_find( editor, null );

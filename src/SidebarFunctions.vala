@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -48,10 +48,10 @@ public class SidebarFunctions : SidebarBox {
   private Box              _favorite_box;
   private Box              _custom_box;
   private Expander         _custom_exp;
-  private Revealer         _custom_revealer;
   private Box              _edit_fbox;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public SidebarFunctions( MainWindow win, Editor editor ) {
 
     base( win, editor );
@@ -59,7 +59,7 @@ public class SidebarFunctions : SidebarBox {
     _functions  = new Array<Functions>();
     _categories = new Array<Category>();
 
-    /* Create search entry */
+    // Create search entry
     _search = new SearchEntry() {
       halign = Align.FILL,
       hexpand = true,
@@ -67,7 +67,7 @@ public class SidebarFunctions : SidebarBox {
     };
     _search.search_changed.connect( search_functions );
 
-    /* Create new custom function button */
+    // Create new custom function button
     var custom = new Button.from_icon_name( "list-add-symbolic" ) {
       halign = Align.END,
       tooltip_text = _( "Add Custom Action" )
@@ -86,7 +86,7 @@ public class SidebarFunctions : SidebarBox {
     tbox.append( _search );
     tbox.append( custom );
 
-    /* Create scrolled box */
+    // Create scrolled box
     var cbox = new Box( Orientation.VERTICAL, 0 );
     var vp   = new Viewport( null, null ) {
       child = cbox
@@ -99,7 +99,7 @@ public class SidebarFunctions : SidebarBox {
       child   = vp
     };
 
-    /* Add widgets to box */
+    // Add widgets to box
     var functions = win.functions;
     for( int i=0; i<functions.categories.length; i++ ) {
       var category = functions.categories.index( i );
@@ -111,7 +111,9 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Performs search of all text functions, displaying only those functions which match the search text */
+  //-------------------------------------------------------------
+  // Performs search of all text functions, displaying only those
+  // functions which match the search text
   private void search_functions() {
 
     var value = _search.text.down();
@@ -131,7 +133,8 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Creates category returning expander and item box */
+  //-------------------------------------------------------------
+  // Creates category returning expander and item box
   private Revealer create_category( string name, string label ) {
 
     var setting = "category-" + name + "-expanded";
@@ -143,7 +146,7 @@ public class SidebarFunctions : SidebarBox {
       margin_bottom = 10
     };
 
-    /* Create expander */
+    // Create expander
     var exp = new Expander( "  " + Utils.make_title( label ) ) {
       margin_top = 5,
       use_markup = true,
@@ -171,7 +174,7 @@ public class SidebarFunctions : SidebarBox {
         break;
     }
 
-    /* Populate item_box with functions */
+    // Populate item_box with functions
     var functions = win.functions.get_category_functions( name );
     for( int i=0; i<functions.length; i++ ) {
       add_function( name, ibox, exp, functions.index( i ) );
@@ -181,7 +184,8 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Adds a function button to the given category item box */
+  //-------------------------------------------------------------
+  // Adds a function button to the given category item box
   public void add_function( string category, Box box, Expander? exp, TextFunction function ) {
 
     var fbox = new Box( Orientation.VERTICAL, 5 ) {
@@ -265,7 +269,9 @@ public class SidebarFunctions : SidebarBox {
     grid.attach( lbl, column, 0 );
   }
 
-  /* Creates the direction button (if necessary) and adds it to the given box */
+  //-------------------------------------------------------------
+  // Creates the direction button (if necessary) and adds it to
+  // the given box
   private void add_direction_button( Grid grid, Button btn, TextFunction function ) {
 
     if( function.direction == FunctionDirection.NONE ) return;
@@ -296,6 +302,8 @@ public class SidebarFunctions : SidebarBox {
         case FunctionDirection.RIGHT_TO_LEFT :
           function.direction = FunctionDirection.LEFT_TO_RIGHT;
           win.functions.save_functions();
+          break;
+        default :
           break;
       }
       btn.label = function.label;
@@ -348,14 +356,16 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Removes the given favorite function from the list of available functions */
+  //-------------------------------------------------------------
+  // Removes the given favorite function from the list of available
+  // functions
   private void remove_favorite( TextFunction function ) {
 
-    /* Remove the function as a favorite */
+    // Remove the function as a favorite
     var index  = win.functions.unfavorite_function( function );
     var reveal = (Revealer)Utils.get_child_at_index( _favorite_box, index );
 
-    /* Wait until idle to remove the widget so that we avoid an error */
+    // Wait until idle to remove the widget so that we avoid an error
     Idle.add(() => {
       _favorite_box.remove( reveal );
       return( Source.REMOVE );
@@ -363,41 +373,44 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Sets the state of the specified favorite button to indicate that it is currently favorited */
+  //-------------------------------------------------------------
+  // Sets the state of the specified favorite button to indicate
+  // that it is currently favorited
   public void favorite_button_state( Button button ) {
     button.icon_name = "starred-symbolic";
     button.set_tooltip_text( _( "Unfavorite" ) );
   }
 
-  /* Sets the state of the specified favorite button to indicate that it is currently unfavorited */
+  //-------------------------------------------------------------
+  // Sets the state of the specified favorite button to indicate
+  // that it is currently unfavorited
   public void unfavorite_button_state( Button button ) {
     button.icon_name = "non-starred-symbolic";
     button.set_tooltip_text( _( "Favorite" ) );
   }
 
-  /*
-   Add the given function to the favorite list.  Called when the user
-   clicks on the favorite button for an origianl function.
-  */
+  //-------------------------------------------------------------
+  // Add the given function to the favorite list.  Called when the
+  // user clicks on the favorite button for an origianl function.
   private void favorite_function( Button button, TextFunction function ) {
 
     var favorited = get_favorite( function );
 
-    /* If there is a favorited button for our function, remove it and update ourselves */
+    // If there is a favorited button for our function, remove it and update ourselves
     if( favorited != null ) {
 
-      /* Remove the favorited item */
+      // Remove the favorited item
       remove_favorite( favorited );
 
-      /* Mark our button as unfavorited */
+      // Mark our button as unfavorited
       unfavorite_button_state( button );
 
-    /* Otherwise, add the favorited function */
+    // Otherwise, add the favorited function
     } else {
 
       var fn = function.copy( false );
 
-      /* Mark the function as a favorite */
+      // Mark the function as a favorite
       win.functions.favorite_function( fn );
 
       add_function( "favorites", _favorite_box, null, fn );
@@ -408,30 +421,32 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /*
-   Removes the given favorited function from the favorite list.  Called when
-   the user clicks on the favorite button for a favorited item.
-  */
+  //-------------------------------------------------------------
+  // Removes the given favorited function from the favorite list.
+  // Called when the user clicks on the favorite button for a
+  // favorited item.
   private void unfavorite_function( Button button, TextFunction function ) {
 
-    /* Set the original function button to unstarred if it currently matches */
+    // Set the original function button to unstarred if it currently matches
     for( int i=0; i<_functions.length; i++ ) {
       if( _functions.index( i ).unfavorite( function, unfavorite_button_state ) ) {
         break;
       }
     }
 
-    /* Remove the favorited function */
+    // Remove the favorited function
     remove_favorite( function );
 
   }
 
-  /* Adds a new custom function to the sidebar */
+  //-------------------------------------------------------------
+  // Adds a new custom function to the sidebar
   public void add_custom_function( CustomFunction function ) {
     add_function( "custom", _custom_box, _custom_exp, function );
   }
 
-  /* Deletes an existing custom function from the sidebar */
+  //-------------------------------------------------------------
+  // Deletes an existing custom function from the sidebar
   public void delete_custom_function( CustomFunction function ) {
     while( _custom_box.get_first_child() != null ) {
       _custom_box.remove( _custom_box.get_first_child() );
@@ -442,7 +457,8 @@ public class SidebarFunctions : SidebarBox {
     }
   }
 
-  /* Adds the settings button to the text function */
+  //-------------------------------------------------------------
+  // Adds the settings button to the text function
   private void add_settings_button( Box rowbox, Grid grid, TextFunction function ) {
 
     if( !function.settings_available() ) {
@@ -487,7 +503,8 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Adds the edit button to the custom function */
+  //-------------------------------------------------------------
+  // Adds the edit button to the custom function
   private void add_edit_button( Box fbox, Grid grid, TextFunction function ) {
 
     var edit = new Button.from_icon_name( "edit-symbolic" ) {
@@ -503,7 +520,8 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Updates the custom button name that was being edited */
+  //-------------------------------------------------------------
+  // Updates the custom button name that was being edited
   private void update_custom_name( TextFunction function ) {
 
     var tbox = (Box)Utils.get_child_at_index( _edit_fbox, 0 );
@@ -513,12 +531,14 @@ public class SidebarFunctions : SidebarBox {
 
   }
 
-  /* Called when this panel is displayed */
+  //-------------------------------------------------------------
+  // Called when this panel is displayed
   public void displayed( SwitchStackReason reason, TextFunction? function ) {
     switch( reason ) {
       case SwitchStackReason.ADD    :  add_custom_function( (CustomFunction)function );     break;
       case SwitchStackReason.EDIT   :  update_custom_name( function );                      break;
       case SwitchStackReason.DELETE :  delete_custom_function( (CustomFunction)function );  break;
+      default                       :  break;
     }
   }
 

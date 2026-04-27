@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -143,7 +143,8 @@ public class Randomize : TextFunction {
   private RandomizeBlob   _blob;
   private RandomizeWithin _within;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public Randomize( bool custom = false ) {
     base( "randomize", custom );
     _blob   = RandomizeBlob.LINE;
@@ -165,7 +166,8 @@ public class Randomize : TextFunction {
     return( base.matches( function ) && (_blob == ((Randomize)function)._blob) && (_within == ((Randomize)function)._within) );
   }
 
-  /* Randomly swap characters in the given string */
+  //-------------------------------------------------------------
+  // Randomly swap characters in the given string
   private string randomize_characters( string orig_str ) {
     var str = orig_str;
     for( int i=0; i<str.char_count(); i++ ) {
@@ -181,7 +183,7 @@ public class Randomize : TextFunction {
 
   public override void launch( Editor editor ) {
 
-    /* If we cannot do the required action, just return and do nothing */
+    // If we cannot do the required action, just return and do nothing
     if( !_within.allowed_blob( _blob ) ) {
       return;
     }
@@ -198,6 +200,7 @@ public class Randomize : TextFunction {
         case RandomizeWithin.LINE      :  editor.get_lines( ranges, within_ranges );       break;
         case RandomizeWithin.SENTENCE  :  editor.get_sentences( ranges, within_ranges );   break;
         case RandomizeWithin.PARAGRAPH :  editor.get_paragraphs( ranges, within_ranges );  break;
+        default                        :  assert_not_reached();
       }
     }
 
@@ -218,6 +221,7 @@ public class Randomize : TextFunction {
           case RandomizeBlob.LINE      :  editor.get_lines( from_range, blob_ranges );       break;
           case RandomizeBlob.SENTENCE  :  editor.get_sentences( from_range, blob_ranges );   break;
           case RandomizeBlob.PARAGRAPH :  editor.get_paragraphs( from_range, blob_ranges );  break;
+          default                      :  assert_not_reached();
         }
         var blobs = new Array<string>();
         for( int j=0; j<blob_ranges.length; j++ ) {

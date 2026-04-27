@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -21,7 +21,8 @@
 
 public class CaseRandom : TextFunction {
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public CaseRandom( bool custom = false ) {
     base( "case-random", custom );
   }
@@ -34,9 +35,9 @@ public class CaseRandom : TextFunction {
     return( new CaseRandom( custom ) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
-    string[] parts;
     var str  = "";
     var rand = new Rand();
     for( int i=0; i<original.char_count(); i++ ) {

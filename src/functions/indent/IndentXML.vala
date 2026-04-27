@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,7 +23,8 @@ using Xml;
 
 public class IndentXML : TextFunction {
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public IndentXML( bool custom = false ) {
     base( "indent-xml", custom );
   }
@@ -37,7 +38,6 @@ public class IndentXML : TextFunction {
   }
 
   private bool next_char_is( string str, int start, string match ) {
-    var start_pos = str.index_of_nth_char( start );
     for( int i=start; i<str.char_count(); i++ ) {
       var idx = str.index_of_nth_char( i );
       var c   = str.get_char( idx );
@@ -49,7 +49,8 @@ public class IndentXML : TextFunction {
     return( false );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     var orig        = original;
     var indent      = 0;

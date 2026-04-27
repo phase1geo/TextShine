@@ -39,7 +39,8 @@ public class RegExpr : TextFunction {
     { "action_insert_replace", action_insert_replace, "s" },
   };
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public RegExpr( MainWindow win, bool custom = false ) {
 
     base( "regexpr", custom );
@@ -85,7 +86,8 @@ public class RegExpr : TextFunction {
     }
   }
 
-  /* Creates the search UI */
+  //-------------------------------------------------------------
+  // Creates the search UI
   private void create_widget( Editor editor, out Box box, out Entry entry ) {
 
     _pattern = new Entry() {
@@ -167,7 +169,7 @@ public class RegExpr : TextFunction {
     box.append( _replace );
     box.append( highlight_line );
 
-    /* Add the menu actions */
+    // Add the menu actions
     var actions = new SimpleActionGroup();
     actions.add_action_entries( action_entries, this );
     box.insert_action_group( "regexpr", actions );
@@ -283,18 +285,19 @@ public class RegExpr : TextFunction {
     }
   }
 
-  /* Perform search and replacement */
+  //-------------------------------------------------------------
+  // Perform search and replacement
   private void do_search( Editor editor, UndoItem? undo_item ) {
 
-    /* Get the selected ranges and clear them */
+    // Get the selected ranges and clear them
     var ranges = new Array<Editor.Position>();
     editor.get_ranges( ranges, false );
     editor.remove_selected( _undo_item );
 
-    /* Clear the tags */
+    // Clear the tags
     _tags_exist = false;
 
-    /* If the pattern text is empty, just return now */
+    // If the pattern text is empty, just return now
     if( _find_text == "" ) {
       return;
     }
@@ -333,21 +336,23 @@ public class RegExpr : TextFunction {
 
   }
 
-  /* Finalizes the search operation (TBD) */
+  //-------------------------------------------------------------
+  // Finalizes the search operation (TBD)
   private void end_search( Editor editor ) {
 
-    /* Add the undo_item to the buffer */
+    // Add the undo_item to the buffer
     editor.undo_buffer.add_item( _undo_item );
 
-    /* Close the error display */
+    // Close the error display
     _win.close_error();
 
-    /* Hide the widget */
+    // Hide the widget
     _win.remove_widget();
 
   }
 
-  /* Replace all matches with the replacement text */
+  //-------------------------------------------------------------
+  // Replace all matches with the replacement text
   private void do_replace( Editor editor, UndoItem undo_item ) {
 
     var ranges       = new Array<Editor.Position>();
@@ -372,10 +377,10 @@ public class RegExpr : TextFunction {
       return;
     }
 
-    /* Hide the error message */
+    // Hide the error message
     _win.close_error();
 
-    /* Hide the widget */
+    // Hide the widget
     _win.remove_widget();
 
   }
@@ -387,7 +392,8 @@ public class RegExpr : TextFunction {
     }
   }
 
-  /* Called when the action button is clicked.  Displays the UI. */
+  //-------------------------------------------------------------
+  // Called when the action button is clicked.  Displays the UI.
   public override void launch( Editor editor ) {
     if( custom ) {
       do_search( editor, null );

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -51,7 +51,8 @@ public class SidebarCustom : SidebarBox {
     { "action_edit_description", action_edit_description, "s" },
   };
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public SidebarCustom( MainWindow win, Editor editor ) {
 
     base( win, editor );
@@ -108,7 +109,7 @@ public class SidebarCustom : SidebarBox {
     abox.append( _redo );
     abox.append( _play );
 
-    /* Create scrolled box */
+    // Create scrolled box
     var drag_source = new DragSource();
     var drop_target = new DropTarget( Type.OBJECT, (DragAction.COPY | DragAction.MOVE) );
     _lb = new ListBox() {
@@ -229,10 +230,10 @@ public class SidebarCustom : SidebarBox {
     append( sw );
     append( bbox );
 
-    /* Create the action insertion popover */
+    // Create the action insertion popover
     create_popover();
 
-    /* Add the menu actions */
+    // Add the menu actions
     var actions = new SimpleActionGroup();
     actions.add_action_entries( action_entries, this );
     insert_action_group( "custom", actions );
@@ -263,7 +264,8 @@ public class SidebarCustom : SidebarBox {
     _test_undo = null;
   }
 
-  /* Called when we get displayed */
+  //-------------------------------------------------------------
+  // Called when we get displayed
   public override void displayed( SwitchStackReason reason, TextFunction? function ) {
 
     clear_actions();
@@ -285,6 +287,9 @@ public class SidebarCustom : SidebarBox {
         insert_actions();
         break;
 
+      default :
+        break;
+
     }
 
   }
@@ -293,7 +298,7 @@ public class SidebarCustom : SidebarBox {
 
     _add_revealer.reveal_child = true;
 
-    /* Remove all of the rows from the listbox */
+    // Remove all of the rows from the listbox
     var row = _lb.get_row_at_index( 0 );
     while( row != null ) {
       _lb.remove( row );
@@ -304,7 +309,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Inserts the current custom actions */
+  //-------------------------------------------------------------
+  // Inserts the current custom actions
   private void insert_actions() {
     for( int i=0; i<_custom.functions.length; i++ ) {
       var fn = _custom.functions.index( i );
@@ -313,7 +319,8 @@ public class SidebarCustom : SidebarBox {
     }
   }
 
-  /* Adds a function button to the given category item box */
+  //-------------------------------------------------------------
+  // Adds a function button to the given category item box
   public Box add_function( TextFunction function, int index = -1 ) {
 
     // Box containing the function frame
@@ -461,7 +468,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Adds the action menu */
+  //-------------------------------------------------------------
+  // Adds the action menu
   private void show_action_menu( Box box, MenuButton btn ) {
 
     var var0 = new Variant( "(ss)", box.name, 0.to_string() );
@@ -490,7 +498,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Returns the index of the given action box */
+  //-------------------------------------------------------------
+  // Returns the index of the given action box
   private int get_action_index( string name ) {
 
     var i   = 0;
@@ -507,7 +516,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Returns the revealer at the given index */
+  //-------------------------------------------------------------
+  // Returns the revealer at the given index
   private Revealer get_revealer( int index ) {
     if( index == 0 ) {
       return( _add_revealer );
@@ -517,7 +527,8 @@ public class SidebarCustom : SidebarBox {
     }
   }
 
-  /* Inserts the new action label in the given position */
+  //-------------------------------------------------------------
+  // Inserts the new action label in the given position
   private void action_insert_new_action( SimpleAction action, Variant? variant ) {  // Box? box, int add_to_index ) {
 
     if( variant != null ) {
@@ -571,25 +582,23 @@ public class SidebarCustom : SidebarBox {
     delete_function( idx );
   }
 
-  /*
-   Inserts the given text function into the custom function at the previously
-   calculated insert index.  Updates the internal custom function contents.
-  */
+  //-------------------------------------------------------------
+  // Inserts the given text function into the custom function at
+  // the previously calculated insert index.  Updates the internal
+  // custom function contents.
   public void insert_function( TextFunction function, int index ) {
 
     get_revealer( index ).reveal_child = false;
 
-    var fn  = function.copy( true );
-    var box = add_function( fn, index );
+    var fn = function.copy( true );
 
     _custom.functions.insert_val( index, fn );
 
   }
 
-  /* Removes the action at the given index */
+  //-------------------------------------------------------------
+  // Removes the action at the given index
   public void delete_function( int index ) {
-
-    var fn = _custom.functions.index( index );
 
     _lb.remove( _lb.get_row_at_index( index ) );
     _custom.functions.remove_index( index );
@@ -600,7 +609,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Movew a function from one index to another */
+  //-------------------------------------------------------------
+  // Move a function from one index to another
   public void move_function( int old_index, int new_index ) {
 
     var db_row = _lb.get_row_at_index( old_index );
@@ -615,14 +625,14 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Handles a code breakpoint */
+  //-------------------------------------------------------------
+  // Handles a code breakpoint
   private void action_breakpoint( SimpleAction action, Variant? variant ) {
 
     if( variant != null ) {
 
       var box_name     = variant.get_string();
       var index        = get_action_index( box_name );
-      var bpoint       = (index == _custom.breakpoint);
       var row          = _lb.get_row_at_index( index );
       var box          = (Box)row.child;
       var frame        = (Frame)Utils.get_child_at_index( box, 0 );
@@ -643,17 +653,20 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Sets the given box as a breakpoint */
+  //-------------------------------------------------------------
+  // Sets the given box as a breakpoint
   private void set_breakpoint( Box box ) {
     _custom.breakpoint = get_action_index( box.name );
   }
 
-  /* Clears the breakpoint */
+  //-------------------------------------------------------------
+  // Clears the breakpoint
   private void clear_breakpoint() {
     _custom.breakpoint = -1;
   }
 
-  /* Allows the user to edit the description */
+  //-------------------------------------------------------------
+  // Allows the user to edit the description
   private void action_edit_description( SimpleAction action, Variant? variant ) {
 
     if( variant != null ) {
@@ -692,7 +705,7 @@ public class SidebarCustom : SidebarBox {
       halign = Align.START
     };
 
-    /* Create search box */
+    // Create search box
     _search = new SearchEntry() {
       halign = Align.FILL,
       hexpand = true,
@@ -704,7 +717,7 @@ public class SidebarCustom : SidebarBox {
     };
     _search.search_changed.connect( search_functions );
 
-    /* Create scrolled box */
+    // Create scrolled box
     _pbox = new Grid() {
       margin_start  = 5,
       margin_end    = 5,
@@ -740,21 +753,20 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /*
-   Called when the function popover is displayed.  Populates the popover with
-   the current list of available functions.
-  */
+  //-------------------------------------------------------------
+  // Called when the function popover is displayed.  Populates the
+  // popover with the current list of available functions.
   private void popover_opened() {
 
-    /* Clear the search field */
+    // Clear the search field
     _search.text = "";
 
-    /* Clear the contents */
+    // Clear the contents
     while( _pbox.get_first_child() != null ) {
       _pbox.remove( _pbox.get_first_child() );
     }
 
-    /* Insert the new elements */
+    // Insert the new elements
     var functions = win.functions.functions;
     for( int i=0; i<functions.length; i++ ) {
       add_popup_function( i, functions.index( i ) );
@@ -762,7 +774,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Called whenever the popover is closed */
+  //-------------------------------------------------------------
+  // Called whenever the popover is closed
   private void popover_closed() {
 
     if( _custom.functions.length > 0 ) {
@@ -771,11 +784,12 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Performs search of all text functions, displaying only those functions which match the search text */
+  //-------------------------------------------------------------
+  // Performs search of all text functions, displaying only those
+  // functions which match the search text
   private void search_functions() {
 
     var value = _search.text.down();
-    var empty = (value == "");
 
     for( int i=0; i<_functions.length; i++ ) {
       _functions.index( i ).reveal( value );
@@ -783,7 +797,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Adds a function button to the popup box */
+  //-------------------------------------------------------------
+  // Adds a function button to the popup box
   public void add_popup_function( int row, TextFunction function ) {
 
     var label = new Label( win.functions.get_category_label_for_function( function ).up() + ": " ) {
@@ -803,7 +818,7 @@ public class SidebarCustom : SidebarBox {
     _pbox.attach( label, 0, row );
     _pbox.attach( button, 1, row );
 
-    /* Add the function so that we can hide it while searching */
+    // Add the function so that we can hide it while searching
     _functions.append_val( new Functions( function, null, label, button ) );
 
   }
@@ -813,7 +828,9 @@ public class SidebarCustom : SidebarBox {
     grid.attach( lbl, column, 0 );
   }
 
-  /* Creates the direction button (if necessary) and adds it to the given box */
+  //-------------------------------------------------------------
+  // Creates the direction button (if necessary) and adds it to
+  // the given box
   private void add_direction_button( Grid grid, Label lbl, TextFunction function ) {
 
     if( function.direction == FunctionDirection.NONE ) return;
@@ -845,6 +862,8 @@ public class SidebarCustom : SidebarBox {
           function.direction = FunctionDirection.LEFT_TO_RIGHT;
           win.functions.save_functions();
           break;
+        default :
+          break;
       }
       lbl.label = function.label;
     });
@@ -853,7 +872,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Adds the settings button to the text function */
+  //-------------------------------------------------------------
+  // Adds the settings button to the text function
   private void add_settings_button( Box rowbox, Grid grid, TextFunction function ) {
 
     if( !function.settings_available() ) {
@@ -877,14 +897,6 @@ public class SidebarCustom : SidebarBox {
       visible = false
     };
 
-    /*
-    var settings_frame = new Frame( null ) {
-      margin_start = 25,
-      visible      = false,
-      child        = settings_grid
-    };
-    */
-
     function.add_settings( settings_grid );
 
     settings.clicked.connect(() => {
@@ -901,7 +913,10 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Populates the settings popover with the list of options from the function */
+  //-------------------------------------------------------------
+  // Populates the settings popover with the list of options from
+  // the function
+  /*
   private void on_settings_show( Popover popover, TextFunction function ) {
 
     if( popover.child != null ) {
@@ -923,10 +938,11 @@ public class SidebarCustom : SidebarBox {
     popover.child = grid;
 
   }
+  */
 
   private void cleanup() {
 
-    /* If we tested the actions, make sure that we revert our changes */
+    // If we tested the actions, make sure that we revert our changes
     if( _test_undo != null ) {
       _test_undo.undo( editor );
     }
@@ -935,7 +951,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Saves the current custom function */
+  //-------------------------------------------------------------
+  // Saves the current custom function
   private void save_custom() {
 
     var edit  = _delete_reveal.reveal_child;
@@ -958,7 +975,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Deletes the current custom function */
+  //-------------------------------------------------------------
+  // Deletes the current custom function
   private void delete_custom() {
 
     var flags  = DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT;
@@ -985,7 +1003,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
-  /* Called whenever the editor buffer changes */
+  //-------------------------------------------------------------
+  // Called whenever the editor buffer changes
   private void do_buffer_changed( UndoCustomBuffer buffer ) {
     _undo.set_sensitive( buffer.undoable() );
     _redo.set_sensitive( buffer.redoable() );

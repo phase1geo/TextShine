@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -33,7 +33,8 @@ public class InsertText : TextFunction {
     FIRST_CHAR,
     LENGTH;
 
-    /* Returns the label to display for this value */
+    //-------------------------------------------------------------
+    // Returns the label to display for this value
     public string label() {
       switch( this ) {
         case LINE_START :  return( _( "Start of Line" ) );
@@ -47,7 +48,8 @@ public class InsertText : TextFunction {
       }
     }
 
-    /* Returns the compare string that is stored in the XML */
+    //-------------------------------------------------------------
+    // Returns the compare string that is stored in the XML
     public string to_string() {
       switch( this ) {
         case LINE_START :  return( "line-start" );
@@ -61,7 +63,9 @@ public class InsertText : TextFunction {
       }
     }
 
-    /* Returns the InsertLocation value associated with the given string value */
+    //-------------------------------------------------------------
+    // Returns the InsertLocation value associated with the given
+    // string value
     public static InsertLocation parse( string val ) {
       switch( val ) {
         case "line-start" :  return( LINE_START );
@@ -87,7 +91,8 @@ public class InsertText : TextFunction {
     { "action_insert", action_insert, "s" },
   };
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public InsertText( MainWindow win, bool custom = false ) {
 
     base( "insert-text", custom );
@@ -123,7 +128,8 @@ public class InsertText : TextFunction {
     do_insert( editor, undo_item );
   }
 
-  /* Called when the action button is clicked.  Displays the UI. */
+  //-------------------------------------------------------------
+  // Called when the action button is clicked.  Displays the UI.
   public override void launch( Editor editor ) {
     if( custom ) {
       do_insert( editor, null );
@@ -182,7 +188,7 @@ public class InsertText : TextFunction {
     box = new Box( Orientation.HORIZONTAL, 5 );
     box.append( _insert );
 
-    /* Set the stage for menu actions */
+    // Set the stage for menu actions
     var actions = new SimpleActionGroup ();
     actions.add_action_entries( action_entries, this );
     box.insert_action_group( "insert_text", actions );
@@ -196,12 +202,14 @@ public class InsertText : TextFunction {
     return( box );
   }
 
-  /* Specify that we have settings to display */
+  //-------------------------------------------------------------
+  // Specify that we have settings to display
   public override bool settings_available() {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
 
     add_menubutton_setting( grid, 0, _( "Insert At" ), _insert_loc, InsertLocation.LENGTH, (value) => {
@@ -229,6 +237,7 @@ public class InsertText : TextFunction {
       case PARA_START :  do_insert_para_start( editor, text, ranges, undo_item );  break;
       case PARA_END   :  do_insert_para_end(   editor, text, ranges, undo_item );  break;
       case FIRST_CHAR :  do_insert_first_char( editor, text, ranges, undo_item );  break;
+      default         :  assert_not_reached();
     }
 
     _win.remove_widget();
