@@ -29,10 +29,13 @@ public class SettingsUpdater {
 
   //-------------------------------------------------------------
   // Returns the GLib.Settings for the old version of the settings
-  private static GLib.Settings get_old_settings( GLib.Settings new_settings ) {
+  private static GLib.Settings? get_old_settings( GLib.Settings new_settings ) {
     var schema_parts = new_settings.schema_id.split( "." );
     schema_parts[0] = "com";
     var old_schema_id = string.joinv( ".", schema_parts );
+    if( SettingsSchemaSource.get_default().lookup( old_schema_id, true ) == null ) {
+      return( null );
+    }
     var old_settings  = new GLib.Settings( old_schema_id );
     return( old_settings );
   }
@@ -58,9 +61,11 @@ public class SettingsUpdater {
   // Performs the settings copy from the old version.
   private static void update_settings( GLib.Settings new_settings ) {
     var old_settings = get_old_settings( new_settings ); 
-    foreach (var key in new_settings.settings_schema.list_keys()) {
-      if( old_settings.settings_schema.has_key( key ) ) {
-        copy_setting( key, new_settings, old_settings );
+    if( old_settings != null ) {
+      foreach (var key in new_settings.settings_schema.list_keys()) {
+        if( old_settings.settings_schema.has_key( key ) ) {
+          copy_setting( key, new_settings, old_settings );
+        }
       }
     }
     new_settings.set_boolean( "internal-updated", true );

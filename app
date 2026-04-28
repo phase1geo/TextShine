@@ -113,8 +113,12 @@ case $1 in
     initialize 0
     sudo ninja uninstall
     ;;
-"flatpak")
-    flatpak-builder --user --install --force-clean ../build-textshine io.github.phase1geo.textshine.yml
+"elementary")
+    flatpak-builder --user --install --force-clean ../build-textshine-elementary elementary/io.github.phase1geo.textshine.yml
+    flatpak install --user --reinstall --assumeyes "$(pwd)/.flatpak-builder/cache" io.github.phase1geo.textshine.Debug
+    ;;
+"flathub")
+    flatpak-builder --user --install --force-clean ../build-textshine-flathub flathub/io.github.phase1geo.textshine.yml
     flatpak install --user --reinstall --assumeyes "$(pwd)/.flatpak-builder/cache" io.github.phase1geo.textshine.Debug
     ;;
 *)
