@@ -3,8 +3,8 @@ Name=TextShine
 GenericName=TextShine
 Comment=Powerfully transform text
 Categories=Utility;Development;WordProcessor;
-Exec=com.github.phase1geo.textshine %f
-Icon=com.github.phase1geo.textshine
+Exec=io.github.phase1geo.textshine %f
+Icon=io.github.phase1geo.textshine
 Terminal=false
 Type=Application
 MimeType=text/plain;
@@ -15,4 +15,4 @@ Actions=EditClipboard;
 
 [Desktop Action EditClipboard]
 Name=Edit Clipboard Text
-Exec=com.github.phase1geo.textshine --use-clipboard
+Exec=io.github.phase1geo.textshine --use-clipboard

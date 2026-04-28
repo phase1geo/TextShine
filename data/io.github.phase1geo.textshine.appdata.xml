@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2020 Trevor Williams <phase1geo@gmail.com> -->
 <component type="desktop-application">
-  <id>com.github.phase1geo.textshine</id>
+  <id>io.github.phase1geo.textshine</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>TextShine</name>
@@ -16,9 +16,9 @@
   <developer_name xml:lang="nl">Trevor Williams</developer_name>
   <developer_name xml:lang="it">Trevor Williams</developer_name>
   <developer_name xml:lang="de">Trevor Williams</developer_name>
-  <developer>com.github.phase1geo</developer>
+  <developer>io.github.phase1geo</developer>
   <provides>
-    <binary>com.github.phase1geo.textshine</binary>
+    <binary>io.github.phase1geo.textshine</binary>
   </provides>
   <screenshots>
     <screenshot>

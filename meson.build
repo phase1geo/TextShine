@@ -69,7 +69,7 @@ dependencies = [
     math_dep
 ]
 
-e = executable('com.github.phase1geo.textshine',
+e = executable('io.github.phase1geo.textshine',
     sources,
     config_file,
     gresource,

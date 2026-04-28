@@ -6,6 +6,7 @@ sources += files(
     'InfoBox.vala',
     'MainWindow.vala',
     'Preferences.vala',
+    'SettingsUpdater.vala',
     'Sidebar.vala',
     'SidebarBox.vala',
     'SidebarCustom.vala',

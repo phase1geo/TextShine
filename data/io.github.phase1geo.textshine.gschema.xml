@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="com.github.phase1geo.textshine" path="/com/github/phase1geo/textshine/">
+  <schema id="io.github.phase1geo.textshine" path="/io/github/phase1geo/textshine/">
+    <key name="internal-updated" type="b">
+      <default>false</default>
+      <description>Do not change this settings.</description>
+    </key>
     <key name="window-w" type="i">
       <default>1000</default>
       <summary>Most recent width of window</summary>

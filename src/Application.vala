@@ -1,5 +1,5 @@
- /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+/*
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -31,10 +31,12 @@ public class TextShine : Gtk.Application {
   public  static GLib.Settings settings;
   public  static bool          use_clipboard = false;
 
+  //-------------------------------------------------------------
+  // Default constructor
   public TextShine () {
 
     Object(
-      application_id: "com.github.phase1geo.textshine",
+      application_id: "io.github.phase1geo.textshine",
       flags: ApplicationFlags.HANDLES_OPEN,
       version: "2.1.0"
     );
@@ -49,27 +51,32 @@ public class TextShine : Gtk.Application {
 
   }
 
-  /* First method called in the startup process */
+  //-------------------------------------------------------------
+  // First method called in the startup process
   private void start_application() {
 
-    /* Initialize the settings */
-    settings = new GLib.Settings( "com.github.phase1geo.textshine" );
+    // Initialize the settings
+    settings = new GLib.Settings( "io.github.phase1geo.textshine" );
 
-    /* Add the application-specific icons */
+    // Update the settings, if necessary
+    SettingsUpdater.update( settings );
+
+    // Add the application-specific icons
     weak IconTheme default_theme = IconTheme.get_for_display( Display.get_default() );
-    default_theme.add_resource_path( "/com/github/phase1geo/textshine" );
+    default_theme.add_resource_path( "/io/github/phase1geo/textshine" );
 
-    /* Create the main window */
+    // Create the main window
     appwin = new MainWindow( this );
 
-    /* Initialize the editor with the clipboard contents */
+    // Initialize the editor with the clipboard contents
     if( use_clipboard ) {
       appwin.do_paste_over();
     }
 
   }
 
-  /* Called whenever files need to be opened */
+  //-------------------------------------------------------------
+  // Called whenever files need to be opened
   private void open_files( File[] files, string hint ) {
     foreach( File open_file in files ) {
       var file = open_file.get_path();
@@ -80,21 +87,23 @@ public class TextShine : Gtk.Application {
     }
   }
 
-  /* Called if we have no files to open */
+  //-------------------------------------------------------------
+  // Called if we have no files to open
   protected override void activate() {}
 
-  /* Parse the command-line arguments */
+  //-------------------------------------------------------------
+  // Parse the command-line arguments
   private void parse_arguments( ref unowned string[] args ) {
 
     var context = new OptionContext( "- TextShine Options" );
     var options = new OptionEntry[3];
 
-    /* Create the command-line options */
+    // Create the command-line options
     options[0] = {"version",       0, 0, OptionArg.NONE, ref show_version, _( "Display version number" ), null};
     options[1] = {"use-clipboard", 0, 0, OptionArg.NONE, ref use_clipboard, _( "Transform clipboard text" ), null};
     options[2] = {null};
 
-    /* Parse the arguments */
+    // Parse the arguments
     try {
       context.set_help_enabled( true );
       context.add_main_entries( options, null );
@@ -105,7 +114,7 @@ public class TextShine : Gtk.Application {
       Process.exit( 1 );
     }
 
-    /* If the version was specified, output it and then exit */
+    // If the version was specified, output it and then exit
     if( show_version ) {
       stdout.printf( version + "\n" );
       Process.exit( 0 );
@@ -113,14 +122,16 @@ public class TextShine : Gtk.Application {
 
   }
 
-  /* Creates the home directory and returns it */
+  //-------------------------------------------------------------
+  // Creates the home directory and returns it
   public static string get_home_dir() {
     var dir = GLib.Path.build_filename( Environment.get_user_data_dir(), "textshine" );
     DirUtils.create_with_parents( dir, 0775 );
     return( dir );
   }
 
-  /* Main routine which gets everything started */
+  //-------------------------------------------------------------
+  // Main routine which gets everything started
   public static int main( string[] args ) {
 
     var app = new TextShine();

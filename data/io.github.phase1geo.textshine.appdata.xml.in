@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2020 Trevor Williams <phase1geo@gmail.com> -->
 <component type="desktop-application">
-    <id>com.github.phase1geo.textshine</id>
+    <id>io.github.phase1geo.textshine</id>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>GPL-3.0+</project_license>
     <name>TextShine</name>
     <summary>Powerfully transform text</summary>
     <developer_name>Trevor Williams</developer_name>
-    <developer>com.github.phase1geo</developer>
+    <developer>io.github.phase1geo</developer>
     <provides>
-      <binary>com.github.phase1geo.textshine</binary>
+      <binary>io.github.phase1geo.textshine</binary>
     </provides>
     <screenshots>
       <screenshot>

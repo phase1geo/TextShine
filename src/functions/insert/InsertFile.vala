@@ -62,8 +62,6 @@ public class InsertFile : TextFunction {
 
   private string? get_file_contents( string filename ) {
 
-    var file = File.new_for_path( filename );
-
     try {
       string contents = "";
       if( FileUtils.get_contents( filename, out contents ) && contents.validate() ) {

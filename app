@@ -27,7 +27,7 @@ function test {
     initialize 0
 
     export DISPLAY=:0
-    ./com.github.phase1geo.textshine --run-tests
+    ./io.github.phase1geo.textshine --run-tests
     result=$?
 
     export DISPLAY=":0.0"
@@ -48,8 +48,8 @@ case $1 in
 "generate-i18n")
     grep -rc _\( * | grep ^src | grep -v :0 | cut -d : -f 1 | sort -o po/POTFILES
     initialize 0
-    ninja com.github.phase1geo.textshine-pot
-    ninja com.github.phase1geo.textshine-update-po
+    ninja io.github.phase1geo.textshine-pot
+    ninja io.github.phase1geo.textshine-update-po
     ninja extra-pot
     ninja extra-update-po
     cp data/* ../data
@@ -84,38 +84,38 @@ case $1 in
     ;;
 "run")
     initialize 0
-    ./com.github.phase1geo.textshine "${@:2}"
+    ./io.github.phase1geo.textshine "${@:2}"
     ;;
 "run-emmet")
     initialize 1
-    ./com.github.phase1geo.textshine "${@:2}"
+    ./io.github.phase1geo.textshine "${@:2}"
     ;;
 "run-flatpak")
-    flatpak run com.github.phase1geo.textshine "${@:2}"
+    flatpak run io.github.phase1geo.textshine "${@:2}"
     ;;
 "debug")
     initialize 0
-    G_DEBUG=fatal-criticals gdb --args ./com.github.phase1geo.textshine "${@:2}"
-    # gdb --args ./com.github.phase1geo.textshine "${@:2}"
+    G_DEBUG=fatal-criticals gdb --args ./io.github.phase1geo.textshine "${@:2}"
+    # gdb --args ./io.github.phase1geo.textshine "${@:2}"
     ;;
 "debug-flatpak")
-    echo "Run command at prompt: G_DEBUG=fatal-criticals gdb /app/bin/com.github.phase1geo.textshine"
-    flatpak run --devel --command=sh com.github.phase1geo.textshine
+    echo "Run command at prompt: G_DEBUG=fatal-criticals gdb /app/bin/io.github.phase1geo.textshine"
+    flatpak run --devel --command=sh io.github.phase1geo.textshine
     ;;
 "test")
     test
     ;;
 "test-run")
     test
-    ./com.github.phase1geo.textshine "${@:2}"
+    ./io.github.phase1geo.textshine "${@:2}"
     ;;
 "uninstall")
     initialize 0
     sudo ninja uninstall
     ;;
 "flatpak")
-    flatpak-builder --user --install --force-clean ../build-textshine com.github.phase1geo.textshine.yml
-    flatpak install --user --reinstall --assumeyes "$(pwd)/.flatpak-builder/cache" com.github.phase1geo.textshine.Debug
+    flatpak-builder --user --install --force-clean ../build-textshine io.github.phase1geo.textshine.yml
+    flatpak install --user --reinstall --assumeyes "$(pwd)/.flatpak-builder/cache" io.github.phase1geo.textshine.Debug
     ;;
 *)
     echo "Usage:"

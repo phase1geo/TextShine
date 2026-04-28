@@ -86,7 +86,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     // Add the application CSS
     var provider = new Gtk.CssProvider ();
-    provider.load_from_resource( "/com/github/phase1geo/textshine/css/style.css" );
+    provider.load_from_resource( "/io/github/phase1geo/textshine/css/style.css" );
     StyleContext.add_provider_for_display( get_display(), provider, STYLE_PROVIDER_PRIORITY_APPLICATION );
 
     _custom = new CustomFunction();
@@ -142,7 +142,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     child = box;
 
-    show();
+    present();
 
     // Set the stage for menu actions
     var actions = new SimpleActionGroup ();
@@ -272,11 +272,6 @@ public class MainWindow : Gtk.ApplicationWindow {
   // Adds the statistics functionality
   private MenuButton add_stats_button() {
 
-    var stats_btn = new MenuButton() {
-      icon_name = on_elementary ? "org.gnome.PowerStats" : "document-properties-symbolic",
-      tooltip_markup = _( "Statistics" )
-    };
-
     var grid = new Grid() {
       margin_start   = 10,
       margin_end     = 10,
@@ -341,16 +336,22 @@ public class MainWindow : Gtk.ApplicationWindow {
     grid.attach( _stats_spell,   1, 5 );
 
     // Create the popover and associate it with the menu button
-    stats_btn.popover = new Popover() {
+    var popover = new Popover() {
       autohide = true,
       child = grid
     };
 
-    stats_btn.popover.notify["visible"].connect((s, p) => {
-      if( stats_btn.popover.visible ) {
+    popover.notify["visible"].connect((s, p) => {
+      if( popover.visible ) {
         stats_clicked();
       }
     });
+
+    var stats_btn = new MenuButton() {
+      icon_name = on_elementary ? "org.gnome.PowerStats" : "document-properties-symbolic",
+      tooltip_markup = _( "Statistics" ),
+      popover = popover
+    };
 
     return( stats_btn );
 
@@ -397,12 +398,12 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   private void action_shortcuts() {
 
-    var builder = new Builder.from_resource( "/com/github/phase1geo/textshine/shortcuts.ui" );
+    var builder = new Builder.from_resource( "/io/github/phase1geo/textshine/shortcuts.ui" );
 
     var shortcuts = builder.get_object( "shortcuts" ) as ShortcutsWindow;
     shortcuts.transient_for = this;
     shortcuts.view_name     = null;
-    shortcuts.show();
+    shortcuts.present();
 
   }
 
@@ -411,7 +412,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void action_preferences() {
 
     var prefs = new Preferences( this );
-    prefs.show();
+    prefs.present();
 
   }
 
@@ -466,8 +467,6 @@ public class MainWindow : Gtk.ApplicationWindow {
   public bool open_file( string filepath ) {
 
     _current_file = filepath;
-
-    var file = File.new_for_path( _current_file );
 
     try {
       string contents = "";
@@ -650,7 +649,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   //-------------------------------------------------------------
   // Hides the error message window
   public void hide_error() {
-    _info.hide();
+    _info.visible = false;
   }
 
   //-------------------------------------------------------------
@@ -669,7 +668,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       var notification = new Notification( title );
       notification.set_body( msg );
       notification.set_priority( priority );
-      app.send_notification( "com.github.phase1geo.minder", notification );
+      app.send_notification( "io.github.phase1geo.textshine", notification );
     }
   }
 
