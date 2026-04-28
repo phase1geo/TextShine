@@ -164,8 +164,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     // Set the default window size from settings
     set_window_size();
 
-    show_error( "Test error message" );
-
   }
 
   //-------------------------------------------------------------
@@ -219,7 +217,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     };
 
     _clear_btn = new Button.from_icon_name( get_header_icon_name( "document-new" ) ) {
-      tooltip_markup = Utils.tooltip_with_accel( _( "New Workspace" ), "<Control>n" )
+      tooltip_markup = Utils.tooltip_with_accel( _( "New Workspace (%s)".printf( get_header_icon_name( "document-new" ) ) ), "<Control>n" )
     };
     _clear_btn.clicked.connect( do_new );
     _header.pack_start( _clear_btn );
@@ -472,11 +470,14 @@ public class MainWindow : Gtk.ApplicationWindow {
     var file = File.new_for_path( _current_file );
 
     try {
-      uint8[] contents;
-    		file.load_contents( null, out contents, null );
-    		_editor.clear();
-    		_editor.buffer.text = (string)contents;
-    } catch( Error e ) {
+      string contents = "";
+      _editor.clear();
+      if( FileUtils.get_contents( _current_file, out contents ) && contents.validate() ) {
+      	_editor.buffer.text = contents;
+      } else {
+        show_error( "Unable to read file contents" );
+      }
+    } catch( FileError e ) {
       show_error( e.message );
       return( false );
     }
@@ -634,6 +635,10 @@ public class MainWindow : Gtk.ApplicationWindow {
       widget.destroy();
     }
     _editor.grab_focus();
+  }
+
+  public void show_info( string msg ) {
+    _info.show_info( msg );
   }
 
   //-------------------------------------------------------------

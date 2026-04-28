@@ -44,7 +44,14 @@ list {
   background-color: @bg_color;
 }
 
-info-box {
-  background-color: rgba( 256, 0, 0, 0.5 );
+.info-box-warn,
+.info-box-warn * {
+  background-color: #ff0000;
+  color: #000000;
+}
+
+.info-box-info,
+.info-box-info * {
+  background-color: #ffff00;
   color: #000000;
 }

@@ -90,10 +90,17 @@ case $1 in
     initialize 1
     ./com.github.phase1geo.textshine "${@:2}"
     ;;
+"run-flatpak")
+    flatpak run com.github.phase1geo.textshine "${@:2}"
+    ;;
 "debug")
     initialize 0
     G_DEBUG=fatal-criticals gdb --args ./com.github.phase1geo.textshine "${@:2}"
     # gdb --args ./com.github.phase1geo.textshine "${@:2}"
+    ;;
+"debug-flatpak")
+    echo "Run command at prompt: G_DEBUG=fatal-criticals gdb /app/bin/com.github.phase1geo.textshine"
+    flatpak run --devel --command=sh com.github.phase1geo.textshine
     ;;
 "test")
     test
@@ -107,7 +114,8 @@ case $1 in
     sudo ninja uninstall
     ;;
 "flatpak")
-    sudo flatpak-builder --install --force-clean ../build-textshine com.github.phase1geo.textshine.yml
+    flatpak-builder --user --install --force-clean ../build-textshine com.github.phase1geo.textshine.yml
+    flatpak install --user --reinstall --assumeyes "$(pwd)/.flatpak-builder/cache" com.github.phase1geo.textshine.Debug
     ;;
 *)
     echo "Usage:"

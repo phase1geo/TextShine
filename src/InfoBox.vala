@@ -30,10 +30,11 @@ public class InfoBox : Box {
   // Constructor
   public InfoBox() {
 
-    Object( orientation: Orientation.HORIZONTAL, spacing: 5 );
+    Object( orientation: Orientation.HORIZONTAL, spacing: 5, visible: false );
 
     _image = new Image() {
-      halign = Align.START
+      halign = Align.START,
+      margin_start = 5
     };
 
     _label = new Label( "" ) {
@@ -43,7 +44,8 @@ public class InfoBox : Box {
 
     var btn = new Button.from_icon_name( "window-close-symbolic" ) {
       has_frame = false,
-      halign = Align.END
+      halign = Align.END,
+      margin_end = 5
     };
 
     btn.clicked.connect(() => {
@@ -58,18 +60,22 @@ public class InfoBox : Box {
 
   }
 
-  private void show_box( string resource_icon, string message ) {
-    _image.resource = "dialog-info-symbolic";
-    _label.label    = message;
-    visible         = true;
+  private void show_box( string icon_name, string message ) {
+    _image.icon_name = icon_name;
+    _label.label     = message;
+    visible          = true;
   }
 
   public void show_info( string message ) {
+    remove_css_class( "info-box-warn" );
+    add_css_class( "info-box-info" );
     show_box( "dialog-information-symbolic", message );
   }
 
   public void show_warning( string message ) {
-    show_box( "dialog-warning-symblic", message );
+    remove_css_class( "info-box-info" );
+    add_css_class( "info-box-warn" );
+    show_box( "dialog-warning-symbolic", message );
   }
 
 }
