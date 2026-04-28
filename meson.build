@@ -1,6 +1,9 @@
- project('com.github.phase1geo.textshine', ['vala', 'c'],
+project('com.github.phase1geo.textshine', ['vala', 'c'],
     version : '2.0',
-    license: 'GPL-3.0'
+    license: 'GPL-3.0',
+    default_options: [
+      'warning_level=0',  # disables C warnings
+    ]
 )
 
 add_project_arguments([
@@ -49,7 +52,6 @@ libmarkdown = cc.find_library('markdown', required: true)
 
 add_project_arguments([
         '--vapidir', join_paths(meson.current_source_dir(), 'vapi')
-        # '--disable-warnings'
     ],
     language: 'vala',
 )

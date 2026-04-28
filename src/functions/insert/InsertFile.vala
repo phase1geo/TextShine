@@ -42,19 +42,21 @@ public class InsertFile : TextFunction {
 
   private void insert_selected_file( Editor editor ) {
 
-    var dialog = new FileChooserNative( _( "Insert File" ), _win, FileChooserAction.OPEN, _( "Open" ), _( "Cancel" ) );
+    var dialog = new FileDialog() {
+      modal = true,
+      title = _( "Insert File" ),
+      accept_label = _( "Open" )
+    };
 
-    dialog.response.connect((id) => {
-      if( id == ResponseType.ACCEPT ) {
-        _filename = dialog.get_file().get_path();
+    dialog.open.begin( _win, null, (obj, res) => {
+      try {
+        var file = dialog.open.end( res );
+        _filename = file.get_path();
         var undo_item = new UndoItem( label );
         insert_file( editor, undo_item );
         editor.undo_buffer.add_item( undo_item );
-      }
-      dialog.destroy();
+      } catch( Error e ) {}
     });
-
-    dialog.show();
 
   }
 

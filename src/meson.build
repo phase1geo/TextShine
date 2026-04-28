@@ -3,6 +3,7 @@ sources += files(
     'Application.vala',
     'CustomFunction.vala',
     'Editor.vala',
+    'InfoBox.vala',
     'MainWindow.vala',
     'Preferences.vala',
     'Sidebar.vala',

@@ -77,7 +77,7 @@ public class Find : TextFunction {
 
   //-------------------------------------------------------------
   // Creates the search UI
-  private void create_widget( Editor editor, out Box box, out Entry entry ) {
+  private void create_widget( Editor editor, out Box box, out Entry? entry ) {
 
     _find = new Entry() {
       halign = Align.FILL,
@@ -123,6 +123,8 @@ public class Find : TextFunction {
       };
       box.append( _find );
       box.append( cbox );
+
+      entry = null;
 
     } else {
 

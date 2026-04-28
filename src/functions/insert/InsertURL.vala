@@ -82,7 +82,7 @@ public class InsertURL : TextFunction {
     }
   }
 
-  private Box create_widget( Editor editor, out Box box, out Entry focus ) {
+  private Box create_widget( Editor editor, out Box box, out Entry? focus ) {
 
     var entry = new Entry() {
       halign = Align.FILL,
@@ -98,6 +98,8 @@ public class InsertURL : TextFunction {
         _url = entry.text;
         custom_changed();
       });
+
+      focus = null;
 
     } else {
 

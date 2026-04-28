@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -165,13 +165,8 @@ public class Editor {
   public void change_name_font( string name, int size ) {
 
     var provider = new CssProvider();
-
-    try {
-      var css_data = ".editor { font: " + size.to_string() + "px \"" + name + "\"; }";
-      provider.load_from_string( css_data );
-    } catch( GLib.Error e ) {
-      stdout.printf( "Unable to change font: %s\n", e.message );
-    }
+    var css_data = ".editor { font: " + size.to_string() + "px \"" + name + "\"; }";
+    provider.load_from_string( css_data );
 
     // Set the CSS
     _view.get_style_context().add_provider(

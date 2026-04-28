@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -31,14 +31,13 @@ public class CustomFunction : TextFunction {
   private Array<TextFunction> _functions;
   private string              _label;
   private int                 _breakpoint;
-  private string              _description;
 
   public Array<TextFunction> functions {
     get {
       return( _functions );
     }
   }
-  public string label {
+  public string user_label {
     get {
       return( _label );
     }
@@ -54,16 +53,9 @@ public class CustomFunction : TextFunction {
       _breakpoint = (value < _functions.length) ? value : -1;
     }
   }
-  public string description {
-    get {
-      return( _description );
-    }
-    set {
-      _description = value;
-    }
-  }
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public CustomFunction( bool custom = false ) {
     base( "custom-%d".printf( custom_id ), custom );
     _label      = "Custom #%d".printf( custom_id++ );
@@ -71,17 +63,20 @@ public class CustomFunction : TextFunction {
     _breakpoint = -1;
   }
 
-  /* Copy constructor */
+  //-------------------------------------------------------------
+  // Copy constructor
   public CustomFunction.copy_function( CustomFunction func ) {
     base( func.name, true );
-    _label = func.label;
+    _label = func.user_label;
     _functions = new Array<TextFunction>();
     for( int i=0; i<func.functions.length; i++ ) {
       _functions.append_val( func.functions.index( i ).copy( true ) );
     }
   }
 
-  /* Creates a copy of this custom function and returns it to the caller */
+  //-------------------------------------------------------------
+  // Creates a copy of this custom function and returns it to the
+  // caller
   public override TextFunction copy( bool custom ) {
     return( new CustomFunction.copy_function( this ) );
   }
@@ -90,17 +85,18 @@ public class CustomFunction : TextFunction {
     return( _label );
   }
 
-  /* Clears the contents of this function */
+  //-------------------------------------------------------------
+  // Clears the contents of this function
   public void clear() {
     _functions.remove_range( 0, _functions.length );
   }
 
-  /*
-   This is the main function which will be called from the UI to perform the
-   transformation action.  By default, we will run the transformation one time,
-   but the text function can override this if it is providing a UI element
-   that the user needs to add input to prior to the transformation.
-  */
+  //-------------------------------------------------------------
+  // This is the main function which will be called from the UI
+  // to perform the transformation action.  By default, we will
+  // run the transformation one time, but the text function can
+  // override this if it is providing a UI element that the user
+  // needs to add input to prior to the transformation.
   public override void launch( Editor editor ) {
     var undo_item = new UndoItem( _label );
     for( int i=0; i<_functions.length; i++ ) {
@@ -111,9 +107,8 @@ public class CustomFunction : TextFunction {
     editor.undo_buffer.add_item( undo_item );
   }
 
-  /*
-   Plays the custom function until we have hit the breakpoint.
-  */
+  //-------------------------------------------------------------
+  // Plays the custom function until we have hit the breakpoint.
   public void test( Editor editor, UndoItem undo_item ) {
     var func_len = (_breakpoint == -1) ? _functions.length : (_breakpoint + 1);
     for( int i=0; i<func_len; i++ ) {
@@ -123,27 +118,30 @@ public class CustomFunction : TextFunction {
     }
   }
 
-  /* Returns true if settings are available */
+  //-------------------------------------------------------------
+  // Returns true if settings are available
   public override bool settings_available() {
     return( false );
   }
 
-  /* Called to save this text function in XML format */
+  //-------------------------------------------------------------
+  // Called to save this text function in XML format
   public override Xml.Node* save() {
     Xml.Node* node = new Xml.Node( null, "custom" );
     node->set_prop( "name",  name );
     node->set_prop( "label", _label );
-    node->set_prop( "description", _description );
+    node->set_prop( "description", description );
     for( int i=0; i<_functions.length; i++ ) {
       node->add_child( _functions.index( i ).save() );
     }
     return( node );
   }
 
-  /* Loads the contents of this text function */
+  //-------------------------------------------------------------
+  // Loads the contents of this text function
   public override void load( Xml.Node* node, TextFunctions functions ) {
     _label = node->get_prop( "label" );
-    _description = node->get_prop( "description" );
+    description = node->get_prop( "description" );
     for( Xml.Node* it=node->children; it!=null; it=it->next ) {
       if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "function") ) {
         var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy( true );

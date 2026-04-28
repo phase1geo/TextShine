@@ -274,14 +274,14 @@ public class SidebarCustom : SidebarBox {
 
       case SwitchStackReason.NEW :
         _custom    = new CustomFunction();
-        _name.text = _custom.label;
+        _name.text = _custom.user_label;
         _name.grab_focus();
         _delete_reveal.reveal_child = false;
         break;
 
       case SwitchStackReason.EDIT :
         _custom    = (CustomFunction)function;
-        _name.text = _custom.label;
+        _name.text = _custom.user_label;
         _delete_reveal.reveal_child = true;
         insert_actions();
         break;
@@ -959,7 +959,7 @@ public class SidebarCustom : SidebarBox {
 
     cleanup();
 
-    _custom.label = _name.text;
+    _custom.user_label = _name.text;
 
     if( edit ) {
       win.functions.save_custom();

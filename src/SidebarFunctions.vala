@@ -533,7 +533,7 @@ public class SidebarFunctions : SidebarBox {
 
   //-------------------------------------------------------------
   // Called when this panel is displayed
-  public void displayed( SwitchStackReason reason, TextFunction? function ) {
+  public override void displayed( SwitchStackReason reason, TextFunction? function ) {
     switch( reason ) {
       case SwitchStackReason.ADD    :  add_custom_function( (CustomFunction)function );     break;
       case SwitchStackReason.EDIT   :  update_custom_name( function );                      break;

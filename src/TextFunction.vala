@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -133,7 +133,8 @@ public class TextFunction {
   public signal void settings_changed();
   public signal void custom_changed();
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public TextFunction( string name, bool custom, FunctionDirection dir = FunctionDirection.NONE, string description = "" ) {
     _name        = name;
     _custom      = custom;
@@ -151,18 +152,21 @@ public class TextFunction {
     return( "" );
   }
 
-  /* Creates a copy of this function */
+  //-------------------------------------------------------------
+  // Creates a copy of this function
   public virtual TextFunction copy( bool custom ) {
     assert( false );
     return( new TextFunction( _name, custom, direction ) );
   }
 
-  /* Returns true if the given function matches this function */
+  //-------------------------------------------------------------
+  // Returns true if the given function matches this function
   public virtual bool matches( TextFunction function ) {
     return( (name == function.name) && (direction == function.direction) );
   }
 
-  /* Executes this text function using the editor */
+  //-------------------------------------------------------------
+  // Executes this text function using the editor
   public virtual void run( Editor editor, UndoItem undo_item ) {
     var ranges = new Array<Editor.Position>();
     editor.get_ranges( ranges );
@@ -173,37 +177,41 @@ public class TextFunction {
     }
   }
 
-  /* Specifies if the user clicks the action, whether we will do anything */
+  //-------------------------------------------------------------
+  // Specifies if the user clicks the action, whether we will do
+  // anything
   public virtual bool launchable( Editor editor ) {
     return( true );
   }
 
-  /*
-   This is the main function which will be called from the UI to perform the
-   transformation action.  By default, we will run the transformation one time,
-   but the text function can override this if it is providing a UI element
-   that the user needs to add input to prior to the transformation.
-  */
+  //-------------------------------------------------------------
+  // This is the main function which will be called from the UI
+  // to perform the transformation action.  By default, we will
+  // run the transformation one time, but the text function can
+  // override this if it is providing a UI element that the user
+  // needs to add input to prior to the transformation.
   public virtual void launch( Editor editor ) {
     var undo_item = new UndoItem( label );
     run( editor, undo_item );
     editor.undo_buffer.add_item( undo_item );
   }
 
-  /* Transforms the given text */
+  //-------------------------------------------------------------
+  // Transforms the given text
   protected virtual string transform_text( string original, int cursor_pos ) {
     return( original );
   }
 
-  /*
-   Helper function which returns the new string that replaces the given range
-   from the original text with the new replacement text.
-  */
+  //-------------------------------------------------------------
+  // Helper function which returns the new string that replaces
+  // the given range from the original text with the new replacement
+  // text.
   protected string replace_text( string original, int start_pos, int end_pos, string replacement ) {
     return( original.splice( 0, start_pos ) + replacement + original.splice( end_pos, original.length ) );
   }
 
-  /* Handles a widget escape */
+  //-------------------------------------------------------------
+  // Handles a widget escape
   protected void handle_widget_escape( Widget w, MainWindow win ) {
     var key_controller = new EventControllerKey();
     w.add_controller( key_controller );
@@ -215,7 +223,8 @@ public class TextFunction {
     });
   }
 
-  /* Returns true if the given single quote is an apostrophe */
+  //-------------------------------------------------------------
+  // Returns true if the given single quote is an apostrophe
   protected bool is_apostrophe( string str, int byte_index ) {
 
     var char_index = str.slice( 0, byte_index ).char_count();
@@ -229,7 +238,8 @@ public class TextFunction {
 
   }
 
-  /* Converts all quotes to straight quotes */
+  //-------------------------------------------------------------
+  // Converts all quotes to straight quotes
   protected string straight_quote( string original ) {
 
     var str = original;
@@ -256,7 +266,8 @@ public class TextFunction {
 
   }
 
-  /* Removes all straigh quotes with curved quotes */
+  //-------------------------------------------------------------
+  // Removes all straigh quotes with curved quotes
   protected string substitute_straight_quotes( string original, bool single, bool curved = false ) {
 
     var dbytes = "\"".length;
@@ -264,7 +275,7 @@ public class TextFunction {
     var str    = straight_quote( original );
     var left   = true;
 
-    /* Convert double straight quotes to angled quotes */
+    // Convert double straight quotes to angled quotes
     var index = str.index_of_char( '"' );
     while( index != -1 ) {
       str   = str.slice( 0, index ) + (left ? left_angled_dquote : right_angled_dquote) + str.slice( (index + dbytes), str.length );
@@ -272,7 +283,7 @@ public class TextFunction {
       index = str.index_of_char( '"', (index + 1) );
     }
 
-    /* Convert single quotes to single angled quotes */
+    // Convert single quotes to single angled quotes
     if( single ) {
       index = str.index_of_char( '\'' );
       left  = true;
@@ -293,22 +304,27 @@ public class TextFunction {
 
   }
 
-  /* Returns the widget as a Box container to add to the UI */
+  //-------------------------------------------------------------
+  // Returns the widget as a Box container to add to the UI
   public virtual Box? get_widget( Editor editor ) {
     return( null );
   }
 
-  /* Returns true if settings are available */
+  //-------------------------------------------------------------
+  // Returns true if settings are available
   public virtual bool settings_available() {
     return( false );
   }
 
-  /* Populates the given popover with the text function settings widgets */
+  //-------------------------------------------------------------
+  // Populates the given popover with the text function settings
+  // widgets
   public virtual void add_settings( Grid grid ) {
     // By default, we will do nothing
   }
 
-  /* Called whenever a number setting with a range needs to be added */
+  //-------------------------------------------------------------
+  // Called whenever a number setting with a range needs to be added
   protected void add_range_setting( Grid grid, int row, string label, int min_value, int max_value, int step, int init_value, SettingRangeChangedFunc callback ) {
 
     var lbl = new Label( label + ": " ) {
@@ -333,7 +349,8 @@ public class TextFunction {
 
   }
 
-  /* Called whenever a string setting widget needs to be added */
+  //-------------------------------------------------------------
+  // Called whenever a string setting widget needs to be added
   protected Entry add_string_setting( Grid grid, int row, string label, string init_value, SettingStringChangedFunc callback ) {
 
     var lbl = new Label( label + ": " ) {
@@ -364,7 +381,8 @@ public class TextFunction {
 
   }
 
-  /* Called whenever a boolean setting widget needs to be added */
+  //-------------------------------------------------------------
+  // Called whenever a boolean setting widget needs to be added
   protected void add_bool_setting( Grid grid, int row, string label, bool init_value, SettingBoolChangedFunc callback ) {
 
     var lbl = new Label( label + ": " ) {
@@ -389,7 +407,8 @@ public class TextFunction {
 
   }
 
-  /* Called whenever a menubutton setting widget needs to be added */
+  //-------------------------------------------------------------
+  // Called whenever a menubutton setting widget needs to be added
   protected void add_menubutton_setting( Grid grid, int row, string label, int init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
 
     var lbl = new Label( label + ": " ) {
@@ -418,7 +437,8 @@ public class TextFunction {
 
   }
 
-  /* Called to save this text function in XML format */
+  //-------------------------------------------------------------
+  // Called to save this text function in XML format
   public virtual Xml.Node* save() {
     Xml.Node* node = new Xml.Node( null, "function" );
     node->set_prop( "name", _name );
@@ -427,7 +447,8 @@ public class TextFunction {
     return( node );
   }
 
-  /* Loads the contents of this text function */
+  //-------------------------------------------------------------
+  // Loads the contents of this text function
   public virtual void load( Xml.Node* node, TextFunctions functions ) {
     var d = node->get_prop( "direction" );
     if( d != null ) {

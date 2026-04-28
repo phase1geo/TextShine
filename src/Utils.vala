@@ -25,7 +25,8 @@ using Cairo;
 
 public class Utils {
 
-  /* Returns true if the specified version is older than this version */
+  //-------------------------------------------------------------
+  // Returns true if the specified version is older than this version
   public static bool is_version_older( MainWindow win, string other_version ) {
     var my_parts    = win.application.version.split( "." );
     var other_parts = other_version.split( "." );
@@ -37,35 +38,37 @@ public class Utils {
     return( false );
   }
 
-  /*
-   Helper function for converting an RGBA color value to a stringified color
-   that can be used by a markup parser.
-  */
+  //-------------------------------------------------------------
+  // Helper function for converting an RGBA color value to a
+  // stringified color that can be used by a markup parser.
   public static string color_from_rgba( RGBA rgba ) {
     return( "#%02x%02x%02x".printf( (int)(rgba.red * 255), (int)(rgba.green * 255), (int)(rgba.blue * 255) ) );
   }
 
-  /* Returns the RGBA color for the given color value */
+  //-------------------------------------------------------------
+  // Returns the RGBA color for the given color value
   public static RGBA color_from_string( string value ) {
     RGBA c = {(float)1.0, (float)1.0, (float)1.0, (float)1.0};
     c.parse( value );
     return( c );
   }
 
-  /* Sets the context source color to the given color value */
+  //-------------------------------------------------------------
+  // Sets the context source color to the given color value
   public static void set_context_color( Context ctx, RGBA color ) {
     ctx.set_source_rgba( color.red, color.green, color.blue, color.alpha );
   }
 
-  /*
-   Sets the context source color to the given color value overriding the
-   alpha value with the given value.
-  */
+  //-------------------------------------------------------------
+  // Sets the context source color to the given color value overriding
+  // the alpha value with the given value.
   public static void set_context_color_with_alpha( Context ctx, RGBA color, double alpha ) {
     ctx.set_source_rgba( color.red, color.green, color.blue, alpha );
   }
 
-  /* Returns the rectangle associated with the given widget (the widget must be realized) */
+  //-------------------------------------------------------------
+  // Returns the rectangle associated with the given widget (the
+  // widget must be realized)
   public static Graphene.Rect get_rect_for_widget( Widget w ) {
     Graphene.Rect rect;
     if( w.compute_bounds( w.parent, out rect ) ) {
@@ -78,7 +81,9 @@ public class Utils {
     return( rect );
   }
 
-  /* Returns the relative coordinates of the given widget within its parent */
+  //-------------------------------------------------------------
+  // Returns the relative coordinates of the given widget within
+  // its parent
   public static void get_relative_coordinates( Widget w, out double x, out double y ) {
     double tmp_x = 0, tmp_y = 0;
     Gdk.ModifierType mask = 0;
@@ -88,18 +93,23 @@ public class Utils {
     w.root.translate_coordinates( w.parent, tmp_x, tmp_y, out x, out y );
   }
 
-  /* Returns a string that is used to display a tooltip with displayed accelerator */
+  //-------------------------------------------------------------
+  // Returns a string that is used to display a tooltip with
+  // displayed accelerator
   public static string tooltip_with_accel( string tooltip, string accel ) {
     string[] accels = {accel};
     return( Granite.markup_accel_tooltip( accels, tooltip ) );
   }
 
-  /* Returns a string that will be drawn as a title when markup is applied */
+  //-------------------------------------------------------------
+  // Returns a string that will be drawn as a title when markup
+  // is applied
   public static string make_title( string str ) {
     return( "<b>" + str + "</b>" );
   }
 
-  /* Searches for the beginning or ending word */
+  //-------------------------------------------------------------
+  // Searches for the beginning or ending word
   public static int find_word( string str, int cursor, bool wordstart ) {
     try {
       MatchInfo match_info;
@@ -114,7 +124,8 @@ public class Utils {
     return( -1 );
   }
 
-  /* Show the specified popover */
+  //-------------------------------------------------------------
+  // Show the specified popover
   public static void show_popover( Popover popover ) {
 #if GTK322
     popover.popup();
@@ -123,7 +134,8 @@ public class Utils {
 #endif
   }
 
-  /* Hide the specified popover */
+  //-------------------------------------------------------------
+  // Hide the specified popover
   public static void hide_popover( Popover popover ) {
 #if GTK322
     popover.popdown();
@@ -132,49 +144,47 @@ public class Utils {
 #endif
   }
 
-  /*
-   Replaces all of the date and time placeholders with the current date/time
-   values.
-  */
+  //-------------------------------------------------------------
+  // Replaces all of the date and time placeholders with the
+  // current date/time values.
   public static string replace_date( string value ) {
     var now = new DateTime.now_local();
     return( now.format( value.replace( "%1", "%%1" ) ) );
   }
 
-  /* Replace the given string with the given value */
+  //-------------------------------------------------------------
+  // Replace the given string with the given value
   public static string replace_index( string pattern, ref int value ) {
     var str = pattern.replace( "%1", value.to_string() );
     value++;
     return( str );
   }
 
-  /*
-   Adds a submenu to the given menu with the specified name, returning the
-   created submenu.
-  */
+  //-------------------------------------------------------------
+  // Adds a submenu to the given menu with the specified name,
+  // returning the created submenu.
   public static void add_submenu( GLib.Menu menu, string name, out GLib.Menu submenu ) {
     submenu = new GLib.Menu();
     menu.append_submenu( name, submenu );
   }
 
-  /*
-   Adds a new menu item that inserts a given pattern at the current insertion
-   point.
-  */
+  //-------------------------------------------------------------
+  // Adds a new menu item that inserts a given pattern at the
+  // current insertion point.
   public static void add_literal_pattern( GLib.Menu mnu, string action, string lbl, string pattern ) {
     mnu.append( lbl, "%s('%s')".printf( action, pattern ) );
   }
 
-  /*
-   Adds a new menu item that inserts a given pattern at the current insertion
-   point.
-  */
+  //-------------------------------------------------------------
+  // Adds a new menu item that inserts a given pattern at the
+  // current insertion point.
   public static void add_pattern( GLib.Menu mnu, string action, string lbl, string pattern ) {
     var label = (pattern.length < 5) ? (lbl + " - " + pattern) : lbl;
     mnu.append( label, "%s('%s')".printf( action, pattern ) );
   }
 
-  /* Adds items to the popup menu for a text insertion based widget */
+  //-------------------------------------------------------------
+  // Adds items to the popup menu for a text insertion based widget
   public static void populate_insert_popup( GLib.Menu menu, string action ) {
 
     GLib.Menu chars, date, time;
@@ -217,7 +227,9 @@ public class Utils {
 
   }
 
-  /* Returns the child widget at the given index of the parent widget (or null if one does not exist) */
+  //-------------------------------------------------------------
+  // Returns the child widget at the given index of the parent
+  // widget (or null if one does not exist)
   public static Widget? get_child_at_index( Widget parent, int index ) {
     var child = parent.get_first_child();
     while( (child != null) && (index-- > 0) ) {

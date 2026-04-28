@@ -67,7 +67,7 @@ public class ReplaceSelected : TextFunction {
   }
 
   /* Creates the search UI */
-  private void create_widget( Editor editor, out Box box, out Entry entry ) {
+  private void create_widget( Editor editor, out Box box, out Entry? entry ) {
 
     _replace = new Entry() {
       halign = Align.FILL,
@@ -85,6 +85,8 @@ public class ReplaceSelected : TextFunction {
         _replace_text = _replace.text;
         custom_changed();
       });
+
+      entry = null;
 
     } else {
 

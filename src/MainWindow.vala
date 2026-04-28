@@ -40,8 +40,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Sidebar        _sidebar;
   private Box               _widget_box;
   private GLib.List<Widget> _widget_items;
-  private InfoBar        _info;
-  private Label          _info_label;
+  private InfoBox           _info;
   private TextFunctions  _functions;
   private CustomFunction _custom;
   private string?        _current_file = null;
@@ -124,13 +123,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     };
     _widget_items = new GLib.List<Widget>();
 
-    _info_label = new Label( "" );
-    _info = new InfoBar() {
-      valign = Align.FILL,
-      revealed = false
+    _info = new InfoBox() {
+      valign = Align.FILL
     };
-    _info.add_child( _info_label );
-    _info.close.connect( close_error );
 
     ebox.append( _widget_box );
     ebox.append( _info );
@@ -451,18 +446,22 @@ public class MainWindow : Gtk.ApplicationWindow {
     _editor.grab_focus();
   }
 
+  //-------------------------------------------------------------
+  // Display an open file dialog to open a file for reading.
   private void do_open() {
 
-    var dialog = new FileChooserNative( _( "Open File" ), this, FileChooserAction.OPEN, _( "Open" ), _( "Cancel" ) );
+    var dialog = new FileDialog() {
+      modal = true,
+      title = _( "Open File" ),
+      accept_label = _( "Open" )
+    };
 
-    dialog.response.connect((id) => {
-      if( id == ResponseType.ACCEPT ) {
-        open_file( dialog.get_file().get_path() );
-      }
-      dialog.destroy();
+    dialog.open.begin( this, null, (obj, res) => {
+      try {
+        var file = dialog.open.end( res );
+        open_file( file.get_path() );
+      } catch( Error e ) {}
     });
-
-    dialog.show();
 
   }
 
@@ -488,18 +487,31 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
+  //-------------------------------------------------------------
+  // Displays a file save dialog if the text hasn't been saved
+  // before.  Saves the contents of the buffer to the current file.
   private void do_save() {
 
     if( _current_file == null ) {
-      var dialog = new FileChooserNative( _( "Save File" ), this, FileChooserAction.SAVE, _( "Save" ), _( "Cancel" ) );
-      dialog.response.connect((id) => {
-        if( id == ResponseType.ACCEPT ) {
-          _current_file = dialog.get_file().get_path();
-        }
-        dialog.destroy();
+      var dialog = new FileDialog() {
+        modal = true,
+        title = _( "Save File" ),
+        accept_label = _( "Save" )
+      };
+      dialog.save.begin( this, null, (obj, res) => {
+        try {
+          var file = dialog.save.end( res );
+          _current_file = file.get_path();
+          save_current_file();
+        } catch( Error e ) {}
       });
-      dialog.show();
+    } else {
+      save_current_file();
     }
+
+  }
+
+  private void save_current_file() {
 
     var file = File.new_for_path( _current_file );
 
@@ -627,16 +639,13 @@ public class MainWindow : Gtk.ApplicationWindow {
   //-------------------------------------------------------------
   // Displays the given error message
   public void show_error( string msg ) {
-    _info_label.label       = msg;
-    _info.message_type      = MessageType.ERROR;
-    _info.show_close_button = true;
-    _info.revealed          = true;
+    _info.show_warning( msg );
   }
 
   //-------------------------------------------------------------
-  // Closes the error information bar
-  public void close_error() {
-    _info.revealed = false;
+  // Hides the error message window
+  public void hide_error() {
+    _info.hide();
   }
 
   //-------------------------------------------------------------

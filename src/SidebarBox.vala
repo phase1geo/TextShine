@@ -31,7 +31,8 @@ public class SidebarBox : Box {
   public signal void action_applied( TextFunction function );
   public signal void switch_stack( SwitchStackReason reason, TextFunction? function );
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public SidebarBox( MainWindow win, Editor editor ) {
 
     Object( orientation: Orientation.VERTICAL, spacing: 10 );
@@ -45,7 +46,9 @@ public class SidebarBox : Box {
 
   }
 
-  /* Called by sidebar when the stack switches to display this element */
+  //-------------------------------------------------------------
+  // Called by sidebar when the stack switches to display this
+  // element
   public virtual void displayed( SwitchStackReason reason, TextFunction? function ) {}
 
 }

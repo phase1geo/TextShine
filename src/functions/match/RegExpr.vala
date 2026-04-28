@@ -88,7 +88,7 @@ public class RegExpr : TextFunction {
 
   //-------------------------------------------------------------
   // Creates the search UI
-  private void create_widget( Editor editor, out Box box, out Entry entry ) {
+  private void create_widget( Editor editor, out Box box, out Entry? entry ) {
 
     _pattern = new Entry() {
       halign = Align.FILL,
@@ -129,6 +129,8 @@ public class RegExpr : TextFunction {
         _highlight_line = highlight_line.get_active();
         custom_changed();
       });
+
+      entry = null;
 
     } else {
 
@@ -344,7 +346,7 @@ public class RegExpr : TextFunction {
     editor.undo_buffer.add_item( _undo_item );
 
     // Close the error display
-    _win.close_error();
+    _win.hide_error();
 
     // Hide the widget
     _win.remove_widget();
@@ -353,7 +355,7 @@ public class RegExpr : TextFunction {
 
   //-------------------------------------------------------------
   // Replace all matches with the replacement text
-  private void do_replace( Editor editor, UndoItem undo_item ) {
+  private void do_replace( Editor editor, UndoItem? undo_item ) {
 
     var ranges       = new Array<Editor.Position>();
     var replace_text = Utils.replace_date( _replace_text );
@@ -378,7 +380,7 @@ public class RegExpr : TextFunction {
     }
 
     // Hide the error message
-    _win.close_error();
+    _win.hide_error();
 
     // Hide the widget
     _win.remove_widget();

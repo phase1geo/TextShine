@@ -150,7 +150,7 @@ public class InsertText : TextFunction {
     }
   }
 
-  private void create_widget( Editor editor, out Box box, out Entry focus ) {
+  private void create_widget( Editor editor, out Box box, out Entry? focus ) {
 
     _insert = new Entry() {
       halign = Align.FILL,
@@ -169,6 +169,8 @@ public class InsertText : TextFunction {
         _insert_text = _insert.text;
         custom_changed();
       });
+
+      focus = null;
 
     } else {
 

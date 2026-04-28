@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,15 +23,16 @@ using Gtk;
 
 public class Preferences : Dialog {
 
-  private MainWindow _win;
-  private FontButton _font;
-  private MenuButton _spell_lang;
+  private MainWindow       _win;
+  private FontDialogButton _font;
+  private MenuButton       _spell_lang;
 
   private const GLib.ActionEntry action_entries[] = {
     { "action_spell_menu", action_spell_menu, "s" }
   };
 
-  /* Default constructor */
+  //-------------------------------------------------------------
+  // Default constructor
   public Preferences( MainWindow win ) {
 
     Object(
@@ -50,22 +51,23 @@ public class Preferences : Dialog {
       margin_bottom = 10
     };
 
-    /* Add the preference items */
+    // Add the preference items
     box.append( create_font_selection() );
     box.append( create_spell_checker() );
     box.append( create_spell_checker_language() );
 
-    /* Set the content area of the dialog box */
+    // Set the content area of the dialog box
     get_content_area().append( box );
 
-    /* Add the menu actions */
+    // Add the menu actions
     var actions = new SimpleActionGroup();
     actions.add_action_entries( action_entries, this );
     insert_action_group( "prefs", actions );
 
   }
 
-  /* Create font selection box */
+  //-------------------------------------------------------------
+  // Create font selection box
   private Box create_font_selection() {
 
     var lbl = new Label( _( "Font:" ) ) {
@@ -73,27 +75,22 @@ public class Preferences : Dialog {
       hexpand = true
     };
 
-    _font = new FontButton() {
+    var dialog = new FontDialog();
+
+    _font = new FontDialogButton( dialog ) {
       halign = Align.END,
       hexpand = true
     };
 
-    _font.set_filter_func( (family, face) => {
-      var fd     = face.describe();
-      var weight = fd.get_weight();
-      var style  = fd.get_style();
-      return( (weight == Pango.Weight.NORMAL) && (style == Pango.Style.NORMAL) );
-    });
-
-    _font.font_set.connect(() => {
-      var name = _font.get_font_family().get_name();
-      var size = _font.get_font_size() / Pango.SCALE;
+    _font.notify["font-desc"].connect(() => {
+      var name = _font.font_desc.get_family();
+      var size = _font.font_desc.get_size() / Pango.SCALE;
       _win.editor.change_name_font( name, size );
       TextShine.settings.set_string( "default-font-family", name );
       TextShine.settings.set_int( "default-font-size", size );
     });
 
-    /* Set the font button defaults */
+    // Set the font button defaults
     var fd = _font.get_font_desc();
     fd.set_family( TextShine.settings.get_string( "default-font-family" ) );
     fd.set_size( TextShine.settings.get_int( "default-font-size" ) * Pango.SCALE );
@@ -133,7 +130,8 @@ public class Preferences : Dialog {
 
   }
 
-  /* Create the spell checker language menu */
+  //-------------------------------------------------------------
+  // Create the spell checker language menu
   private GLib.Menu create_spell_lang_menu() {
 
     var menu  = new GLib.Menu();
@@ -157,7 +155,8 @@ public class Preferences : Dialog {
 
   }
 
-  /* Handles changes to the spell checker language menu */
+  //-------------------------------------------------------------
+  // Handles changes to the spell checker language menu
   private void action_spell_menu( SimpleAction action, Variant? variant ) {
 
     if( variant != null ) {
@@ -171,7 +170,8 @@ public class Preferences : Dialog {
 
   }
 
-  /* Creates the UI to adjust the spell checker language */
+  //-------------------------------------------------------------
+  // Creates the UI to adjust the spell checker language
   private Box create_spell_checker_language() {
 
     var lbl = new Label( _( "Spell Checker Language:" ) ) {
