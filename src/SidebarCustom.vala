@@ -122,7 +122,7 @@ public class SidebarCustom : SidebarBox {
       var row = _lb.get_row_at_y( (int)y );
       if( row != null ) {
         _drag_box = (Box)row.child;
-        var val = new Value( typeof(Object) );
+        var val = Value( typeof(Object) );
         val.set_object( _drag_box );
         var content = new ContentProvider.for_value( val );
         return( content );
@@ -140,7 +140,6 @@ public class SidebarCustom : SidebarBox {
         _drag_box.snapshot( snapshot );
 
         Utils.get_relative_coordinates( _drag_box, out hotspot_x, out hotspot_y );
-        // snapshot.append_color( bg, rect );
         DragIcon.set_from_paintable( drag, snapshot.free_to_paintable( null ), (int)hotspot_x, (int)hotspot_y );
       }
     });
@@ -198,13 +197,13 @@ public class SidebarCustom : SidebarBox {
     };
 
     var del = new Button.with_label( _( "Delete" ) );
-    del.get_style_context().add_class( "destructive-action" );
+    del.add_css_class( "destructive-action" );
     del.clicked.connect( delete_custom );
 
     var done = new Button.with_label( _( "Done" ) ) {
       halign = Align.END
     };
-    done.get_style_context().add_class( "suggested-action" );
+    done.add_css_class( "suggested-action" );
     done.clicked.connect( save_custom );
 
     _delete_reveal = new Revealer() {
@@ -979,27 +978,27 @@ public class SidebarCustom : SidebarBox {
   // Deletes the current custom function
   private void delete_custom() {
 
-    var flags  = DialogFlags.MODAL | DialogFlags.DESTROY_WITH_PARENT;
-    var dialog = new MessageDialog( win, flags, MessageType.WARNING, ButtonsType.NONE, null );
-    dialog.set_markup( Utils.make_title( _( "Delete Custom Action?") ) );
-    dialog.format_secondary_text( _( "Deleting a custom action cannot be undone." ) );
-    var del = dialog.add_button( _( "Delete Action" ), ResponseType.ACCEPT );
-    var can = dialog.add_button( _( "Cancel" ),        ResponseType.REJECT );
+    string[] buttons = { _( "Delete Action" ), _( "Cancel" ) };
 
-    del.get_style_context().add_class( "destructive-action" );
-    can.grab_focus();
+    var dialog = new AlertDialog( _( "Delete Custom Action?" ) ) {
+      modal          = true,
+      detail         = _( "Deleting a custom action cannot be undone." ),
+      buttons        = buttons,
+      default_button = 0,
+      cancel_button  = 1
+    };
 
-    dialog.response.connect((id) => {
-      if( id == ResponseType.ACCEPT ) {
-        cleanup();
-        win.functions.remove_function( _custom );
-        win.functions.save_custom();
-        switch_stack( SwitchStackReason.DELETE, _custom );
-      }
-      dialog.destroy();
+    dialog.choose.begin( win, null, (obj, res) => {
+      try {
+        var choice = dialog.choose.end( res );
+        if( choice == 0 ) {
+          cleanup();
+          win.functions.remove_function( _custom );
+          win.functions.save_custom();
+          switch_stack( SwitchStackReason.DELETE, _custom );
+        }
+      } catch( Error e ) {}
     });
-
-    dialog.show();
 
   }
 

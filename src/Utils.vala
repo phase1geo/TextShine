@@ -26,8 +26,8 @@ using Cairo;
 public class Utils {
 
   /* Returns true if the specified version is older than this version */
-  public static bool is_version_older( string other_version ) {
-    var my_parts    = TextShine.version.split( "." );
+  public static bool is_version_older( MainWindow win, string other_version ) {
+    var my_parts    = win.application.version.split( "." );
     var other_parts = other_version.split( "." );
     for( int i=0; i<my_parts.length; i++ ) {
       if( int.parse( other_parts[i] ) < int.parse( my_parts[i] ) ) {
@@ -72,7 +72,7 @@ public class Utils {
       return( rect );
     }
     Requisition min_size, nat_size;
-    rect = Graphene.Rect.alloc();
+    rect = Graphene.Rect();
     w.get_preferred_size(out min_size, out nat_size );
     rect.init( (float)0, (float)0, (float)nat_size.width, (float)nat_size.height );
     return( rect );

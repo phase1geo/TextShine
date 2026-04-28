@@ -24,7 +24,8 @@ using Gdk;
 
 public class Editor {
 
-  /* Structure to hold absolute position */
+  //-------------------------------------------------------------
+  // Structure to hold absolute position
   public class Position {
 
     private TextBuffer _buf;
@@ -46,7 +47,8 @@ public class Editor {
       }
     }
 
-    /* Constructor */
+    //-------------------------------------------------------------
+    // Constructor
     public Position( TextIter s, TextIter e ) {
       _buf   = s.get_buffer();
       _start = s.get_offset();
@@ -97,7 +99,8 @@ public class Editor {
 
   public signal void buffer_changed( UndoBuffer buf );
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public Editor( MainWindow win ) {
 
     _buffer = new GtkSource.Buffer( null );
@@ -109,21 +112,21 @@ public class Editor {
       right_margin = 10
     };
 
-    /* Add the undo_buffer */
+    // Add the undo_buffer
     _undo_buffer = new UndoBuffer( this );
     _undo_buffer.buffer_changed.connect((buf) => {
       buffer_changed( buf );
     });
 
-    /* Set a CSS style class so that we can adjust the font */
-    _view.get_style_context().add_class( "editor" );
+    // Set a CSS style class so that we can adjust the font
+    _view.add_css_class( "editor" );
 
-    /* Set the default font */
+    // Set the default font
     var font_name = TextShine.settings.get_string( "default-font-family" );
     var font_size = TextShine.settings.get_int( "default-font-size" );
     change_name_font( font_name, font_size );
 
-    /* Handle changes to the buffer */
+    // Handle changes to the buffer
     buffer.insert_text.connect((ref pos, new_text, new_text_length) => {
       if( _ignore_edit ) return;
       var start     = pos.get_offset();
@@ -146,29 +149,31 @@ public class Editor {
 
     _view.extra_menu = new GLib.Menu();
 
-    /* Connect spell checker */
+    // Connect spell checker
     connect_spell_checker();
 
   }
 
-  /* Grabs keyboard focus */
+  //-------------------------------------------------------------
+  // Grabs keyboard focus
   public bool grab_focus() {
     return( _view.grab_focus() );
   }
 
-  /* Updates the font theme */
+  //-------------------------------------------------------------
+  // Updates the font theme
   public void change_name_font( string name, int size ) {
 
     var provider = new CssProvider();
 
     try {
       var css_data = ".editor { font: " + size.to_string() + "px \"" + name + "\"; }";
-      provider.load_from_data( css_data.data );
+      provider.load_from_string( css_data );
     } catch( GLib.Error e ) {
       stdout.printf( "Unable to change font: %s\n", e.message );
     }
 
-    /* Set the CSS */
+    // Set the CSS
     _view.get_style_context().add_provider(
       provider,
       STYLE_PROVIDER_PRIORITY_APPLICATION
@@ -176,7 +181,8 @@ public class Editor {
 
   }
 
-  /* Returns the current range of text that will be transformed */
+  //-------------------------------------------------------------
+  // Returns the current range of text that will be transformed
   public void get_ranges( Array<Position> ranges, bool include_selected = true ) {
 
     TextIter start, end;
@@ -205,7 +211,9 @@ public class Editor {
 
   }
 
-  /* Returns the locations of all words with a length > 1 character within the given from_ranges */
+  //-------------------------------------------------------------
+  // Returns the locations of all words with a length > 1 character
+  // within the given from_ranges
   public void get_words( Array<Position> from_ranges, Array<Position> ranges ) {
 
     TextIter? starting = null, ending = null;
@@ -239,7 +247,8 @@ public class Editor {
 
   }
 
-  /* Returns the locations of lines that contain at least one character */
+  //-------------------------------------------------------------
+  // Returns the locations of lines that contain at least one character
   public void get_lines( Array<Position> from_ranges, Array<Position> ranges ) {
 
     TextIter? starting = null, ending = null;
@@ -270,7 +279,9 @@ public class Editor {
 
   }
 
-  /* Returns a list of ranges locating any sentences with at least one character */
+  //-------------------------------------------------------------
+  // Returns a list of ranges locating any sentences with at least
+  // one character
   public void get_sentences( Array<Position> from_ranges, Array<Position> ranges ) {
 
     TextIter? starting = null, ending = null;
@@ -296,7 +307,9 @@ public class Editor {
 
   }
 
-  /* Returns a list of ranges locating any paragraphs with at least one line */
+  //-------------------------------------------------------------
+  // Returns a list of ranges locating any paragraphs with at
+  // least one line
   public void get_paragraphs( Array<Position> from_ranges, Array<Position> ranges ) {
 
     TextIter? starting = null, ending = null;
@@ -331,15 +344,16 @@ public class Editor {
 
   }
 
-  /* Returns the current range of text that will be transformed */
+  //-------------------------------------------------------------
+  // Returns the current range of text that will be transformed
   public string get_text( TextIter start, TextIter end ) {
     return( buffer.get_text( start, end, false ) );
   }
 
-  /*
-   Returns the cursor position relative to the selected text.  If the cursorcr
-   position is outside of the selected text range, return -1.
-  */
+  //-------------------------------------------------------------
+  // Returns the cursor position relative to the selected text.
+  // If the cursor position is outside of the selected text range,
+  // return -1.
   public int get_cursor_pos( TextIter start, TextIter end ) {
     if( (buffer.cursor_position < start.get_offset()) ||
         (buffer.cursor_position > end.get_offset()) ) {
@@ -348,27 +362,26 @@ public class Editor {
     return( buffer.cursor_position - start.get_offset() );
   }
 
-  /*
-   This should be called whenever library code need to insert text as it avoids
-   placing the change in the undo buffer.
-  */
+  //-------------------------------------------------------------
+  // This should be called whenever library code need to insert
+  // text as it avoids placing the change in the undo buffer.
   public void insert_text( ref TextIter pos, string text ) {
     _ignore_edit = true;
     buffer.insert( ref pos, text, text.length );
     _ignore_edit = false;
   }
 
-  /*
-   This should be called whenever library code need to delete text as it avoids
-   placing the change in the undo buffer.
-  */
+  //-------------------------------------------------------------
+  // This should be called whenever library code need to delete
+  // text as it avoids placing the change in the undo buffer.
   public void delete_text( ref TextIter start, ref TextIter end ) {
     _ignore_edit = true;
     buffer.delete( ref start, ref end );
     _ignore_edit = false;
   }
 
-  /* Replaces all ranges with the specified text */
+  //-------------------------------------------------------------
+  // Replaces all ranges with the specified text
   public void replace_text( TextIter start, TextIter end, string text, UndoItem? undo_item ) {
     var old_text = start.get_slice( end );
     if( undo_item != null ) {
@@ -380,12 +393,15 @@ public class Editor {
     insert_text( ref start, text );
   }
 
-  /* Copies the entire buffer contents, regardless of selection */
+  //-------------------------------------------------------------
+  // Copies the entire buffer contents, regardless of selection
   public void copy_all_to_clipboard( Clipboard clipboard ) {
     clipboard.set_text( buffer.text );
   }
 
-  /* Copies the selected text (if selected) or the entire buffer contents */
+  //-------------------------------------------------------------
+  // Copies the selected text (if selected) or the entire buffer
+  // contents
   public void copy_to_clipboard( Clipboard clipboard ) {
     TextIter start, end;
     if( buffer.get_selection_bounds( out start, out end ) ) {
@@ -395,7 +411,8 @@ public class Editor {
     }
   }
 
-  /* Clears the text in the buffer */
+  //-------------------------------------------------------------
+  // Clears the text in the buffer
   public void clear() {
     TextIter start, end;
     buffer.get_bounds( out start, out end );
@@ -405,14 +422,16 @@ public class Editor {
     undo_buffer.clear();
   }
 
-  /* Clears the selection */
+  //-------------------------------------------------------------
+  // Clears the selection
   public void clear_selection() {
     TextIter ins;
     buffer.get_iter_at_mark( out ins, buffer.get_insert() );
     buffer.select_range( ins, ins );
   }
 
-  /* Returns true if any text is selected */
+  //-------------------------------------------------------------
+  // Returns true if any text is selected
   public bool is_selected() {
     TextIter iter;
     buffer.get_start_iter( out iter );
@@ -420,7 +439,9 @@ public class Editor {
     return( (tag != null) && iter.forward_to_tag_toggle( tag ) );
   }
 
-  /* Counts the number of tags that match the given name within the text */
+  //-------------------------------------------------------------
+  // Counts the number of tags that match the given name within
+  // the text
   private int num_tagged( string tag_name ) {
 
     var count = 0;
@@ -440,17 +461,20 @@ public class Editor {
 
   }
 
-  /* Returns the number of matches currenly highlighted in the text */
+  //-------------------------------------------------------------
+  // Returns the number of matches currenly highlighted in the text
   public int num_selected() {
     return( num_tagged( "selected" ) );
   }
 
-  /* Returns the number of spelling errors in the highlighted text */
+  //-------------------------------------------------------------
+  // Returns the number of spelling errors in the highlighted text
   public int num_spelling_errors() {
     return( num_tagged( "misspelled-tag" ) );
   }
 
-  /* Adds a new tag by the given name */
+  //-------------------------------------------------------------
+  // Adds a new tag by the given name
   public void add_selected( TextIter start, TextIter end, UndoItem? undo_item ) {
     clear_selection();
     if( buffer.tag_table.lookup( "selected" ) == null ) {
@@ -462,7 +486,8 @@ public class Editor {
     }
   }
 
-  /* Removes the tag specified by the given name */
+  //-------------------------------------------------------------
+  // Removes the tag specified by the given name
   public void remove_selected( UndoItem? undo_item ) {
     if( buffer.tag_table.lookup( "selected" ) == null ) return;
     if( undo_item != null ) {
@@ -478,7 +503,8 @@ public class Editor {
     buffer.remove_tag_by_name( "selected", start, end );
   }
 
-  /* Attaches the spell checker to ourselves */
+  //-------------------------------------------------------------
+  // Attaches the spell checker to ourselves
   public void set_spellchecker() {
     if( TextShine.settings.get_boolean( "enable-spell-checking" ) ) {
       _spell.attach( _view );
@@ -487,12 +513,15 @@ public class Editor {
     }
   }
 
-  /* Creates and populates the extra menu associated with this text widget */
+  //-------------------------------------------------------------
+  // Creates and populates the extra menu associated with this text
+  // widget
   private void populate_extra_menu() {
     _view.extra_menu = new GLib.Menu();
   }
 
-  /* Sets the language based on the settings value */
+  //-------------------------------------------------------------
+  // Sets the language based on the settings value
   public void update_spell_language() {
 
     var lang        = TextShine.settings.get_string( "spell-language" );
@@ -506,7 +535,7 @@ public class Editor {
     var lang_list = new Gee.ArrayList<string>();
     _spell.get_language_list( lang_list );
 
-    /* Check to see if the given language exists */
+    // Check to see if the given language exists
     lang_list.foreach((elem) => {
       if( elem == lang ) {
         _spell.set_language( lang );
@@ -516,7 +545,7 @@ public class Editor {
       return( true );
     });
 
-    /* Based on the search, set the language to use in the spell checker */
+    // Based on the search, set the language to use in the spell checker
     if( lang_list.size == 0 ) {
       _spell.set_language( null );
     } else if( !lang_exists ) {
@@ -525,10 +554,9 @@ public class Editor {
 
   }
 
-  /*
-   Connects the spell checker and selects the checked language as specified by the
-   user's LANG environment variable.
-  */
+  //-------------------------------------------------------------
+  // Connects the spell checker and selects the checked language
+  // as specified by the user's LANG environment variable.
   private void connect_spell_checker() {
 
     _spell = new SpellChecker();

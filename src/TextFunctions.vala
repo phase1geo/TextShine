@@ -23,6 +23,7 @@ using Gtk;
 
 public class TextFunctions {
 
+  private MainWindow          _win;
   private Array<TextFunction> _functions;
   private Array<string>       _categories;
   private Array<string>       _category_labels;
@@ -43,8 +44,11 @@ public class TextFunctions {
     }
   }
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public TextFunctions( MainWindow win ) {
+
+    _win = win;
 
     _favorites_file = GLib.Path.build_filename( TextShine.get_home_dir(), "favorites.xml" );
     _functions_file = GLib.Path.build_filename( TextShine.get_home_dir(), "functions.xml" );
@@ -69,7 +73,7 @@ public class TextFunctions {
     add_category( "sort",           _( "Sort" ) );
     add_category( "custom",         _( "Custom" ) );
 
-    /* Category - case */
+    // Category - case
     add_function( "case", new CaseUpper() );
     add_function( "case", new CaseLower() );
     add_function( "case", new CaseSentence() );
@@ -78,14 +82,14 @@ public class TextFunctions {
     add_function( "case", new CaseSnake() );
     add_function( "case", new CaseRandom() );
 
-    /* Category - insert */
+    // Category - insert
     add_function( "insert", new InsertText( win ) );
     add_function( "insert", new InsertLineNumbers() );
     add_function( "insert", new InsertLoremIpsum() );
     add_function( "insert", new InsertFile( win ) );
     add_function( "insert", new InsertURL( win ) );
 
-    /* Category - remove */
+    // Category - remove
     add_function( "remove", new RemoveBlankLines() );
     add_function( "remove", new RemoveDuplicateLines() );
     add_function( "remove", new RemoveLeadingWhitespace() );
@@ -94,13 +98,13 @@ public class TextFunctions {
     add_function( "remove", new RemoveLineNumbers() );
     add_function( "remove", new RemoveSelected() );
 
-    /* Category - replace */
+    // Category - replace
     add_function( "replace", new ReplaceTabsSpaces() );
     add_function( "replace", new ReplacePeriodsEllipsis() );
     add_function( "replace", new ReplaceReturnSpace() );
     add_function( "replace", new ReplaceReturns() );
 
-    /* Category - quotations */
+    // Category - quotations
     add_function( "quotes", new QuotesCurved() );
     add_function( "quotes", new QuotesStraight() );
     add_function( "quotes", new QuotesAngled() );
@@ -108,18 +112,18 @@ public class TextFunctions {
     add_function( "quotes", new QuotesCJK() );
     add_function( "quotes", new QuotesDoubleSingle() );
 
-    /* Category - sort */
+    // Category - sort
     add_function( "sort", new SortLines() );
     add_function( "sort", new SortReverseChars() );
     add_function( "sort", new SortMoveLines() );
     add_function( "sort", new Randomize() );
 
-    /* Category - indent */
+    // Category - indent
     add_function( "indent", new Indent() );
     add_function( "indent", new Unindent() );
     add_function( "indent", new IndentXML() );
 
-    /* Category - convert */
+    // Category - convert
     add_function( "convert", new ConvertHardWrap() );
     add_function( "convert", new ConvertURL() );
     add_function( "convert", new ConvertBase64() );
@@ -127,17 +131,17 @@ public class TextFunctions {
     add_function( "convert", new ConvertMarkdownTable() );
     add_function( "convert", new ConvertROT13() );
 
-    /* Category - search-replace */
+    // Category - search-replace
     add_function( "search-replace", new Find( win ) );
     add_function( "search-replace", new RegExpr( win ) );
     add_function( "search-replace", new ReplaceSelected( win ) );
     add_function( "search-replace", new InvertSelected() );
     add_function( "search-replace", new ClearSelected() );
 
-    /* Category - repair */
+    // Category - repair
     add_function( "repair", new FixSpaces() );
 
-    /* Category - Markdown */
+    // Category - Markdown
     add_function( "markdown", new ConvertMarkdownHTML() );
     add_function( "markdown", new MarkdownReferences() );
     add_function( "markdown", new MarkdownTableBeauty() );
@@ -147,23 +151,23 @@ public class TextFunctions {
     add_function( "markdown", new MarkdownTaskIncomplete() );
     add_function( "markdown", new MarkdownTaskRemoveCompleted() );
 
-    /* Load the custom functions */
+    // Load the custom functions
     load_functions();
     load_custom();
     load_favorites();
 
   }
 
-  /* Adds a new category */
+  //-------------------------------------------------------------
+  // Adds a new category
   public void add_category( string name, string label ) {
     _categories.append_val( name );
     _category_labels.append_val( label );
   }
 
-  /*
-   Populate the functions and categories lists and creates a mapping between the
-   two.
-  */
+  //-------------------------------------------------------------
+  // Populate the functions and categories lists and creates a
+  // mapping between the two.
   public void add_function( string category, TextFunction function ) {
 
     var ct_index = category_index( category );
@@ -176,7 +180,8 @@ public class TextFunctions {
 
   }
 
-  /* Replaces the function with the given function */
+  //-------------------------------------------------------------
+  // Replaces the function with the given function
   public void replace_function( TextFunction function ) {
     for( int i=0; i<_functions.length; i++ ) {
       if( _functions.index( i ) == function ) {
@@ -187,7 +192,8 @@ public class TextFunctions {
     }
   }
 
-  /* Removes the given function index */
+  //-------------------------------------------------------------
+  // Removes the given function index
   public void remove_function( TextFunction function ) {
     for( int i=0; i<_functions.length; i++ ) {
       if( _functions.index( i ) == function ) {
@@ -199,7 +205,8 @@ public class TextFunctions {
     }
   }
 
-  /* Returns the index of the given category in the array */
+  //-------------------------------------------------------------
+  // Returns the index of the given category in the array
   private int category_index( string category ) {
     for( int i=0; i<_categories.length; i++ ) {
       if( _categories.index( i ) == category ) {
@@ -209,13 +216,15 @@ public class TextFunctions {
     return( -1 );
   }
 
-  /* Returns the translated label used for the given category name */
+  //-------------------------------------------------------------
+  // Returns the translated label used for the given category name
   public string get_category_label( string name ) {
     var index = category_index( name );
     return( (index != -1) ? _category_labels.index( index ) : "" );
   }
 
-  /* Returns the category label for the given function */
+  //-------------------------------------------------------------
+  // Returns the category label for the given function
   public string get_category_label_for_function( TextFunction function ) {
     for( int i=0; i<_functions.length; i++ ) {
       if( _functions.index( i ) == function ) {
@@ -225,7 +234,9 @@ public class TextFunctions {
     return( "" );
   }
 
-  /* Returns the list of text functions associated with the given category */
+  //-------------------------------------------------------------
+  // Returns the list of text functions associated with the given
+  // category
   public Array<TextFunction> get_category_functions( string category ) {
 
     var index     = category_index( category );
@@ -243,10 +254,9 @@ public class TextFunctions {
 
   }
 
-  /*
-   Returns the text function associated with the given, if found; otherwise,
-   returns null.
-  */
+  //-------------------------------------------------------------
+  // Returns the text function associated with the given, if found;
+  // otherwise, returns null.
   public TextFunction? get_function_by_name( string name ) {
 
     for( int i=0; i<_functions.length; i++ ) {
@@ -259,17 +269,19 @@ public class TextFunctions {
 
   }
 
-  /* Add the given function to the favorite list */
+  //-------------------------------------------------------------
+  // Add the given function to the favorite list
   public void favorite_function( TextFunction function ) {
 
     add_function( "favorites", function );
 
-    /* Save the favorites changes */
+    // Save the favorites changes
     save_favorites();
 
   }
 
-  /* Removes the given function from the favorite list */
+  //-------------------------------------------------------------
+  // Removes the given function from the favorite list
   public int unfavorite_function( TextFunction function ) {
 
     var favorites = get_category_functions( "favorites" );
@@ -281,24 +293,25 @@ public class TextFunctions {
       }
     }
 
-    /* Remove the function from our list */
+    // Remove the function from our list
     remove_function( function );
 
-    /* Save the favorites changes */
+    // Save the favorites changes
     save_favorites();
 
     return( index );
 
   }
 
-  /* Save the favorites to the XML file */
+  //-------------------------------------------------------------
+  // Save the favorites to the XML file
   private void save_favorites() {
 
     var functions = get_category_functions( "favorites" );
 
     Xml.Doc*  doc  = new Xml.Doc( "1.0" );
     Xml.Node* root = new Xml.Node( null, "favorites" );
-    root->set_prop( "version", TextShine.version );
+    root->set_prop( "version", _win.application.version );
 
     for( int i=0; i<functions.length; i++ ) {
       root->add_child( functions.index( i ).save() );
@@ -311,7 +324,8 @@ public class TextFunctions {
 
   }
 
-  /* Load the favorites to the XML file */
+  //-------------------------------------------------------------
+  // Load the favorites to the XML file
   private void load_favorites() {
 
     if( !FileUtils.test( _favorites_file, FileTest.EXISTS ) ) {
@@ -345,7 +359,7 @@ public class TextFunctions {
 
     Xml.Doc*  doc  = new Xml.Doc( "1.0" );
     Xml.Node* root = new Xml.Node( null, "functions" );
-    root->set_prop( "version", TextShine.version );
+    root->set_prop( "version", _win.application.version );
 
     for( int i=0; i<_functions.length; i++ ) {
       var function = _functions.index( i );
@@ -362,7 +376,8 @@ public class TextFunctions {
 
   }
 
-  /* Load the user-created custom functions */
+  //-------------------------------------------------------------
+  // Load the user-created custom functions
   public void load_functions() {
 
     if( !FileUtils.test( _functions_file, FileTest.EXISTS ) ) {
@@ -386,14 +401,15 @@ public class TextFunctions {
 
   }
 
-  /* Saves the custom functions to their own file */
+  //-------------------------------------------------------------
+  // Saves the custom functions to their own file
   public void save_custom() {
 
     var functions = get_category_functions( "custom" );
 
     Xml.Doc*  doc  = new Xml.Doc( "1.0" );
     Xml.Node* root = new Xml.Node( null, "customs" );
-    root->set_prop( "version", TextShine.version );
+    root->set_prop( "version", _win.application.version );
 
     for( int i=0; i<functions.length; i++ ) {
       root->add_child( functions.index( i ).save() );
@@ -406,7 +422,8 @@ public class TextFunctions {
 
   }
 
-  /* Load the custom functions from the XML file */
+  //-------------------------------------------------------------
+  // Load the custom functions from the XML file
   private void load_custom() {
 
     if( !FileUtils.test( _custom_file, FileTest.EXISTS ) ) {

@@ -30,11 +30,14 @@ public class TextShine : Gtk.Application {
 
   public  static GLib.Settings settings;
   public  static bool          use_clipboard = false;
-  public  static string        version       = "2.0";
 
   public TextShine () {
 
-    Object( application_id: "com.github.phase1geo.textshine", flags: ApplicationFlags.HANDLES_OPEN );
+    Object(
+      application_id: "com.github.phase1geo.textshine",
+      flags: ApplicationFlags.HANDLES_OPEN,
+      version: "2.1.0"
+    );
 
     Intl.setlocale( LocaleCategory.ALL, "" );
     Intl.bindtextdomain( GETTEXT_PACKAGE, LOCALEDIR );

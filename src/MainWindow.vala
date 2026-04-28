@@ -79,12 +79,13 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
   }
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public MainWindow( Gtk.Application app ) {
 
     Object( application: app );
 
-    /* Add the application CSS */
+    // Add the application CSS
     var provider = new Gtk.CssProvider ();
     provider.load_from_resource( "/com/github/phase1geo/textshine/css/style.css" );
     StyleContext.add_provider_for_display( get_display(), provider, STYLE_PROVIDER_PRIORITY_APPLICATION );
@@ -93,15 +94,15 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     var box = new Box( Orientation.HORIZONTAL, 5 );
 
-    /* Handle any changes to the dark mode preference setting */
+    // Handle any changes to the dark mode preference setting
     var dark_mode = handle_prefer_dark_changes();
 
-    /* Create editor */
+    // Create editor
     _editor = new Editor( this );
     _editor.buffer_changed.connect( do_buffer_changed );
     _editor.dark_mode = dark_mode;
 
-    /* Create the header */
+    // Create the header
     create_header();
 
     var sw = new ScrolledWindow() {
@@ -117,7 +118,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       hexpand = true
     };
 
-    /* Create widget bar */
+    // Create widget bar
     _widget_box = new Box( Orientation.VERTICAL, 0 ) {
       valign = Align.FILL
     };
@@ -135,10 +136,10 @@ public class MainWindow : Gtk.ApplicationWindow {
     ebox.append( _info );
     ebox.append( sw );
 
-    /* Create the widgets and functions after we have added some of the UI elements */
+    // Create the widgets and functions after we have added some of the UI elements
     _functions = new TextFunctions( this );
 
-    /* Create sidebar */
+    // Create sidebar
     var sidebar = create_sidebar();
 
     box.append( ebox );
@@ -148,29 +149,32 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     show();
 
-    /* Set the stage for menu actions */
+    // Set the stage for menu actions
     var actions = new SimpleActionGroup ();
     actions.add_action_entries( action_entries, this );
     insert_action_group( "win", actions );
 
-    /* Add keyboard shortcuts */
+    // Add keyboard shortcuts
     add_keyboard_shortcuts( app );
 
-    /* Make sure that the editor has input focus */
+    // Make sure that the editor has input focus
     _editor.grab_focus();
 
-    /* Handle any request to close the window */
+    // Handle any request to close the window
     close_request.connect(() => {
       save_window_size();
       return( false );
     });
 
-    /* Set the default window size from settings */
+    // Set the default window size from settings
     set_window_size();
+
+    show_error( "Test error message" );
 
   }
 
-  /* Adds keyboard shortcuts for the menu actions */
+  //-------------------------------------------------------------
+  // Adds keyboard shortcuts for the menu actions
   private void add_keyboard_shortcuts( Gtk.Application app ) {
     app.set_accels_for_action( "win.action_new",         { "<Control>n" } );
     app.set_accels_for_action( "win.action_open",        { "<Control>o" } );
@@ -190,7 +194,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     // TBD
   }
 
-  /* Handles any changes to the dark mode preference gsettings for the desktop */
+  //-------------------------------------------------------------
+  // Handles any changes to the dark mode preference gsettings for
+  // the desktop
   private bool handle_prefer_dark_changes() {
     var granite_settings = Granite.Settings.get_default();
     var gtk_settings     = Gtk.Settings.get_default();
@@ -202,56 +208,59 @@ public class MainWindow : Gtk.ApplicationWindow {
     return( gtk_settings.gtk_application_prefer_dark_theme );
   }
 
-  /* Returns the name of the icon to use based on if we are running elementary */
-  private string get_icon_name( string icon_name ) {
+  //-------------------------------------------------------------
+  // Returns the name of the icon to use based on if we are running
+  // elementary
+  private string get_header_icon_name( string icon_name ) {
     return "%s%s".printf( icon_name, (on_elementary ? "" : "-symbolic") );
   }
 
-  /* Create the header bar */
+  //-------------------------------------------------------------
+  // Create the header bar
   private void create_header() {
 
     _header = new HeaderBar() {
       show_title_buttons = true
     };
 
-    _clear_btn = new Button.from_icon_name( get_icon_name( "document-new" ) ) {
+    _clear_btn = new Button.from_icon_name( get_header_icon_name( "document-new" ) ) {
       tooltip_markup = Utils.tooltip_with_accel( _( "New Workspace" ), "<Control>n" )
     };
     _clear_btn.clicked.connect( do_new );
     _header.pack_start( _clear_btn );
 
-    _open_btn = new Button.from_icon_name( get_icon_name( "document-open" ) ) {
+    _open_btn = new Button.from_icon_name( get_header_icon_name( "document-open" ) ) {
       tooltip_markup = Utils.tooltip_with_accel( _( "Open File" ), "<Control>o" )
     };
     _open_btn.clicked.connect( do_open );
     _header.pack_start( _open_btn );
 
-    _save_btn = new Button.from_icon_name( get_icon_name( "document-save" ) ) {
+    _save_btn = new Button.from_icon_name( get_header_icon_name( "document-save" ) ) {
       tooltip_markup = Utils.tooltip_with_accel( _( "Save File" ), "<Control>s" )
     };
     _save_btn.clicked.connect( do_save );
     _header.pack_start( _save_btn );
 
-    _paste_btn = new Button.from_icon_name( get_icon_name( "edit-paste" ) ) {
+    _paste_btn = new Button.from_icon_name( get_header_icon_name( "edit-paste" ) ) {
       tooltip_markup = Utils.tooltip_with_accel( _( "Paste Over" ), "<Shift><Control>v" )
     };
     _paste_btn.clicked.connect( do_paste_over );
     _header.pack_start( _paste_btn );
 
-    _copy_btn = new Button.from_icon_name( get_icon_name( "edit-copy" ) ) {
+    _copy_btn = new Button.from_icon_name( get_header_icon_name( "edit-copy" ) ) {
       tooltip_markup = Utils.tooltip_with_accel( _( "Copy All" ), "<Shift><Control>c" )
     };
     _copy_btn.clicked.connect( do_copy_all );
     _header.pack_start( _copy_btn );
 
-    _undo_btn = new Button.from_icon_name( get_icon_name( "edit-undo" ) ) {
+    _undo_btn = new Button.from_icon_name( get_header_icon_name( "edit-undo" ) ) {
       tooltip_markup = Utils.tooltip_with_accel( _( "Undo" ), "<Control>z" ),
       sensitive = false
     };
     _undo_btn.clicked.connect( do_undo );
     _header.pack_start( _undo_btn );
 
-    _redo_btn = new Button.from_icon_name( get_icon_name( "edit-redo" ) ) {
+    _redo_btn = new Button.from_icon_name( get_header_icon_name( "edit-redo" ) ) {
       tooltip_markup = Utils.tooltip_with_accel( _( "Redo" ), "<Control><Shift>z" ),
       sensitive = false
     };
@@ -266,7 +275,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Adds the statistics functionality */
+  //-------------------------------------------------------------
+  // Adds the statistics functionality
   private MenuButton add_stats_button() {
 
     var stats_btn = new MenuButton() {
@@ -337,7 +347,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     grid.attach( lbl_spell,      0, 5 );
     grid.attach( _stats_spell,   1, 5 );
 
-    /* Create the popover and associate it with the menu button */
+    // Create the popover and associate it with the menu button
     stats_btn.popover = new Popover() {
       autohide = true,
       child = grid
@@ -353,7 +363,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Toggle the statistics bar */
+  //-------------------------------------------------------------
+  // Toggle the statistics bar
   private void stats_clicked() {
 
     var text        = _editor.buffer.text;
@@ -371,7 +382,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Adds the property button and associated popover */
+  //-------------------------------------------------------------
+  // Adds the property button and associated popover
   private MenuButton add_properties_button() {
 
     var menu = new GLib.Menu();
@@ -379,7 +391,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     menu.append( _( "Preferences…" ),         "win.action_preferences" );
 
     _prop_btn = new MenuButton() {
-      icon_name    = get_icon_name( "open-menu" ),
+      icon_name    = get_header_icon_name( "open-menu" ),
       tooltip_text = _( "Properties" ),
       menu_model   = menu
     };
@@ -401,7 +413,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Displays preferences window */
+  //-------------------------------------------------------------
+  // Displays preferences window
   private void action_preferences() {
 
     var prefs = new Preferences( this );
@@ -409,14 +422,17 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Called when the properties button is clicked.  Sets the state of the popover contents. */
+  //-------------------------------------------------------------
+  // Called when the properties button is clicked.  Sets the state
+  // of the popover contents.
   private void properties_clicked() {
 
-    /* TBD - State properties item states here */
+    // TBD - State properties item states here
 
   }
 
-  /* Create list of transformation buttons */
+  //-------------------------------------------------------------
+  // Create list of transformation buttons
   private Box create_sidebar() {
 
     _sidebar = new Sidebar( this, _editor );
@@ -426,7 +442,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Clears the buffer for reuse */
+  //-------------------------------------------------------------
+  // Clears the buffer for reuse
   public void do_new() {
     _current_file = null;
     _editor.clear();
@@ -498,70 +515,83 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Sets the window size to the values stored in settings */
+  //-------------------------------------------------------------
+  // Sets the window size to the values stored in settings
   private void set_window_size() {
     var w = TextShine.settings.get_int( "window-w" );
     var h = TextShine.settings.get_int( "window-h" );
     set_default_size( w, h );
   }
 
-  /* Saves the current size of the window to settings */
+  //-------------------------------------------------------------
+  // Saves the current size of the window to settings
   private void save_window_size() {
     TextShine.settings.set_int( "window-w", get_width() );
     TextShine.settings.set_int( "window-h", get_height() );
   }
 
-  /* Quits the application */
+  //-------------------------------------------------------------
+  // Quits the application
   private void do_quit() {
     save_window_size();
     destroy();
   }
 
+  //-------------------------------------------------------------
+  // Pastes the text from the clipboard after clearing the editor.
   public void do_paste_over() {
     do_new();
     do_paste();
   }
 
-  /* Pastes the contents of the clipboard to the editor */
+  //-------------------------------------------------------------
+  // Pastes the contents of the clipboard to the editor
   private void do_paste() {
     var clipboard = Gdk.Display.get_default().get_clipboard();
     _editor.buffer.paste_clipboard( clipboard, null, true );
     _editor.grab_focus();
   }
 
-  /* Copies the entire contents of the editor to the clipboard */
+  //-------------------------------------------------------------
+  // Copies the entire contents of the editor to the clipboard
   public void do_copy_all() {
     var clipboard = Gdk.Display.get_default().get_clipboard();
     _editor.copy_all_to_clipboard( clipboard );
     _editor.grab_focus();
   }
 
-  /* Copies the contents of editor to the clipboard */
+  //-------------------------------------------------------------
+  // Copies the contents of editor to the clipboard
   private void do_copy() {
     var clipboard = Gdk.Display.get_default().get_clipboard();
     _editor.copy_to_clipboard( clipboard );
     _editor.grab_focus();
   }
 
-  /* Performs an undo operation */
+  //-------------------------------------------------------------
+  // Performs an undo operation
   private void do_undo() {
     _editor.undo_buffer.undo();
     _editor.grab_focus();
   }
 
-  /* Performs a redo operation */
+  //-------------------------------------------------------------
+  // Performs a redo operation
   private void do_redo() {
     _editor.undo_buffer.redo();
     _editor.grab_focus();
   }
 
+  /*
   private void save_new_custom( CustomFunction function ) {
     var fn = function.copy( false );
     functions.add_function( "custom", fn );
     functions.save_custom();
   }
+  */
 
-  /* Adds the given widget to the widgets box */
+  //-------------------------------------------------------------
+  // Adds the given widget to the widgets box
   public void add_widget( Widget w, Widget? focus_widget = null ) {
 
     var revealer = new Revealer() {
@@ -582,7 +612,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  /* Removes the given widget from the widget box */
+  //-------------------------------------------------------------
+  // Removes the given widget from the widget box
   public void remove_widget() {
     if( _widget_items.length() > 0 ) {
       var widget = _widget_items.nth_data( 0 );
@@ -593,7 +624,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     _editor.grab_focus();
   }
 
-  /* Displays the given error message */
+  //-------------------------------------------------------------
+  // Displays the given error message
   public void show_error( string msg ) {
     _info_label.label       = msg;
     _info.message_type      = MessageType.ERROR;
@@ -601,18 +633,21 @@ public class MainWindow : Gtk.ApplicationWindow {
     _info.revealed          = true;
   }
 
-  /* Closes the error information bar */
+  //-------------------------------------------------------------
+  // Closes the error information bar
   public void close_error() {
     _info.revealed = false;
   }
 
-  /* Called whenever the editor buffer changes */
+  //-------------------------------------------------------------
+  // Called whenever the editor buffer changes
   private void do_buffer_changed( UndoBuffer buffer ) {
     _undo_btn.set_sensitive( buffer.undoable() );
     _redo_btn.set_sensitive( buffer.redoable() );
   }
 
-  /* Generate a notification */
+  //-------------------------------------------------------------
+  // Generate a notification
   public void notification( string title, string msg, NotificationPriority priority = NotificationPriority.NORMAL ) {
     GLib.Application? app = null;
     @get( "application", ref app );
