@@ -65,9 +65,12 @@ public class InsertFile : TextFunction {
     var file = File.new_for_path( filename );
 
     try {
-      uint8[] contents;
-    		file.load_contents( null, out contents, null );
-    		return( (string)contents );
+      string contents = "";
+      if( FileUtils.get_contents( filename, out contents ) && contents.validate() ) {
+        return( contents );
+      } else {
+        _win.show_error( "Unable to read file contents" );
+      }
     } catch( Error e ) {
       _win.show_error( e.message );
     }
