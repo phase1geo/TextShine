@@ -26,6 +26,15 @@ using Cairo;
 public class Utils {
 
   //-------------------------------------------------------------
+  // Determines if we are executing this within the Pantheon desktop.
+  // If we are, we need to use icons in the header bar that contain
+  // color.
+  public static bool on_elementary() {
+    var desktop = Environment.get_variable( "XDG_CURRENT_DESKTOP" );
+    return( desktop == "Pantheon" );
+  }
+
+  //-------------------------------------------------------------
   // Returns the system information about how this application was
   // built.
   public static string get_flatpak_runtime() {

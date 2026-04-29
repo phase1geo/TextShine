@@ -66,7 +66,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     { "action_about",       action_about }
   };
 
-  private bool on_elementary = Gtk.Settings.get_default().gtk_icon_theme_name == "elementary";
+  private bool on_elementary = Utils.on_elementary();
 
   public TextFunctions functions {
     get {
