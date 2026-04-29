@@ -22,9 +22,6 @@ finish-args:
   - '--filesystem=home'
   - '--device=dri'
 
-#build-options:
-#  append-path: /usr/bin
-  
 # This section is where you list all the source code required to build your app.
 # If we had external dependencies that weren't included in our SDK, we would list
 # them here.
