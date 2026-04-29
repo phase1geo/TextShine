@@ -12,16 +12,18 @@
   <summary xml:lang="nl">Zet tekst om met dit krachtige hulpmiddel</summary>
   <summary xml:lang="it">Trasforma il testo in modo potente</summary>
   <summary xml:lang="de">Text leistungsstark umwandeln</summary>
-  <developer_name>Trevor Williams</developer_name>
-  <developer_name xml:lang="nl">Trevor Williams</developer_name>
-  <developer_name xml:lang="it">Trevor Williams</developer_name>
-  <developer_name xml:lang="de">Trevor Williams</developer_name>
-  <developer>io.github.phase1geo</developer>
+  <developer id="io.github.phase1geo">
+    <name>Trevor Williams</name>
+    <name xml:lang="nl">Trevor Williams</name>
+    <name xml:lang="it">Trevor Williams</name>
+    <name xml:lang="de">Trevor Williams</name>
+  </developer>
   <provides>
     <binary>io.github.phase1geo.textshine</binary>
   </provides>
+  <launchable type="desktop-id">io.github.phase1geo.textshine.desktop</launchable>
   <screenshots>
-    <screenshot>
+    <screenshot type="default">
       <image>https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot-actions.png</image>
     </screenshot>
     <screenshot>
@@ -137,35 +139,7 @@
       <li xml:lang="de">Aktion: Markdown-Hilfsmittel</li>
     </ul>
   </description>
-  <content_rating type="oars-1.1">
-    <content_attribute id="violence-cartoon">none</content_attribute>
-    <content_attribute id="violence-fantasy">none</content_attribute>
-    <content_attribute id="violence-realistic">none</content_attribute>
-    <content_attribute id="violence-bloodshed">none</content_attribute>
-    <content_attribute id="violence-sexual">none</content_attribute>
-    <content_attribute id="violence-desecration">none</content_attribute>
-    <content_attribute id="violence-slavery">none</content_attribute>
-    <content_attribute id="violence-worship">none</content_attribute>
-    <content_attribute id="drugs-alcohol">none</content_attribute>
-    <content_attribute id="drugs-narcotics">none</content_attribute>
-    <content_attribute id="drugs-tobacco">none</content_attribute>
-    <content_attribute id="sex-nudity">none</content_attribute>
-    <content_attribute id="sex-themes">none</content_attribute>
-    <content_attribute id="sex-homosexuality">none</content_attribute>
-    <content_attribute id="sex-prostitution">none</content_attribute>
-    <content_attribute id="sex-adultery">none</content_attribute>
-    <content_attribute id="sex-appearance">none</content_attribute>
-    <content_attribute id="language-profanity">none</content_attribute>
-    <content_attribute id="language-humor">none</content_attribute>
-    <content_attribute id="language-discrimination">none</content_attribute>
-    <content_attribute id="social-chat">none</content_attribute>
-    <content_attribute id="social-info">none</content_attribute>
-    <content_attribute id="social-audio">none</content_attribute>
-    <content_attribute id="social-location">none</content_attribute>
-    <content_attribute id="social-contacts">none</content_attribute>
-    <content_attribute id="money-purchasing">none</content_attribute>
-    <content_attribute id="money-gambling">none</content_attribute>
-  </content_rating>
+  <content_rating type="oars-1.1"/>
   <url type="homepage">https://github.com/phase1geo/TextShine</url>
   <url type="bugtracker">https://github.com/phase1geo/TextShine/issues</url>
   <url type="help">https://github.com/phase1geo/TextShine/wiki</url>
@@ -177,6 +151,30 @@
     <value key="x-appcenter-stripe">pk_live_51Ccoj4BJm4hDdHaF1YKGdyGLCLtShzElKsr4GM9hJDJAoZArcWrNHsjL9b8SBs01GQBYpakj0l1tYenVJOqke93300TULHWdph</value>
   </custom>
   <releases>
+    <release version="2.1.0" date="2026-05-02">
+      <description>
+        <p>New</p>
+        <ul>
+          <li>Added About window to help in debugging issues.</li>
+        </ul>
+        <p>Changes</p>
+        <ul>
+          <li>Updated Dutch translation (thanks to Helmen Stoffels).</li>
+          <li>Updated German translation (thanks to Benjamin Weis).</li>
+          <li>Updated elementary OS flatpak manifest.</li>
+          <li>Increased default width of the sidebar.</li>
+          <li>Updated Meson environment files for newer versions of Meson.</li>
+          <li>Changed application ID from com.github.phase1geo.textshine to io.github.phase1geo.textshine.</li>
+          <li>Removed Debian release files.</li>
+        </ul>
+        <p>Bug Fixes</p>
+        <ul>
+          <li>Fixed valac compiler warnings.</li>
+          <li>Fixed majority of obsolete library issues.</li>
+          <li>Fixed issue where a non-text file is attempted to be inserted into the text area.</li>
+        </ul>
+      </description>
+    </release>
     <release version="2.0.0" date="2024-02-18">
       <description>
         <p>New</p>

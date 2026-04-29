@@ -1,3 +1,4 @@
+src/About.vala
 src/Application.vala
 src/functions/case/CaseCamel.vala
 src/functions/case/CaseLower.vala

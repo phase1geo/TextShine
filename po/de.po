@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-28 15:45-0500\n"
+"POT-Creation-Date: 2026-04-29 16:33-0500\n"
 "PO-Revision-Date: 2024-04-27 15:31+0200\n"
 "Last-Translator: Benjamin Weis <benjamin.weis@gmx.com>\n"
 "Language-Team: \n"
@@ -16,6 +16,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.2\n"
+
+#: src/About.vala:38
+msgid "Text conversion application"
+msgstr ""
+
+#: src/About.vala:39
+msgid "Copyright"
+msgstr ""
+
+#: src/About.vala:43
+msgid "TextShine in AppCenter"
+msgstr ""
+
+#: src/About.vala:60
+#, c-format
+msgid "Flatpak Runtime: %s"
+msgstr ""
 
 #: src/Application.vala:83
 msgid "Opening file"
@@ -198,7 +215,7 @@ msgstr "Datei-Text einfügen"
 msgid "Insert File"
 msgstr "Datei einfügen"
 
-#: src/functions/insert/InsertFile.vala:48 src/MainWindow.vala:455
+#: src/functions/insert/InsertFile.vala:48 src/MainWindow.vala:472
 msgid "Open"
 msgstr "Öffnen"
 
@@ -350,11 +367,11 @@ msgstr "Groß- und Kleinschreibung beachten"
 msgid "Highlight Line"
 msgstr "Zeile hervorheben"
 
-#: src/functions/match/Find.vala:185 src/Utils.vala:199
+#: src/functions/match/Find.vala:185 src/Utils.vala:225
 msgid "Insert New-line"
 msgstr "Zeilenumbruch einfügen"
 
-#: src/functions/match/Find.vala:186 src/Utils.vala:201
+#: src/functions/match/Find.vala:186 src/Utils.vala:227
 msgid "Insert Page Break"
 msgstr "Seitenumbruch einfügen"
 
@@ -727,80 +744,85 @@ msgstr "%d Zeilen nach oben verschieben"
 msgid "Reverse Characters"
 msgstr "Zeichen umkehren"
 
-#: src/MainWindow.vala:220
+#: src/MainWindow.vala:221
 #, fuzzy, c-format
 msgid "New Workspace (%s)"
 msgstr "Neue Arbeitsfläche"
 
-#: src/MainWindow.vala:226 src/MainWindow.vala:454
+#: src/MainWindow.vala:227 src/MainWindow.vala:471
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/MainWindow.vala:232 src/MainWindow.vala:498
+#: src/MainWindow.vala:233 src/MainWindow.vala:515
 msgid "Save File"
 msgstr "Datei speichern"
 
-#: src/MainWindow.vala:238
+#: src/MainWindow.vala:239
 msgid "Paste Over"
 msgstr "Einfügen über"
 
-#: src/MainWindow.vala:244
+#: src/MainWindow.vala:245
 msgid "Copy All"
 msgstr "Alles kopieren"
 
-#: src/MainWindow.vala:250 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
+#: src/MainWindow.vala:251 src/UndoBuffer.vala:84 src/UndoCustomBuffer.vala:80
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: src/MainWindow.vala:257 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
+#: src/MainWindow.vala:258 src/UndoBuffer.vala:90 src/UndoCustomBuffer.vala:86
 msgid "Redo"
 msgstr "Wiederherstellen"
 
-#: src/MainWindow.vala:266
+#: src/MainWindow.vala:267
 msgid "TextShine"
 msgstr "TextShine"
 
-#: src/MainWindow.vala:286
+#: src/MainWindow.vala:287
 msgid "<b>Text Statistics</b>"
 msgstr "<b>Textstatistik</b>"
 
-#: src/MainWindow.vala:291
+#: src/MainWindow.vala:292
 msgid "Characters:"
 msgstr "Zeichen:"
 
-#: src/MainWindow.vala:298
+#: src/MainWindow.vala:299
 msgid "Words:"
 msgstr "Wörter:"
 
-#: src/MainWindow.vala:305
+#: src/MainWindow.vala:306
 msgid "Lines:"
 msgstr "Zeilen:"
 
-#: src/MainWindow.vala:312
+#: src/MainWindow.vala:313
 msgid "Matches:"
 msgstr "Übereinstimmungen:"
 
-#: src/MainWindow.vala:319
+#: src/MainWindow.vala:320
 msgid "Spelling Errors:"
 msgstr "Rechtschreibfehler:"
 
-#: src/MainWindow.vala:352
+#: src/MainWindow.vala:353
 msgid "Statistics"
 msgstr "Statistik"
 
-#: src/MainWindow.vala:384
+#: src/MainWindow.vala:385
 msgid "Shortcut Cheatsheet…"
 msgstr ""
 
-#: src/MainWindow.vala:385
+#: src/MainWindow.vala:386
 msgid "Preferences…"
 msgstr "Einstellungen…"
 
 #: src/MainWindow.vala:389
+#, fuzzy
+msgid "About TextShine"
+msgstr "TextShine"
+
+#: src/MainWindow.vala:397
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: src/MainWindow.vala:499
+#: src/MainWindow.vala:516
 msgid "Save"
 msgstr "Speichern"
 
@@ -1019,95 +1041,95 @@ msgstr "Aktion Entfernen"
 msgid "Action Move"
 msgstr "Aktion Verschieben"
 
-#: src/Utils.vala:195
+#: src/Utils.vala:221
 msgid "Insert Characters"
 msgstr "Zeichen einfügen"
 
-#: src/Utils.vala:196
+#: src/Utils.vala:222
 msgid "Insert Date"
 msgstr "Datum einfügen"
 
-#: src/Utils.vala:197
+#: src/Utils.vala:223
 msgid "Insert Time"
 msgstr "Zeit einfügen"
 
-#: src/Utils.vala:200
+#: src/Utils.vala:226
 msgid "Insert Tab"
 msgstr "Tabulator einfügen"
 
-#: src/Utils.vala:202
+#: src/Utils.vala:228
 msgid "Insert Incrementing Decimal"
 msgstr "Hochzählende Dezimalzahl einfügen"
 
-#: src/Utils.vala:203
+#: src/Utils.vala:229
 msgid "Insert Percent Sign"
 msgstr "Prozentzeichen einfügen"
 
-#: src/Utils.vala:206
+#: src/Utils.vala:232
 msgid "Standard Date"
 msgstr "Standarddatum"
 
-#: src/Utils.vala:208
+#: src/Utils.vala:234
 msgid "Day of Month (1-31)"
 msgstr "Monatstag (1-31)"
 
-#: src/Utils.vala:209
+#: src/Utils.vala:235
 msgid "Day of Month (01-31)"
 msgstr "Monatstag (01-31)"
 
-#: src/Utils.vala:210
+#: src/Utils.vala:236
 msgid "Month (01-12)"
 msgstr "Monat (01-12)"
 
-#: src/Utils.vala:211
+#: src/Utils.vala:237
 msgid "Year (YYYY)"
 msgstr "Jahr (JJJJ)"
 
-#: src/Utils.vala:212
+#: src/Utils.vala:238
 msgid "Year (YY)"
 msgstr "Jahr (JJ)"
 
-#: src/Utils.vala:213
+#: src/Utils.vala:239
 msgid "Day of Week"
 msgstr "Wochentag"
 
-#: src/Utils.vala:214
+#: src/Utils.vala:240
 msgid "Day of Week (Abbreviated)"
 msgstr "Wochentag (abgekürzt)"
 
-#: src/Utils.vala:215
+#: src/Utils.vala:241
 msgid "Name of Month"
 msgstr "Monatsname"
 
-#: src/Utils.vala:216
+#: src/Utils.vala:242
 msgid "Name of Month (Abbreviated)"
 msgstr "Monatsname (abgekürzt)"
 
-#: src/Utils.vala:219
+#: src/Utils.vala:245
 msgid "Standard Time"
 msgstr "Standardzeit"
 
-#: src/Utils.vala:221
+#: src/Utils.vala:247
 msgid "Seconds (00-59)"
 msgstr "Sekunden (00-59)"
 
-#: src/Utils.vala:222
+#: src/Utils.vala:248
 msgid "Minutes (00-59)"
 msgstr "Minuten (00-59)"
 
-#: src/Utils.vala:223
+#: src/Utils.vala:249
 msgid "Hours (00-12)"
 msgstr "Stunden (00-12)"
 
-#: src/Utils.vala:224
+#: src/Utils.vala:250
 msgid "Hours (00-23)"
 msgstr "Stunden (00-23)"
 
-#: src/Utils.vala:225
+#: src/Utils.vala:251
 msgid "AM/PM"
 msgstr "AM/PM"
 
-#: src/Utils.vala:226
+#: src/Utils.vala:252
 msgid "Timezone"
 msgstr "Zeitzone"
 
