@@ -26,6 +26,23 @@ using Cairo;
 public class Utils {
 
   //-------------------------------------------------------------
+  // Returns the system information about how this application was
+  // built.
+  public static string get_flatpak_runtime() {
+
+    // Determine the Flatpak runtime being used
+    try {
+      var keyfile = new GLib.KeyFile();
+      keyfile.load_from_file( "/.flatpak-info", GLib.KeyFileFlags.NONE );
+      var runtime = keyfile.get_string( "Application", "runtime" );
+      return( runtime );
+    } catch( Error e ) {}
+
+    return( "" );
+
+  }
+
+  //-------------------------------------------------------------
   // Returns true if the specified version is older than this version
   public static bool is_version_older( MainWindow win, string other_version ) {
     var my_parts    = win.application.version.split( "." );

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-    <gresource prefix="/io/github/phase1geo/textshine">
-        <file alias="shortcuts.ui" compressed="true">io.github.phase1geo.textshine.shortcuts.ui</file>
-    </gresource>
-    <gresource prefix="/io/github/phase1geo/textshine/css">
-        <file alias="style.css" compressed="true">css/style.css</file>
-    </gresource>
+  <gresource prefix="/io/github/phase1geo/textshine">
+    <file alias="shortcuts.ui" compressed="true">io.github.phase1geo.textshine.shortcuts.ui</file>
+    <file alias="textshine-logo.svg">images/io.github.phase1geo.textshine.png</file>
+  </gresource>
+  <gresource prefix="/io/github/phase1geo/textshine/css">
+    <file alias="style.css" compressed="true">css/style.css</file>
+  </gresource>
 </gresources>

@@ -1,5 +1,6 @@
 sources += files(
 
+    'About.vala',
     'Application.vala',
     'CustomFunction.vala',
     'Editor.vala',

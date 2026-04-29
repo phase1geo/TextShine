@@ -62,7 +62,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     { "action_undo",        do_undo },
     { "action_redo",        do_redo },
     { "action_shortcuts",   action_shortcuts },
-    { "action_preferences", action_preferences }
+    { "action_preferences", action_preferences },
+    { "action_about",       action_about }
   };
 
   private bool on_elementary = Gtk.Settings.get_default().gtk_icon_theme_name == "elementary";
@@ -380,9 +381,16 @@ public class MainWindow : Gtk.ApplicationWindow {
   // Adds the property button and associated popover
   private MenuButton add_properties_button() {
 
+    var other_menu = new GLib.Menu();
+    other_menu.append( _( "Shortcut Cheatsheet…" ), "win.action_shortcuts" );
+    other_menu.append( _( "Preferences…" ),         "win.action_preferences" );
+
+    var about_menu = new GLib.Menu();
+    about_menu.append( _( "About TextShine" ), "win.action_about" );
+
     var menu = new GLib.Menu();
-    menu.append( _( "Shortcut Cheatsheet…" ), "win.action_shortcuts" );
-    menu.append( _( "Preferences…" ),         "win.action_preferences" );
+    menu.append_section( null, other_menu );
+    menu.append_section( null, about_menu );
 
     _prop_btn = new MenuButton() {
       icon_name    = get_header_icon_name( "open-menu" ),
@@ -413,6 +421,15 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     var prefs = new Preferences( this );
     prefs.present();
+
+  }
+
+  //-------------------------------------------------------------
+  // Displays about window
+  private void action_about() {
+
+    var about = new About( this );
+    about.show();
 
   }
 
