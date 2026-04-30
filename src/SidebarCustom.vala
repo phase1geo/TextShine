@@ -200,6 +200,11 @@ public class SidebarCustom : SidebarBox {
     del.add_css_class( "destructive-action" );
     del.clicked.connect( delete_custom );
 
+    var export = new Button.with_label( _( "Export" ) ) {
+      halign = Align.END
+    };
+    export.clicked.connect( export_custom );
+
     var done = new Button.with_label( _( "Done" ) ) {
       halign = Align.END
     };
@@ -221,6 +226,7 @@ public class SidebarCustom : SidebarBox {
       margin_bottom = 5
     };
     bbox.append( _delete_reveal );
+    bbox.append( export );
     bbox.append( done );
 
     append( abox );
@@ -997,6 +1003,32 @@ public class SidebarCustom : SidebarBox {
           win.functions.save_custom();
           switch_stack( SwitchStackReason.DELETE, _custom );
         }
+      } catch( Error e ) {}
+    });
+
+  }
+
+  //-------------------------------------------------------------
+  // Exports the current custom transform to its own file.
+  private void export_custom() {
+
+    var filter = win.get_custom_file_filter();
+
+    var filters = new GLib.ListStore( typeof( FileFilter ) );
+    filters.append( filter );
+
+    var dialog = new FileDialog() {
+      modal = true,
+      title = _( "Export Custom Transform As" ),
+      accept_label = _( "Export" ),
+      default_filter = filter,
+      filters = filters
+    };
+
+    dialog.save.begin( win, null, (obj, res) => {
+      try {
+        var file = dialog.save.end( res );
+        win.functions.export_custom( file.get_path(), _custom );
       } catch( Error e ) {}
     });
 

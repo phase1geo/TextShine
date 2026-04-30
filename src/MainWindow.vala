@@ -51,19 +51,21 @@ public class MainWindow : Gtk.ApplicationWindow {
   private Label          _stats_spell;
 
   private const GLib.ActionEntry[] action_entries = {
-    { "action_new",         do_new },
-    { "action_open",        do_open },
-    { "action_save",        do_save },
-    { "action_quit",        do_quit },
-    { "action_paste_over",  do_paste_over },
-    { "action_copy_all",    do_copy_all },
-    { "action_paste",       do_paste },
-    { "action_copy",        do_copy },
-    { "action_undo",        do_undo },
-    { "action_redo",        do_redo },
-    { "action_shortcuts",   action_shortcuts },
-    { "action_preferences", action_preferences },
-    { "action_about",       action_about }
+    { "action_new",           do_new },
+    { "action_open",          do_open },
+    { "action_save",          do_save },
+    { "action_quit",          do_quit },
+    { "action_paste_over",    do_paste_over },
+    { "action_copy_all",      do_copy_all },
+    { "action_paste",         do_paste },
+    { "action_copy",          do_copy },
+    { "action_undo",          do_undo },
+    { "action_redo",          do_redo },
+    { "action_shortcuts",     action_shortcuts },
+    { "action_preferences",   action_preferences },
+    { "action_import_custom", action_import_custom },
+    { "action_export_custom", action_export_custom },
+    { "action_about",         action_about }
   };
 
   private bool on_elementary = Utils.on_elementary();
@@ -385,11 +387,16 @@ public class MainWindow : Gtk.ApplicationWindow {
     other_menu.append( _( "Shortcut Cheatsheet…" ), "win.action_shortcuts" );
     other_menu.append( _( "Preferences…" ),         "win.action_preferences" );
 
+    var inex_menu = new GLib.Menu();
+    inex_menu.append( _( "Import Custom Transforms…" ), "win.action_import_custom" );
+    inex_menu.append( _( "Export Custom Transforms…" ), "win.action_export_custom" );
+
     var about_menu = new GLib.Menu();
     about_menu.append( _( "About TextShine" ), "win.action_about" );
 
     var menu = new GLib.Menu();
     menu.append_section( null, other_menu );
+    menu.append_section( null, inex_menu );
     menu.append_section( null, about_menu );
 
     _prop_btn = new MenuButton() {
@@ -425,6 +432,73 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   //-------------------------------------------------------------
+  // Returns a filter to be used for the custom transform file.
+  public FileFilter get_custom_file_filter() {
+
+    var filter = new FileFilter() {
+      name = _( "TextShine Custom Transform File" ),
+    };
+
+    filter.add_suffix( ".ts-custom" );
+
+    return( filter );
+
+  }
+
+  //-------------------------------------------------------------
+  // Imports a custom transform file.
+  private void action_import_custom() {
+
+    var filter = get_custom_file_filter();
+
+    var filters = new GLib.ListStore( typeof( FileFilter ) );
+    filters.append( filter );
+
+    var dialog = new FileDialog() {
+      modal = true,
+      title = _( "Import Custom Transforms" ),
+      accept_label = _( "Import" ),
+      default_filter = filter,
+      filters = filters
+    };
+
+    dialog.open.begin( this, null, (obj, res) => {
+      try {
+        var file = dialog.open.end( res );
+        functions.import_custom( file.get_path() );
+      } catch( Error e ) {}
+    });
+
+  }
+
+  //-------------------------------------------------------------
+  // Exports all of the custom transforms into a single importable
+  // file.
+  private void action_export_custom() {
+    
+    var filter = get_custom_file_filter();
+
+    var filters = new GLib.ListStore( typeof( FileFilter ) );
+    filters.append( filter );
+
+    var dialog = new FileDialog() {
+      modal = true,
+      title = _( "Import Custom Transforms" ),
+      accept_label = _( "Import" ),
+      default_filter = filter,
+      filters = filters
+    };
+
+    dialog.save.begin( this, null, (obj, res) => {
+      try {
+        var file = dialog.save.end( res );
+        functions.export_custom( file.get_path(), null );
+      } catch( Error e ) {}
+    });
+
+  }
+
+  //-------------------------------------------------------------
   // Displays about window
   private void action_about() {
 
@@ -439,6 +513,8 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void properties_clicked() {
 
     // TBD - State properties item states here
+
+    // If we don't have any custom transforms, disable the menu option
 
   }
 

@@ -423,6 +423,31 @@ public class TextFunctions {
   }
 
   //-------------------------------------------------------------
+  // Exports either a single custom function (if specified) or
+  // all of the custom functions to the given filename.
+  public void export_custom( string filename, CustomFunction? func ) {
+
+    Xml.Doc*  doc  = new Xml.Doc( "1.0" );
+    Xml.Node* root = new Xml.Node( null, "customs" );
+    root->set_prop( "version", _win.application.version );
+
+    if( func != null ) {
+      root->add_child( func.save() );
+    } else {
+      var functions = get_category_functions( "custom" );
+      for( int i=0; i<functions.length; i++ ) {
+        root->add_child( functions.index( i ).save() );
+      }
+    }
+
+    doc->set_root_element( root );
+    doc->save_format_file( filename, 1 );
+
+    delete doc;
+
+  }
+
+  //-------------------------------------------------------------
   // Load the custom functions from the XML file
   private void load_custom() {
 
@@ -431,6 +456,30 @@ public class TextFunctions {
     }
 
     Xml.Doc* doc = Xml.Parser.read_file( _custom_file, null, Xml.ParserOption.HUGE );
+    if( doc == null ) {
+      return;
+    }
+
+    for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
+      if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "custom") ) {
+        var custom = new CustomFunction();
+        custom.load( it, this );
+        add_function( "custom", custom );
+      }
+    }
+
+  }
+
+  //-------------------------------------------------------------
+  // Imports all of the stored custom functions into our list of
+  // custom functions.
+  public void import_custom( string filename ) {
+
+    if( !FileUtils.test( filename, FileTest.EXISTS ) ) {
+      return;
+    }
+
+    Xml.Doc* doc = Xml.Parser.read_file( filename, null, Xml.ParserOption.HUGE );
     if( doc == null ) {
       return;
     }
