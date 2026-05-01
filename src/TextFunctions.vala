@@ -44,6 +44,8 @@ public class TextFunctions {
     }
   }
 
+  public signal void changed();
+
   //-------------------------------------------------------------
   // Constructor
   public TextFunctions( MainWindow win ) {
@@ -177,6 +179,7 @@ public class TextFunctions {
     _map.append_val( ct_index );
 
     function.settings_changed.connect( save_functions );
+    changed();
 
   }
 
@@ -200,6 +203,7 @@ public class TextFunctions {
         _functions.index( i ).settings_changed.disconnect( save_functions );
         _functions.remove_index( i );
         _map.remove_index( i );
+        changed();
         break;
       }
     }
@@ -232,6 +236,20 @@ public class TextFunctions {
       }
     }
     return( "" );
+  }
+
+  //-------------------------------------------------------------
+  // Returns true if the given category contains at least one function.
+  public bool category_empty( string category ) {
+    var index = category_index( category );
+    if( index != -1 ) {
+      for( int i=0; i<_map.length; i++ ) {
+        if( _map.index( i ) == index ) {
+          return( false );
+        }
+      }
+    }
+    return( true );
   }
 
   //-------------------------------------------------------------

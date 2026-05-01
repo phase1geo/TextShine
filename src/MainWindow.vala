@@ -27,28 +27,29 @@ public class MainWindow : Gtk.ApplicationWindow {
   private const string DESKTOP_SCHEMA = "io.elementary.desktop";
   private const string DARK_KEY       = "prefer-dark";
 
-  private HeaderBar      _header;
-  private Editor         _editor;
-  private Button         _clear_btn;
-  private Button         _open_btn;
-  private Button         _save_btn;
-  private Button         _paste_btn;
-  private Button         _copy_btn;
-  private Button         _undo_btn;
-  private Button         _redo_btn;
-  private MenuButton     _prop_btn;
-  private Sidebar        _sidebar;
+  private HeaderBar         _header;
+  private Editor            _editor;
+  private Button            _clear_btn;
+  private Button            _open_btn;
+  private Button            _save_btn;
+  private Button            _paste_btn;
+  private Button            _copy_btn;
+  private Button            _undo_btn;
+  private Button            _redo_btn;
+  private MenuButton        _prop_btn;
+  private Sidebar           _sidebar;
   private Box               _widget_box;
   private GLib.List<Widget> _widget_items;
   private InfoBox           _info;
-  private TextFunctions  _functions;
-  private CustomFunction _custom;
-  private string?        _current_file = null;
-  private Label          _stats_chars;
-  private Label          _stats_words;
-  private Label          _stats_lines;
-  private Label          _stats_matches;
-  private Label          _stats_spell;
+  private TextFunctions     _functions;
+  private CustomFunction    _custom;
+  private string?           _current_file = null;
+  private Label             _stats_chars;
+  private Label             _stats_words;
+  private Label             _stats_lines;
+  private Label             _stats_matches;
+  private Label             _stats_spell;
+  private SimpleActionGroup _actions;
 
   private const GLib.ActionEntry[] action_entries = {
     { "action_new",           do_new },
@@ -136,6 +137,9 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     // Create the widgets and functions after we have added some of the UI elements
     _functions = new TextFunctions( this );
+    _functions.changed.connect(() => {
+      update_properties_menu();
+    });
 
     // Create sidebar
     var sidebar = create_sidebar();
@@ -148,9 +152,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     present();
 
     // Set the stage for menu actions
-    var actions = new SimpleActionGroup ();
-    actions.add_action_entries( action_entries, this );
-    insert_action_group( "win", actions );
+    _actions = new SimpleActionGroup ();
+    _actions.add_action_entries( action_entries, this );
+    insert_action_group( "win", _actions );
 
     // Add keyboard shortcuts
     add_keyboard_shortcuts( app );
@@ -166,6 +170,9 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     // Set the default window size from settings
     set_window_size();
+
+    // Initialize the state of the properties menu
+    update_properties_menu();
 
   }
 
@@ -383,20 +390,20 @@ public class MainWindow : Gtk.ApplicationWindow {
   // Adds the property button and associated popover
   private MenuButton add_properties_button() {
 
-    var other_menu = new GLib.Menu();
-    other_menu.append( _( "Shortcut Cheatsheet…" ), "win.action_shortcuts" );
-    other_menu.append( _( "Preferences…" ),         "win.action_preferences" );
-
     var inex_menu = new GLib.Menu();
     inex_menu.append( _( "Import Custom Actions…" ), "win.action_import_custom" );
     inex_menu.append( _( "Export Custom Actions…" ), "win.action_export_custom" );
+
+    var other_menu = new GLib.Menu();
+    other_menu.append( _( "Shortcut Cheatsheet…" ), "win.action_shortcuts" );
+    other_menu.append( _( "Preferences…" ),         "win.action_preferences" );
 
     var about_menu = new GLib.Menu();
     about_menu.append( _( "About TextShine" ), "win.action_about" );
 
     var menu = new GLib.Menu();
-    menu.append_section( null, other_menu );
     menu.append_section( null, inex_menu );
+    menu.append_section( null, other_menu );
     menu.append_section( null, about_menu );
 
     _prop_btn = new MenuButton() {
@@ -404,8 +411,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       tooltip_text = _( "Properties" ),
       menu_model   = menu
     };
-
-    _prop_btn.activate.connect( properties_clicked );
 
     return( _prop_btn );
 
@@ -497,7 +502,8 @@ public class MainWindow : Gtk.ApplicationWindow {
       title = _( "Export Custom Actions" ),
       accept_label = _( "Export" ),
       default_filter = filter,
-      filters = filters
+      filters = filters,
+      initial_name = "Default" + custom_file_extension()
     };
 
     dialog.save.begin( this, null, (obj, res) => {
@@ -525,11 +531,13 @@ public class MainWindow : Gtk.ApplicationWindow {
   //-------------------------------------------------------------
   // Called when the properties button is clicked.  Sets the state
   // of the popover contents.
-  private void properties_clicked() {
+  private void update_properties_menu() {
 
-    // TBD - State properties item states here
-
-    // If we don't have any custom transforms, disable the menu option
+    // Update the state of the action_export_custom action
+    var action = (SimpleAction)_actions.lookup_action( "action_export_custom" );
+    if( action != null ) {
+      action.set_enabled( !functions.category_empty( "custom" ) );
+    }
 
   }
 
