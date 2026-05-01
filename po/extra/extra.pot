@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-30 23:24-0500\n"
+"POT-Creation-Date: 2026-04-30 23:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: data/io.github.phase1geo.textshine.desktop.in:2
 #: data/io.github.phase1geo.textshine.desktop.in:3
-#: data/io.github.phase1geo.textshine.desktop.in:4
 #: data/io.github.phase1geo.textshine.appdata.xml.in:7
 msgid "TextShine"
 msgstr ""
 
-#: data/io.github.phase1geo.textshine.desktop.in:5
+#: data/io.github.phase1geo.textshine.desktop.in:4
 #: data/io.github.phase1geo.textshine.appdata.xml.in:8
 msgid "Powerfully transform text"
 msgstr ""
 
-#: data/io.github.phase1geo.textshine.desktop.in:14
+#: data/io.github.phase1geo.textshine.desktop.in:13
 msgid "textshine;text;conversion;convert;"
 msgstr ""
 
-#: data/io.github.phase1geo.textshine.desktop.in:18
+#: data/io.github.phase1geo.textshine.desktop.in:17
 msgid "Edit Clipboard Text"
 msgstr ""
 
@@ -212,8 +212,8 @@ msgstr ""
 
 #: data/io.github.phase1geo.textshine.appdata.xml.in:94
 msgid ""
-"Changed application ID from com.github.phase1geo.textshine to io.github."
-"phase1geo.textshine."
+"Changed application ID from com.github.phase1geo.textshine to "
+"io.github.phase1geo.textshine."
 msgstr ""
 
 #: data/io.github.phase1geo.textshine.appdata.xml.in:95

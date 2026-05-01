@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-30 23:24-0500\n"
+"POT-Creation-Date: 2026-04-30 23:50-0500\n"
 "PO-Revision-Date: 2021-09-30 14:37+0200\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
@@ -18,22 +18,22 @@ msgstr ""
 "X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/io.github.phase1geo.textshine.desktop.in:2
 #: data/io.github.phase1geo.textshine.desktop.in:3
-#: data/io.github.phase1geo.textshine.desktop.in:4
 #: data/io.github.phase1geo.textshine.appdata.xml.in:7
 msgid "TextShine"
 msgstr "TextShine"
 
-#: data/io.github.phase1geo.textshine.desktop.in:5
+#: data/io.github.phase1geo.textshine.desktop.in:4
 #: data/io.github.phase1geo.textshine.appdata.xml.in:8
 msgid "Powerfully transform text"
 msgstr "Zet tekst om met dit krachtige hulpmiddel"
 
-#: data/io.github.phase1geo.textshine.desktop.in:14
+#: data/io.github.phase1geo.textshine.desktop.in:13
 msgid "textshine;text;conversion;convert;"
 msgstr "textshine;tekst;conversie;converteren;omzetten;"
 
-#: data/io.github.phase1geo.textshine.desktop.in:18
+#: data/io.github.phase1geo.textshine.desktop.in:17
 msgid "Edit Clipboard Text"
 msgstr "Pas klembordtekst aan"
 
@@ -229,8 +229,8 @@ msgstr ""
 
 #: data/io.github.phase1geo.textshine.appdata.xml.in:94
 msgid ""
-"Changed application ID from com.github.phase1geo.textshine to io.github."
-"phase1geo.textshine."
+"Changed application ID from com.github.phase1geo.textshine to "
+"io.github.phase1geo.textshine."
 msgstr ""
 
 #: data/io.github.phase1geo.textshine.appdata.xml.in:95

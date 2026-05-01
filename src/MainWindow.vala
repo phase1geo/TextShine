@@ -408,7 +408,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     _prop_btn = new MenuButton() {
       icon_name    = get_header_icon_name( "open-menu" ),
-      tooltip_text = _( "Properties" ),
+      tooltip_text = _( "Miscellaneous" ),
       menu_model   = menu
     };
 

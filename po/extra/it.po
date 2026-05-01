@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-30 23:24-0500\n"
+"POT-Creation-Date: 2026-04-30 23:50-0500\n"
 "PO-Revision-Date: 2021-04-17 17:05+0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -16,22 +16,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: data/io.github.phase1geo.textshine.desktop.in:2
 #: data/io.github.phase1geo.textshine.desktop.in:3
-#: data/io.github.phase1geo.textshine.desktop.in:4
 #: data/io.github.phase1geo.textshine.appdata.xml.in:7
 msgid "TextShine"
 msgstr "TextShine"
 
-#: data/io.github.phase1geo.textshine.desktop.in:5
+#: data/io.github.phase1geo.textshine.desktop.in:4
 #: data/io.github.phase1geo.textshine.appdata.xml.in:8
 msgid "Powerfully transform text"
 msgstr "Trasforma il testo in modo potente"
 
-#: data/io.github.phase1geo.textshine.desktop.in:14
+#: data/io.github.phase1geo.textshine.desktop.in:13
 msgid "textshine;text;conversion;convert;"
 msgstr "textshine;testo;conversione;converte;"
 
-#: data/io.github.phase1geo.textshine.desktop.in:18
+#: data/io.github.phase1geo.textshine.desktop.in:17
 msgid "Edit Clipboard Text"
 msgstr "Modifica il testo degli Appunti"
 
@@ -230,8 +230,8 @@ msgstr ""
 
 #: data/io.github.phase1geo.textshine.appdata.xml.in:94
 msgid ""
-"Changed application ID from com.github.phase1geo.textshine to io.github."
-"phase1geo.textshine."
+"Changed application ID from com.github.phase1geo.textshine to "
+"io.github.phase1geo.textshine."
 msgstr ""
 
 #: data/io.github.phase1geo.textshine.appdata.xml.in:95

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-30 23:24-0500\n"
+"POT-Creation-Date: 2026-04-30 23:50-0500\n"
 "PO-Revision-Date: 2021-04-25 13:50-0100\n"
 "Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: ITALIAN <LL@li.org>\n"
@@ -836,8 +836,8 @@ msgid "About TextShine"
 msgstr "TextShine"
 
 #: src/MainWindow.vala:411
-msgid "Properties"
-msgstr "Proprietà"
+msgid "Miscellaneous"
+msgstr ""
 
 #: src/MainWindow.vala:452
 msgid "Custom Action File"
@@ -1174,3 +1174,6 @@ msgstr "AM/PM"
 #: src/Utils.vala:252
 msgid "Timezone"
 msgstr "Fuso orario"
+
+#~ msgid "Properties"
+#~ msgstr "Proprietà"
