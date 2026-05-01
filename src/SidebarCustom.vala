@@ -31,7 +31,8 @@ public class SidebarCustom : SidebarBox {
   private SearchEntry      _search;
   private CustomFunction?  _custom;
   private Popover          _popover;
-  private Revealer         _delete_reveal;
+  private Button           _del_btn;
+  private Button           _export_btn;
   private Label            _new_action_label;
   private ListBox          _lb;
   private Grid             _pbox;
@@ -196,28 +197,23 @@ public class SidebarCustom : SidebarBox {
       child = stack
     };
 
-    var del = new Button.with_label( _( "Delete" ) );
-    del.add_css_class( "destructive-action" );
-    del.clicked.connect( delete_custom );
-
-    var export = new Button.with_label( _( "Export" ) ) {
-      halign = Align.END
+    _del_btn = new Button.with_label( _( "Delete" ) ) {
+      halign = Align.START
     };
-    export.clicked.connect( export_custom );
+    _del_btn.add_css_class( "destructive-action" );
+    _del_btn.clicked.connect( delete_custom );
+
+    _export_btn = new Button.with_label( _( "Export" ) ) {
+      halign = Align.START
+    };
+    _export_btn.clicked.connect( export_custom );
 
     var done = new Button.with_label( _( "Done" ) ) {
-      halign = Align.END
+      halign = Align.END,
+      hexpand = true
     };
     done.add_css_class( "suggested-action" );
     done.clicked.connect( save_custom );
-
-    _delete_reveal = new Revealer() {
-      halign = Align.START,
-      hexpand = true,
-      reveal_child = true,
-      transition_type = RevealerTransitionType.NONE,
-      child = del
-    };
 
     var bbox = new Box( Orientation.HORIZONTAL, 5 ) {
       margin_start  = 5,
@@ -225,8 +221,8 @@ public class SidebarCustom : SidebarBox {
       margin_top    = 5,
       margin_bottom = 5
     };
-    bbox.append( _delete_reveal );
-    bbox.append( export );
+    bbox.append( _del_btn );
+    bbox.append( _export_btn );
     bbox.append( done );
 
     append( abox );
@@ -282,13 +278,15 @@ public class SidebarCustom : SidebarBox {
         _custom    = new CustomFunction();
         _name.text = _custom.user_label;
         _name.grab_focus();
-        _delete_reveal.reveal_child = false;
+        _del_btn.visible = false;
+        _export_btn.visible = false;
         break;
 
       case SwitchStackReason.EDIT :
         _custom    = (CustomFunction)function;
         _name.text = _custom.user_label;
-        _delete_reveal.reveal_child = true;
+        _del_btn.visible = true;
+        _export_btn.visible = true;
         insert_actions();
         break;
 
@@ -299,9 +297,12 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  //-------------------------------------------------------------
+  // Removes all actions currently listed in the sidebar.
   private void clear_actions() {
 
     _add_revealer.reveal_child = true;
+    _popover.unparent();
 
     // Remove all of the rows from the listbox
     var row = _lb.get_row_at_index( 0 );
@@ -596,6 +597,7 @@ public class SidebarCustom : SidebarBox {
     get_revealer( index ).reveal_child = false;
 
     var fn = function.copy( true );
+    add_function( fn, index );
 
     _custom.functions.insert_val( index, fn );
 
@@ -828,6 +830,8 @@ public class SidebarCustom : SidebarBox {
 
   }
 
+  //-------------------------------------------------------------
+  // Adds a blank gap.
   private void add_blank( Grid grid, int column ) {
     var lbl = new Label( "" );
     grid.attach( lbl, column, 0 );
@@ -960,7 +964,7 @@ public class SidebarCustom : SidebarBox {
   // Saves the current custom function
   private void save_custom() {
 
-    var edit  = _delete_reveal.reveal_child;
+    var edit  = _del_btn.visible;
     var empty = _custom.functions.length == 0;
 
     cleanup();
@@ -1017,12 +1021,15 @@ public class SidebarCustom : SidebarBox {
     var filters = new GLib.ListStore( typeof( FileFilter ) );
     filters.append( filter );
 
+    var name = _custom.user_label.replace( " ", "-" ) + win.custom_file_extension();
+
     var dialog = new FileDialog() {
       modal = true,
       title = _( "Export Custom Action As" ),
       accept_label = _( "Export" ),
       default_filter = filter,
-      filters = filters
+      filters = filters,
+      initial_name = name
     };
 
     dialog.save.begin( win, null, (obj, res) => {
