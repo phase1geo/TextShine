@@ -388,8 +388,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     other_menu.append( _( "Preferences…" ),         "win.action_preferences" );
 
     var inex_menu = new GLib.Menu();
-    inex_menu.append( _( "Import Custom Transforms…" ), "win.action_import_custom" );
-    inex_menu.append( _( "Export Custom Transforms…" ), "win.action_export_custom" );
+    inex_menu.append( _( "Import Custom Actions…" ), "win.action_import_custom" );
+    inex_menu.append( _( "Export Custom Actions…" ), "win.action_export_custom" );
 
     var about_menu = new GLib.Menu();
     about_menu.append( _( "About TextShine" ), "win.action_about" );
@@ -411,6 +411,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
+  //-------------------------------------------------------------
+  // Displays the shortcuts helper window.
   private void action_shortcuts() {
 
     var builder = new Builder.from_resource( "/io/github/phase1geo/textshine/shortcuts.ui" );
@@ -432,14 +434,20 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   //-------------------------------------------------------------
+  // Returns the custom export file extension that is known.
+  public string custom_file_extension() {
+    return( ".textshine-custom" );
+  }
+
+  //-------------------------------------------------------------
   // Returns a filter to be used for the custom transform file.
   public FileFilter get_custom_file_filter() {
 
     var filter = new FileFilter() {
-      name = _( "TextShine Custom Transform File" ),
+      name = _( "Custom Action File" ),
     };
 
-    filter.add_suffix( ".ts-custom" );
+    filter.add_pattern( "*" + custom_file_extension() );
 
     return( filter );
 
@@ -456,7 +464,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     var dialog = new FileDialog() {
       modal = true,
-      title = _( "Import Custom Transforms" ),
+      title = _( "Import Custom Actions" ),
       accept_label = _( "Import" ),
       default_filter = filter,
       filters = filters
@@ -465,7 +473,10 @@ public class MainWindow : Gtk.ApplicationWindow {
     dialog.open.begin( this, null, (obj, res) => {
       try {
         var file = dialog.open.end( res );
-        functions.import_custom( file.get_path() );
+        var fns  = functions.import_custom( file.get_path() );
+        if( fns != null ) {
+          _sidebar.add_custom_actions( fns );
+        }
       } catch( Error e ) {}
     });
 
@@ -483,8 +494,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     var dialog = new FileDialog() {
       modal = true,
-      title = _( "Import Custom Transforms" ),
-      accept_label = _( "Import" ),
+      title = _( "Export Custom Actions" ),
+      accept_label = _( "Export" ),
       default_filter = filter,
       filters = filters
     };
@@ -492,7 +503,11 @@ public class MainWindow : Gtk.ApplicationWindow {
     dialog.save.begin( this, null, (obj, res) => {
       try {
         var file = dialog.save.end( res );
-        functions.export_custom( file.get_path(), null );
+        var filename = file.get_path();
+        if( !filename.has_suffix( custom_file_extension() ) ) {
+          filename += custom_file_extension();
+        }
+        functions.export_custom( filename, null );
       } catch( Error e ) {}
     });
 

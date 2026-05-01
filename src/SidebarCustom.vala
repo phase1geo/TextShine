@@ -1019,7 +1019,7 @@ public class SidebarCustom : SidebarBox {
 
     var dialog = new FileDialog() {
       modal = true,
-      title = _( "Export Custom Transform As" ),
+      title = _( "Export Custom Action As" ),
       accept_label = _( "Export" ),
       default_filter = filter,
       filters = filters
@@ -1028,7 +1028,11 @@ public class SidebarCustom : SidebarBox {
     dialog.save.begin( win, null, (obj, res) => {
       try {
         var file = dialog.save.end( res );
-        win.functions.export_custom( file.get_path(), _custom );
+        var filename = file.get_path();
+        if( !filename.has_suffix( win.custom_file_extension() ) ) {
+          filename += win.custom_file_extension();
+        }
+        win.functions.export_custom( filename, _custom );
       } catch( Error e ) {}
     });
 

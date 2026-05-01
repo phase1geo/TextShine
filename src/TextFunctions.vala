@@ -355,6 +355,8 @@ public class TextFunctions {
 
   }
 
+  //-------------------------------------------------------------
+  // Saves the user-created custom functions.
   public void save_functions() {
 
     Xml.Doc*  doc  = new Xml.Doc( "1.0" );
@@ -473,23 +475,33 @@ public class TextFunctions {
   //-------------------------------------------------------------
   // Imports all of the stored custom functions into our list of
   // custom functions.
-  public void import_custom( string filename ) {
+  public Array<CustomFunction>? import_custom( string filename ) {
 
     if( !FileUtils.test( filename, FileTest.EXISTS ) ) {
-      return;
+      return( null );
     }
 
     Xml.Doc* doc = Xml.Parser.read_file( filename, null, Xml.ParserOption.HUGE );
     if( doc == null ) {
-      return;
+      return( null );
     }
+
+    var funcs = new Array<CustomFunction>();
 
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
       if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "custom") ) {
         var custom = new CustomFunction();
         custom.load( it, this );
         add_function( "custom", custom );
+        funcs.append_val( custom );
       }
+    }
+
+    if( funcs.length == 0 ) {
+      return( null );
+    } else {
+      save_custom();
+      return( funcs );
     }
 
   }
