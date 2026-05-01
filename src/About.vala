@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2019-2026 (https://github.com/phase1geo/Minder)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public

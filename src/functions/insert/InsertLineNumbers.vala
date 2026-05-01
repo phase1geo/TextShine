@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -27,7 +27,8 @@ public class InsertLineNumbers : TextFunction {
   private bool   _pad;
   private bool   _skip_blanks;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public InsertLineNumbers( bool custom = false ) {
     base( "insert-line-numbers", custom );
     _separator   = ".";
@@ -59,7 +60,8 @@ public class InsertLineNumbers : TextFunction {
     return( false );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     var lines     = original.split( "\n" );
     var num_lines = lines.length;
@@ -77,12 +79,14 @@ public class InsertLineNumbers : TextFunction {
     return( string.joinv( "\n", lines ) );
   }
 
-  /* Specify that we have settings to display */
+  //-------------------------------------------------------------
+  // Specify that we have settings to display
   public override bool settings_available() {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
 
     add_string_setting( grid, 0, _( "Separator" ), _separator, (value) => {

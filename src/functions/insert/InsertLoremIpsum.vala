@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -29,7 +29,8 @@ public class InsertLoremIpsum : TextFunction {
   private int           _paragraphs;
   private Array<string> _lorem;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public InsertLoremIpsum( bool custom = false ) {
     base( "insert-lorem-ipsum", custom );
     _paragraphs = 1;
@@ -80,7 +81,8 @@ public class InsertLoremIpsum : TextFunction {
     return( str );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     var lorem  = get_lorem_ipsum();
     var prefix = (cursor_pos > 0) ? original.slice( 0, cursor_pos ) : "";
@@ -92,7 +94,8 @@ public class InsertLoremIpsum : TextFunction {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
 
     add_range_setting( grid, 0, _( "Paragraphs" ), 1, 20, 1, _paragraphs, (value) => {

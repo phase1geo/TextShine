@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -25,7 +25,8 @@ public class ReplaceTabsSpaces : TextFunction {
 
   private int _spaces = 1;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ReplaceTabsSpaces( bool custom = false ) {
     base( "replace-tabs-spaces", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
@@ -57,7 +58,8 @@ public class ReplaceTabsSpaces : TextFunction {
     return( base.matches( function ) && (_spaces == ((ReplaceTabsSpaces)function)._spaces) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     var spaces = string.nfill( _spaces, ' ' );
     if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
@@ -67,12 +69,14 @@ public class ReplaceTabsSpaces : TextFunction {
     }
   }
 
-  /* Specify that we have settings to display */
+  //-------------------------------------------------------------
+  // Specify that we have settings to display
   public override bool settings_available() {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
 
     add_range_setting( grid, 0, _( "Spaces" ), 1, 20, 1, _spaces, (value) => {

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2018 (https://github.com/phase1geo/Minder)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -29,31 +29,36 @@ public class UndoCustomBuffer : Object {
 
   public signal void buffer_changed( UndoCustomBuffer buf );
 
-  /* Default constructor */
+  //-------------------------------------------------------------
+  // Default constructor
   public UndoCustomBuffer( SidebarCustom sidebar ) {
     _sidebar     = sidebar;
     _undo_buffer = new Array<UndoCustomItem>();
     _redo_buffer = new Array<UndoCustomItem>();
   }
 
-  /* Clear the undo/redo buffers */
+  //-------------------------------------------------------------
+  // Clear the undo/redo buffers
   public void clear() {
     _undo_buffer.remove_range( 0, _undo_buffer.length );
     _redo_buffer.remove_range( 0, _redo_buffer.length );
     buffer_changed( this );
   }
 
-  /* Returns true if we can perform an undo action */
+  //-------------------------------------------------------------
+  // Returns true if we can perform an undo action
   public bool undoable() {
     return( _undo_buffer.length > 0 );
   }
 
-  /* Returns true if we can perform a redo action */
+  //-------------------------------------------------------------
+  // Returns true if we can perform a redo action
   public bool redoable() {
     return( _redo_buffer.length > 0 );
   }
 
-  /* Performs the next undo action in the buffer */
+  //-------------------------------------------------------------
+  // Performs the next undo action in the buffer
   public virtual void undo() {
     if( undoable() ) {
       UndoCustomItem item = _undo_buffer.index( _undo_buffer.length - 1 );
@@ -64,7 +69,8 @@ public class UndoCustomBuffer : Object {
     }
   }
 
-  /* Performs the next redo action in the buffer */
+  //-------------------------------------------------------------
+  // Performs the next redo action in the buffer
   public virtual void redo() {
     if( redoable() ) {
       UndoCustomItem item = _redo_buffer.index( _redo_buffer.length - 1 );
@@ -75,19 +81,22 @@ public class UndoCustomBuffer : Object {
     }
   }
 
-  /* Returns the undo tooltip */
+  //-------------------------------------------------------------
+  // Returns the undo tooltip
   public string undo_tooltip() {
     if( _undo_buffer.length == 0 ) return( _( "Undo" ) );
     return( _( "Undo " ) + _undo_buffer.index( _undo_buffer.length - 1 ).name );
   }
 
-  /* Returns the undo tooltip */
+  //-------------------------------------------------------------
+  // Returns the undo tooltip
   public string redo_tooltip() {
     if( _redo_buffer.length == 0 ) return( _( "Redo" ) );
     return( _( "Redo " ) + _redo_buffer.index( _redo_buffer.length - 1 ).name );
   }
 
-  /* Adds a new undo item to the undo buffer.  Clears the redo buffer. */
+  //-------------------------------------------------------------
+  // Adds a new undo item to the undo buffer.  Clears the redo buffer.
   public void add_item( UndoCustomItem item ) {
     _undo_buffer.append_val( item );
     _redo_buffer.remove_range( 0, _redo_buffer.length );

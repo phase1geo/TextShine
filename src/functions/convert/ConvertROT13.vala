@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,7 +23,8 @@ using Gdk;
 
 public class ConvertROT13 : TextFunction {
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ConvertROT13( bool custom = false ) {
     base( "convert-rot13", custom );
   }
@@ -36,7 +37,8 @@ public class ConvertROT13 : TextFunction {
     return( new ConvertROT13( custom ) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     var str = "";
     for( int i=0; i<original.char_count(); i++ ) {

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,6 +23,8 @@ public class RemoveLineNumbers : TextFunction {
 
   private Regex _re;
 
+  //-------------------------------------------------------------
+  // Constructor
   public RemoveLineNumbers( bool custom = false ) {
     base( "remove-line-numbers", custom );
     try {
@@ -38,7 +40,8 @@ public class RemoveLineNumbers : TextFunction {
     return( new RemoveLineNumbers( custom ) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     string[] lines = {};
     foreach( string line in original.split( "\n" ) ) {

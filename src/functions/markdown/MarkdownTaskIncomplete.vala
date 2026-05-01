@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -25,7 +25,8 @@ public class MarkdownTaskIncomplete : TextFunction {
 
   Regex _re;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public MarkdownTaskIncomplete( bool custom = false ) {
     base( "markdown-task-incomplete", custom );
     try {

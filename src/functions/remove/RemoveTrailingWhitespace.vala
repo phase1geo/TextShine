@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,6 +23,8 @@ using Gee;
 
 public class RemoveTrailingWhitespace : TextFunction {
 
+  //-------------------------------------------------------------
+  // Constructor
   public RemoveTrailingWhitespace( bool custom = false ) {
     base( "remove-trailing-whitespace", custom );
   }
@@ -35,7 +37,8 @@ public class RemoveTrailingWhitespace : TextFunction {
     return( new RemoveTrailingWhitespace( custom ) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     string[] lines = {};
     foreach( string line in original.split( "\n" ) ) {

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -26,7 +26,8 @@ public class InsertFile : TextFunction {
   private MainWindow _win;
   private string     _filename = "";
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public InsertFile( MainWindow win, bool custom = false ) {
     base( "insert-file", custom );
     _win = win;

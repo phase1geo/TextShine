@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -21,6 +21,8 @@
 
 public class RemoveSelected : TextFunction {
 
+  //-------------------------------------------------------------
+  // Constructor
   public RemoveSelected( bool custom = false ) {
     base( "remove-selected", custom );
   }
@@ -33,12 +35,14 @@ public class RemoveSelected : TextFunction {
     return( new RemoveSelected( custom ) );
   }
 
-  /* Returns true if matched text exists in the editor */
+  //-------------------------------------------------------------
+  // Returns true if matched text exists in the editor
   public override bool launchable( Editor editor ) {
     return( editor.is_selected() );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     return( "" );
   }

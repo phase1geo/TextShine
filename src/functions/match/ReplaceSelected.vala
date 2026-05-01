@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -31,7 +31,8 @@ public class ReplaceSelected : TextFunction {
     { "action_insert_replace", action_insert_replace, "s" },
   };
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ReplaceSelected( MainWindow win, bool custom = false ) {
 
     base( "replace-selected", custom );
@@ -52,12 +53,14 @@ public class ReplaceSelected : TextFunction {
     return( base.matches( function ) && (_replace_text == ((ReplaceSelected)function)._replace_text) );
   }
 
-  /* Returns true if matched text exists in the editor */
+  //-------------------------------------------------------------
+  // Returns true if matched text exists in the editor
   public override bool launchable( Editor editor ) {
     return( editor.is_selected() );
   }
 
-  /* Inserts the given string at the current insertion point */
+  //-------------------------------------------------------------
+  // Inserts the given string at the current insertion point
   private void action_insert_replace( SimpleAction action, Variant? variant ) {
     var str = variant.get_string();
     if( str != null ) {
@@ -66,7 +69,8 @@ public class ReplaceSelected : TextFunction {
     }
   }
 
-  /* Creates the search UI */
+  //-------------------------------------------------------------
+  // Creates the search UI
   private void create_widget( Editor editor, out Box box, out Entry? entry ) {
 
     _replace = new Entry() {
@@ -106,7 +110,7 @@ public class ReplaceSelected : TextFunction {
     box = new Box( Orientation.HORIZONTAL, 5 );
     box.append( _replace );
 
-    /* Add the menu actions */
+    // Add the menu actions
     var actions = new SimpleActionGroup();
     actions.add_action_entries( action_entries, this );
     box.insert_action_group( "replace_sel", actions );
@@ -120,7 +124,8 @@ public class ReplaceSelected : TextFunction {
     return( box );
   }
 
-  /* Replace all matches with the replacement text */
+  //-------------------------------------------------------------
+  // Replace all matches with the replacement text
   private void do_replace( Editor editor, UndoItem? undo_item ) {
 
     var ranges       = new Array<Editor.Position>();
@@ -134,7 +139,7 @@ public class ReplaceSelected : TextFunction {
       editor.replace_text( range.start, range.end, Utils.replace_index( replace_text, ref int_value ), undo_item );
     }
 
-    /* Hide the widget */
+    // Hide the widget
     _win.remove_widget();
 
   }
@@ -143,7 +148,8 @@ public class ReplaceSelected : TextFunction {
     do_replace( editor, undo_item );
   }
 
-  /* Called when the action button is clicked.  Displays the UI. */
+  //-------------------------------------------------------------
+  // Called when the action button is clicked.  Displays the UI.
   public override void launch( Editor editor ) {
     if( custom ) {
       do_replace( editor, null );

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -125,7 +125,8 @@ public class ConvertURL : TextFunction {
   private CharacterSet      _type     = CharacterSet.UTF8;
   private bool              _use_plus = true;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ConvertURL( bool custom = false ) {
     base( "convert-url-encode", custom, FunctionDirection.LEFT_TO_RIGHT );
     populate_table();
@@ -342,7 +343,8 @@ public class ConvertURL : TextFunction {
 
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
       return( _entries.encode( original, _type.use_utf8(), _use_plus ) );

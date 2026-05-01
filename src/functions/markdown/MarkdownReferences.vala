@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -31,7 +31,8 @@ public class MarkdownReferences : TextFunction {
   private HashMap<string,string> _link_to_ref;
   private HashMap<string,string> _old_to_new;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public MarkdownReferences( bool custom = false ) {
     base( "markdown-references", custom );
     try {
@@ -132,7 +133,7 @@ public class MarkdownReferences : TextFunction {
 
     if( _ref_num == 1 ) return( text );
 
-    /* Append the references to the end of the text */
+    // Append the references to the end of the text
     var str = text + "\n";
     for( int i=1; i<_ref_num; i++ ) {
       str += "[" + i.to_string() + "]: " + _links.index( i-1 ) + "\n";

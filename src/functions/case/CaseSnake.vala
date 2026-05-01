@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,7 +23,8 @@ public class CaseSnake : TextFunction {
 
   private static Regex _is;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public CaseSnake( bool custom = false ) {
     base( "case-snake", custom );
     try {
@@ -39,7 +40,8 @@ public class CaseSnake : TextFunction {
     return( new CaseSnake( custom ) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     string[] parts;
     string   orig = original.down();
@@ -49,11 +51,10 @@ public class CaseSnake : TextFunction {
     return( orig.replace( " ", "_" ) );
   }
 
-  /*
-   Returns true if the given string is in camel case; otherwise, returns false.
-   If true is returned, the camel case string is broken into its parts and returned
-   for further processing.
-  */
+  //-------------------------------------------------------------
+  // Returns true if the given string is in camel case; otherwise,
+  // returns false.  If true is returned, the camel case string is
+  // broken into its parts and returned for further processing.
   public static bool is_snake_case( string text, out string[] parts ) {
     parts = {};
     if( _is.match( text ) ) {

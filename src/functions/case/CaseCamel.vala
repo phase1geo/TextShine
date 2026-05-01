@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,7 +23,8 @@ public class CaseCamel : TextFunction {
 
   private Regex _re;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public CaseCamel( bool custom = false ) {
     base( "case-camel", custom );
     try {
@@ -39,7 +40,8 @@ public class CaseCamel : TextFunction {
     return( new CaseCamel( custom ) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     string[] parts;
     string   orig = original.down();
@@ -56,11 +58,10 @@ public class CaseCamel : TextFunction {
     return( orig );
   }
 
-  /*
-   Returns true if the given string is in camel case; otherwise, returns false.
-   If true is returned, the camel case string is broken into its parts and returned
-   for further processing.
-  */
+  //-------------------------------------------------------------
+  // Returns true if the given string is in camel case; otherwise,
+  // returns false.  If true is returned, the camel case string is
+  // broken into its parts and returned for further processing.
   public static bool is_camel_case( string text, out string[] parts ) {
     var str = "";
     var arr = new Array<string>();

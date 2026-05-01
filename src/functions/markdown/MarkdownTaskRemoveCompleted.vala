@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -27,7 +27,8 @@ public class MarkdownTaskRemoveCompleted : TextFunction {
   Regex _incompleted_re;
   MarkdownTaskApplyType _apply = MarkdownTaskApplyType.LINE;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public MarkdownTaskRemoveCompleted( bool custom = false ) {
     base( "markdown-task-remove-completed", custom );
     try {
@@ -54,7 +55,8 @@ public class MarkdownTaskRemoveCompleted : TextFunction {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
     add_menubutton_setting( grid, 0, _( "Apply To" ), _apply, MarkdownTaskApplyType.LENGTH, (value) => {
       var apply = (MarkdownTaskApplyType)value;

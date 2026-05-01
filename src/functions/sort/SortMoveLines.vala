@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -25,7 +25,8 @@ public class SortMoveLines : TextFunction {
 
   private int _count;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public SortMoveLines( bool custom = false ) {
     base( "sort-move-lines", custom, FunctionDirection.TOP_DOWN );
     _count = 1;
@@ -70,7 +71,7 @@ public class SortMoveLines : TextFunction {
     var cursor_line = cursor.get_line();
     var cursor_col  = cursor.get_line_offset();
 
-    /* Get the lines that need to be moved */
+    // Get the lines that need to be moved
     if( !buf.get_selection_bounds( out start, out end ) ) {
       buf.get_iter_at_mark( out start, buf.get_insert() );
       end = start;
@@ -81,7 +82,7 @@ public class SortMoveLines : TextFunction {
     var end_line   = end.get_line();
     var end_col    = end.get_line_offset();
 
-    /* Adjust the start and end iterators so that they encompass the entire line */
+    // Adjust the start and end iterators so that they encompass the entire line
     buf.get_iter_at_line( out start, start.get_line() );
     if( !end.ends_line() ) end.forward_to_line_end();
 
@@ -100,21 +101,21 @@ public class SortMoveLines : TextFunction {
       text = text + "\n" + first.get_slice( start );
     }
 
-    /* Adjust the text */
+    // Adjust the text
     var undo_item = new UndoItem( label );
     editor.replace_text( first, last, text, undo_item );
     editor.undo_buffer.add_item( undo_item );
 
     var adjust = down ? _count : (0 - _count);
 
-    /* Adjust the selection, if necessary */
+    // Adjust the selection, if necessary
     if( selected ) {
       buf.get_iter_at_line_offset( out start, (start_line + adjust), start_col );
       buf.get_iter_at_line_offset( out end,   (end_line   + adjust), end_col );
       buf.select_range( start, end );
     }
 
-    /* Adjust the cursor */
+    // Adjust the cursor
     buf.get_iter_at_line_offset( out start, (cursor_line + adjust), cursor_col );
     buf.place_cursor( start );
 

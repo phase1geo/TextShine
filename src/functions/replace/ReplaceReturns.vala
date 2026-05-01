@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -25,7 +25,8 @@ public class ReplaceReturns : TextFunction {
 
   private int _returns = 2;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ReplaceReturns( bool custom = false ) {
     base( "replace-returns", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
@@ -49,7 +50,8 @@ public class ReplaceReturns : TextFunction {
     return( base.matches( function ) && (_returns == ((ReplaceReturns)function)._returns) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     var returns = string.nfill( _returns, '\n' );
     if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
@@ -59,12 +61,14 @@ public class ReplaceReturns : TextFunction {
     }
   }
 
-  /* Specify that we have settings to display */
+  //-------------------------------------------------------------
+  // Specify that we have settings to display
   public override bool settings_available() {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
 
     add_range_setting( grid, 0, _( "Returns" ), 2, 20, 1, _returns, (value) => {

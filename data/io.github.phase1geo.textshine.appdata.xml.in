@@ -81,6 +81,8 @@
           <p>New</p>
           <ul>
             <li>Added About window to help in debugging issues.</li>
+            <li>Added support for exporting custom actions.</li>
+            <li>Added support for importing custom actions.</li>
           </ul>
           <p>Changes</p>
           <ul>

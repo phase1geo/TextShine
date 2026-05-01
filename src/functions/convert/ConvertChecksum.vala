@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -78,7 +78,8 @@ public class ConvertChecksum : TextFunction {
 
   private EncodeType _type = EncodeType.MD5;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ConvertChecksum( bool custom = false ) {
     base( "convert-checksum", custom );
   }
@@ -103,7 +104,8 @@ public class ConvertChecksum : TextFunction {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
 
     add_menubutton_setting( grid, 1, _( "Checksum Type" ), _type, EncodeType.LENGTH, (value) => {
@@ -116,7 +118,8 @@ public class ConvertChecksum : TextFunction {
 
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     return( Checksum.compute_for_string( _type.type(), original ) );
   }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2018 (https://github.com/phase1geo/Minder)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -136,7 +136,8 @@ public class UndoItem : GLib.Object {
   public string name { set; get; default = ""; }
   public int    id   { set; get; default = -1; }
 
-  /* Default constructor */
+  //-------------------------------------------------------------
+  // Default constructor
   public UndoItem( string name ) {
     this.name = name;
     _elements = new Array<UndoElement>();
@@ -157,24 +158,25 @@ public class UndoItem : GLib.Object {
     _elements.append_val( element );
   }
 
-  /* Causes the stored item to be put into the before state */
+  //-------------------------------------------------------------
+  // Causes the stored item to be put into the before state
   public void undo( Editor editor ) {
     for( int i=((int)_elements.length - 1); i>=0; i-- ) {
       _elements.index( i ).undo( editor );
     }
   }
 
-  /* Causes the stored item to be put into the after state */
+  //-------------------------------------------------------------
+  // Causes the stored item to be put into the after state
   public void redo( Editor editor ) {
     for( int i=0; i<_elements.length; i++ ) {
       _elements.index( i ).redo( editor );
     }
   }
 
-  /*
-   Returns a hnalde to the last undo element if it is mergeable; otherwise,
-   returns null.
-  */
+  //-------------------------------------------------------------
+  // Returns a hnalde to the last undo element if it is mergeable;
+  // otherwise, returns null.
   public bool mergeable( bool insert, int start, int end ) {
     if( _elements.length == 0 ) return( false );
     var can_merge = _elements.index( _elements.length - 1 ).mergeable( insert, start, end );

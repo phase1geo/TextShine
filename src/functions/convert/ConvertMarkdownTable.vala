@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -130,7 +130,8 @@ public class ConvertMarkdownTable : TextFunction {
   private QuoteMode         _csv_quote_mode = QuoteMode.NEVER;
   private MarkdownAlignment _align          = MarkdownAlignment.NONE;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public ConvertMarkdownTable( bool custom = false ) {
     base( "convert-md-table", custom, FunctionDirection.LEFT_TO_RIGHT );
   }
@@ -168,7 +169,8 @@ public class ConvertMarkdownTable : TextFunction {
     return( true );
   }
 
-  /* Populates the given popover with the settings */
+  //-------------------------------------------------------------
+  // Populates the given popover with the settings
   public override void add_settings( Grid grid ) {
 
     var delim = add_string_setting( grid, 1, _( "CSV Column Separator" ), _csv_delim, (value) => {
@@ -203,7 +205,9 @@ public class ConvertMarkdownTable : TextFunction {
 
   }
 
-  /* Parses the given CSV line to convert it into a list of column strings */
+  //-------------------------------------------------------------
+  // Parses the given CSV line to convert it into a list of column
+  // strings
   private void parse_csv_line( string line, ref string[] cols, ref string col, ref bool in_quote ) {
     string[] lcols = cols;
     for( int i=0; i<line.char_count(); i++ ) {
@@ -237,7 +241,8 @@ public class ConvertMarkdownTable : TextFunction {
     cols = lcols;
   }
 
-  /* Convert CSV data to Markdown table format */
+  //-------------------------------------------------------------
+  // Convert CSV data to Markdown table format
   private string convert_csv_to_markdown( string original ) {
     var str       = "";
     var first     = true;
@@ -289,7 +294,8 @@ public class ConvertMarkdownTable : TextFunction {
     return( str );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     if( direction == FunctionDirection.LEFT_TO_RIGHT ) {
       return( convert_csv_to_markdown( original ) );

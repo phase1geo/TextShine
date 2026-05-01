@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -21,6 +21,8 @@
 
 public class RemoveBlankLines : TextFunction {
 
+  //-------------------------------------------------------------
+  // Constructor
   public RemoveBlankLines( bool custom = false ) {
     base( "remove-blank-lines", custom );
   }
@@ -33,7 +35,8 @@ public class RemoveBlankLines : TextFunction {
     return( new RemoveBlankLines( custom ) );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     string[] lines = {};
     foreach( string line in original.split( "\n" ) ) {

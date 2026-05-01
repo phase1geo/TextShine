@@ -27,7 +27,7 @@ same way that built-in actions are used within the application.
 - Unlimited undo/redo of text changes.
 - Apply a text action in a single click.
 - Support for action favoriting.
-- Support for creating and testing custom actions.
+- Support for creating, testing, importing and exporting custom actions.
 - Quickly search available text actions.
 - Character, word, line, match and spelling error statistics.
 - Support for font size changes.

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2023 (https://github.com/phase1geo/Journaler)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -22,7 +22,9 @@
 using Gtk;
 using Enchant;
 
-/* My implementation of gtkspell that is compatible with Gtk4 and gtksourceview-5 */
+//-------------------------------------------------------------
+// My implementation of gtkspell that is compatible with Gtk4
+// and gtksourceview-5
 public class SpellChecker {
 
   private Broker       broker = null;
@@ -45,7 +47,8 @@ public class SpellChecker {
 
   public signal void populate_extra_menu();
 
-  /* Default constructor */
+  //-------------------------------------------------------------
+  // Default constructor
   public SpellChecker() {
     broker = new Broker();
     right_click = new GestureClick() {
@@ -84,12 +87,6 @@ public class SpellChecker {
       view.buffer.apply_tag( tag_highlight, start, end );
     }
   }
-
-  /*
-  private string iter_string( TextIter iter ) {
-    return( "%d.%d".printf( iter.get_line(), iter.get_line_offset() ) );
-  }
-  */
 
   private void check_range( TextIter start, TextIter end, bool force_all ) {
     TextIter wstart, wend, cursor, precursor;

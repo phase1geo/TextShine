@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -21,7 +21,8 @@
 
 public class QuotesStraight : TextFunction {
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public QuotesStraight( bool custom = false ) {
     base( "quotes-straight", custom, FunctionDirection.NONE );
   }
@@ -35,7 +36,8 @@ public class QuotesStraight : TextFunction {
     return( fn );
   }
 
-  /* Perform the transformation */
+  //-------------------------------------------------------------
+  // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     return( straight_quote( original ) );
   }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -23,7 +23,8 @@ using Gtk;
 
 public class InvertSelected : TextFunction {
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public InvertSelected( bool custom = false ) {
     base( "invert-selected", custom );
   }
@@ -36,12 +37,14 @@ public class InvertSelected : TextFunction {
     return( new InvertSelected( custom ) );
   }
 
-  /* Returns true if there is matched text within the editor */
+  //-------------------------------------------------------------
+  // Returns true if there is matched text within the editor
   public override bool launchable( Editor editor ) {
     return( editor.is_selected() );
   }
 
-  /* Called when the action button is clicked.  Displays the UI. */
+  //-------------------------------------------------------------
+  // Called when the action button is clicked.  Displays the UI.
   public override void launch( Editor editor ) {
 
     var undo_item = new UndoItem( name );

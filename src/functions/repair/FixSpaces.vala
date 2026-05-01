@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -29,7 +29,8 @@ public class FixSpaces : TextFunction {
   private Regex _remove1_re;
   private Regex _remove2_re;
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public FixSpaces( bool custom = false ) {
     base( "fix-spaces", custom );
     try {
@@ -79,13 +80,13 @@ public class FixSpaces : TextFunction {
 
     foreach( string line in original.split( "\n" ) ) {
 
-      /* Remove extra spaces */
+      // Remove extra spaces
       while( _extra_re.match( line, 0, out match ) ) {
         match.fetch_pos( 0, out start, out end );
         line = line.splice( start, end, " " );
       }
 
-      /* Add spaces if they are missing */
+      // Add spaces if they are missing
       line = add_space( line, _missing_pre_re );
       line = add_space( line, _missing_post_re );
       line = remove_space( line, _remove1_re );
