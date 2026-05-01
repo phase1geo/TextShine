@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2020 (https://github.com/phase1geo/TextShine)
+* Copyright (c) 2020-2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -69,11 +69,11 @@ public class Functions {
 }
 
 public enum SwitchStackReason {
-  NONE,   /* There is no reason for switching */
-  NEW,    /* We are creating a new cuastom function */
-  EDIT,   /* We are editing an existing function */
-  ADD,    /* We are adding a new custom function */
-  DELETE  /* We are deleting a custom function */
+  NONE,   // There is no reason for switching
+  NEW,    // We are creating a new cuastom function
+  EDIT,   // We are editing an existing function
+  ADD,    // We are adding a new custom function
+  DELETE  // We are deleting a custom function
 }
 
 public class Sidebar : Box {
@@ -81,8 +81,10 @@ public class Sidebar : Box {
   private Stack _stack;
 
   public signal void action_applied( TextFunction function );
+  public signal void add_custom_actions( Array<CustomFunction> funcs );
 
-  /* Constructor */
+  //-------------------------------------------------------------
+  // Constructor
   public Sidebar( MainWindow win, Editor editor ) {
 
     Object( orientation: Orientation.VERTICAL, spacing: 10, halign: Align.END, hexpand: false );
@@ -106,6 +108,12 @@ public class Sidebar : Box {
     custom.switch_stack.connect((reason,fn) => {
       _stack.visible_child_name = "functions";
       functions.displayed( reason, fn );
+    });
+
+    add_custom_actions.connect((fns) => {
+      for( int i=0; i<fns.length; i++ ) {
+        functions.add_custom_function( fns.index( i ) );
+      }
     });
 
     _stack.add_named( functions, "functions" );

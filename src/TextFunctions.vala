@@ -44,6 +44,8 @@ public class TextFunctions {
     }
   }
 
+  public signal void changed();
+
   //-------------------------------------------------------------
   // Constructor
   public TextFunctions( MainWindow win ) {
@@ -177,6 +179,7 @@ public class TextFunctions {
     _map.append_val( ct_index );
 
     function.settings_changed.connect( save_functions );
+    changed();
 
   }
 
@@ -200,6 +203,7 @@ public class TextFunctions {
         _functions.index( i ).settings_changed.disconnect( save_functions );
         _functions.remove_index( i );
         _map.remove_index( i );
+        changed();
         break;
       }
     }
@@ -232,6 +236,20 @@ public class TextFunctions {
       }
     }
     return( "" );
+  }
+
+  //-------------------------------------------------------------
+  // Returns true if the given category contains at least one function.
+  public bool category_empty( string category ) {
+    var index = category_index( category );
+    if( index != -1 ) {
+      for( int i=0; i<_map.length; i++ ) {
+        if( _map.index( i ) == index ) {
+          return( false );
+        }
+      }
+    }
+    return( true );
   }
 
   //-------------------------------------------------------------
@@ -355,6 +373,8 @@ public class TextFunctions {
 
   }
 
+  //-------------------------------------------------------------
+  // Saves the user-created custom functions.
   public void save_functions() {
 
     Xml.Doc*  doc  = new Xml.Doc( "1.0" );
@@ -423,6 +443,31 @@ public class TextFunctions {
   }
 
   //-------------------------------------------------------------
+  // Exports either a single custom function (if specified) or
+  // all of the custom functions to the given filename.
+  public void export_custom( string filename, CustomFunction? func ) {
+
+    Xml.Doc*  doc  = new Xml.Doc( "1.0" );
+    Xml.Node* root = new Xml.Node( null, "customs" );
+    root->set_prop( "version", _win.application.version );
+
+    if( func != null ) {
+      root->add_child( func.save() );
+    } else {
+      var functions = get_category_functions( "custom" );
+      for( int i=0; i<functions.length; i++ ) {
+        root->add_child( functions.index( i ).save() );
+      }
+    }
+
+    doc->set_root_element( root );
+    doc->save_format_file( filename, 1 );
+
+    delete doc;
+
+  }
+
+  //-------------------------------------------------------------
   // Load the custom functions from the XML file
   private void load_custom() {
 
@@ -441,6 +486,40 @@ public class TextFunctions {
         custom.load( it, this );
         add_function( "custom", custom );
       }
+    }
+
+  }
+
+  //-------------------------------------------------------------
+  // Imports all of the stored custom functions into our list of
+  // custom functions.
+  public Array<CustomFunction>? import_custom( string filename ) {
+
+    if( !FileUtils.test( filename, FileTest.EXISTS ) ) {
+      return( null );
+    }
+
+    Xml.Doc* doc = Xml.Parser.read_file( filename, null, Xml.ParserOption.HUGE );
+    if( doc == null ) {
+      return( null );
+    }
+
+    var funcs = new Array<CustomFunction>();
+
+    for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
+      if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "custom") ) {
+        var custom = new CustomFunction();
+        custom.load( it, this );
+        add_function( "custom", custom );
+        funcs.append_val( custom );
+      }
+    }
+
+    if( funcs.length == 0 ) {
+      return( null );
+    } else {
+      save_custom();
+      return( funcs );
     }
 
   }

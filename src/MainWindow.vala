@@ -27,43 +27,46 @@ public class MainWindow : Gtk.ApplicationWindow {
   private const string DESKTOP_SCHEMA = "io.elementary.desktop";
   private const string DARK_KEY       = "prefer-dark";
 
-  private HeaderBar      _header;
-  private Editor         _editor;
-  private Button         _clear_btn;
-  private Button         _open_btn;
-  private Button         _save_btn;
-  private Button         _paste_btn;
-  private Button         _copy_btn;
-  private Button         _undo_btn;
-  private Button         _redo_btn;
-  private MenuButton     _prop_btn;
-  private Sidebar        _sidebar;
+  private HeaderBar         _header;
+  private Editor            _editor;
+  private Button            _clear_btn;
+  private Button            _open_btn;
+  private Button            _save_btn;
+  private Button            _paste_btn;
+  private Button            _copy_btn;
+  private Button            _undo_btn;
+  private Button            _redo_btn;
+  private MenuButton        _prop_btn;
+  private Sidebar           _sidebar;
   private Box               _widget_box;
   private GLib.List<Widget> _widget_items;
   private InfoBox           _info;
-  private TextFunctions  _functions;
-  private CustomFunction _custom;
-  private string?        _current_file = null;
-  private Label          _stats_chars;
-  private Label          _stats_words;
-  private Label          _stats_lines;
-  private Label          _stats_matches;
-  private Label          _stats_spell;
+  private TextFunctions     _functions;
+  private CustomFunction    _custom;
+  private string?           _current_file = null;
+  private Label             _stats_chars;
+  private Label             _stats_words;
+  private Label             _stats_lines;
+  private Label             _stats_matches;
+  private Label             _stats_spell;
+  private SimpleActionGroup _actions;
 
   private const GLib.ActionEntry[] action_entries = {
-    { "action_new",         do_new },
-    { "action_open",        do_open },
-    { "action_save",        do_save },
-    { "action_quit",        do_quit },
-    { "action_paste_over",  do_paste_over },
-    { "action_copy_all",    do_copy_all },
-    { "action_paste",       do_paste },
-    { "action_copy",        do_copy },
-    { "action_undo",        do_undo },
-    { "action_redo",        do_redo },
-    { "action_shortcuts",   action_shortcuts },
-    { "action_preferences", action_preferences },
-    { "action_about",       action_about }
+    { "action_new",           do_new },
+    { "action_open",          do_open },
+    { "action_save",          do_save },
+    { "action_quit",          do_quit },
+    { "action_paste_over",    do_paste_over },
+    { "action_copy_all",      do_copy_all },
+    { "action_paste",         do_paste },
+    { "action_copy",          do_copy },
+    { "action_undo",          do_undo },
+    { "action_redo",          do_redo },
+    { "action_shortcuts",     action_shortcuts },
+    { "action_preferences",   action_preferences },
+    { "action_import_custom", action_import_custom },
+    { "action_export_custom", action_export_custom },
+    { "action_about",         action_about }
   };
 
   private bool on_elementary = Utils.on_elementary();
@@ -134,6 +137,9 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     // Create the widgets and functions after we have added some of the UI elements
     _functions = new TextFunctions( this );
+    _functions.changed.connect(() => {
+      update_properties_menu();
+    });
 
     // Create sidebar
     var sidebar = create_sidebar();
@@ -146,9 +152,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     present();
 
     // Set the stage for menu actions
-    var actions = new SimpleActionGroup ();
-    actions.add_action_entries( action_entries, this );
-    insert_action_group( "win", actions );
+    _actions = new SimpleActionGroup ();
+    _actions.add_action_entries( action_entries, this );
+    insert_action_group( "win", _actions );
 
     // Add keyboard shortcuts
     add_keyboard_shortcuts( app );
@@ -164,6 +170,9 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     // Set the default window size from settings
     set_window_size();
+
+    // Initialize the state of the properties menu
+    update_properties_menu();
 
   }
 
@@ -381,6 +390,10 @@ public class MainWindow : Gtk.ApplicationWindow {
   // Adds the property button and associated popover
   private MenuButton add_properties_button() {
 
+    var inex_menu = new GLib.Menu();
+    inex_menu.append( _( "Import Custom Actions…" ), "win.action_import_custom" );
+    inex_menu.append( _( "Export Custom Actions…" ), "win.action_export_custom" );
+
     var other_menu = new GLib.Menu();
     other_menu.append( _( "Shortcut Cheatsheet…" ), "win.action_shortcuts" );
     other_menu.append( _( "Preferences…" ),         "win.action_preferences" );
@@ -389,6 +402,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     about_menu.append( _( "About TextShine" ), "win.action_about" );
 
     var menu = new GLib.Menu();
+    menu.append_section( null, inex_menu );
     menu.append_section( null, other_menu );
     menu.append_section( null, about_menu );
 
@@ -398,12 +412,12 @@ public class MainWindow : Gtk.ApplicationWindow {
       menu_model   = menu
     };
 
-    _prop_btn.activate.connect( properties_clicked );
-
     return( _prop_btn );
 
   }
 
+  //-------------------------------------------------------------
+  // Displays the shortcuts helper window.
   private void action_shortcuts() {
 
     var builder = new Builder.from_resource( "/io/github/phase1geo/textshine/shortcuts.ui" );
@@ -425,6 +439,87 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   //-------------------------------------------------------------
+  // Returns the custom export file extension that is known.
+  public string custom_file_extension() {
+    return( ".textshine-custom" );
+  }
+
+  //-------------------------------------------------------------
+  // Returns a filter to be used for the custom transform file.
+  public FileFilter get_custom_file_filter() {
+
+    var filter = new FileFilter() {
+      name = _( "Custom Action File" ),
+    };
+
+    filter.add_pattern( "*" + custom_file_extension() );
+
+    return( filter );
+
+  }
+
+  //-------------------------------------------------------------
+  // Imports a custom transform file.
+  private void action_import_custom() {
+
+    var filter = get_custom_file_filter();
+
+    var filters = new GLib.ListStore( typeof( FileFilter ) );
+    filters.append( filter );
+
+    var dialog = new FileDialog() {
+      modal = true,
+      title = _( "Import Custom Actions" ),
+      accept_label = _( "Import" ),
+      default_filter = filter,
+      filters = filters
+    };
+
+    dialog.open.begin( this, null, (obj, res) => {
+      try {
+        var file = dialog.open.end( res );
+        var fns  = functions.import_custom( file.get_path() );
+        if( fns != null ) {
+          _sidebar.add_custom_actions( fns );
+        }
+      } catch( Error e ) {}
+    });
+
+  }
+
+  //-------------------------------------------------------------
+  // Exports all of the custom transforms into a single importable
+  // file.
+  private void action_export_custom() {
+    
+    var filter = get_custom_file_filter();
+
+    var filters = new GLib.ListStore( typeof( FileFilter ) );
+    filters.append( filter );
+
+    var dialog = new FileDialog() {
+      modal = true,
+      title = _( "Export Custom Actions" ),
+      accept_label = _( "Export" ),
+      default_filter = filter,
+      filters = filters,
+      initial_name = "Default" + custom_file_extension()
+    };
+
+    dialog.save.begin( this, null, (obj, res) => {
+      try {
+        var file = dialog.save.end( res );
+        var filename = file.get_path();
+        if( !filename.has_suffix( custom_file_extension() ) ) {
+          filename += custom_file_extension();
+        }
+        functions.export_custom( filename, null );
+      } catch( Error e ) {}
+    });
+
+  }
+
+  //-------------------------------------------------------------
   // Displays about window
   private void action_about() {
 
@@ -436,9 +531,13 @@ public class MainWindow : Gtk.ApplicationWindow {
   //-------------------------------------------------------------
   // Called when the properties button is clicked.  Sets the state
   // of the popover contents.
-  private void properties_clicked() {
+  private void update_properties_menu() {
 
-    // TBD - State properties item states here
+    // Update the state of the action_export_custom action
+    var action = (SimpleAction)_actions.lookup_action( "action_export_custom" );
+    if( action != null ) {
+      action.set_enabled( !functions.category_empty( "custom" ) );
+    }
 
   }
 
