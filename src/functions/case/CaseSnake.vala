@@ -28,7 +28,7 @@ public class CaseSnake : TextFunction {
   public CaseSnake( bool custom = false ) {
     base( "case-snake", custom );
     try {
-      _is = new Regex( "^[a-z_]+$" );
+      _is = new Regex( """^(\p{Ll}|_)+$""" );
     } catch( RegexError e ) {}
   }
 
@@ -44,9 +44,9 @@ public class CaseSnake : TextFunction {
   // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
     string[] parts;
-    string   orig = original.down();
+    string orig = original.down();
     if( CaseCamel.is_camel_case( original, out parts ) ) {
-      orig = string.joinv( " ", parts );
+      orig = string.joinv( " ", parts ).down();
     }
     return( orig.replace( " ", "_" ) );
   }

@@ -28,7 +28,7 @@ public class RemoveLineNumbers : TextFunction {
   public RemoveLineNumbers( bool custom = false ) {
     base( "remove-line-numbers", custom );
     try {
-      _re = new Regex( """^\s*\d+[^a-zA-Z_\s]?(.*)$""" );
+      _re = new Regex( """^\s*\d+[^\p{L}_\s](.*)$""" );
     } catch( RegexError e ) {}
   }
 

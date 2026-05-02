@@ -28,8 +28,10 @@ public class CaseSentence : TextFunction {
   public CaseSentence( bool custom = false ) {
     base( "case-sentence", custom );
     try {
-      _re = new Regex( """(^\s*|[.!?]\s+)([a-z])""" );
-    } catch( RegexError e ) {}
+      _re = new Regex( """(^\s*|[.!?]\s+)(\p{Ll})""" );
+    } catch( RegexError e ) {
+      stdout.printf( e.message );
+    }
   }
 
   protected override string get_label0() {
@@ -46,7 +48,7 @@ public class CaseSentence : TextFunction {
     string[] parts;
     string   orig = original.down();
     if( CaseCamel.is_camel_case( original, out parts ) ) {
-      orig = string.joinv( " ", parts );
+      orig = string.joinv( " ", parts ).down();
     } else if( CaseSnake.is_snake_case( original, out parts ) ) {
       orig = string.joinv( " ", parts );
     }

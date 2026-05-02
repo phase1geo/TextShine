@@ -196,7 +196,7 @@ public class RegExpr : TextFunction {
     if( _tags_exist ) {
       add_case_patterns( menu );
       add_position_patterns( menu );
-      Utils.populate_insert_popup( menu, "insert_replace" );
+      Utils.populate_insert_popup( menu, "regexpr.action_insert_replace" );
     }
   }
 
@@ -206,8 +206,9 @@ public class RegExpr : TextFunction {
   }
 
   private void add_pattern( GLib.Menu mnu, string lbl, string pattern ) {
-    var label = (pattern.length < 5) ? (lbl + " - " + pattern) : lbl;
-    mnu.append( label, "regexpr.insert_pattern('%s')".printf( pattern ) );
+    var label = (pattern.length < 5) ? (lbl + " - " + pattern.escape()) : lbl;
+    // mnu.append( label, "regexpr.action_insert_pattern(\"%s\")".printf( pattern.escape() ) );
+    mnu.append( label, "regexpr.action_insert_pattern(\"%s\")".printf( pattern.escape() ) );
   }
 
   private void add_character_patterns( GLib.Menu menu ) {
@@ -249,7 +250,7 @@ public class RegExpr : TextFunction {
     add_pattern( submenu, _( "Word" ),         """\w+""" );
     add_pattern( submenu, _( "Number" ),       """\d+""" );
     add_pattern( submenu, _( "URL" ),          """(https?://(?:www\.|(?!www))[^\s\.]+\.\S{2,}|www\.\S+\.\S{2,})""" );
-    add_pattern( submenu, _( "E-mail" ),       """([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})""" );
+    add_pattern( submenu, _( "E-mail" ),       """(?:[\p{L}\p{N}._%+\-]+)@(?:[\p{L}\p{N}\-]+\.)+[\p{L}]{2,}""" );
     add_pattern( submenu, _( "Date" ),         """[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}""" );
     add_pattern( submenu, _( "Phone Number" ), """\d?(\s?|-?|\+?|\.?)((\(\d{1,4}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)((\(\d{1,3}\))|(\d{1,3})|\s?)(\s?|-?|\.?)\d{3}(-|\.|\s)\d{4}""" );
     add_submenu( submenu, _( "HTML/XML Tags" ), out tags );

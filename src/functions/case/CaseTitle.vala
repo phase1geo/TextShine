@@ -28,7 +28,7 @@ public class CaseTitle : TextFunction {
   public CaseTitle( bool custom = false ) {
     base( "case-title", custom );
     try {
-      _re = new Regex( "(^|\\W)([a-z])" );
+      _re = new Regex( """(^|\W)(\p{Ll})""" );
     } catch( RegexError e ) {}
   }
 
@@ -46,7 +46,7 @@ public class CaseTitle : TextFunction {
     string[] parts;
     string   orig = original.down();
     if( CaseCamel.is_camel_case( original, out parts ) ) {
-      orig = string.joinv( " ", parts );
+      orig = string.joinv( " ", parts ).down();
     } else if( CaseSnake.is_snake_case( original, out parts ) ) {
       orig = string.joinv( " ", parts );
     }

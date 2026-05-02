@@ -198,7 +198,7 @@ public class Utils {
   // Adds a new menu item that inserts a given pattern at the
   // current insertion point.
   public static void add_literal_pattern( GLib.Menu mnu, string action, string lbl, string pattern ) {
-    mnu.append( lbl, "%s('%s')".printf( action, pattern ) );
+    mnu.append( lbl, "%s(\"%s\")".printf( action, pattern.escape() ) );
   }
 
   //-------------------------------------------------------------

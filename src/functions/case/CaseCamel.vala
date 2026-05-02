@@ -28,7 +28,7 @@ public class CaseCamel : TextFunction {
   public CaseCamel( bool custom = false ) {
     base( "case-camel", custom );
     try {
-      _re = new Regex( "[a-zA-Z]( )([a-z])" );
+      _re = new Regex( "[[:alpha:]]( )(\\p{Ll})" );
     } catch( RegexError e ) {}
   }
 
