@@ -46,7 +46,9 @@ public class ReplaceSelected : TextFunction {
   }
 
   public override TextFunction copy( bool custom ) {
-    return( new ReplaceSelected( _win, custom ) );
+    var fn = new ReplaceSelected( _win, custom );
+    fn._replace_text = _replace_text;
+    return( fn );
   }
 
   public override bool matches( TextFunction function ) {

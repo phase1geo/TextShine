@@ -89,7 +89,9 @@ public class ConvertChecksum : TextFunction {
   }
 
   public override TextFunction copy( bool custom ) {
-    return( new ConvertChecksum( custom ) );
+    var fn = new ConvertChecksum( custom );
+    fn._type = _type;
+    return( fn );
   }
 
   public override bool matches( TextFunction function ) {

@@ -49,7 +49,11 @@ public class Find : TextFunction {
   }
 
   public override TextFunction copy( bool custom ) {
-    return( new Find( _win, custom ) );
+    var fn = new Find( _win, custom );
+    fn._find_text = _find_text;
+    fn._case_sensitive = _case_sensitive;
+    fn._highlight_line = _highlight_line;
+    return( fn );
   }
 
   public override bool matches( TextFunction function ) {

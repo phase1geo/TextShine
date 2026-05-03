@@ -55,7 +55,11 @@ public class RegExpr : TextFunction {
   }
 
   public override TextFunction copy( bool custom ) {
-    return( new RegExpr( _win, custom ) );
+    var fn = new RegExpr( _win, custom );
+    fn._find_text = _find_text;
+    fn._replace_text = _replace_text;
+    fn._highlight_line = _highlight_line;
+    return( fn );
   }
 
   public override bool matches( TextFunction function ) {

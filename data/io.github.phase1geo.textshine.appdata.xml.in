@@ -86,6 +86,7 @@
           </ul>
           <p>Changes</p>
           <ul>
+            <li>Updated application icon.</li>
             <li>Updated Dutch translation (thanks to Helmen Stoffels).</li>
             <li>Updated German translation (thanks to Benjamin Weis).</li>
             <li>Updated elementary OS flatpak manifest.</li>
@@ -93,12 +94,15 @@
             <li>Updated Meson environment files for newer versions of Meson.</li>
             <li>Changed application ID from com.github.phase1geo.textshine to io.github.phase1geo.textshine.</li>
             <li>Removed Debian release files.</li>
+            <li>Changed tooltip for the preferences menubutton.</li>
           </ul>
           <p>Bug Fixes</p>
           <ul>
             <li>Fixed valac compiler warnings.</li>
             <li>Fixed majority of obsolete library issues.</li>
             <li>Fixed issue where a non-text file is attempted to be inserted into the text area.</li>
+            <li>Fixed case actions to allow non-English words to be modified correctly.</li>
+            <li>Fixed issue with using regular expressions from dropdown menus.</li>
           </ul>
         </description>
       </release>
