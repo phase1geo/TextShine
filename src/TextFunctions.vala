@@ -124,6 +124,7 @@ public class TextFunctions {
     add_function( "indent", new Indent() );
     add_function( "indent", new Unindent() );
     add_function( "indent", new IndentXML() );
+    add_function( "indent", new IndentDelim() );
 
     // Category - convert
     add_function( "convert", new ConvertHardWrap() );

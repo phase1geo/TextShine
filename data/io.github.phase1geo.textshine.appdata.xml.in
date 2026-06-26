@@ -103,6 +103,7 @@
             <li>Fixed issue where a non-text file is attempted to be inserted into the text area.</li>
             <li>Fixed case actions to allow non-English words to be modified correctly.</li>
             <li>Fixed issue with using regular expressions from dropdown menus.</li>
+            <li>Fixed issues with some of the action copy functions.</li>
           </ul>
         </description>
       </release>
