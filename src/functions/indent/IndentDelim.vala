@@ -115,14 +115,24 @@ public class IndentDelim : TextFunction {
 
     foreach( var line in original.split( "\n" ) ) {
 
-      var curr_line = "";
-      var trimmed   = line.strip();
+      var trimmed = line.strip();
+      var start_idx = 0;
+
+      foreach( var delim in _end_delims ) {
+        if( trimmed.has_prefix( delim ) ) {
+          indent = (indent == 0) ? 0 : (indent - 1);
+          start_idx = 1;
+          break;
+        }
+      }
 
       if( indent > 0 ) {
         new_text.append( string.nfill( indent, '\t' ) );
       }
 
-      for( int i=0; i<trimmed.length; i++ ) {
+      new_text.append( trimmed + "\n" );
+
+      for( int i=start_idx; i<trimmed.length; i++ ) {
 
         if( !trimmed.valid_char( i ) ) {
           continue;
@@ -130,63 +140,43 @@ public class IndentDelim : TextFunction {
 
         var ch = trimmed.get_char( i );
 
-        stdout.printf( "curr_line: %s (%s)\n", curr_line, ch.to_string() );
-
         if( nl_added ) {
           nl_added = false;
         }
 
         if( escaped ) {
           escaped = false;
-          curr_line += ch.to_string();
           continue;
         }
 
         if( ch == '\\' ) {
           escaped = true;
-          curr_line += ch.to_string();
           continue;
         }
 
-        var str     = curr_line + ch.to_string();
+        var str     = trimmed.slice( 0, i ) + ch.to_string();
         var matched = "";
 
         if( ends_with_delims( str, ref _ignore_delims, out matched ) && (!ignored || (ignore_delim == matched)) ) {
           ignored = !ignored;
           ignore_delim = matched;
-          curr_line += ch.to_string();
           continue;
         }
 
         if( ignored ) {
-          curr_line += ch.to_string();
           continue;
         }
 
         if( ends_with_delims( str, ref _start_delims, out matched ) ) {
           indent++;
-          new_text.append( str.slice( 0, (str.length - matched.length) ) + matched + "\n" + string.nfill( indent, '\t' ) );
-          curr_line = "";
-          nl_added  = true;
           continue;
         }
 
         if( ends_with_delims( str, ref _end_delims, out matched ) ) {
           indent--;
-          new_text.append( str.slice( 0, (str.length - matched.length) ) + "\n" + string.nfill( indent, '\t' ) + matched );
-          curr_line = "";
-          nl_added = true;
           continue;
         }
 
-        curr_line = str;
-
-      }
-
-      if( nl_added ) {
-        nl_added = false;
-      } else {
-        new_text.append( curr_line + "\n" );
       }
 
     }

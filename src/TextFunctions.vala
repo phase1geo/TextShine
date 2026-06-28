@@ -86,6 +86,7 @@ public class TextFunctions {
 
     // Category - insert
     add_function( "insert", new InsertText( win ) );
+    add_function( "insert", new InsertNewline() );
     add_function( "insert", new InsertLineNumbers() );
     add_function( "insert", new InsertLoremIpsum() );
     add_function( "insert", new InsertFile( win ) );

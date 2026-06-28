@@ -358,12 +358,20 @@ public class TextFunction {
     };
 
     var focus_controller = new EventControllerFocus();
+    var key_controller   = new EventControllerKey();
     var entry = new Entry() {
       text = init_value
     };
     entry.add_controller( focus_controller );
+    entry.add_controller( key_controller );
     entry.activate.connect(() => {
       init_value = entry.text;
+    });
+    key_controller.key_released.connect((keyval, keymod, state) => {
+      Idle.add(() => {
+        callback( entry.text );
+        return( false );
+      });
     });
     focus_controller.leave.connect(() => {
       callback( entry.text );
