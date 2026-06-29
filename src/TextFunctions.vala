@@ -31,6 +31,7 @@ public class TextFunctions {
   private string              _favorites_file;
   private string              _functions_file;
   private string              _custom_file;
+  private GlobalSettings      _global_settings;
 
   public Array<TextFunction> functions {
     get {
@@ -41,6 +42,12 @@ public class TextFunctions {
   public Array<string> categories {
     get {
       return( _categories );
+    }
+  }
+
+  public GlobalSettings global_settings {
+    get {
+      return( _global_settings );
     }
   }
 
@@ -60,6 +67,7 @@ public class TextFunctions {
     _categories      = new Array<string>();
     _category_labels = new Array<string>();
     _map             = new Array<int>();
+    _global_settings = new GlobalSettings();
 
     add_category( "favorites",      _( "Favorites" ) );
     add_category( "case",           _( "Change Case" ) );
@@ -391,6 +399,8 @@ public class TextFunctions {
       }
     }
 
+    root->add_child( _global_settings.save() );
+
     doc->set_root_element( root );
     doc->save_format_file( _functions_file, 1 );
 
@@ -412,11 +422,15 @@ public class TextFunctions {
     }
 
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
-      if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "function") ) {
-        var name     = it->get_prop( "name" );
-        var function = get_function_by_name( name );
-        if( function != null ) {
-          function.load( it, this );
+      if( it->type == Xml.ElementType.ELEMENT_NODE ) {
+        if( it->name == "function" ) {
+          var name     = it->get_prop( "name" );
+          var function = get_function_by_name( name );
+          if( function != null ) {
+            function.load( it, this );
+          }
+        } else if( it->name == "settings" ) {
+          _global_settings = new GlobalSettings.from_xml( it );
         }
       }
     }

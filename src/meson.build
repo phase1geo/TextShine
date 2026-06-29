@@ -4,6 +4,8 @@ sources += files(
     'Application.vala',
     'CustomFunction.vala',
     'Editor.vala',
+    'GlobalSetting.vala',
+    'GlobalSettings.vala',
     'InfoBox.vala',
     'MainWindow.vala',
     'Preferences.vala',
@@ -24,3 +26,4 @@ sources += files(
 )
 
 subdir('functions')
+subdir('settings')

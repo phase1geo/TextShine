@@ -64,6 +64,8 @@ public class IndentDelim : TextFunction {
     });
   }
 
+  //-------------------------------------------------------------
+  // Saves the contents of this function to XML format
   public override Xml.Node* save() {
     Xml.Node* node = base.save();
     node->set_prop( "indent",   string.joinv( ",", _start_delims ) );
@@ -72,6 +74,8 @@ public class IndentDelim : TextFunction {
     return( node );
   }
 
+  //-------------------------------------------------------------
+  // Loads the contents of this function from XML format.
   public override void load( Xml.Node* node, TextFunctions functions ) {
     base.load( node, functions );
     var i = node->get_prop( "indent" );

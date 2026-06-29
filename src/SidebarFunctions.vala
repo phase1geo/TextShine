@@ -49,6 +49,7 @@ public class SidebarFunctions : SidebarBox {
   private Box              _custom_box;
   private Expander         _custom_exp;
   private Box              _edit_fbox;
+  private GlobalSettings   _settings;
 
   //-------------------------------------------------------------
   // Constructor
@@ -58,6 +59,7 @@ public class SidebarFunctions : SidebarBox {
 
     _functions  = new Array<Functions>();
     _categories = new Array<Category>();
+    _settings   = new GlobalSettings();
 
     // Create search entry
     _search = new SearchEntry() {
