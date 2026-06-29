@@ -61,6 +61,9 @@ public class SidebarFunctions : SidebarBox {
     _categories = new Array<Category>();
     _settings   = new GlobalSettings();
 
+    // Create global settings button
+    var settings = _settings.build();
+
     // Create search entry
     _search = new SearchEntry() {
       halign = Align.FILL,
@@ -85,6 +88,7 @@ public class SidebarFunctions : SidebarBox {
       halign = Align.FILL,
       hexpand = true
     };
+    tbox.append( settings );
     tbox.append( _search );
     tbox.append( custom );
 

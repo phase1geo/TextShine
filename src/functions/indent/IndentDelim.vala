@@ -24,9 +24,11 @@ using Xml;
 
 public class IndentDelim : TextFunction {
 
-  private string[] _start_delims  = { "{", "[" };
-  private string[] _end_delims    = { "}", "]" };
-  private string[] _ignore_delims = { "\"", "'" };
+  private string[]       _start_delims  = { "{", "[" };
+  private string[]       _end_delims    = { "}", "]" };
+  private bool           _skip_comments;
+  private bool           _skip_strings;
+  private GlobalSettings _settings;
 
   //-------------------------------------------------------------
   // Constructor
@@ -42,8 +44,22 @@ public class IndentDelim : TextFunction {
     var copy = new IndentDelim( custom );
     copy._start_delims  = _start_delims;
     copy._end_delims    = _end_delims;
-    copy._ignore_delims = _ignore_delims;
+    copy._skip_comments = _skip_comments;
+    copy._skip_strings  = _skip_strings;
     return( copy );
+  }
+
+  public override bool matches( TextFunction function ) {
+    if( base.matches( function ) ) {
+      var func = (IndentDelim)function;
+      return(
+        (_start_delims  == func._start_delims)  &&
+        (_end_delims    == func._end_delims)    &&
+        (_skip_comments == func._skip_comments) &&
+        (_skip_strings  == func._skip_strings)
+      );
+    }
+    return( false );
   }
 
   public override bool settings_available() {
@@ -59,8 +75,11 @@ public class IndentDelim : TextFunction {
     add_string_setting( grid, 1, _( "Unindent delimiters" ), string.joinv( ",", _end_delims ), (value) => {
       _end_delims = value.split( "," );
     });
-    add_string_setting( grid, 2, _( "Ignore delimiters" ), string.joinv( ",", _ignore_delims ), (value) => {
-      _ignore_delims = value.split( "," );
+    add_bool_setting( grid, 2, _( "Skip delimiters in comments" ), _skip_comments, (value) => {
+      _skip_comments = value;
+    });
+    add_bool_setting( grid, 2, _( "Skip delimiters in strings" ), _skip_strings, (value) => {
+      _skip_strings = value;
     });
   }
 
@@ -70,14 +89,16 @@ public class IndentDelim : TextFunction {
     Xml.Node* node = base.save();
     node->set_prop( "indent",   string.joinv( ",", _start_delims ) );
     node->set_prop( "unindent", string.joinv( ",", _end_delims ) );
-    node->set_prop( "ignore",   string.joinv( ",", _ignore_delims ) );
+    node->set_prop( "skip-comments", _skip_comments.to_string() );
+    node->set_prop( "skip-strings",  _skip_strings.to_string() );
     return( node );
   }
 
   //-------------------------------------------------------------
   // Loads the contents of this function from XML format.
-  public override void load( Xml.Node* node, TextFunctions functions ) {
-    base.load( node, functions );
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
+    base.load( node, functions, settings );
+    _settings = settings;
     var i = node->get_prop( "indent" );
     if( i != null ) {
       _start_delims = i.split( "," );
@@ -86,9 +107,13 @@ public class IndentDelim : TextFunction {
     if( u != null ) {
       _end_delims = u.split( "," );
     }
-    var ignore = node->get_prop( "ignore" );
-    if( ignore != null ) {
-      _ignore_delims = ignore.split( "," );
+    var c = node->get_prop( "skip-comments" );
+    if( c != null ) {
+      _skip_comments = bool.parse( c );
+    }
+    var s = node->get_prop( "skip-strings" );
+    if( s != null ) {
+      _skip_strings = bool.parse( s );
     }
   }
 
@@ -110,12 +135,10 @@ public class IndentDelim : TextFunction {
   // Perform the transformation
   public override string transform_text( string original, int cursor_pos ) {
 
-    var new_text     = new StringBuilder();
-    var indent       = 0;
-    var escaped      = false;
-    var ignored      = false;
-    var ignore_delim = "";
-    var nl_added     = false;
+    var new_text = new StringBuilder();
+    var indent   = 0;
+    var escaped  = false;
+    var code     = new CodeHandler( _settings, _skip_comments, _skip_strings );
 
     foreach( var line in original.split( "\n" ) ) {
 
@@ -144,10 +167,6 @@ public class IndentDelim : TextFunction {
 
         var ch = trimmed.get_char( i );
 
-        if( nl_added ) {
-          nl_added = false;
-        }
-
         if( escaped ) {
           escaped = false;
           continue;
@@ -161,13 +180,7 @@ public class IndentDelim : TextFunction {
         var str     = trimmed.slice( 0, i ) + ch.to_string();
         var matched = "";
 
-        if( ends_with_delims( str, ref _ignore_delims, out matched ) && (!ignored || (ignore_delim == matched)) ) {
-          ignored = !ignored;
-          ignore_delim = matched;
-          continue;
-        }
-
-        if( ignored ) {
+        if( code.check_for_ignored_text( str ) || code.ignored() ) {
           continue;
         }
 
@@ -182,6 +195,8 @@ public class IndentDelim : TextFunction {
         }
 
       }
+
+      code.handle_newline();
 
     }
 

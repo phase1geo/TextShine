@@ -273,8 +273,8 @@ public class Randomize : TextFunction {
     return( node );
   }
 
-  public override void load( Xml.Node* node, TextFunctions functions ) {
-    base.load( node, functions );
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
+    base.load( node, functions, settings );
     var b = node->get_prop( "blob" );
     if( b != null ) {
       _blob = RandomizeBlob.parse( b );

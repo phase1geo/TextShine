@@ -31,6 +31,7 @@ public class CustomFunction : TextFunction {
   private Array<TextFunction> _functions;
   private string              _label;
   private int                 _breakpoint;
+  private GlobalSettings      _settings;
 
   public Array<TextFunction> functions {
     get {
@@ -59,6 +60,7 @@ public class CustomFunction : TextFunction {
   public CustomFunction( bool custom = false ) {
     base( "custom-%d".printf( custom_id ), custom );
     _label      = "Custom #%d".printf( custom_id++ );
+    _settings   = new GlobalSettings();
     _functions  = new Array<TextFunction>();
     _breakpoint = -1;
   }
@@ -68,6 +70,7 @@ public class CustomFunction : TextFunction {
   public CustomFunction.copy_function( CustomFunction func ) {
     base( func.name, true );
     _label = func.user_label;
+    _settings = new GlobalSettings.copy( func._settings );
     _functions = new Array<TextFunction>();
     for( int i=0; i<func.functions.length; i++ ) {
       _functions.append_val( func.functions.index( i ).copy( true ) );
@@ -131,6 +134,7 @@ public class CustomFunction : TextFunction {
     node->set_prop( "name",  name );
     node->set_prop( "label", _label );
     node->set_prop( "description", description );
+    node->add_child( _settings.save() );
     for( int i=0; i<_functions.length; i++ ) {
       node->add_child( _functions.index( i ).save() );
     }
@@ -139,14 +143,18 @@ public class CustomFunction : TextFunction {
 
   //-------------------------------------------------------------
   // Loads the contents of this text function
-  public override void load( Xml.Node* node, TextFunctions functions ) {
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
     _label = node->get_prop( "label" );
     description = node->get_prop( "description" );
     for( Xml.Node* it=node->children; it!=null; it=it->next ) {
-      if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "function") ) {
-        var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy( true );
-        function.load( it, functions );
-        _functions.append_val( function );
+      if( it->type == Xml.ElementType.ELEMENT_NODE ) {
+        if( it->name == "function" ) {
+          var function = functions.get_function_by_name( it->get_prop( "name" ) ).copy( true );
+          function.load( it, functions, _settings );
+          _functions.append_val( function );
+        } else if( it->name == "settings" ) {
+          _settings.load( it );
+        }
       }
     }
   }

@@ -27,17 +27,20 @@ public class StringSetting : GlobalSetting {
   private bool _double = true;
   private bool _triple = false;
   private bool _back   = false;
+  private Array<string> _delims;
 
   //-------------------------------------------------------------
   // Constructor
   public StringSetting() {
     base( "string", _( "Global String Settings" ) );
+    _delims = new Array<string>();
   }
 
   //-------------------------------------------------------------
   // Constructor from XML
   public StringSetting.from_xml( Xml.Node* node ) {
     base( "string", _( "Global String Settings" ) );
+    _delims = new Array<string>();
     load( node );
   }
 
@@ -50,24 +53,57 @@ public class StringSetting : GlobalSetting {
     copy._double = _double;
     copy._triple = _triple;
     copy._back   = _back;
+    copy.update_delims();
     return( copy );
   }
 
   //-------------------------------------------------------------
   // Adds the settings to the given grid
   public override void add_settings( Grid grid ) {
-    add_bool_setting( grid, 0, _( "Single-quoted" ), _single, (value) => {
+    add_bool_setting( grid, 0, _( "<b>'</b> <i>Single-quoted string</i> <b>'</b>" ), _single, (value) => {
       _single = value;
+      update_delims();
     });
-    add_bool_setting( grid, 1, _( "Double-quoted" ), _double, (value) => {
+    add_bool_setting( grid, 1, _( "<b>\"</b> <i>Double-quoted string</i> <b>\"</b>" ), _double, (value) => {
       _double = value;
+      update_delims();
     });
-    add_bool_setting( grid, 2, _( "Triple-quoted" ), _triple, (value) => {
+    add_bool_setting( grid, 2, _( "<b>\"\"\"</b> <i>Triple-double-quoted string</i> <b>\"\"\"</b>" ), _triple, (value) => {
       _triple = value;
     });
-    add_bool_setting( grid, 3, _( "Back-quoted" ), _back, (value) => {
+    add_bool_setting( grid, 3, _( "<b>`</b> <i>Backtick-quoted string</i> <b>`</b>" ), _back, (value) => {
       _back = value;
     });
+  }
+
+  //-------------------------------------------------------------
+  // Calculates the delims used for string matching.
+  private void update_delims() {
+    _delims.remove_range( 0, _delims.length );
+    if( _single ) {
+      _delims.append_val( "'" );
+    }
+    if( _double ) {
+      _delims.append_val( "\"" );
+    }
+    if( _triple ) {
+      _delims.append_val( "\"\"\"" );
+    }
+    if( _back ) {
+      _delims.append_val( "`" );
+    }
+  }
+
+  //-------------------------------------------------------------
+  // Returns the number of valid delimiters stored
+  public int size() {
+    return( (int)_delims.length );
+  }
+
+  //-------------------------------------------------------------
+  // Returns the delimiter string associated with the given index.
+  public string get_delim( int index ) {
+    return( _delims.index( index ) );
   }
 
   //-------------------------------------------------------------
@@ -81,6 +117,8 @@ public class StringSetting : GlobalSetting {
     return( node );
   }
 
+  //-------------------------------------------------------------
+  // Loads the contents of this setting from XML format.
   public override void load( Xml.Node* node ) {
     base.load( node );
     var s = node->get_prop( "single" );
@@ -99,6 +137,7 @@ public class StringSetting : GlobalSetting {
     if( b != null ) {
       _back = bool.parse( b );
     }
+    update_delims();
   }
 
 }

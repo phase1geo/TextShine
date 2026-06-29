@@ -163,8 +163,8 @@ public class ConvertHardWrap : TextFunction {
     return( node );
   }
 
-  public override void load( Xml.Node* node, TextFunctions functions ) {
-    base.load( node, functions );
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
+    base.load( node, functions, settings );
     var cw = node->get_prop( "column-width" );
     if( cw != null ) {
       _col_width = int.parse( cw );

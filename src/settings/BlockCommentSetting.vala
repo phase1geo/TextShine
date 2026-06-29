@@ -129,15 +129,6 @@ public enum BlockCommentType {
 
 }
 
-public class BlockComment {
-  public string start { get; set; default = ""; }
-  public string end   { get; set; default = ""; }
-  public BlockComment( string start, string end ) {
-    this.start = start;
-    this.end   = end;
-  }
-}
-
 public class BlockCommentSetting : GlobalSetting {
 
   private Array<BlockCommentType> _types;
@@ -197,6 +188,26 @@ public class BlockCommentSetting : GlobalSetting {
       copy._custom_end.remove_index( i + 1 );
     }
     return( copy );
+  }
+
+  //-------------------------------------------------------------
+  // Returns the number of block comment types we hold.
+  public int size() {
+    return( (int)_types.length );
+  }
+
+  //-------------------------------------------------------------
+  // Returns the starting block comment string for the given index.
+  // If this index is invalid, returns the empty string.
+  public string start_string( int index ) {
+    return( _types.index( index ).start_string( _custom_start.index( index ) ) );
+  }
+
+  //-------------------------------------------------------------
+  // Returns the ending block comment string for the given index.
+  // If this index is invalid, returns the empty string.
+  public string end_string( int index ) {
+    return( _types.index( index ).end_string( _custom_end.index( index ) ) );
   }
 
   //-------------------------------------------------------------

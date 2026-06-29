@@ -268,8 +268,8 @@ public class Find : TextFunction {
     return( node );
   }
 
-  public override void load( Xml.Node* node, TextFunctions functions ) {
-    base.load( node, functions );
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
+    base.load( node, functions, settings );
     string? f = node->get_prop( "find" );
     if( f != null ) {
       _find_text = f;

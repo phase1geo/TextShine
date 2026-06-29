@@ -101,8 +101,8 @@ public class MarkdownTaskAdd : TextFunction {
     return( node );
   }
 
-  public override void load( Xml.Node* node, TextFunctions functions ) {
-    base.load( node, functions );
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
+    base.load( node, functions, settings );
     var a = node->get_prop( "apply" );
     if( a != null ) {
       _apply = MarkdownTaskApplyType.parse( a );

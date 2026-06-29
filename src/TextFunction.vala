@@ -87,7 +87,6 @@ public class TextFunction {
   private bool              _custom      = false;
   private FunctionDirection _direction   = FunctionDirection.NONE;
   private string            _description = "";
-  private TextFunctions     _functions;
 
   public string name {
     get {
@@ -126,12 +125,6 @@ public class TextFunction {
   public bool custom {
     get {
       return( _custom );
-    }
-  }
-
-  public TextFunctions functions {
-    get {
-      return( _functions );
     }
   }
 
@@ -464,8 +457,7 @@ public class TextFunction {
 
   //-------------------------------------------------------------
   // Loads the contents of this text function
-  public virtual void load( Xml.Node* node, TextFunctions functions ) {
-    _functions = functions;
+  public virtual void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
     var d = node->get_prop( "direction" );
     if( d != null ) {
       direction = FunctionDirection.parse( d );

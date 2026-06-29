@@ -140,8 +140,8 @@ public class SortMoveLines : TextFunction {
     return( node );
   }
 
-  public override void load( Xml.Node* node, TextFunctions functions ) {
-    base.load( node, functions );
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
+    base.load( node, functions, settings );
     var c = node->get_prop( "count" );
     if( c != null ) {
       _count = int.parse( c );

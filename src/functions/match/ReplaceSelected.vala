@@ -169,8 +169,8 @@ public class ReplaceSelected : TextFunction {
     return( node );
   }
 
-  public override void load( Xml.Node* node, TextFunctions functions ) {
-    base.load( node, functions );
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
+    base.load( node, functions, settings );
     string? r = node->get_prop( "replace" );
     if( r != null ) {
       _replace_text = r;

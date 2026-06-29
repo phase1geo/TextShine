@@ -423,8 +423,8 @@ public class RegExpr : TextFunction {
     return( node );
   }
 
-  public override void load( Xml.Node* node, TextFunctions functions ) {
-    base.load( node, functions );
+  public override void load( Xml.Node* node, TextFunctions functions, GlobalSettings settings ) {
+    base.load( node, functions, settings );
     string? p = node->get_prop( "pattern" );
     if( p != null ) {
       _find_text = p;

@@ -371,7 +371,7 @@ public class TextFunctions {
         for( int i=0; i<_functions.length; i++ ) {
           if( _functions.index( i ).name == name ) {
             var fn = _functions.index( i ).copy( false );
-            fn.load( it, this );
+            fn.load( it, this, _global_settings );
             add_function( "favorites", fn );
             break;
           }
@@ -391,6 +391,8 @@ public class TextFunctions {
     Xml.Node* root = new Xml.Node( null, "functions" );
     root->set_prop( "version", _win.application.version );
 
+    root->add_child( _global_settings.save() );
+
     for( int i=0; i<_functions.length; i++ ) {
       var function = _functions.index( i );
       var category = _categories.index( _map.index( i ) );
@@ -398,8 +400,6 @@ public class TextFunctions {
         root->add_child( function.save() );
       }
     }
-
-    root->add_child( _global_settings.save() );
 
     doc->set_root_element( root );
     doc->save_format_file( _functions_file, 1 );
@@ -427,7 +427,7 @@ public class TextFunctions {
           var name     = it->get_prop( "name" );
           var function = get_function_by_name( name );
           if( function != null ) {
-            function.load( it, this );
+            function.load( it, this, _global_settings );
           }
         } else if( it->name == "settings" ) {
           _global_settings = new GlobalSettings.from_xml( it );
@@ -499,7 +499,7 @@ public class TextFunctions {
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
       if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "custom") ) {
         var custom = new CustomFunction();
-        custom.load( it, this );
+        custom.load( it, this, _global_settings );
         add_function( "custom", custom );
       }
     }
@@ -525,7 +525,7 @@ public class TextFunctions {
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
       if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "custom") ) {
         var custom = new CustomFunction();
-        custom.load( it, this );
+        custom.load( it, this, _global_settings );
         add_function( "custom", custom );
         funcs.append_val( custom );
       }

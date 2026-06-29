@@ -2,6 +2,7 @@ sources += files(
 
     'About.vala',
     'Application.vala',
+    'CodeHandler.vala',
     'CustomFunction.vala',
     'Editor.vala',
     'GlobalSetting.vala',
