@@ -109,7 +109,9 @@ public class SidebarCustom : SidebarBox {
     };
     _play.clicked.connect( play_refresh );
 
-    var abox = new Box( Orientation.HORIZONTAL, 5 );
+    var abox = new Box( Orientation.HORIZONTAL, 5 ) {
+      margin_top = 5
+    };
     abox.append( settings_btn );
     abox.append( _undo );
     abox.append( _redo );
@@ -174,22 +176,8 @@ public class SidebarCustom : SidebarBox {
       return( false );
     });
 
-    var cbox = new Box( Orientation.VERTICAL, 0 );
-    cbox.append( _lb );
-
-    settings_btn.clicked.connect(() => {
-      if( _settings == null ) {
-        _settings       = win.functions.global_settings;
-        _settings_frame = _settings.build_box();
-        cbox.prepend( _settings_frame );
-      } else {
-        cbox.remove( _settings_frame );
-        _settings = null;
-      }
-    });
-
     var vp = new Viewport( null, null ) {
-      child = cbox
+      child = _lb
     };
     vp.set_size_request( width, height );
 
@@ -244,6 +232,16 @@ public class SidebarCustom : SidebarBox {
     bbox.append( _export_btn );
     bbox.append( done );
 
+    settings_btn.notify["active"].connect(() => {
+      if( settings_btn.active ) {
+        _settings       = _custom.global_settings;
+        _settings_frame = _settings.build_box();
+        insert_child_after( _settings_frame, nbox );
+      } else {
+        remove( _settings_frame );
+      }
+    });
+
     append( abox );
     append( nbox );
     append( _add_revealer );
@@ -286,7 +284,7 @@ public class SidebarCustom : SidebarBox {
 
   //-------------------------------------------------------------
   // Called when we get displayed
-  public override void displayed( SwitchStackReason reason, TextFunction? function ) {
+  public override void displayed( SwitchStackReason reason, TextFunction? function, GlobalSettings? settings ) {
 
     clear_actions();
     _undo_buffer.clear();
@@ -294,7 +292,7 @@ public class SidebarCustom : SidebarBox {
     switch( reason ) {
 
       case SwitchStackReason.NEW :
-        _custom    = new CustomFunction();
+        _custom    = new CustomFunction( settings );
         _name.text = _custom.user_label;
         _name.grab_focus();
         _del_btn.visible = false;
@@ -992,13 +990,13 @@ public class SidebarCustom : SidebarBox {
 
     if( edit ) {
       win.functions.save_custom();
-      switch_stack( SwitchStackReason.EDIT, _custom );
+      switch_stack( SwitchStackReason.EDIT, _custom, null );
     } else if( !empty ) {
       win.functions.add_function( "custom", _custom );
       win.functions.save_custom();
-      switch_stack( SwitchStackReason.ADD, _custom );
+      switch_stack( SwitchStackReason.ADD, _custom, null );
     } else {
-      switch_stack( SwitchStackReason.NONE, _custom );
+      switch_stack( SwitchStackReason.NONE, _custom, null );
     }
 
   }
@@ -1024,7 +1022,7 @@ public class SidebarCustom : SidebarBox {
           cleanup();
           win.functions.remove_function( _custom );
           win.functions.save_custom();
-          switch_stack( SwitchStackReason.DELETE, _custom );
+          switch_stack( SwitchStackReason.DELETE, _custom, null );
         }
       } catch( Error e ) {}
     });

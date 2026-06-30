@@ -42,7 +42,6 @@ public class MainWindow : Gtk.ApplicationWindow {
   private GLib.List<Widget> _widget_items;
   private InfoBox           _info;
   private TextFunctions     _functions;
-  private CustomFunction    _custom;
   private string?           _current_file = null;
   private Label             _stats_chars;
   private Label             _stats_words;
@@ -92,8 +91,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     var provider = new Gtk.CssProvider ();
     provider.load_from_resource( "/io/github/phase1geo/textshine/css/style.css" );
     StyleContext.add_provider_for_display( get_display(), provider, STYLE_PROVIDER_PRIORITY_APPLICATION );
-
-    _custom = new CustomFunction();
 
     var box = new Box( Orientation.HORIZONTAL, 5 );
 
@@ -557,7 +554,6 @@ public class MainWindow : Gtk.ApplicationWindow {
   public void do_new() {
     _current_file = null;
     _editor.clear();
-    _custom.clear();
     _editor.grab_focus();
   }
 
@@ -709,14 +705,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     _editor.undo_buffer.redo();
     _editor.grab_focus();
   }
-
-  /*
-  private void save_new_custom( CustomFunction function ) {
-    var fn = function.copy( false );
-    functions.add_function( "custom", fn );
-    functions.save_custom();
-  }
-  */
 
   //-------------------------------------------------------------
   // Adds the given widget to the widgets box

@@ -69,12 +69,11 @@ public class Functions {
 }
 
 public enum SwitchStackReason {
-  NONE,     // There is no reason for switching
-  NEW,      // We are creating a new cuastom function
-  EDIT,     // We are editing an existing function
-  ADD,      // We are adding a new custom function
-  DELETE,   // We are deleting a custom function
-  SETTINGS  // We are displaying the global settings
+  NONE,   // There is no reason for switching
+  NEW,    // We are creating a new cuastom function
+  EDIT,   // We are editing an existing function
+  ADD,    // We are adding a new custom function
+  DELETE  // We are deleting a custom function
 }
 
 public class Sidebar : Box {
@@ -98,17 +97,17 @@ public class Sidebar : Box {
     functions.action_applied.connect((fn) => {
       action_applied( fn );
     });
-    functions.switch_stack.connect((reason, fn) => {
+    functions.switch_stack.connect((reason, fn, settings) => {
       _stack.visible_child_name = "custom";
-      custom.displayed( reason, fn );
+      custom.displayed( reason, fn, settings );
     });
 
     custom.action_applied.connect((fn) => {
       action_applied( fn );
     });
-    custom.switch_stack.connect((reason,fn) => {
+    custom.switch_stack.connect((reason, fn, settings) => {
       _stack.visible_child_name = "functions";
-      functions.displayed( reason, fn );
+      functions.displayed( reason, fn, settings );
     });
 
     add_custom_actions.connect((fns) => {

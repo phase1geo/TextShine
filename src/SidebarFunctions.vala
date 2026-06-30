@@ -78,7 +78,7 @@ public class SidebarFunctions : SidebarBox {
       tooltip_text = _( "Add Custom Action" )
     };
     custom.clicked.connect(() => {
-      switch_stack( SwitchStackReason.NEW, null );
+      switch_stack( SwitchStackReason.NEW, null, _settings );
     });
 
     var tbox = new Box( Orientation.HORIZONTAL, 5 ) {
@@ -530,7 +530,7 @@ public class SidebarFunctions : SidebarBox {
     };
     edit.clicked.connect(() => {
       _edit_fbox = fbox;
-      switch_stack( SwitchStackReason.EDIT, function );
+      switch_stack( SwitchStackReason.EDIT, function, null );
     });
 
     grid.attach( edit, 1, 0 );
@@ -550,7 +550,7 @@ public class SidebarFunctions : SidebarBox {
 
   //-------------------------------------------------------------
   // Called when this panel is displayed
-  public override void displayed( SwitchStackReason reason, TextFunction? function ) {
+  public override void displayed( SwitchStackReason reason, TextFunction? function, GlobalSettings? settings ) {
     switch( reason ) {
       case SwitchStackReason.ADD    :  add_custom_function( (CustomFunction)function );     break;
       case SwitchStackReason.EDIT   :  update_custom_name( function );                      break;

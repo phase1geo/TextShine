@@ -29,7 +29,7 @@ public class SidebarBox : Box {
   protected const int  height = 600;
 
   public signal void action_applied( TextFunction function );
-  public signal void switch_stack( SwitchStackReason reason, TextFunction? function );
+  public signal void switch_stack( SwitchStackReason reason, TextFunction? function, GlobalSettings? settings );
 
   //-------------------------------------------------------------
   // Constructor
@@ -49,7 +49,7 @@ public class SidebarBox : Box {
   //-------------------------------------------------------------
   // Called by sidebar when the stack switches to display this
   // element
-  public virtual void displayed( SwitchStackReason reason, TextFunction? function ) {}
+  public virtual void displayed( SwitchStackReason reason, TextFunction? function, GlobalSettings? settings ) {}
 
 }
 

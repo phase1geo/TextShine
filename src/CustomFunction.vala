@@ -54,13 +54,18 @@ public class CustomFunction : TextFunction {
       _breakpoint = (value < _functions.length) ? value : -1;
     }
   }
+  public GlobalSettings global_settings {
+    get {
+      return( _settings );
+    }
+  }
 
   //-------------------------------------------------------------
   // Constructor
-  public CustomFunction( bool custom = false ) {
+  public CustomFunction( GlobalSettings settings, bool custom = false ) {
     base( "custom-%d".printf( custom_id ), custom );
     _label      = "Custom #%d".printf( custom_id++ );
-    _settings   = new GlobalSettings();
+    _settings   = new GlobalSettings.copy( settings );
     _functions  = new Array<TextFunction>();
     _breakpoint = -1;
   }
@@ -153,7 +158,7 @@ public class CustomFunction : TextFunction {
           function.load( it, functions, _settings );
           _functions.append_val( function );
         } else if( it->name == "settings" ) {
-          _settings.load( it );
+          _settings = new GlobalSettings.from_xml( it );
         }
       }
     }

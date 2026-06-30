@@ -507,7 +507,7 @@ public class TextFunctions {
 
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
       if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "custom") ) {
-        var custom = new CustomFunction();
+        var custom = new CustomFunction( _global_settings );
         custom.load( it, this, _global_settings );
         add_function( "custom", custom );
       }
@@ -533,7 +533,7 @@ public class TextFunctions {
 
     for( Xml.Node* it = doc->get_root_element()->children; it != null; it = it->next ) {
       if( (it->type == Xml.ElementType.ELEMENT_NODE) && (it->name == "custom") ) {
-        var custom = new CustomFunction();
+        var custom = new CustomFunction( _global_settings );
         custom.load( it, this, _global_settings );
         add_function( "custom", custom );
         funcs.append_val( custom );

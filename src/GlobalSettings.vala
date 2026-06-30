@@ -153,9 +153,11 @@ public class GlobalSettings {
   //-------------------------------------------------------------
   // Builds the button that will be used to show/hide the global
   // settings UI.
-  public static Button build_button() {
+  public static ToggleButton build_button() {
 
-    var btn = new Button.from_icon_name( "emblem-system-symbolic" ) {
+    var btn = new ToggleButton() {
+      icon_name = "global-settings-symbolic",
+      active = false,
       tooltip_text = _( "Function Settings" ),
     };
 
@@ -175,7 +177,7 @@ public class GlobalSettings {
 
   //-------------------------------------------------------------
   // Loads the saved settings from XML format.
-  public void load( Xml.Node* node ) {
+  private void load( Xml.Node* node ) {
     for( Xml.Node* it = node->children; it != null; it = it->next ) {
       if( it->type == Xml.ElementType.ELEMENT_NODE ) {
         GlobalSetting? setting = null;
