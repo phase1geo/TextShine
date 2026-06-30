@@ -110,5 +110,10 @@
       <summary>Current spell-checker language</summary>
       <description>Language to be used by the built-in spell checker</description>
     </key>
+    <key name="sidebar-function-settings-shown" type="b">
+      <default>false</default>
+      <summary>Shows the sidebar function settings panel on application start</summary>
+      <description>Shows the sidebar function settings panel on application start</description>
+    </key>
   </schema>
 </schemalist>

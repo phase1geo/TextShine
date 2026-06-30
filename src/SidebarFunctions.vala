@@ -50,7 +50,7 @@ public class SidebarFunctions : SidebarBox {
   private Expander         _custom_exp;
   private Box              _edit_fbox;
   private GlobalSettings?  _settings = null;
-  private Frame            _settings_frame;
+  private Frame?           _settings_frame = null;
 
   //-------------------------------------------------------------
   // Constructor
@@ -105,15 +105,16 @@ public class SidebarFunctions : SidebarBox {
       child   = vp
     };
 
-    settings_btn.clicked.connect(() => {
-      if( _settings == null ) {
+    settings_btn.notify["active"].connect(() => {
+      if( settings_btn.active ) {
         _settings       = win.functions.global_settings;
         _settings_frame = _settings.build_box();
-        cbox.prepend( _settings_frame );
+        insert_child_after( _settings_frame, tbox );
       } else {
-        cbox.remove( _settings_frame );
-        _settings = null;
+        remove( _settings_frame );
+        _settings_frame = null;
       }
+      TextShine.settings.set_boolean( "sidebar-function-settings-shown", settings_btn.active );
     });
 
     // Add widgets to box
@@ -125,6 +126,11 @@ public class SidebarFunctions : SidebarBox {
 
     append( tbox );
     append( sw );
+
+    // Display the sidebar functions global settings panel if we should
+    if( TextShine.settings.get_boolean( "sidebar-function-settings-shown" ) ) {
+      settings_btn.active = true;
+    }
 
   }
 

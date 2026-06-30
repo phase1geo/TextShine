@@ -45,7 +45,8 @@ public class SidebarCustom : SidebarBox {
   private Button           _redo;
   private int              _next_box_id = 0;
   private GlobalSettings?  _settings = null;
-  private Frame            _settings_frame;
+  private ToggleButton     _settings_btn;
+  private Frame?           _settings_frame = null;
 
   private const GLib.ActionEntry action_entries[] = {
     { "action_insert_new_action", action_insert_new_action, "s" },
@@ -80,7 +81,7 @@ public class SidebarCustom : SidebarBox {
     nbox.append( nlbl );
     nbox.append( _name );
 
-    var settings_btn = GlobalSettings.build_button();
+    _settings_btn = GlobalSettings.build_button();
 
     _undo = new Button.from_icon_name( "edit-undo-symbolic" ) {
       halign    = Align.START,
@@ -112,7 +113,7 @@ public class SidebarCustom : SidebarBox {
     var abox = new Box( Orientation.HORIZONTAL, 5 ) {
       margin_top = 5
     };
-    abox.append( settings_btn );
+    abox.append( _settings_btn );
     abox.append( _undo );
     abox.append( _redo );
     abox.append( _play );
@@ -232,13 +233,14 @@ public class SidebarCustom : SidebarBox {
     bbox.append( _export_btn );
     bbox.append( done );
 
-    settings_btn.notify["active"].connect(() => {
-      if( settings_btn.active ) {
+    _settings_btn.notify["active"].connect(() => {
+      if( _settings_frame == null ) {
         _settings       = _custom.global_settings;
         _settings_frame = _settings.build_box();
         insert_child_after( _settings_frame, nbox );
       } else {
         remove( _settings_frame );
+        _settings_frame = null;
       }
     });
 
@@ -966,12 +968,17 @@ public class SidebarCustom : SidebarBox {
   }
   */
 
+  //-------------------------------------------------------------
+  // Cleanups up the state of the panel
   private void cleanup() {
 
     // If we tested the actions, make sure that we revert our changes
     if( _test_undo != null ) {
       _test_undo.undo( editor );
     }
+
+    // Make sure that the settings panel is not displayed
+    _settings_btn.active = false;
 
     _custom.breakpoint = -1;
 
