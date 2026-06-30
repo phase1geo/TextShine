@@ -143,6 +143,7 @@ public class GlobalSettings {
 
     var frame = new Frame( _( "Global Settings" ) ) {
       margin_bottom = 10,
+      margin_end    = 5,
       child = box
     };
 
