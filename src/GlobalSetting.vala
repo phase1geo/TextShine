@@ -21,6 +21,13 @@
 
 using Gtk;
 
+public class MarkupItem : Object {
+  public string markup { get; set; default = ""; }
+  public MarkupItem( string markup ) {
+    this.markup = markup;
+  }
+}
+
 public class GlobalSetting {
 
   private string _name;
@@ -44,9 +51,14 @@ public class GlobalSetting {
       return( _enabled );
     }
     set {
-      _enabled = value;
+      if( _enabled != value ) {
+        _enabled = value;
+        changed();
+      }
     }
   }
+
+  public signal void changed();
 
   //-------------------------------------------------------------
   // Constructor
@@ -76,7 +88,8 @@ public class GlobalSetting {
   protected void add_range_setting( Grid grid, int row, string label, int min_value, int max_value, int step, int init_value, SettingRangeChangedFunc callback ) {
 
     var lbl = new Label( label + ": " ) {
-      halign = Align.START
+      halign = Align.START,
+      use_markup = true
     };
 
     var sb = new SpinButton.with_range( min_value, max_value, step ) {
@@ -85,6 +98,7 @@ public class GlobalSetting {
     };
     sb.value_changed.connect(() => {
       callback( (int)sb.value );
+      changed();
     });
 
     grid.attach( lbl, 0, row );
@@ -97,7 +111,8 @@ public class GlobalSetting {
   protected Entry add_string_setting( Grid grid, int row, string label, string init_value, SettingStringChangedFunc callback ) {
 
     var lbl = new Label( label + ": " ) {
-      halign = Align.START
+      halign = Align.START,
+      use_markup = true
     };
 
     var focus_controller = new EventControllerFocus();
@@ -118,6 +133,7 @@ public class GlobalSetting {
     });
     focus_controller.leave.connect(() => {
       callback( entry.text );
+      changed();
     });
 
     grid.attach( lbl, 0, row );
@@ -132,7 +148,9 @@ public class GlobalSetting {
   protected void add_bool_setting( Grid grid, int row, string label, bool init_value, SettingBoolChangedFunc callback ) {
 
     var lbl = new Label( label + ": " ) {
-      halign = Align.START
+      halign = Align.START,
+      hexpand = true,
+      use_markup = true
     };
 
     var sw  = new Switch() {
@@ -141,6 +159,8 @@ public class GlobalSetting {
     };
     sw.notify["active"].connect(() => {
       callback( sw.active );
+      stdout.printf( "CHANGED\n" );
+      changed();
     });
 
     grid.attach( lbl, 0, row );
@@ -153,7 +173,8 @@ public class GlobalSetting {
   protected void add_menubutton_setting( Grid grid, int row, string label, int init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
 
     var lbl = new Label( label + ": " ) {
-      halign = Align.START
+      halign = Align.START,
+      use_markup = true
     };
 
     string[] values = {};
@@ -162,10 +183,60 @@ public class GlobalSetting {
     }
 
     var dd = new DropDown.from_strings( values ) {
+      hexpand  = true,
       selected = init_value
     };
     dd.notify["selected"].connect(() => {
       changed_func( (int)dd.get_selected() );
+      changed();
+    });
+
+    grid.attach( lbl, 0, row );
+    grid.attach( dd,  1, row );
+
+  }
+
+  //-------------------------------------------------------------
+  // Called whenever a menubutton setting widget needs to be added
+  // that displays markup text.
+  protected void add_markup_menubutton_setting( Grid grid, int row, string label, int init_value, int value_len, SettingMenuButtonLabelFunc label_func, SettingMenuButtonChangedFunc changed_func ) {
+
+    var lbl = new Label( label + ": " ) {
+      halign = Align.START
+    };
+
+    var values = new GLib.ListStore( typeof( MarkupItem ) );
+    for( int i=0; i<value_len; i++ ) {
+      values.append( new MarkupItem( label_func( i ) ) );
+    }
+
+    var factory = new SignalListItemFactory();
+
+    factory.setup.connect((obj) => {
+      var item = obj as ListItem;
+      var l = new Gtk.Label( "" ) {
+        use_markup = true,
+        xalign = 0.0f
+      };
+      item.child = l;
+    });
+
+    factory.bind.connect((obj) => {
+      var item  = obj as ListItem;
+      var mitem = item.get_item() as MarkupItem;
+      var l     = item.get_child() as Gtk.Label;
+      l.label = mitem.markup;
+    });
+
+    var dd = new DropDown( values, null ) {
+      hexpand      = true,
+      factory      = factory,
+      list_factory = factory,
+      selected     = init_value
+    };
+    dd.notify["selected"].connect(() => {
+      changed_func( (int)dd.get_selected() );
+      changed();
     });
 
     grid.attach( lbl, 0, row );

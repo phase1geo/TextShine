@@ -150,7 +150,9 @@ public class InsertNewline : TextFunction {
           new_line = "";
           escaped = false;
           code.handle_newline();
+          continue;
         }
+        new_line += ch.to_string();
         if( escaped ) {
           escaped = false;
           continue;
@@ -159,22 +161,22 @@ public class InsertNewline : TextFunction {
           escaped = true;
           continue;
         }
-        var str     = new_line + ch.to_string();
-        var matched = "";
-        if( code.check_for_ignored_text( str ) || code.ignored() ) {
+        if( code.check_for_ignored_text( new_line ) || code.ignored() ) {
           continue;
         }
-        if( str.has_suffix( _delim ) ) {
+        if( new_line.has_suffix( _delim ) ) {
           if( _after ) {
-            new_lines += str;
+            new_lines += new_line;
             new_line = "";
           } else {
-            new_lines += str.splice( 0, (str.length - _delim.length) );
-            new_line = _delim;
+            var before = new_line.slice( 0, (new_line.length - _delim.length) );
+            if( before.strip() != "" ) {
+              new_lines += before.chomp();
+              new_line = _delim;
+            }
           }
           continue;
         }
-        new_line = str;
       }
       if( new_line != "" ) {
         new_lines += new_line;

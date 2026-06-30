@@ -78,7 +78,7 @@ public class IndentDelim : TextFunction {
     add_bool_setting( grid, 2, _( "Skip delimiters in comments" ), _skip_comments, (value) => {
       _skip_comments = value;
     });
-    add_bool_setting( grid, 2, _( "Skip delimiters in strings" ), _skip_strings, (value) => {
+    add_bool_setting( grid, 3, _( "Skip delimiters in strings" ), _skip_strings, (value) => {
       _skip_strings = value;
     });
   }

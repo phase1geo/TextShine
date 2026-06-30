@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2026 (https://github.com/phase1geo/Minder)
+* Copyright (c) 2026 (https://github.com/phase1geo/TextShine)
 *
 * This program is free software; you can redistribute it and/or
 * modify it under the terms of the GNU General Public
@@ -217,19 +217,21 @@ public class BlockCommentSetting : GlobalSetting {
     for( int i=0; i<_types.length; i++ ) {
 
       var block_type = (BlockCommentType)_types.index( i );
+      var index      = i;
 
-      var custom_focus = new EventControllerFocus();
+      var custom_start_focus = new EventControllerFocus();
       var custom_start = new Entry() {
         halign = Align.START,
         width_chars = 10
       };
-      custom_start.add_controller( custom_focus );
+      custom_start.add_controller( custom_start_focus );
       var custom_comment = new Label( "<i>%s</i>".printf( _( "Comment" ) ) );
+      var custom_end_focus = new EventControllerFocus();
       var custom_end = new Entry() {
         halign = Align.START,
         width_chars = 10
       };
-      custom_end.add_controller( custom_focus );
+      custom_end.add_controller( custom_end_focus );
       var custom_box = new Box( Orientation.HORIZONTAL, 5 ) {
         visible = (block_type == BlockCommentType.CUSTOM)
       };
@@ -237,21 +239,23 @@ public class BlockCommentSetting : GlobalSetting {
       custom_box.append( custom_comment );
       custom_box.append( custom_end );
 
-      custom_focus.leave.connect(() => {
+      custom_start_focus.leave.connect(() => {
         _custom_start.insert_val( i, custom_start.text.strip() );
         _custom_start.remove_index( i + 1 );
+      });
+      custom_end_focus.leave.connect(() => {
         _custom_end.insert_val( i, custom_end.text.strip() );
         _custom_end.remove_index( i + 1 );
       });
 
-      add_menubutton_setting( grid, (i * 2), block_type.label(), block_type, BlockCommentType.NUM, (value) => {
+      add_markup_menubutton_setting( grid, (i * 2), _( "Syntax" ), block_type, BlockCommentType.NUM, (value) => {
         var btype = (BlockCommentType)value;
         return( btype.label() );
       }, (value) => {
         var btype = (BlockCommentType)value;
-        _types.insert_val( i, btype );
-        _types.remove_index( i + 1 );
-        custom_box.visible = (_types.index( i ) == BlockCommentType.CUSTOM);
+        _types.insert_val( index, btype );
+        _types.remove_index( index + 1 );
+        custom_box.visible = (_types.index( index ) == BlockCommentType.CUSTOM);
       });
 
       grid.attach( custom_box, 0, ((i * 2) + 1) );

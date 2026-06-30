@@ -25,6 +25,8 @@ public class GlobalSettings {
 
   private Array<GlobalSetting> _settings;
 
+  public signal void changed();
+
   //-------------------------------------------------------------
   // Constructor
   public GlobalSettings() {
@@ -34,11 +36,21 @@ public class GlobalSettings {
     // Add the supported settings here
     var string_setting = new StringSetting();
     var block_setting  = new BlockCommentSetting();
-    // var line_setting   = new LineCommentSetting();
+    var line_setting   = new LineCommentSetting();
+
+    string_setting.changed.connect(() => {
+      changed();
+    });
+    block_setting.changed.connect(() => {
+      changed();
+    });
+    line_setting.changed.connect(() => {
+      changed();
+    });
 
     _settings.append_val( string_setting );
     _settings.append_val( block_setting );
-    // _settings.append_val( line_setting );
+    _settings.append_val( line_setting );
 
   }
 
@@ -84,24 +96,44 @@ public class GlobalSettings {
 
   //-------------------------------------------------------------
   // Builds the UI and returns it as a vertical box.
-  public MenuButton build() {
+  public Frame build_box() {
 
-    var box = new Box( Orientation.VERTICAL, 5 );
+    var box = new Box( Orientation.VERTICAL, 5 ) {
+      margin_start  = 5,
+      margin_end    = 5,
+      margin_top    = 20,
+      margin_bottom = 5
+    };
 
     for( int i=0; i<_settings.length; i++ ) {
 
       var setting = _settings.index( i );
 
-      var enable = new CheckButton.with_label( _( "Enabled" ) );
-      var grid   = new Grid();
+      var enable = new CheckButton.with_label( _( "Enabled" ) ) {
+        active = setting.enabled
+      };
+      enable.notify["active"].connect(() => {
+        setting.enabled = enable.active;
+      });
+      var grid   = new Grid() {
+        column_spacing = 5,
+        row_spacing = 5
+      };
 
       setting.add_settings( grid );
 
-      var child_box = new Box( Orientation.VERTICAL, 5 );
+      var child_box = new Box( Orientation.VERTICAL, 5 ) {
+        margin_start = 10,
+        margin_end   = 10,
+        margin_top   = 10
+      };
       child_box.append( enable );
       child_box.append( grid );
 
       var expander = new Expander( setting.label ) {
+        expanded = true,
+        margin_top = 10,
+        margin_bottom = 10,
         child = child_box
       };
 
@@ -109,17 +141,25 @@ public class GlobalSettings {
 
     }
 
-    var popover = new Popover() {
+    var frame = new Frame( _( "Global Settings" ) ) {
+      margin_bottom = 10,
       child = box
     };
 
-    var mb = new MenuButton() {
-      icon_name = "emblem-system-symbolic",
+    return( frame );
+
+  }
+
+  //-------------------------------------------------------------
+  // Builds the button that will be used to show/hide the global
+  // settings UI.
+  public static Button build_button() {
+
+    var btn = new Button.from_icon_name( "emblem-system-symbolic" ) {
       tooltip_text = _( "Function Settings" ),
-      popover = popover
     };
 
-    return( mb );
+    return( btn );
 
   }
 
@@ -142,10 +182,13 @@ public class GlobalSettings {
         switch( it->name ) {
           case "string-setting" :  setting = new StringSetting.from_xml( it );  break;
           case "block-setting"  :  setting = new BlockCommentSetting.from_xml( it );  break;
-          // case "line-setting"   :  setting = new LineCommentSetting.from_xml( it );  break;
+          case "line-setting"   :  setting = new LineCommentSetting.from_xml( it );  break;
           default               :  break;
         }
         if( setting != null ) {
+          setting.changed.connect(() => {
+            changed();
+          });
           _settings.append_val( setting );
         }
       }

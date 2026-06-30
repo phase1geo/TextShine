@@ -67,7 +67,12 @@ public class TextFunctions {
     _categories      = new Array<string>();
     _category_labels = new Array<string>();
     _map             = new Array<int>();
+
     _global_settings = new GlobalSettings();
+    _global_settings.changed.connect(() => {
+      save_functions();
+      changed();
+    });
 
     add_category( "favorites",      _( "Favorites" ) );
     add_category( "case",           _( "Change Case" ) );
@@ -431,6 +436,10 @@ public class TextFunctions {
           }
         } else if( it->name == "settings" ) {
           _global_settings = new GlobalSettings.from_xml( it );
+          _global_settings.changed.connect(() => {
+            save_functions();
+            changed();
+          });
         }
       }
     }

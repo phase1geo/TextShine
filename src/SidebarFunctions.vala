@@ -49,7 +49,8 @@ public class SidebarFunctions : SidebarBox {
   private Box              _custom_box;
   private Expander         _custom_exp;
   private Box              _edit_fbox;
-  private GlobalSettings   _settings;
+  private GlobalSettings?  _settings = null;
+  private Frame            _settings_frame;
 
   //-------------------------------------------------------------
   // Constructor
@@ -59,10 +60,9 @@ public class SidebarFunctions : SidebarBox {
 
     _functions  = new Array<Functions>();
     _categories = new Array<Category>();
-    _settings   = new GlobalSettings();
 
     // Create global settings button
-    var settings = _settings.build();
+    var settings_btn = GlobalSettings.build_button();
 
     // Create search entry
     _search = new SearchEntry() {
@@ -88,7 +88,7 @@ public class SidebarFunctions : SidebarBox {
       halign = Align.FILL,
       hexpand = true
     };
-    tbox.append( settings );
+    tbox.append( settings_btn );
     tbox.append( _search );
     tbox.append( custom );
 
@@ -104,6 +104,17 @@ public class SidebarFunctions : SidebarBox {
       vexpand = true,
       child   = vp
     };
+
+    settings_btn.clicked.connect(() => {
+      if( _settings == null ) {
+        _settings       = win.functions.global_settings;
+        _settings_frame = _settings.build_box();
+        cbox.prepend( _settings_frame );
+      } else {
+        cbox.remove( _settings_frame );
+        _settings = null;
+      }
+    });
 
     // Add widgets to box
     var functions = win.functions;

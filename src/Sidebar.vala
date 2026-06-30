@@ -69,11 +69,12 @@ public class Functions {
 }
 
 public enum SwitchStackReason {
-  NONE,   // There is no reason for switching
-  NEW,    // We are creating a new cuastom function
-  EDIT,   // We are editing an existing function
-  ADD,    // We are adding a new custom function
-  DELETE  // We are deleting a custom function
+  NONE,     // There is no reason for switching
+  NEW,      // We are creating a new cuastom function
+  EDIT,     // We are editing an existing function
+  ADD,      // We are adding a new custom function
+  DELETE,   // We are deleting a custom function
+  SETTINGS  // We are displaying the global settings
 }
 
 public class Sidebar : Box {
