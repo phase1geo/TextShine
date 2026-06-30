@@ -44,6 +44,8 @@ public class SidebarCustom : SidebarBox {
   private Button           _undo;
   private Button           _redo;
   private int              _next_box_id = 0;
+  private GlobalSettings?  _settings = null;
+  private Frame            _settings_frame;
 
   private const GLib.ActionEntry action_entries[] = {
     { "action_insert_new_action", action_insert_new_action, "s" },
@@ -78,6 +80,8 @@ public class SidebarCustom : SidebarBox {
     nbox.append( nlbl );
     nbox.append( _name );
 
+    var settings_btn = GlobalSettings.build_button();
+
     _undo = new Button.from_icon_name( "edit-undo-symbolic" ) {
       halign    = Align.START,
       has_frame = false,
@@ -106,6 +110,7 @@ public class SidebarCustom : SidebarBox {
     _play.clicked.connect( play_refresh );
 
     var abox = new Box( Orientation.HORIZONTAL, 5 );
+    abox.append( settings_btn );
     abox.append( _undo );
     abox.append( _redo );
     abox.append( _play );
@@ -169,8 +174,22 @@ public class SidebarCustom : SidebarBox {
       return( false );
     });
 
+    var cbox = new Box( Orientation.VERTICAL, 0 );
+    cbox.append( _lb );
+
+    settings_btn.clicked.connect(() => {
+      if( _settings == null ) {
+        _settings       = win.functions.global_settings;
+        _settings_frame = _settings.build_box();
+        cbox.prepend( _settings_frame );
+      } else {
+        cbox.remove( _settings_frame );
+        _settings = null;
+      }
+    });
+
     var vp = new Viewport( null, null ) {
-      child = _lb
+      child = cbox
     };
     vp.set_size_request( width, height );
 
