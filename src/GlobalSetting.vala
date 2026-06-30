@@ -159,7 +159,6 @@ public class GlobalSetting {
     };
     sw.notify["active"].connect(() => {
       callback( sw.active );
-      stdout.printf( "CHANGED\n" );
       changed();
     });
 
