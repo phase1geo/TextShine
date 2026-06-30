@@ -22,6 +22,7 @@
 public class CodeHandler {
 
   private BlockCommentSetting _block_settings;
+  private LineCommentSetting  _line_settings;
   private StringSetting       _string_settings;
   private bool                _skip_comments = false;
   private bool                _skip_strings  = false;
@@ -31,8 +32,9 @@ public class CodeHandler {
   // Constructor
   public CodeHandler( GlobalSettings settings, bool skip_comments, bool skip_strings ) {
     _block_settings  = (BlockCommentSetting)settings.find_setting( "block" );
+    _line_settings   = (LineCommentSetting)settings.find_setting( "line" );
     _string_settings = (StringSetting)settings.find_setting( "string" );
-    _skip_comments   = skip_comments && _block_settings.enabled;
+    _skip_comments   = skip_comments && (_block_settings.enabled || _line_settings.enabled);
     _skip_strings    = skip_strings  && _string_settings.enabled;
   }
 
@@ -45,7 +47,7 @@ public class CodeHandler {
   //-------------------------------------------------------------
   // Called when a newline character is found.
   public void handle_newline() {
-    if( (_ignored >= 10) && (_ignored < 20) ) {
+    if( (_ignored >= 20) && (_ignored < 30) ) {
       _ignored = -1;
     }
   }
@@ -70,11 +72,22 @@ public class CodeHandler {
       }
 
       if( _skip_comments ) {
-        for( int i=0; i<_block_settings.size(); i++ ) {
-          var delim = _block_settings.start_string( i );
-          if( (delim != "") && line.has_suffix( delim ) ) {
-            _ignored = i + 10;
-            return( true );
+        if( _block_settings.enabled ) {
+          for( int i=0; i<_block_settings.size(); i++ ) {
+            var delim = _block_settings.start_string( i );
+            if( (delim != "") && line.has_suffix( delim ) ) {
+              _ignored = i + 10;
+              return( true );
+            }
+          }
+        }
+        if( _line_settings.enabled ) {
+          for( int i=0; i<_line_settings.size(); i++ ) {
+            var delim = _line_settings.start_string( i );
+            if( (delim != "") && line.has_suffix( delim ) ) {
+              _ignored = i + 20;
+              return( true );
+            }
           }
         }
       }
