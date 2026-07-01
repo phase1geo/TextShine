@@ -49,7 +49,6 @@ public class SidebarFunctions : SidebarBox {
   private Box              _custom_box;
   private Expander         _custom_exp;
   private Box              _edit_fbox;
-  private GlobalSettings?  _settings = null;
   private Frame?           _settings_frame = null;
 
   //-------------------------------------------------------------
@@ -78,7 +77,7 @@ public class SidebarFunctions : SidebarBox {
       tooltip_text = _( "Add Custom Action" )
     };
     custom.clicked.connect(() => {
-      switch_stack( SwitchStackReason.NEW, null, _settings );
+      switch_stack( SwitchStackReason.NEW, null, win.functions.global_settings );
     });
 
     var tbox = new Box( Orientation.HORIZONTAL, 5 ) {
@@ -107,8 +106,7 @@ public class SidebarFunctions : SidebarBox {
 
     settings_btn.notify["active"].connect(() => {
       if( settings_btn.active ) {
-        _settings       = win.functions.global_settings;
-        _settings_frame = _settings.build_box();
+        _settings_frame = win.functions.global_settings.build_box();
         insert_child_after( _settings_frame, tbox );
       } else {
         remove( _settings_frame );
