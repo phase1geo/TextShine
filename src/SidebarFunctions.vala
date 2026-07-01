@@ -93,7 +93,7 @@ public class SidebarFunctions : SidebarBox {
 
     // Create scrolled box
     var cbox = new Box( Orientation.VERTICAL, 0 );
-    var vp   = new Viewport( null, null ) {
+    var vp = new Viewport( null, null ) {
       child = cbox
     };
     vp.set_size_request( width, height );

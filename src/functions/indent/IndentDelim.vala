@@ -62,6 +62,12 @@ public class IndentDelim : TextFunction {
     return( false );
   }
 
+  //-------------------------------------------------------------
+  // Sets the global settings to this value.
+  public override void set_global_settings( GlobalSettings settings ) {
+    _settings = settings;
+  }
+
   public override bool settings_available() {
     return( true );
   }

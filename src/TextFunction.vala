@@ -166,6 +166,10 @@ public class TextFunction {
   }
 
   //-------------------------------------------------------------
+  // Sets the global settings to the given value.
+  public virtual void set_global_settings( GlobalSettings settings ) {}
+
+  //-------------------------------------------------------------
   // Executes this text function using the editor
   public virtual void run( Editor editor, UndoItem undo_item ) {
     var ranges = new Array<Editor.Position>();

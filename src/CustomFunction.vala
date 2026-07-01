@@ -33,11 +33,6 @@ public class CustomFunction : TextFunction {
   private int                 _breakpoint;
   private GlobalSettings      _settings;
 
-  public Array<TextFunction> functions {
-    get {
-      return( _functions );
-    }
-  }
   public string user_label {
     get {
       return( _label );
@@ -77,8 +72,8 @@ public class CustomFunction : TextFunction {
     _label = func.user_label;
     _settings = new GlobalSettings.copy( func._settings );
     _functions = new Array<TextFunction>();
-    for( int i=0; i<func.functions.length; i++ ) {
-      _functions.append_val( func.functions.index( i ).copy( true ) );
+    for( int i=0; i<func.size(); i++ ) {
+      _functions.append_val( func.get_function( i ).copy( true ) );
     }
   }
 
@@ -91,6 +86,42 @@ public class CustomFunction : TextFunction {
 
   protected override string get_label0() {
     return( _label );
+  }
+
+  //-------------------------------------------------------------
+  // Returns the number of stored functions.
+  public int size() {
+    return( (int)_functions.length );
+  }
+
+  //-------------------------------------------------------------
+  // Returns the function at the given index.
+  public TextFunction get_function( int index ) {
+    return( _functions.index( index ) );
+  }
+
+  //-------------------------------------------------------------
+  // Adds the function at the given index.
+  public void add_function( TextFunction function, int index = -1 ) {
+    function.set_global_settings( _settings );
+    if( index == -1 ) {
+      _functions.append_val( function );
+    } else {
+      _functions.insert_val( index, function );
+    }
+  }
+
+  //-------------------------------------------------------------
+  // Deletes the function at the given index.
+  public void delete_function( int index ) {
+    _functions.remove_index( index );
+  }
+
+  //-------------------------------------------------------------
+  // Moves the function from the given index to the new index.
+  public void move_function( int old_index, int new_index ) {
+    var fn = _functions.remove_index( old_index );
+    _functions.insert_val( new_index, fn );
   }
 
   //-------------------------------------------------------------

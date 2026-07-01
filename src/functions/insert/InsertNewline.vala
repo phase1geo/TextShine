@@ -64,6 +64,12 @@ public class InsertNewline : TextFunction {
   }
 
   //-------------------------------------------------------------
+  // Sets the global settings to this value.
+  public override void set_global_settings( GlobalSettings settings ) {
+    _settings = settings;
+  }
+
+  //-------------------------------------------------------------
   // Specify that we have settings to display
   public override bool settings_available() {
     return( true );

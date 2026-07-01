@@ -337,8 +337,8 @@ public class SidebarCustom : SidebarBox {
   //-------------------------------------------------------------
   // Inserts the current custom actions
   private void insert_actions() {
-    for( int i=0; i<_custom.functions.length; i++ ) {
-      var fn = _custom.functions.index( i );
+    for( int i=0; i<_custom.size(); i++ ) {
+      var fn = _custom.get_function( i );
       add_function( fn );
       _add_revealer.reveal_child = false;
     }
@@ -602,7 +602,7 @@ public class SidebarCustom : SidebarBox {
 
   private void delete_action( string box_name ) {
     var idx = get_action_index( box_name );
-    var fn  = _custom.functions.index( idx );
+    var fn  = _custom.get_function( idx );
     _undo_buffer.add_item( new UndoCustomDeleteItem( fn, idx ) );
     delete_function( idx );
   }
@@ -618,7 +618,7 @@ public class SidebarCustom : SidebarBox {
     var fn = function.copy( true );
     add_function( fn, index );
 
-    _custom.functions.insert_val( index, fn );
+    _custom.add_function( fn, index );
 
   }
 
@@ -627,9 +627,9 @@ public class SidebarCustom : SidebarBox {
   public void delete_function( int index ) {
 
     _lb.remove( _lb.get_row_at_index( index ) );
-    _custom.functions.remove_index( index );
+    _custom.delete_function( index );
 
-    if( _custom.functions.length == 0 ) {
+    if( _custom.size() == 0 ) {
       _add_revealer.reveal_child = true;
     }
 
@@ -646,8 +646,7 @@ public class SidebarCustom : SidebarBox {
     _lb.insert( db_row, new_index );
     db_row.unref();
 
-    var fn = _custom.functions.remove_index( old_index );
-    _custom.functions.insert_val( new_index, fn );
+    _custom.move_function( old_index, new_index );
 
   }
 
@@ -804,7 +803,7 @@ public class SidebarCustom : SidebarBox {
   // Called whenever the popover is closed
   private void popover_closed() {
 
-    if( _custom.functions.length > 0 ) {
+    if( _custom.size() > 0 ) {
       get_revealer( _insert_index ).reveal_child = false;
     }
 
@@ -989,7 +988,7 @@ public class SidebarCustom : SidebarBox {
   private void save_custom() {
 
     var edit  = _del_btn.visible;
-    var empty = _custom.functions.length == 0;
+    var empty = _custom.size() == 0;
 
     cleanup();
 
