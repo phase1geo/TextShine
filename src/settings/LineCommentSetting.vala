@@ -172,7 +172,7 @@ public class LineCommentSetting : GlobalSetting {
       var custom_focus = new EventControllerFocus();
       var custom_start = new Entry() {
         halign = Align.START,
-        width_chars = 10
+        max_width_chars = 10
       };
       custom_start.add_controller( custom_focus );
       var custom_comment = new Label( "<i>%s</i>".printf( _( "Comment" ) ) ) {
@@ -199,7 +199,7 @@ public class LineCommentSetting : GlobalSetting {
         custom_box.visible = (_types.index( index ) == LineCommentType.CUSTOM);
       });
 
-      grid.attach( custom_box, 0, ((i * 2) + 1) );
+      grid.attach( custom_box, 1, ((i * 2) + 1) );
 
     }
 

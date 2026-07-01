@@ -222,14 +222,16 @@ public class BlockCommentSetting : GlobalSetting {
       var custom_start_focus = new EventControllerFocus();
       var custom_start = new Entry() {
         halign = Align.START,
-        width_chars = 10
+        max_width_chars = 10
       };
       custom_start.add_controller( custom_start_focus );
-      var custom_comment = new Label( "<i>%s</i>".printf( _( "Comment" ) ) );
+      var custom_comment = new Label( "<i>%s</i>".printf( _( "Comment" ) ) ) {
+        use_markup = true
+      };
       var custom_end_focus = new EventControllerFocus();
       var custom_end = new Entry() {
         halign = Align.START,
-        width_chars = 10
+        max_width_chars = 10
       };
       custom_end.add_controller( custom_end_focus );
       var custom_box = new Box( Orientation.HORIZONTAL, 5 ) {
@@ -258,7 +260,7 @@ public class BlockCommentSetting : GlobalSetting {
         custom_box.visible = (_types.index( index ) == BlockCommentType.CUSTOM);
       });
 
-      grid.attach( custom_box, 0, ((i * 2) + 1) );
+      grid.attach( custom_box, 1, ((i * 2) + 1) );
 
     }
 
