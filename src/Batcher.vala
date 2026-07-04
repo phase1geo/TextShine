@@ -140,7 +140,7 @@ public class Batcher {
   // header bar of the application.
   public Button build_button() {
 
-    var btn = new Button.from_icon_name( "batch-processing" ) {
+    var btn = new Button.from_icon_name( "text-x-generic-symbolic" ) {
       has_frame = false,
       sensitive = !_win.functions.category_empty( "custom" ),
       tooltip_text = _( "Batch Process Files/Folders" )
