@@ -68,6 +68,9 @@ public class About {
     _about.present();
   }
 
+  // TODO - Need to add attribution for batch processing icon:
+  // <a href="https://www.flaticon.com/free-icons/process-management" title="process management icons">Process management icons created by VectorPortal - Flaticon</a>
+
 }
 
 

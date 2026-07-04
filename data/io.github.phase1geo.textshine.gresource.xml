@@ -3,6 +3,7 @@
   <gresource prefix="/io/github/phase1geo/textshine">
     <file alias="shortcuts.ui" compressed="true">io.github.phase1geo.textshine.shortcuts.ui</file>
     <file alias="textshine-logo.svg">images/io.github.phase1geo.textshine.png</file>
+    <file alias="batch-processing.png">images/icons/16/cogwheel.png</file>
     <file preprocess="xml-stripblanks">images/icons/hicolor/scalable/actions/global-settings-symbolic.svg</file>
   </gresource>
   <gresource prefix="/io/github/phase1geo/textshine/css">

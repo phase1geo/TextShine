@@ -29,6 +29,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   private HeaderBar         _header;
   private Editor            _editor;
+  private Batcher           _batcher;
   private Button            _clear_btn;
   private Button            _open_btn;
   private Button            _save_btn;
@@ -80,6 +81,11 @@ public class MainWindow : Gtk.ApplicationWindow {
       return( _editor );
     }
   }
+  public Batcher batcher {
+    get {
+      return( _batcher );
+    }
+  }
 
   //-------------------------------------------------------------
   // Constructor
@@ -102,8 +108,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     _editor.buffer_changed.connect( do_buffer_changed );
     _editor.dark_mode = dark_mode;
 
-    // Create the header
-    create_header();
+    // Create the batcher
+    _batcher = new Batcher( this );
 
     var sw = new ScrolledWindow() {
       valign = Align.FILL,
@@ -137,6 +143,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     _functions.changed.connect(() => {
       update_properties_menu();
     });
+
+    // Create the header
+    create_header();
 
     // Create sidebar
     var sidebar = create_sidebar();
@@ -269,6 +278,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     _header.pack_end( add_properties_button() );
     _header.pack_end( add_stats_button() );
+    _header.pack_end( batcher.build_button() );
 
     set_title( _( "TextShine" ) );
     set_titlebar( _header );
@@ -787,7 +797,8 @@ public class MainWindow : Gtk.ApplicationWindow {
       var notification = new Notification( title );
       notification.set_body( msg );
       notification.set_priority( priority );
-      app.send_notification( "io.github.phase1geo.textshine", notification );
+      // app.send_notification( "io.github.phase1geo.textshine", notification );
+      app.send_notification( "TextShine", notification );
     }
   }
 

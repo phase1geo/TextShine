@@ -68,7 +68,7 @@ public enum OutputDirectoryType {
       case NEW_DIRECTORY  :  return( Path.build_filename( new_dir, file.get_basename() ) );
       case SAME_DIRECTORY :
         var parts = new Gee.ArrayList<string>.wrap( file.get_basename().split( "." ) );
-        parts.insert( (parts.size - 2), suffix );
+        parts.insert( (parts.size - 1), suffix );
         return( Path.build_filename( file.get_parent().get_path(), string.joinv( ".", parts.to_array() ) ) );
       default             :  assert_not_reached();
     }
@@ -96,9 +96,38 @@ public class Batcher {
   }
 
   //-------------------------------------------------------------
+  // Creates the batch processing button that can be added to the
+  // header bar of the application.
+  public Button build_button() {
+
+    var btn = new Button.from_icon_name( "batch-processing" ) {
+      has_frame = false,
+      sensitive = !_win.functions.category_empty( "custom" ),
+      tooltip_text = _( "Batch Process Files/Folders" )
+    };
+
+    btn.clicked.connect(() => {
+      var win = new Granite.Dialog() {
+        modal = true,
+        title = _( "Batch Processing" ),
+        transient_for = _win
+      };
+      win.get_content_area().append( build_ui( win ) );
+      win.present();
+    });
+
+    _win.functions.changed.connect(() => {
+      btn.sensitive = !_win.functions.category_empty( "custom" );
+    });
+
+    return( btn );
+
+  }
+
+  //-------------------------------------------------------------
   // Builds the batch mode UI and returns it to the calling function
   // as a Gtk Box.
-  public Box build_ui() {
+  public Box build_ui( Granite.Dialog batch_win ) {
 
     var functions = _win.functions.get_category_functions( "custom" );
 
@@ -107,7 +136,7 @@ public class Batcher {
     for( int i=0; i<functions.length; i++ ) {
       var function = (CustomFunction)functions.index( i );
       if( function.launchable( _win.editor ) ) {
-        if( function.user_label == _function.user_label ) {
+        if( (_function != null) && (function.user_label == _function.user_label) ) {
           selected_func = i;
         }
         func_names += function.user_label;
@@ -138,6 +167,7 @@ public class Batcher {
     var folder_recursive = new CheckButton.with_label( _( "Convert files found in all subdirectories" ) ) {
       halign = Align.START,
       active = _recursive,
+      visible = _use_folder,
       margin_start = 20
     };
 
@@ -169,7 +199,7 @@ public class Batcher {
     };
 
     var same_dir_box = new Box( Orientation.HORIZONTAL, 5 ) {
-      visible = false
+      visible = (_output_dir_type == OutputDirectoryType.SAME_DIRECTORY)
     };
     same_dir_box.append( same_dir_lbl );
     same_dir_box.append( same_dir_entry );
@@ -202,25 +232,16 @@ public class Batcher {
     });
 
     var new_dir_box = new Box( Orientation.HORIZONTAL, 5 ) {
-      visible = false
+      visible = (_output_dir_type == OutputDirectoryType.NEW_DIRECTORY)
     };
     new_dir_box.append( new_dir_lbl );
     new_dir_box.append( new_dir_entry );
     new_dir_box.append( new_dir_btn );
 
     output_dd.notify["selected"].connect(() => {
-      _output_dir_type = (OutputDirectoryType)output_dd;
-      same_dir_box.visible = false;
-      new_dir_box.visible  = false;
-      switch( _output_dir_type ) {
-        case OutputDirectoryType.SAME_DIRECTORY :
-          same_dir_box.visible = true;
-          break;
-        case OutputDirectoryType.NEW_DIRECTORY :
-          new_dir_box.visible  = true;
-          break;
-        default :  break;
-      }
+      _output_dir_type     = (OutputDirectoryType)output_dd.selected;
+      same_dir_box.visible = (_output_dir_type == OutputDirectoryType.SAME_DIRECTORY);
+      new_dir_box.visible  = (_output_dir_type == OutputDirectoryType.NEW_DIRECTORY);
     });
 
     output_dd.selected = _output_dir_type;
@@ -235,21 +256,23 @@ public class Batcher {
       } else {
         run_selected();
       }
-      // TODO - Not sure if I should close the window yet or not
-      // window.destroy();
+      batch_win.destroy();
     });
 
     var cancel_btn = new Button.with_label( _( "Cancel" ) ) {
-      halign = Align.END
+      halign = Align.END,
+      hexpand = true
     };
 
     cancel_btn.clicked.connect(() => {
-      // window.destroy();
+      batch_win.destroy();
     });
 
-    var bbox = new Box( Orientation.HORIZONTAL, 5 );
-    bbox.append( run_btn );
+    var bbox = new Box( Orientation.HORIZONTAL, 5 ) {
+      valign = Align.END
+    };
     bbox.append( cancel_btn );
+    bbox.append( run_btn );
 
     var box = new Box( Orientation.VERTICAL, 5 ) {
       margin_start  = 5,
@@ -331,6 +354,8 @@ public class Batcher {
             var file = (File)files.get_item( i );
             convert_file( file );
           }
+          _win.do_new();
+          _win.notification( _( "Batch processing complete!" ), "" );
           return( false );
         });
       } catch( Error e ) {}
@@ -354,6 +379,8 @@ public class Batcher {
         Idle.add(() => {
           _win.remove_widget();
           convert_folder( folder );
+          _win.do_new();
+          _win.notification( _( "Batch processing complete!" ), "" );
           return( false );
         });
       } catch( Error e ) {}
