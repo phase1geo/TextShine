@@ -558,6 +558,12 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   //-------------------------------------------------------------
+  // Sets the current file to the given path.
+  public void set_current_file( string path ) {
+    _current_file = path;
+  }
+
+  //-------------------------------------------------------------
   // Display an open file dialog to open a file for reading.
   private void do_open() {
 
@@ -576,7 +582,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  public bool open_file( string filepath ) {
+  public bool open_file( string filepath, bool report_error = true ) {
 
     _current_file = filepath;
 
@@ -586,10 +592,15 @@ public class MainWindow : Gtk.ApplicationWindow {
       if( FileUtils.get_contents( _current_file, out contents ) && contents.validate() ) {
       	_editor.buffer.text = contents;
       } else {
-        show_error( "Unable to read file contents" );
+        if( report_error ) {
+          show_error( "Unable to read file contents" );
+        }
+        return( false );
       }
     } catch( FileError e ) {
-      show_error( e.message );
+      if( report_error ) {
+        show_error( e.message );
+      }
       return( false );
     }
 
@@ -623,7 +634,9 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  private void save_current_file() {
+  //-------------------------------------------------------------
+  // Saves the current editor contents to the current file
+  public void save_current_file( bool report_error = true ) {
 
     var file = File.new_for_path( _current_file );
 
@@ -632,7 +645,9 @@ public class MainWindow : Gtk.ApplicationWindow {
       os.write( _editor.buffer.text.data );
       os.close();
     } catch( Error e ) {
-      show_error( e.message );
+      if( report_error ) {
+        show_error( e.message );
+      }
     }
 
     _editor.grab_focus();

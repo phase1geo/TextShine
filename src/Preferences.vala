@@ -21,7 +21,7 @@
 
 using Gtk;
 
-public class Preferences : Dialog {
+public class Preferences : Granite.Dialog {
 
   private MainWindow       _win;
   private FontDialogButton _font;
