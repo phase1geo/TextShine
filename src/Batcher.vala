@@ -69,7 +69,7 @@ public enum OutputDirectoryType {
     switch( this ) {
       case REPLACE        :  return( "replace" );
       case SAME_DIRECTORY :  return( "same-dir" );
-      case NEW_DIRECTORY  :  return( "new_dir" );
+      case NEW_DIRECTORY  :  return( "new-dir" );
       default             :  assert_not_reached();
     }
   }
@@ -130,9 +130,7 @@ public class Batcher {
   //-------------------------------------------------------------
   // Constructor
   public Batcher( MainWindow win ) {
-
     _win = win;
-
   }
 
   //-------------------------------------------------------------
@@ -162,6 +160,9 @@ public class Batcher {
   //-------------------------------------------------------------
   // Creates the batch window.
   private Granite.Dialog build_window() {
+
+    // Load the previously stored values
+    load();
 
     var win = new Granite.Dialog() {
       modal = true,
@@ -194,6 +195,9 @@ public class Batcher {
     });
 
     win.set_size_request( 500, 400 );
+
+    // Make sure that the Run button is evaluated
+    update_run_state();
 
     return( win );
 
@@ -296,6 +300,17 @@ public class Batcher {
   }
 
   //-------------------------------------------------------------
+  // Updates the same directory example text with the appropriate
+  // information based on the value of same_dir_suffix.
+  private void update_same_dir_label( Label lbl ) {
+    if( _same_dir_suffix == "" ) {
+      lbl.label = _( "A suffix string is needed to proceed!" );
+    } else {
+      lbl.label = "(" + _( "example" ) + ": <i>" + _( "filename" ) + ".%s.txt</i>)".printf( _same_dir_suffix );
+    }
+  }
+
+  //-------------------------------------------------------------
   // Creates the output frame and returns it to the calling function.
   private Frame build_output_frame() {
 
@@ -322,17 +337,13 @@ public class Batcher {
       halign = Align.START
     };
 
+    update_same_dir_label( same_dir_sample );
+
     same_dir_entry.changed.connect(() => {
       _same_dir_suffix = same_dir_entry.text;
-      if( _same_dir_suffix == "" ) {
-        same_dir_sample.label = _( "A suffix string is needed to proceed!" );
-      } else {
-        same_dir_sample.label = "(" + _( "example" ) + ": <i>" + _( "filename" ) + ".%s.txt</i>)".printf( _same_dir_suffix );
-      }
+      update_same_dir_label( same_dir_sample );
       update_run_state();
     });
-
-    same_dir_entry.text = _same_dir_suffix;
 
     var same_dir_box = new Grid() {
       halign = Align.FILL,
@@ -503,6 +514,7 @@ public class Batcher {
           }
           _win.do_new();
           _win.notification( _( "Batch processing complete!" ), "" );
+          save();
           batch_win.destroy();
           return( false );
         });
@@ -529,11 +541,101 @@ public class Batcher {
           convert_folder( folder );
           _win.do_new();
           _win.notification( _( "Batch processing complete!" ), "" );
+          save();
           batch_win.destroy();
           return( false );
         });
       } catch( Error e ) {}
     });
+
+  }
+
+  //-------------------------------------------------------------
+  // Returns the XML filepath for saving/loading the bathcher values.
+  private string xml_file() {
+    return( GLib.Path.build_filename( TextShine.get_home_dir(), "batcher.xml" ) );
+  }
+
+  //-------------------------------------------------------------
+  // Saves the batcher settings in XML format.  This only needs to be
+  // called when the batcher window is closed.
+  private void save() {
+
+    Xml.Doc*  doc  = new Xml.Doc( "1.0" );
+    Xml.Node* root = new Xml.Node( null, "batcher" );
+    root->set_prop( "version", _win.application.version );
+
+    root->set_prop( "function",        _function.name );
+    root->set_prop( "input-type",      _input_type.to_string() );
+    root->set_prop( "recursive",       _recursive.to_string() );
+    root->set_prop( "output-dir-type", _output_dir_type.to_string() );
+    root->set_prop( "same-dir-suffix", _same_dir_suffix );
+    root->set_prop( "new-output-dir",  _new_output_dir );
+
+    doc->set_root_element( root );
+    doc->save_format_file( xml_file(), 1 );
+
+    delete doc;
+
+  }
+
+  //-------------------------------------------------------------
+  // Loads the batcher settings in XML format.
+  private void load() {
+
+    var filename = xml_file();
+
+    if( !FileUtils.test( filename, FileTest.EXISTS ) ) {
+      return;
+    }
+
+    Xml.Doc* doc = Xml.Parser.read_file( filename, null, Xml.ParserOption.HUGE );
+    if( doc == null ) {
+      return;
+    }
+
+    var root = doc->get_root_element();
+
+    var f = root->get_prop( "function" );
+    if( f != null ) {
+      var functions = _win.functions.get_category_functions( "custom" );
+      for( int i=0; i<functions.length; i++ ) {
+        if( functions.index( i ).name == f ) {
+          _function = (CustomFunction)functions.index( i );
+          break;
+        }
+      }
+      if( (_function == null) && (functions.length > 0) ) {
+        _function = (CustomFunction)functions.index( 0 );
+      }
+    }
+
+    var it = root->get_prop( "input-type" );
+    if( it != null ) {
+      _input_type = InputType.parse( it );
+    }
+
+    var r = root->get_prop( "recursive" );
+    if( r != null ) {
+      _recursive = bool.parse( r );
+    }
+
+    var ot = root->get_prop( "output-dir-type" );
+    if( ot != null ) {
+      _output_dir_type = OutputDirectoryType.parse( ot );
+    }
+
+    var sds = root->get_prop( "same-dir-suffix" );
+    if( sds != null ) {
+      _same_dir_suffix = sds;
+    }
+
+    var nod = root->get_prop( "new-output-dir" );
+    if( nod != null ) {
+      _new_output_dir = FileUtils.test( nod, FileTest.EXISTS ) ? nod : "";
+    }
+
+    delete doc;
 
   }
 
