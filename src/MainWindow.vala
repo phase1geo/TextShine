@@ -220,7 +220,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   //-------------------------------------------------------------
   // Returns the name of the icon to use based on if we are running
   // elementary
-  private string get_header_icon_name( string icon_name ) {
+  public string get_header_icon_name( string icon_name ) {
     return "%s%s".printf( icon_name, (on_elementary ? "" : "-symbolic") );
   }
 

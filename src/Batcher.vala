@@ -140,7 +140,7 @@ public class Batcher {
   // header bar of the application.
   public Button build_button() {
 
-    var btn = new Button.from_icon_name( "text-x-generic-symbolic" ) {
+    var btn = new Button.from_icon_name( _win.get_header_icon_name( "text-x-generic" ) ) {
       has_frame = false,
       sensitive = !_win.functions.category_empty( "custom" ),
       tooltip_text = _( "Batch Process Files/Folders" )
@@ -231,7 +231,12 @@ public class Batcher {
       _function = (CustomFunction)functions.index( dd.selected );
     });
 
-    var frame = new Frame( _( "Conversion Action" ) ) {
+    var frame_label = new Label( Utils.make_title( _( "Conversion Action" ) ) ) {
+      use_markup = true
+    };
+
+    var frame = new Frame( null ) {
+      label_widget = frame_label,
       child = dd
     };
 
@@ -277,7 +282,12 @@ public class Batcher {
     box.append( dd );
     box.append( folder_recursive );
 
-    var frame = new Frame( _( "Input Options" ) ) {
+    var frame_label = new Label( Utils.make_title( _( "Input Options" ) ) ) {
+      use_markup = true
+    };
+
+    var frame = new Frame( null ) {
+      label_widget = frame_label,
       child = box
     };
 
@@ -395,7 +405,12 @@ public class Batcher {
     box.append( same_dir_box );
     box.append( new_dir_box );
 
-    var frame = new Frame( _( "Output Options" ) ) {
+    var frame_label = new Label( Utils.make_title( _( "Output Options" ) ) ) {
+      use_markup = true
+    };
+
+    var frame = new Frame( null ) {
+      label_widget = frame_label,
       child = box
     };
 
@@ -408,7 +423,13 @@ public class Batcher {
   // as a Gtk Box.
   private Box build_ui( Granite.Dialog batch_win ) {
 
+    var title = new Label( Utils.make_title( _( "Batch Processor" ) ) ) {
+      use_markup = true,
+      halign = Align.CENTER
+    };
+
     var box = new Box( Orientation.VERTICAL, frame_top_margin );
+    box.append( title );
     box.append( build_function_frame() );
     box.append( build_input_frame() );
     box.append( build_output_frame() );

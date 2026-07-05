@@ -44,20 +44,27 @@ public class Preferences : Granite.Dialog {
 
     _win = win;
 
-    var box = new Box( Orientation.VERTICAL, 10 ) {
-      margin_start  = 10,
-      margin_end    = 10,
-      margin_top    = 10,
-      margin_bottom = 10
+    var title = new Label( Utils.make_title( _( "Preferences" ) ) ) {
+      halign = Align.CENTER,
+      use_markup = true,
+      margin_bottom = 15
     };
 
+    var box = new Box( Orientation.VERTICAL, 10 );
+
     // Add the preference items
+    box.append( title );
     box.append( create_font_selection() );
     box.append( create_spell_checker() );
     box.append( create_spell_checker_language() );
 
     // Set the content area of the dialog box
     get_content_area().append( box );
+
+    var close = (Button)add_button( _( "Close" ), Gtk.ResponseType.CLOSE );
+    close.clicked.connect(() => {
+      destroy();
+    });
 
     // Add the menu actions
     var actions = new SimpleActionGroup();
