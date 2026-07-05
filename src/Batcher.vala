@@ -97,16 +97,38 @@ public enum OutputDirectoryType {
   }
 
   //-------------------------------------------------------------
+  // Creates a unique filename based on the given path.
+  private string uniquify_path( string path ) {
+    if( !FileUtils.test( path, FileTest.EXISTS ) ) {
+      return( path );
+    }
+    var index    = 1;
+    var new_path = "";
+    do {
+      var parts       = path.split( "." );
+      var parts_index = (parts.length == 1) ? 0 : (parts.length - 2);
+      parts[parts_index] = "%s (%d)".printf( parts[parts_index], index++ );
+      new_path = string.joinv( ".", parts );
+    } while( FileUtils.test( new_path, FileTest.EXISTS ) );
+    return( new_path );
+  }
+
+  //-------------------------------------------------------------
   // Outputs the filename to output the converted file contents to.
   public string output_filename( File file, string suffix, string new_dir ) {
     switch( this ) {
-      case REPLACE        :  return( file.get_path() );
-      case NEW_DIRECTORY  :  return( Path.build_filename( new_dir, file.get_basename() ) );
+      case REPLACE        :
+        return( file.get_path() );
+      case NEW_DIRECTORY  :
+        var path = Path.build_filename( new_dir, file.get_basename() );
+        return( uniquify_path( path ) );
       case SAME_DIRECTORY :
         var parts = new Gee.ArrayList<string>.wrap( file.get_basename().split( "." ) );
         parts.insert( (parts.size - 1), suffix );
-        return( Path.build_filename( file.get_parent().get_path(), string.joinv( ".", parts.to_array() ) ) );
-      default             :  assert_not_reached();
+        var path = Path.build_filename( file.get_parent().get_path(), string.joinv( ".", parts.to_array() ) );
+        return( uniquify_path( path ) );
+      default :
+        assert_not_reached();
     }
 
   }
