@@ -29,6 +29,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   private HeaderBar         _header;
   private Editor            _editor;
+  private Batcher           _batcher;
   private Button            _clear_btn;
   private Button            _open_btn;
   private Button            _save_btn;
@@ -61,6 +62,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     { "action_copy",          do_copy },
     { "action_undo",          do_undo },
     { "action_redo",          do_redo },
+    { "action_batch",         do_batch },
     { "action_shortcuts",     action_shortcuts },
     { "action_preferences",   action_preferences },
     { "action_import_custom", action_import_custom },
@@ -78,6 +80,11 @@ public class MainWindow : Gtk.ApplicationWindow {
   public Editor editor {
     get {
       return( _editor );
+    }
+  }
+  public Batcher batcher {
+    get {
+      return( _batcher );
     }
   }
 
@@ -102,8 +109,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     _editor.buffer_changed.connect( do_buffer_changed );
     _editor.dark_mode = dark_mode;
 
-    // Create the header
-    create_header();
+    // Create the batcher
+    _batcher = new Batcher( this );
 
     var sw = new ScrolledWindow() {
       valign = Align.FILL,
@@ -137,6 +144,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     _functions.changed.connect(() => {
       update_properties_menu();
     });
+
+    // Create the header
+    create_header();
 
     // Create sidebar
     var sidebar = create_sidebar();
@@ -186,6 +196,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     app.set_accels_for_action( "win.action_copy",        { "<Control>c" } );
     app.set_accels_for_action( "win.action_undo",        { "<Control>z" } );
     app.set_accels_for_action( "win.action_redo",        { "<Control><Shift>z" } );
+    app.set_accels_for_action( "win.action_batch",       { "<Control>y" } );
     app.set_accels_for_action( "win.action_shortcuts",   { "<Control>question" } );
     app.set_accels_for_action( "win.action_preferences", { "<Control>comma" } );
   }
@@ -211,7 +222,7 @@ public class MainWindow : Gtk.ApplicationWindow {
   //-------------------------------------------------------------
   // Returns the name of the icon to use based on if we are running
   // elementary
-  private string get_header_icon_name( string icon_name ) {
+  public string get_header_icon_name( string icon_name ) {
     return "%s%s".printf( icon_name, (on_elementary ? "" : "-symbolic") );
   }
 
@@ -269,6 +280,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     _header.pack_end( add_properties_button() );
     _header.pack_end( add_stats_button() );
+    _header.pack_end( batcher.build_button() );
 
     set_title( _( "TextShine" ) );
     set_titlebar( _header );
@@ -558,6 +570,12 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   //-------------------------------------------------------------
+  // Sets the current file to the given path.
+  public void set_current_file( string path ) {
+    _current_file = path;
+  }
+
+  //-------------------------------------------------------------
   // Display an open file dialog to open a file for reading.
   private void do_open() {
 
@@ -576,7 +594,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  public bool open_file( string filepath ) {
+  public bool open_file( string filepath, bool report_error = true ) {
 
     _current_file = filepath;
 
@@ -586,10 +604,15 @@ public class MainWindow : Gtk.ApplicationWindow {
       if( FileUtils.get_contents( _current_file, out contents ) && contents.validate() ) {
       	_editor.buffer.text = contents;
       } else {
-        show_error( "Unable to read file contents" );
+        if( report_error ) {
+          show_error( "Unable to read file contents" );
+        }
+        return( false );
       }
     } catch( FileError e ) {
-      show_error( e.message );
+      if( report_error ) {
+        show_error( e.message );
+      }
       return( false );
     }
 
@@ -623,7 +646,9 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  private void save_current_file() {
+  //-------------------------------------------------------------
+  // Saves the current editor contents to the current file
+  public void save_current_file( bool report_error = true ) {
 
     var file = File.new_for_path( _current_file );
 
@@ -632,7 +657,9 @@ public class MainWindow : Gtk.ApplicationWindow {
       os.write( _editor.buffer.text.data );
       os.close();
     } catch( Error e ) {
-      show_error( e.message );
+      if( report_error ) {
+        show_error( e.message );
+      }
     }
 
     _editor.grab_focus();
@@ -707,6 +734,12 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   //-------------------------------------------------------------
+  // Displays the batch processing window.
+  private void do_batch() {
+    _batcher.show();
+  }
+
+  //-------------------------------------------------------------
   // Adds the given widget to the widgets box
   public void add_widget( Widget w, Widget? focus_widget = null ) {
 
@@ -772,7 +805,8 @@ public class MainWindow : Gtk.ApplicationWindow {
       var notification = new Notification( title );
       notification.set_body( msg );
       notification.set_priority( priority );
-      app.send_notification( "io.github.phase1geo.textshine", notification );
+      // app.send_notification( "io.github.phase1geo.textshine", notification );
+      app.send_notification( "TextShine", notification );
     }
   }
 

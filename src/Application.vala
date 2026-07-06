@@ -63,6 +63,7 @@ public class TextShine : Gtk.Application {
 
     // Add the application-specific icons
     weak IconTheme default_theme = IconTheme.get_for_display( Display.get_default() );
+    default_theme.add_resource_path( "/io/github/phase1geo/textshine" );
     default_theme.add_resource_path( "/io/github/phase1geo/textshine/images/icons/hicolor" );
 
     // Create the main window

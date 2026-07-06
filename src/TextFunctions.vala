@@ -444,6 +444,8 @@ public class TextFunctions {
       }
     }
 
+    delete doc;
+
   }
 
   //-------------------------------------------------------------
@@ -512,6 +514,8 @@ public class TextFunctions {
         add_function( "custom", custom );
       }
     }
+
+    delete doc;
 
   }
 
