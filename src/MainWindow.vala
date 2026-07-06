@@ -62,6 +62,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     { "action_copy",          do_copy },
     { "action_undo",          do_undo },
     { "action_redo",          do_redo },
+    { "action_batch",         do_batch },
     { "action_shortcuts",     action_shortcuts },
     { "action_preferences",   action_preferences },
     { "action_import_custom", action_import_custom },
@@ -195,6 +196,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     app.set_accels_for_action( "win.action_copy",        { "<Control>c" } );
     app.set_accels_for_action( "win.action_undo",        { "<Control>z" } );
     app.set_accels_for_action( "win.action_redo",        { "<Control><Shift>z" } );
+    app.set_accels_for_action( "win.action_batch",       { "<Control>y" } );
     app.set_accels_for_action( "win.action_shortcuts",   { "<Control>question" } );
     app.set_accels_for_action( "win.action_preferences", { "<Control>comma" } );
   }
@@ -729,6 +731,12 @@ public class MainWindow : Gtk.ApplicationWindow {
   private void do_redo() {
     _editor.undo_buffer.redo();
     _editor.grab_focus();
+  }
+
+  //-------------------------------------------------------------
+  // Displays the batch processing window.
+  private void do_batch() {
+    _batcher.show();
   }
 
   //-------------------------------------------------------------

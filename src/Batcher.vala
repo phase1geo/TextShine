@@ -163,7 +163,7 @@ public class Batcher {
     var btn = new Button.from_icon_name( _win.get_header_icon_name( "text-x-generic" ) ) {
       has_frame = false,
       sensitive = !_win.functions.category_empty( "custom" ),
-      tooltip_text = _( "Batch Process Files/Folders" )
+      tooltip_markup = Utils.tooltip_with_accel( _( "Batch Process Files/Folder" ), "<control>y" )
     };
 
     btn.clicked.connect(() => {
@@ -177,6 +177,15 @@ public class Batcher {
 
     return( btn );
 
+  }
+
+  //-------------------------------------------------------------
+  // Displays the batching UI.
+  public void show() {
+    if( !_win.functions.category_empty( "custom" ) ) {
+      var win = build_window();
+      win.present();
+    }
   }
 
   //-------------------------------------------------------------
@@ -252,6 +261,11 @@ public class Batcher {
       margin_bottom = 5,
       selected      = selected_func
     };
+
+    Idle.add(() => {
+      dd.grab_focus();
+      return( false );
+    });
 
     dd.notify["selected"].connect(() => {
       _function = (CustomFunction)functions.index( dd.selected );
