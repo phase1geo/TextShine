@@ -46,6 +46,8 @@ public class TextShine : Gtk.Application {
     Intl.bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" );
     Intl.textdomain( GETTEXT_PACKAGE );
 
+    Environment.set_application_name( _( "TextShine" ) );
+
     startup.connect( start_application );
     open.connect( open_files );
 
