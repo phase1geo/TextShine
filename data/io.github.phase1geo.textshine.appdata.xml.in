@@ -76,7 +76,7 @@
       <value key="x-appcenter-stripe">pk_live_51Ccoj4BJm4hDdHaF1YKGdyGLCLtShzElKsr4GM9hJDJAoZArcWrNHsjL9b8SBs01GQBYpakj0l1tYenVJOqke93300TULHWdph</value>
     </custom>
     <releases>
-      <release version="2.1.0" date="2026-05-02">
+      <release version="3.0.0" date="2026-09-27">
         <description>
           <p>New</p>
           <ul>

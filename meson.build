@@ -1,5 +1,5 @@
 project('io.github.phase1geo.textshine', ['vala', 'c'],
-    version : '2.1.0',
+    version : '3.0.0',
     license: 'GPL-3.0',
     default_options: [
       'warning_level=0',  # disables C warnings

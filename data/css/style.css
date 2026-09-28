@@ -55,3 +55,20 @@ list {
   background-color: #ffff00;
   color: #000000;
 }
+
+/*
+togglebutton image,
+togglebutton:checked image {
+  color: red;
+}
+*/
+
+/*
+togglebutton:checked { color: @fg_color; }
+togglebutton:not(:checked) image { color: red; }
+*/
+button:checked image,
+button:not(:checked) image {
+  color: @fg_color;
+  color: @theme_fg_color;
+}

@@ -1,5 +1,6 @@
 src/About.vala
 src/Application.vala
+src/Batcher.vala
 src/functions/case/CaseCamel.vala
 src/functions/case/CaseLower.vala
 src/functions/case/CaseRandom.vala
@@ -13,12 +14,14 @@ src/functions/convert/ConvertHardWrap.vala
 src/functions/convert/ConvertMarkdownTable.vala
 src/functions/convert/ConvertROT13.vala
 src/functions/convert/ConvertURL.vala
+src/functions/indent/IndentDelim.vala
 src/functions/indent/Indent.vala
 src/functions/indent/IndentXML.vala
 src/functions/indent/Unindent.vala
 src/functions/insert/InsertFile.vala
 src/functions/insert/InsertLineNumbers.vala
 src/functions/insert/InsertLoremIpsum.vala
+src/functions/insert/InsertNewline.vala
 src/functions/insert/InsertText.vala
 src/functions/insert/InsertURL.vala
 src/functions/markdown/ConvertMarkdownHTML.vala
@@ -56,8 +59,12 @@ src/functions/sort/Randomize.vala
 src/functions/sort/SortLines.vala
 src/functions/sort/SortMoveLines.vala
 src/functions/sort/SortReverseChars.vala
+src/GlobalSettings.vala
 src/MainWindow.vala
 src/Preferences.vala
+src/settings/BlockCommentSetting.vala
+src/settings/LineCommentSetting.vala
+src/settings/StringSetting.vala
 src/SidebarCustom.vala
 src/SidebarFunctions.vala
 src/SpellChecker.vala
