@@ -165,6 +165,10 @@
           <li>Added About window to help in debugging issues.</li>
           <li>Added support for exporting custom actions.</li>
           <li>Added support for importing custom actions.</li>
+          <li>Added customizable auto-indent action.</li>
+          <li>Added support for global action settings (used by new auto-indent action).</li>
+          <li>Added insert newline action.</li>
+          <li>Added support for batch file processing (custom action applied to one or more files).</li>
         </ul>
         <p>Changes</p>
         <ul>
