@@ -32,6 +32,7 @@ same way that built-in actions are used within the application.
 - Character, word, line, match and spelling error statistics.
 - Support for font size changes.
 - Built-in spell checking.
+- Batch process files, applying a custom action to each file.
 - Categorized text actions which include:
      * Changing case
      * Inserting text, line numbers, lorem ipsum and file contents

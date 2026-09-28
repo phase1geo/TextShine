@@ -24,10 +24,16 @@
   <launchable type="desktop-id">io.github.phase1geo.textshine.desktop</launchable>
   <screenshots>
     <screenshot type="default">
+      <caption>Main interface with text and text actions</caption>
       <image>https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot-actions.png</image>
     </screenshot>
     <screenshot>
+      <caption>Create custom actions</caption>
       <image>https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot-custom.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Batch process files with a custom action</caption>
+      <image>https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot-batch.png</image>
     </screenshot>
   </screenshots>
   <description>
@@ -90,6 +96,7 @@
       <li xml:lang="de">Unterstützung für Schriftgrößenänderungen.</li>
       <li>Built-in spell checker.</li>
       <li xml:lang="de">Eingebaute Rechtschreibprüfung.</li>
+      <li>Batch process files, applying a custom action to each file.</li>
       <li>Categorized text actions which include:</li>
       <li xml:lang="nl">Gecategoriseerde acties, waaronder:</li>
       <li xml:lang="it">Categorizzate azioni di testo che includono:</li>

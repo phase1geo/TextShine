@@ -15,10 +15,16 @@
     <launchable type="desktop-id">io.github.phase1geo.textshine.desktop</launchable>
     <screenshots>
       <screenshot type="default">
+        <caption>Main interface with text and text actions</caption>
         <image>https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot-actions.png</image>
       </screenshot>
       <screenshot>
+        <caption>Create custom actions</caption>
         <image>https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot-custom.png</image>
+      </screenshot>
+      <screenshot>
+        <caption>Batch process files with a custom action</caption>
+        <image>https://raw.githubusercontent.com/phase1geo/TextShine/master/data/screenshots/screenshot-batch.png</image>
       </screenshot>
     </screenshots>
     <description>
@@ -46,6 +52,7 @@
         <li>Character, word, line, match and spelling error statistics.</li>
         <li>Support for font size changes.</li>
         <li>Built-in spell checker.</li>
+        <li>Batch process files, applying a custom action to each file.</li>
         <li>Categorized text actions which include:</li>
         <li>Action: Changing case</li>
         <li>Action: Inserting text, line numbers, lorem ipsum and file/URL contents</li>
