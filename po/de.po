@@ -1,38 +1,38 @@
 # GERMAN TRANSLATION FOR TEXTSHINE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the com.github.phase1geo.textshine package.
-# Benjamin Weis <benjamin.weis@gmx.com>, 2023-2024.
+# Benjamin Weis <benjamin.weis@gmx.com>, 2023-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: com.github.phase1geo.textshine\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-28 08:57-0500\n"
-"PO-Revision-Date: 2024-04-27 15:31+0200\n"
+"PO-Revision-Date: 2026-10-04 22:24+0200\n"
 "Last-Translator: Benjamin Weis <benjamin.weis@gmx.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.9\n"
 
 #: src/About.vala:38
 msgid "Text conversion application"
-msgstr ""
+msgstr "Anwendung zur Textkonvertierung"
 
 #: src/About.vala:39
 msgid "Copyright"
-msgstr ""
+msgstr "Urheberrecht"
 
 #: src/About.vala:43
 msgid "TextShine in AppCenter"
-msgstr ""
+msgstr "TextShine im AppCenter"
 
 #: src/About.vala:60
 #, c-format
 msgid "Flatpak Runtime: %s"
-msgstr ""
+msgstr "Flatpak-Laufzeitumgebung: %s"
 
 #: src/Application.vala:49 src/MainWindow.vala:285
 msgid "TextShine"
@@ -48,114 +48,112 @@ msgstr "Versionsnummer anzeigen"
 
 #: src/Application.vala:106
 msgid "Transform clipboard text"
-msgstr "Text in der Zwischenablage umwandeln"
+msgstr "Text aus der Zwischenablage umwandeln"
 
 #: src/Batcher.vala:53
 msgid "Select files"
-msgstr ""
+msgstr "Dateien auswählen"
 
 #: src/Batcher.vala:54
 msgid "Select folder"
-msgstr ""
+msgstr "Ordner auswählen"
 
 #: src/Batcher.vala:92
 msgid "Replace original file"
-msgstr ""
+msgstr "Originaldatei ersetzen"
 
 #: src/Batcher.vala:93
 msgid "Create converted file in the same directory as original file"
 msgstr ""
+"Konvertierte Datei im selben Verzeichnis wie die Originaldatei erstellen"
 
 #: src/Batcher.vala:94
 msgid "Create converted file in specified output directory"
-msgstr ""
+msgstr "Konvertierte Datei im angegebenen Ausgabeverzeichnis erstellen"
 
 #: src/Batcher.vala:147
-#, fuzzy
 msgid "converted"
-msgstr "Konvertieren"
+msgstr "konvertiert"
 
 #: src/Batcher.vala:166
 msgid "Batch Process Files/Folder"
-msgstr ""
+msgstr "Dateien/Ordner im Stapelverfahren verarbeiten"
 
 #: src/Batcher.vala:200
 msgid "Batch Processing"
-msgstr ""
+msgstr "Stapelverarbeitung"
 
 #: src/Batcher.vala:206 src/SidebarCustom.vala:1014
 msgid "Cancel"
 msgstr "Abbrechen"
 
 #: src/Batcher.vala:211
-#, fuzzy
 msgid "Run"
-msgstr "Zeilenumbrüche"
+msgstr "Ausführen"
 
 #: src/Batcher.vala:274
-#, fuzzy
 msgid "Conversion Action"
-msgstr "Aktion entfernen"
+msgstr "Konvertierungsaktion"
 
 #: src/Batcher.vala:301
 msgid "Recursively convert subdirectories"
-msgstr ""
+msgstr "Unterverzeichnisse rekursiv konvertieren"
 
 #: src/Batcher.vala:325
 msgid "Input Options"
-msgstr ""
+msgstr "Eingabeoptionen"
 
 #: src/Batcher.vala:343
 msgid "A suffix string is needed to proceed!"
-msgstr ""
+msgstr "Um fortzufahren, ist eine Suffixzeichenkette erforderlich!"
 
 #: src/Batcher.vala:345
 msgid "example"
-msgstr ""
+msgstr "Beispiel"
 
 #: src/Batcher.vala:345
 msgid "filename"
-msgstr ""
+msgstr "Dateiname"
 
 #: src/Batcher.vala:362
 msgid "Filename suffix:"
-msgstr ""
+msgstr "Dateinamensuffix:"
 
 #: src/Batcher.vala:395
 msgid "Output directory:"
-msgstr ""
+msgstr "Ausgabeverzeichnis:"
 
 #: src/Batcher.vala:401 src/Batcher.vala:414
 msgid "Select output directory"
-msgstr ""
+msgstr "Ausgabeverzeichnis auswählen"
 
 #: src/Batcher.vala:408
 msgid "Change output directory"
-msgstr ""
+msgstr "Ausgabeverzeichnis ändern"
 
 #: src/Batcher.vala:415 src/Batcher.vala:539 src/Batcher.vala:569
 msgid "Select"
-msgstr ""
+msgstr "Auswählen"
 
 #: src/Batcher.vala:455
 msgid "Output Options"
-msgstr ""
+msgstr "Ausgabeoptionen"
 
 #: src/Batcher.vala:473
 msgid "Batch Processor"
-msgstr ""
+msgstr "Stapelverarbeitungsprozessor"
 
 #: src/Batcher.vala:538
 msgid "Select one or more files to convert"
-msgstr ""
+msgstr "Eine oder mehrere Dateien zum Konvertieren auswählen"
 
 #: src/Batcher.vala:552 src/Batcher.vala:579
 msgid "Batch processing complete!"
-msgstr ""
+msgstr "Stapelverarbeitung abgeschlossen!"
 
 #: src/Batcher.vala:568
 msgid "Select directory to convert"
-msgstr ""
+msgstr "Verzeichnis zum Konvertieren auswählen"
 
 #: src/functions/case/CaseCamel.vala:36
 msgid "Camel Case"
@@ -273,7 +271,7 @@ msgstr "CSV-Anführungszeichen"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:187
 msgid "Quote Column Text"
-msgstr ""
+msgstr "Text in der Zitatspalte"
 
 #: src/functions/convert/ConvertMarkdownTable.vala:197
 msgid "Column Alignment"
@@ -285,11 +283,11 @@ msgstr "ROT 13"
 
 #: src/functions/convert/ConvertURL.vala:41
 msgid "UTF-8"
-msgstr ""
+msgstr "UTF-8"
 
 #: src/functions/convert/ConvertURL.vala:42
 msgid "Windows-1252"
-msgstr ""
+msgstr "Windows-1252"
 
 #: src/functions/convert/ConvertURL.vala:302
 msgid "Encode URL"
@@ -309,25 +307,25 @@ msgstr "Leerzeichen durch '+' ersetzen"
 
 #: src/functions/indent/IndentDelim.vala:40
 msgid "Indent With Custom Delimiters"
-msgstr ""
+msgstr "Einrückung mit benutzerdefinierten Trennzeichen"
 
 #: src/functions/indent/IndentDelim.vala:78
 msgid "Indent delimiters"
-msgstr ""
+msgstr "Einrückungstrennzeichen"
 
 #: src/functions/indent/IndentDelim.vala:81
 msgid "Unindent delimiters"
-msgstr ""
+msgstr "Ausrückungstrennzeichen"
 
 #: src/functions/indent/IndentDelim.vala:84
 #: src/functions/insert/InsertNewline.vala:94
 msgid "Skip delimiters in comments"
-msgstr ""
+msgstr "Trennzeichen in Kommentaren überspringen"
 
 #: src/functions/indent/IndentDelim.vala:87
 #: src/functions/insert/InsertNewline.vala:98
 msgid "Skip delimiters in strings"
-msgstr ""
+msgstr "Trennzeichen in Zeichenketten überspringen"
 
 #: src/functions/indent/Indent.vala:33
 msgid "Indent One Level"
@@ -382,30 +380,29 @@ msgstr "Absätze"
 #: src/functions/insert/InsertNewline.vala:39
 #: src/functions/insert/InsertNewline.vala:89
 msgid "Delimiter"
-msgstr ""
+msgstr "Trennzeichen"
 
 #: src/functions/insert/InsertNewline.vala:40
-#, fuzzy, c-format
+#, c-format
 msgid "Insert Newline After %s"
-msgstr "Zeilenumbruch einfügen"
+msgstr "Zeilenumbruch nach %s einfügen"
 
 #: src/functions/insert/InsertNewline.vala:41
-#, fuzzy, c-format
+#, c-format
 msgid "Insert Newline Before %s"
-msgstr "Zeilenumbruch einfügen"
+msgstr "Zeilenumbruch vor %s einfügen"
 
 #: src/functions/insert/InsertNewline.vala:82
-#, fuzzy
 msgid "Newline Location"
-msgstr "Aktion löschen"
+msgstr "Position des Zeilenumbruchs"
 
 #: src/functions/insert/InsertNewline.vala:83
 msgid "Before"
-msgstr ""
+msgstr "Bevor"
 
 #: src/functions/insert/InsertNewline.vala:83
 msgid "After"
-msgstr ""
+msgstr "Nach"
 
 #: src/functions/insert/InsertText.vala:40
 msgid "Start of Line"
@@ -672,27 +669,27 @@ msgstr "HTML/XML-Tags"
 
 #: src/functions/match/RegExpr.vala:261
 msgid "Specific Start Tag"
-msgstr "Bestimmtes Start-Tag"
+msgstr "Bestimmte Anfangsmarkierung"
 
 #: src/functions/match/RegExpr.vala:262
 msgid "Specific End Tag"
-msgstr "Bestimmtes End-Tag"
+msgstr "Bestimmte Endmarkierung"
 
 #: src/functions/match/RegExpr.vala:263
 msgid "Specific Tag"
-msgstr "Bestimmtes Tag"
+msgstr "Bestimmte Markierung"
 
 #: src/functions/match/RegExpr.vala:264
 msgid "Any Start Tag"
-msgstr "Beliebiges Start-Tag"
+msgstr "Beliebige Anfangsmarkierung"
 
 #: src/functions/match/RegExpr.vala:265
 msgid "Any End Tag"
-msgstr "Beliebiges End-Tag"
+msgstr "Beliebige Endmarkierung"
 
 #: src/functions/match/RegExpr.vala:266
 msgid "Any Tag"
-msgstr "Jedes Tag"
+msgstr "Jede Markierung"
 
 #: src/functions/match/RegExpr.vala:276
 msgid "Case Patterns"
@@ -909,22 +906,20 @@ msgstr "Zeichen umkehren"
 
 #: src/GlobalSettings.vala:112
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiviert"
 
 #: src/GlobalSettings.vala:144
-#, fuzzy
 msgid "Global Settings"
-msgstr "Einstellungen"
+msgstr "Globale Einstellungen"
 
 #: src/GlobalSettings.vala:162
-#, fuzzy
 msgid "Function Settings"
-msgstr "Einstellungen"
+msgstr "Funktionseinstellungen"
 
 #: src/MainWindow.vala:238
-#, fuzzy, c-format
+#, c-format
 msgid "New Workspace (%s)"
-msgstr "Neue Arbeitsfläche"
+msgstr "Neue Arbeitsfläche (%s)"
 
 #: src/MainWindow.vala:244 src/MainWindow.vala:584
 msgid "Open File"
@@ -979,55 +974,49 @@ msgid "Statistics"
 msgstr "Statistik"
 
 #: src/MainWindow.vala:403
-#, fuzzy
 msgid "Import Custom Actions…"
-msgstr "Benutzerdefinierte Aktion hinzufügen"
+msgstr "Benutzerdefinierte Aktionen importieren …"
 
 #: src/MainWindow.vala:404
-#, fuzzy
 msgid "Export Custom Actions…"
-msgstr "Benutzerdefinierte Aktion hinzufügen"
+msgstr "Benutzerdefinierte Aktionen exportieren …"
 
 #: src/MainWindow.vala:407
 msgid "Shortcut Cheatsheet…"
-msgstr ""
+msgstr "Übersicht über Tastenkombinationen …"
 
 #: src/MainWindow.vala:408
 msgid "Preferences…"
-msgstr "Einstellungen…"
+msgstr "Voreinstellungen …"
 
 #: src/MainWindow.vala:411
-#, fuzzy
 msgid "About TextShine"
-msgstr "TextShine"
+msgstr "Über TextShine"
 
 #: src/MainWindow.vala:420
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Sonstiges"
 
 #: src/MainWindow.vala:461
-#, fuzzy
 msgid "Custom Action File"
-msgstr "Benutzerdefinierte Aktion hinzufügen"
+msgstr "Datei für benutzerdefinierte Aktionen"
 
 #: src/MainWindow.vala:481
-#, fuzzy
 msgid "Import Custom Actions"
-msgstr "Benutzerdefinierte Aktion hinzufügen"
+msgstr "Benutzerdefinierte Aktionen importieren"
 
 #: src/MainWindow.vala:482
 msgid "Import"
-msgstr ""
+msgstr "Importieren"
 
 #: src/MainWindow.vala:511
-#, fuzzy
 msgid "Export Custom Actions"
-msgstr "Benutzerdefinierte Aktion hinzufügen"
+msgstr "Benutzerdefinierte Aktionen exportieren"
 
 #: src/MainWindow.vala:512 src/SidebarCustom.vala:214
 #: src/SidebarCustom.vala:1052
 msgid "Export"
-msgstr ""
+msgstr "Exportieren"
 
 #: src/MainWindow.vala:634
 msgid "Save"
@@ -1039,7 +1028,7 @@ msgstr "Einstellungen"
 
 #: src/Preferences.vala:64
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: src/Preferences.vala:80
 msgid "Font:"
@@ -1061,9 +1050,8 @@ msgstr "Rechtschreibprüfungssprache:"
 #: src/settings/BlockCommentSetting.vala:228
 #: src/settings/LineCommentSetting.vala:67
 #: src/settings/LineCommentSetting.vala:178
-#, fuzzy
 msgid "Comment"
-msgstr "Dokument"
+msgstr "Kommentar"
 
 #: src/settings/BlockCommentSetting.vala:88
 #: src/settings/LineCommentSetting.vala:76 src/TextFunctions.vala:89
@@ -1073,37 +1061,40 @@ msgstr "Benutzerdefiniert"
 #: src/settings/BlockCommentSetting.vala:142
 #: src/settings/BlockCommentSetting.vala:167
 msgid "Global Block Comment Settings"
-msgstr ""
+msgstr "Globale Einstellungen für Blockkommentare"
 
 #: src/settings/BlockCommentSetting.vala:253
 #: src/settings/LineCommentSetting.vala:192
 msgid "Syntax"
-msgstr ""
+msgstr "Syntax"
 
 #: src/settings/LineCommentSetting.vala:107
 #: src/settings/LineCommentSetting.vala:127
 msgid "Global Line Comment Settings"
-msgstr ""
+msgstr "Globale Einstellungen für Zeilenkommentare"
 
 #: src/settings/StringSetting.vala:35 src/settings/StringSetting.vala:42
 msgid "Global String Settings"
-msgstr ""
+msgstr "Globale Einstellungen für Zeichenketten"
 
 #: src/settings/StringSetting.vala:63
 msgid "<b>'</b> <i>Single-quoted string</i> <b>'</b>"
-msgstr ""
+msgstr "<b>'</b> <i>Zeichenkette in einfachen Anführungszeichen</i> <b>'</b>"
 
 #: src/settings/StringSetting.vala:67
 msgid "<b>\"</b> <i>Double-quoted string</i> <b>\"</b>"
 msgstr ""
+"<b>\"</b> <i>Zeichenkette in doppelten Anführungszeichen</i> <b>\"</b>"
 
 #: src/settings/StringSetting.vala:71
 msgid "<b>\"\"\"</b> <i>Triple-double-quoted string</i> <b>\"\"\"</b>"
 msgstr ""
+"<b>\"\"\"</b> <i>Zeichenkette mit dreifachen Anführungszeichen</i> "
+"<b>\"\"\"</b>"
 
 #: src/settings/StringSetting.vala:74
 msgid "<b>`</b> <i>Backtick-quoted string</i> <b>`</b>"
-msgstr ""
+msgstr "<b>`</b> <i>Zeichenkette in Backtick-Anführungszeichen</i> <b>`</b>"
 
 #: src/SidebarCustom.vala:68
 msgid "Name:"
@@ -1188,9 +1179,8 @@ msgstr ""
 "werden."
 
 #: src/SidebarCustom.vala:1051
-#, fuzzy
 msgid "Export Custom Action As"
-msgstr "Benutzerdefinierte Aktion hinzufügen"
+msgstr "Benutzerdefinierte Aktion exportieren als"
 
 #: src/SidebarFunctions.vala:77
 msgid "Add Custom Action"
@@ -1214,7 +1204,7 @@ msgstr "Keine Vorschläge"
 
 #: src/SpellChecker.vala:244
 msgid "More Suggestions"
-msgstr "Mehr Vorschläge"
+msgstr "Weitere Vorschläge"
 
 #: src/SpellChecker.vala:249
 #, c-format
@@ -1287,15 +1277,15 @@ msgstr "Wiederherstellen "
 
 #: src/UndoCustomItem.vala:43
 msgid "Action Add"
-msgstr "Aktion Hinzufügen"
+msgstr "Aktion hinzufügen"
 
 #: src/UndoCustomItem.vala:59
 msgid "Action Remove"
-msgstr "Aktion Entfernen"
+msgstr "Aktion entfernen"
 
 #: src/UndoCustomItem.vala:75
 msgid "Action Move"
-msgstr "Aktion Verschieben"
+msgstr "Aktion verschieben"
 
 #: src/Utils.vala:221
 msgid "Insert Characters"
