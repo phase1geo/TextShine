@@ -13,6 +13,8 @@ finish-args:
 cleanup-commands:
   - /app/cleanup-BaseApp.sh
 modules:
+  - shared-modules/intltool/intltool-0.51.json
+
   - name: libmarkdown
     buildsystem: simple
     build-commands:
@@ -34,12 +36,12 @@ modules:
         commit: 685015155cb4c0bc95f3f761f629f275e18d9e10
 
   # This is not needed in official Flathub (use `- shared-modules/intltool-0.51.json` instead)
-  - name: intltool
-    buildsystem: autotools
-    sources:
-      - type: archive
-        url: https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
-        sha256: 67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd
+  # - name: intltool
+  #   buildsystem: autotools
+  #   sources:
+  #     - type: archive
+  #       url: https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz
+  #       sha256: 67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd
 
   - name: gtkspell
     config-opts:
